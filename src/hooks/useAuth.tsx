@@ -36,6 +36,8 @@ export function useAuth() {
 
   const fetchUserRole = async (userId: string) => {
     try {
+      console.log('[useAuth] Fetching role for user:', userId);
+      
       // Check if user is a professional
       const { data: professionalData } = await supabase
         .from('professionals' as any)
@@ -43,7 +45,10 @@ export function useAuth() {
         .eq('user_id', userId)
         .maybeSingle();
 
+      console.log('[useAuth] Professional data:', professionalData);
+
       if (professionalData) {
+        console.log('[useAuth] Setting role to: professional');
         setUserRole('professional');
         setLoading(false);
         return;
@@ -56,15 +61,20 @@ export function useAuth() {
         .eq('user_id', userId)
         .maybeSingle();
 
+      console.log('[useAuth] Owner data:', ownerData);
+
       if (ownerData) {
+        console.log('[useAuth] Setting role to: guardian');
         setUserRole('guardian');
       } else {
+        console.log('[useAuth] No role found, setting to null');
         setUserRole(null);
       }
     } catch (error) {
       console.error('Error fetching user role:', error);
       setUserRole(null);
     } finally {
+      console.log('[useAuth] Finished fetching role, setting loading to false');
       setLoading(false);
     }
   };

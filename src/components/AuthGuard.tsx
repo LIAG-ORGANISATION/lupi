@@ -13,16 +13,22 @@ const AuthGuard = ({ children, requiredRole }: AuthGuardProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('[AuthGuard] State:', { isAuthenticated, userRole, loading, requiredRole });
+    
     if (!loading) {
       if (!isAuthenticated) {
+        console.log('[AuthGuard] User not authenticated, redirecting to /choose-account-type');
         navigate('/choose-account-type');
       } else if (requiredRole && userRole !== requiredRole) {
+        console.log('[AuthGuard] Role mismatch. Required:', requiredRole, 'Actual:', userRole);
         // Redirect to appropriate dashboard based on role
         if (userRole === 'professional') {
           navigate('/professional/dashboard');
         } else {
           navigate('/guardian/dashboard');
         }
+      } else {
+        console.log('[AuthGuard] Access granted');
       }
     }
   }, [isAuthenticated, userRole, loading, navigate, requiredRole]);
