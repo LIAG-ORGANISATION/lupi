@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn } from "lucide-react";
+import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import { useAuth } from "@/hooks/useAuth";
@@ -30,11 +30,12 @@ const Home = () => {
                 </Button>
               </> : <>
                 {isGuardian && <>
-                    <Button onClick={() => navigate("/guardian/dashboard")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
-                      Mon tableau de bord
+                    <Button onClick={() => navigate("/dogs/add")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
+                      <Plus className="h-5 w-5 mr-2" />
+                      Ajouter un chien
                     </Button>
-                    <Button onClick={() => navigate("/dna-kit")} variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/10" size="lg">
-                      Commander un kit ADN
+                    <Button onClick={() => navigate("/guardian/dashboard")} variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/10" size="lg">
+                      Mon tableau de bord
                     </Button>
                   </>}
                 {isProfessional && <Button onClick={() => navigate("/professional/dashboard")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
