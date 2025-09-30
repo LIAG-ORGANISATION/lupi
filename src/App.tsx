@@ -11,11 +11,21 @@ import DogProfile from "./pages/DogProfile";
 import DNAResults from "./pages/DNAResults";
 import Questionnaire from "./pages/Questionnaire";
 import Professionals from "./pages/Professionals";
+import ProfessionalProfile from "./pages/ProfessionalProfile";
+import ProfessionalSignUp from "./pages/ProfessionalSignUp";
+import ProfessionalWelcome from "./pages/ProfessionalWelcome";
+import EthicalCharter from "./pages/EthicalCharter";
+import ProfessionalEditProfile from "./pages/ProfessionalEditProfile";
 import DNAKit from "./pages/DNAKit";
 import Checkout from "./pages/Checkout";
 import OrderSummary from "./pages/OrderSummary";
 import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
+import NotificationsSettings from "./pages/NotificationsSettings";
+import PrivacySettings from "./pages/PrivacySettings";
+import BillingSettings from "./pages/BillingSettings";
 import Recommendations from "./pages/Recommendations";
+import RecommendationDetail from "./pages/RecommendationDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,11 +44,21 @@ const App = () => (
           <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />
           <Route path="/questionnaire" element={<Layout><Questionnaire /></Layout>} />
           <Route path="/professionals" element={<Layout><Professionals /></Layout>} />
+          <Route path="/professional/:id" element={<ProfessionalProfile />} />
+          <Route path="/professional/signup" element={<ProfessionalSignUp />} />
+          <Route path="/professional/welcome" element={<ProfessionalWelcome />} />
+          <Route path="/professional/ethical-charter" element={<EthicalCharter />} />
+          <Route path="/professional/edit-profile" element={<ProfessionalEditProfile />} />
           <Route path="/dna-kit" element={<DNAKit />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-summary" element={<OrderSummary />} />
           <Route path="/recommendations" element={<Layout><Recommendations /></Layout>} />
+          <Route path="/recommendations/:id" element={<Layout><RecommendationDetail /></Layout>} />
           <Route path="/profile" element={<Layout><Profile /></Layout>} />
+          <Route path="/profile/edit" element={<Layout><EditProfile /></Layout>} />
+          <Route path="/profile/notifications" element={<Layout><NotificationsSettings /></Layout>} />
+          <Route path="/profile/privacy" element={<Layout><PrivacySettings /></Layout>} />
+          <Route path="/profile/billing" element={<Layout><BillingSettings /></Layout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

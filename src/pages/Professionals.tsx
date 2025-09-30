@@ -79,10 +79,10 @@ const Professionals = () => {
               <div className="flex items-center justify-between pt-2">
                 <span className="text-sm font-medium text-title">{pro.rate}</span>
                 <Button
-                  onClick={() => navigate(`/professionals/${pro.id}`)}
+                  onClick={() => navigate(`/professional/${pro.id}`)}
                   className="rounded-full bg-primary hover:bg-primary/90"
                 >
-                  Contacter
+                  Voir profil
                 </Button>
               </div>
             </div>

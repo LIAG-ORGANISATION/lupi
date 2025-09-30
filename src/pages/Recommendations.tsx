@@ -1,8 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trophy, Activity, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Recommendations = () => {
+  const navigate = useNavigate();
   const recommendations = {
     training: [
       { title: "Apprenez à votre chien à s'asseoir", icon: Trophy },
@@ -40,7 +42,12 @@ const Recommendations = () => {
                     </div>
                     <span className="font-medium">{item.title}</span>
                   </div>
-                  <Button variant="outline" className="rounded-full" size="sm">
+                  <Button 
+                    variant="outline" 
+                    className="rounded-full" 
+                    size="sm"
+                    onClick={() => navigate(`/recommendations/${index + 1}`)}
+                  >
                     Voir
                   </Button>
                 </div>
@@ -61,7 +68,12 @@ const Recommendations = () => {
                     </div>
                     <span className="font-medium">{item.title}</span>
                   </div>
-                  <Button variant="outline" className="rounded-full" size="sm">
+                  <Button 
+                    variant="outline" 
+                    className="rounded-full" 
+                    size="sm"
+                    onClick={() => navigate(`/recommendations/${index + 1}`)}
+                  >
                     Voir
                   </Button>
                 </div>
@@ -82,7 +94,12 @@ const Recommendations = () => {
                     </div>
                     <span className="font-medium">{item.title}</span>
                   </div>
-                  <Button variant="outline" className="rounded-full" size="sm">
+                  <Button 
+                    variant="outline" 
+                    className="rounded-full" 
+                    size="sm"
+                    onClick={() => navigate(`/recommendations/${index + 1}`)}
+                  >
                     Voir
                   </Button>
                 </div>
