@@ -55,11 +55,14 @@ const GuardianDocuments = () => {
   });
 
   useEffect(() => {
-    if (!authLoading && user && userId) {
+    if (!authLoading && user && userId && userRole !== null) {
       fetchDogs();
       fetchDocuments();
+    } else if (!authLoading && !user) {
+      // Si pas d'utilisateur après le chargement, rediriger vers auth
+      navigate("/auth");
     }
-  }, [userId, userRole, authLoading, user]);
+  }, [authLoading, user, userRole]);
 
   const fetchDogs = async () => {
     try {
@@ -350,7 +353,7 @@ const GuardianDocuments = () => {
   };
 
   // Vérifier l'authentification
-  if (authLoading) {
+  if (authLoading || userRole === null) {
     return (
       <div className="min-h-screen p-4 flex items-center justify-center bg-background">
         <p className="text-muted-foreground">Chargement...</p>
@@ -359,7 +362,6 @@ const GuardianDocuments = () => {
   }
 
   if (!user) {
-    navigate("/auth");
     return null;
   }
 
