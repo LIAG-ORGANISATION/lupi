@@ -12,6 +12,8 @@ import DNAResults from "./pages/DNAResults";
 import Questionnaire from "./pages/Questionnaire";
 import Professionals from "./pages/Professionals";
 import DNAKit from "./pages/DNAKit";
+import Checkout from "./pages/Checkout";
+import OrderSummary from "./pages/OrderSummary";
 import Profile from "./pages/Profile";
 import Recommendations from "./pages/Recommendations";
 import NotFound from "./pages/NotFound";
@@ -32,7 +34,9 @@ const App = () => (
           <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />
           <Route path="/questionnaire" element={<Layout><Questionnaire /></Layout>} />
           <Route path="/professionals" element={<Layout><Professionals /></Layout>} />
-          <Route path="/dna-kit" element={<Layout><DNAKit /></Layout>} />
+          <Route path="/dna-kit" element={<DNAKit />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-summary" element={<OrderSummary />} />
           <Route path="/recommendations" element={<Layout><Recommendations /></Layout>} />
           <Route path="/profile" element={<Layout><Profile /></Layout>} />
           <Route path="*" element={<NotFound />} />
