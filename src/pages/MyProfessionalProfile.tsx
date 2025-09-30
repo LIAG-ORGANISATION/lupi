@@ -50,7 +50,7 @@ const MyProfessionalProfile = () => {
 
       // Load profile with profession and specialisations
       const { data: profile, error: profileError } = await supabase
-        .from("professional_profiles")
+        .from("professionals" as any)
         .select(`
           full_name,
           email,
@@ -61,41 +61,46 @@ const MyProfessionalProfile = () => {
           tarifs,
           photo_url
         `)
-        .eq("id", user.id)
-        .single();
+        .eq("user_id", user.id)
+        .maybeSingle();
 
       if (profileError) throw profileError;
+      if (!profile) {
+        setProfileData(null);
+        setLoading(false);
+        return;
+      }
 
       // Load profession
       let profession = null;
-      if (profile.profession_id) {
+      if ((profile as any).profession_id) {
         const { data: professionData } = await supabase
           .from("professions")
           .select("*")
-          .eq("id", profile.profession_id)
-          .single();
+          .eq("id", (profile as any).profession_id)
+          .maybeSingle();
         profession = professionData;
       }
 
       // Load specialisations
       const specialisations: Specialisation[] = [];
-      if (profile.specialisations_ids && profile.specialisations_ids.length > 0) {
+      if ((profile as any).specialisations_ids && (profile as any).specialisations_ids.length > 0) {
         const { data: specsData } = await supabase
           .from("specialisations")
           .select("*")
-          .in("id", profile.specialisations_ids);
-        if (specsData) specialisations.push(...specsData);
+          .in("id", (profile as any).specialisations_ids);
+        if (specsData) specialisations.push(...specsData as any);
       }
 
       setProfileData({
-        full_name: profile.full_name || "",
-        email: profile.email || "",
+        full_name: (profile as any).full_name || "",
+        email: (profile as any).email || "",
         profession,
         specialisations,
-        localisation: profile.localisation || "",
-        preferences_contact: profile.preferences_contact || [],
-        tarifs: profile.tarifs || "",
-        photo_url: profile.photo_url || "",
+        localisation: (profile as any).localisation || "",
+        preferences_contact: (profile as any).preferences_contact || [],
+        tarifs: (profile as any).tarifs || "",
+        photo_url: (profile as any).photo_url || "",
       });
     } catch (error) {
       console.error("Error loading profile:", error);

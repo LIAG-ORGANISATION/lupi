@@ -1,44 +1,35 @@
-import { useState, useEffect } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { AppRole } from '@/types/database';
+import type { User } from '@supabase/supabase-js';
 
-export const useAuth = () => {
+export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [userRole, setUserRole] = useState<AppRole | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        // Fetch user role when session changes
-        if (session?.user) {
-          setTimeout(() => {
-            fetchUserRole(session.user.id);
-          }, 0);
-        } else {
-          setUserRole(null);
-          setLoading(false);
-        }
-      }
-    );
-
-    // Check for existing session
+    // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
       setUser(session?.user ?? null);
-      
       if (session?.user) {
         fetchUserRole(session.user.id);
       } else {
         setLoading(false);
       }
     });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          await fetchUserRole(session.user.id);
+        } else {
+          setUserRole(null);
+          setLoading(false);
+        }
+      }
+    );
 
     return () => subscription.unsubscribe();
   }, []);
@@ -47,27 +38,32 @@ export const useAuth = () => {
     try {
       // Check if user is a professional
       const { data: professionalData } = await supabase
-        .from('professional_profiles')
-        .select('id')
-        .eq('id', userId)
+        .from('professionals' as any)
+        .select('user_id')
+        .eq('user_id', userId)
         .maybeSingle();
 
       if (professionalData) {
         setUserRole('professional');
-      } else {
-        // Check if user is a guardian
-        const { data: guardianData } = await supabase
-          .from('dog_owner_profiles')
-          .select('id')
-          .eq('id', userId)
-          .maybeSingle();
+        setLoading(false);
+        return;
+      }
 
-        if (guardianData) {
-          setUserRole('guardian');
-        }
+      // Check if user is an owner
+      const { data: ownerData } = await supabase
+        .from('owners' as any)
+        .select('user_id')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (ownerData) {
+        setUserRole('guardian');
+      } else {
+        setUserRole(null);
       }
     } catch (error) {
       console.error('Error fetching user role:', error);
+      setUserRole(null);
     } finally {
       setLoading(false);
     }
@@ -76,13 +72,11 @@ export const useAuth = () => {
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
-    setSession(null);
     setUserRole(null);
   };
 
   return {
     user,
-    session,
     userRole,
     loading,
     signOut,
@@ -90,4 +84,4 @@ export const useAuth = () => {
     isProfessional: userRole === 'professional',
     isGuardian: userRole === 'guardian',
   };
-};
+}

@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import Dogs from "./pages/Dogs";
+import DogsOrPatients from "./pages/DogsOrPatients";
 import AddDog from "./pages/AddDog";
 import DogProfile from "./pages/DogProfile";
 import DNAResults from "./pages/DNAResults";
@@ -57,7 +57,7 @@ const App = () => (
           <Route path="/professional/dashboard" element={<ProfessionalDashboard />} />
           <Route path="/professional/clients" element={<ProfessionalClients />} />
           <Route path="/professional/messages" element={<ProfessionalMessages />} />
-          <Route path="/dogs" element={<Layout><Dogs /></Layout>} />
+          <Route path="/dogs" element={<Layout><DogsOrPatients /></Layout>} />
           <Route path="/dogs/add" element={<Layout><AddDog /></Layout>} />
           <Route path="/dogs/:id" element={<Layout><DogProfile /></Layout>} />
           <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />

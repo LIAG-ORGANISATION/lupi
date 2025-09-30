@@ -84,20 +84,20 @@ const ProfessionalEditProfileNew = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data: profileData } = await supabase
-          .from("professional_profiles")
+          .from("professionals" as any)
           .select("*")
-          .eq("id", user.id)
-          .single();
+          .eq("user_id", user.id)
+          .maybeSingle();
 
         if (profileData) {
           setFormData({
-            nom: profileData.full_name || "",
-            profession_id: profileData.profession_id || "",
-            specialisations_ids: profileData.specialisations_ids || [],
-            localisation: profileData.localisation || "",
-            preferences_contact: profileData.preferences_contact || [],
-            tarifs: profileData.tarifs || "",
-            photo_url: profileData.photo_url || "",
+            nom: (profileData as any).full_name || "",
+            profession_id: (profileData as any).profession_id || "",
+            specialisations_ids: (profileData as any).specialisations_ids || [],
+            localisation: (profileData as any).localisation || "",
+            preferences_contact: (profileData as any).preferences_contact || [],
+            tarifs: (profileData as any).tarifs || "",
+            photo_url: (profileData as any).photo_url || "",
           });
         }
       }
@@ -179,7 +179,7 @@ const ProfessionalEditProfileNew = () => {
       if (!user) throw new Error("Not authenticated");
 
       const { error } = await supabase
-        .from("professional_profiles")
+        .from("professionals" as any)
         .update({
           full_name: formData.nom,
           profession_id: formData.profession_id,
@@ -189,7 +189,7 @@ const ProfessionalEditProfileNew = () => {
           tarifs: formData.tarifs,
           photo_url: formData.photo_url,
         })
-        .eq("id", user.id);
+        .eq("user_id", user.id);
 
       if (error) throw error;
 

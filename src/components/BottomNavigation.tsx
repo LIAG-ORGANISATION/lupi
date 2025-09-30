@@ -1,7 +1,12 @@
 import { Home, Dog, User } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useUserRole } from "@/hooks/useUserRole";
 
 export const BottomNavigation = () => {
+  const { role } = useUserRole();
+
+  const dogsLabel = role === "professional" ? "Patients" : "Chiens";
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border rounded-t-[2rem] shadow-lg z-50">
       <div className="max-w-md mx-auto flex justify-around items-center h-16 px-8">
@@ -26,7 +31,7 @@ export const BottomNavigation = () => {
           }
         >
           <Dog className="h-6 w-6" strokeWidth={1.5} />
-          <span className="text-xs font-medium">Chiens</span>
+          <span className="text-xs font-medium">{dogsLabel}</span>
         </NavLink>
 
         <NavLink
