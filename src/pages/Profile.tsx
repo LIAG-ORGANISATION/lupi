@@ -12,15 +12,18 @@ const Profile = () => {
   const { toast } = useToast();
 
   const handleSignOut = async () => {
+    console.log('[Profile] Bouton Se déconnecter cliqué');
     try {
+      console.log('[Profile] Appel de signOut()...');
       await signOut();
+      console.log('[Profile] signOut() réussi');
       toast({
         title: "Déconnexion réussie",
         description: "À bientôt !",
       });
       navigate("/");
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error('[Profile] Erreur lors de la déconnexion:', error);
       toast({
         title: "Erreur",
         description: "Impossible de se déconnecter.",
