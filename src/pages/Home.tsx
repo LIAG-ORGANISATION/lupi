@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { TestTube2, ClipboardList, Stethoscope, Lightbulb, ShoppingCart } from "lucide-react";
+import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
+import { useAuth } from "@/hooks/useAuth";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, isProfessional, isGuardian } = useAuth();
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in">
@@ -24,21 +26,49 @@ const Home = () => {
             className="w-full h-48 object-cover rounded-2xl my-4"
           />
           <div className="space-y-2">
-            <Button 
-              onClick={() => navigate("/dogs/add")} 
-              className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-              size="lg"
-            >
-              Créer un profil de chien
-            </Button>
-            <Button 
-              onClick={() => navigate("/dna-kit")} 
-              variant="outline"
-              className="w-full rounded-full border-primary text-primary hover:bg-primary/10"
-              size="lg"
-            >
-              Commander un kit ADN
-            </Button>
+            {!isAuthenticated ? (
+              <>
+                <Button 
+                  onClick={() => navigate("/choose-account-type")} 
+                  className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                  size="lg"
+                >
+                  <LogIn className="h-5 w-5 mr-2" />
+                  Se connecter / S'inscrire
+                </Button>
+              </>
+            ) : (
+              <>
+                {isGuardian && (
+                  <>
+                    <Button 
+                      onClick={() => navigate("/guardian/dashboard")} 
+                      className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                      size="lg"
+                    >
+                      Mon tableau de bord
+                    </Button>
+                    <Button 
+                      onClick={() => navigate("/dna-kit")} 
+                      variant="outline"
+                      className="w-full rounded-full border-primary text-primary hover:bg-primary/10"
+                      size="lg"
+                    >
+                      Commander un kit ADN
+                    </Button>
+                  </>
+                )}
+                {isProfessional && (
+                  <Button 
+                    onClick={() => navigate("/professional/dashboard")} 
+                    className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                    size="lg"
+                  >
+                    Mon tableau de bord Pro
+                  </Button>
+                )}
+              </>
+            )}
           </div>
         </div>
       </Card>

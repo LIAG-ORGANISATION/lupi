@@ -1,12 +1,15 @@
-import { Home, Dog, User } from "lucide-react";
+import { Home, Dog, User, Briefcase } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const { isAuthenticated, isProfessional, isGuardian } = useAuth();
+
   return (
     <div className="min-h-screen bg-background pb-20">
       <main className="max-w-md mx-auto">{children}</main>
@@ -26,21 +29,38 @@ const Layout = ({ children }: LayoutProps) => {
             <span className="text-xs">Accueil</span>
           </NavLink>
           
-          <NavLink
-            to="/dogs"
-            className={({ isActive }) =>
-              cn(
-                "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
-                isActive ? "text-primary" : "text-muted-foreground"
-              )
-            }
-          >
-            <Dog className="h-6 w-6" />
-            <span className="text-xs">Mes chiens</span>
-          </NavLink>
+          {isAuthenticated && isGuardian && (
+            <NavLink
+              to="/guardian/dashboard"
+              className={({ isActive }) =>
+                cn(
+                  "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
+                  isActive ? "text-primary" : "text-muted-foreground"
+                )
+              }
+            >
+              <Dog className="h-6 w-6" />
+              <span className="text-xs">Mes chiens</span>
+            </NavLink>
+          )}
+
+          {isAuthenticated && isProfessional && (
+            <NavLink
+              to="/professional/dashboard"
+              className={({ isActive }) =>
+                cn(
+                  "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
+                  isActive ? "text-primary" : "text-muted-foreground"
+                )
+              }
+            >
+              <Briefcase className="h-6 w-6" />
+              <span className="text-xs">Dashboard</span>
+            </NavLink>
+          )}
           
           <NavLink
-            to="/profile"
+            to={isAuthenticated ? "/profile" : "/choose-account-type"}
             className={({ isActive }) =>
               cn(
                 "flex flex-col items-center gap-1 px-4 py-2 transition-colors",

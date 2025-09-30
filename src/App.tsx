@@ -27,6 +27,15 @@ import BillingSettings from "./pages/BillingSettings";
 import Recommendations from "./pages/Recommendations";
 import RecommendationDetail from "./pages/RecommendationDetail";
 import NotFound from "./pages/NotFound";
+import ChooseAccountType from "./pages/ChooseAccountType";
+import Auth from "./pages/Auth";
+import ProfessionalAuth from "./pages/ProfessionalAuth";
+import GuardianDashboard from "./pages/GuardianDashboard";
+import GuardianMessages from "./pages/GuardianMessages";
+import GuardianDocuments from "./pages/GuardianDocuments";
+import ProfessionalDashboard from "./pages/ProfessionalDashboard";
+import ProfessionalClients from "./pages/ProfessionalClients";
+import ProfessionalMessages from "./pages/ProfessionalMessages";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +47,15 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/choose-account-type" element={<ChooseAccountType />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/professional/auth" element={<ProfessionalAuth />} />
+          <Route path="/guardian/dashboard" element={<GuardianDashboard />} />
+          <Route path="/guardian/messages" element={<GuardianMessages />} />
+          <Route path="/guardian/documents" element={<GuardianDocuments />} />
+          <Route path="/professional/dashboard" element={<ProfessionalDashboard />} />
+          <Route path="/professional/clients" element={<ProfessionalClients />} />
+          <Route path="/professional/messages" element={<ProfessionalMessages />} />
           <Route path="/dogs" element={<Layout><Dogs /></Layout>} />
           <Route path="/dogs/add" element={<Layout><AddDog /></Layout>} />
           <Route path="/dogs/:id" element={<Layout><DogProfile /></Layout>} />
