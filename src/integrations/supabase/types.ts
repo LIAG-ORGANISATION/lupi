@@ -72,6 +72,51 @@ export type Database = {
           },
         ]
       }
+      dog_health_alerts: {
+        Row: {
+          alert_date: string
+          created_at: string
+          description: string
+          dog_id: string
+          id: string
+          owner_id: string
+          updated_at: string
+        }
+        Insert: {
+          alert_date: string
+          created_at?: string
+          description: string
+          dog_id: string
+          id?: string
+          owner_id: string
+          updated_at?: string
+        }
+        Update: {
+          alert_date?: string
+          created_at?: string
+          description?: string
+          dog_id?: string
+          id?: string
+          owner_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_health_alerts_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_health_alerts_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dog_professional_access: {
         Row: {
           created_at: string

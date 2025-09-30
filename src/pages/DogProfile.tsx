@@ -29,12 +29,14 @@ const DogProfile = () => {
   const [vaccinationPassport, setVaccinationPassport] = useState<any>(null);
   const [uploadingPassport, setUploadingPassport] = useState(false);
   const [hasQuestionnaire, setHasQuestionnaire] = useState(false);
+  const [healthAlertsCount, setHealthAlertsCount] = useState(0);
 
   useEffect(() => {
     if (id && user) {
       fetchDog();
       fetchVaccinationPassport();
       fetchQuestionnaire();
+      fetchHealthAlertsCount();
     }
   }, [id, user]);
 
@@ -86,6 +88,20 @@ const DogProfile = () => {
       setHasQuestionnaire(!!data);
     } catch (error) {
       console.error('[DogProfile] Error fetching questionnaire:', error);
+    }
+  };
+
+  const fetchHealthAlertsCount = async () => {
+    try {
+      const { count, error } = await supabase
+        .from('dog_health_alerts')
+        .select('*', { count: 'exact', head: true })
+        .eq('dog_id', id);
+
+      if (error) throw error;
+      setHealthAlertsCount(count || 0);
+    } catch (error) {
+      console.error('[DogProfile] Error fetching health alerts count:', error);
     }
   };
 
@@ -333,14 +349,21 @@ const DogProfile = () => {
           </div>
         </Card>
 
-        <Card className="p-4 rounded-2xl">
+        <Card 
+          className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all"
+          onClick={() => navigate(`/health-alerts/${id}`)}
+        >
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-5 w-5 text-red-500" />
             </div>
             <div className="flex-1">
               <h4 className="font-semibold text-title mb-1">Alertes santé</h4>
-              <p className="text-sm text-green-600">Aucune anomalie détectée</p>
+              <p className={`text-sm ${healthAlertsCount === 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {healthAlertsCount === 0 
+                  ? 'Aucune anomalie détectée' 
+                  : `${healthAlertsCount} ${healthAlertsCount === 1 ? 'alerte' : 'alertes'}`}
+              </p>
             </div>
           </div>
         </Card>
