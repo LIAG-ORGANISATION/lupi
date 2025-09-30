@@ -172,6 +172,20 @@ const DogProfile = () => {
           </div>
         </Card>
 
+        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all"
+          onClick={() => navigate("/guardian/documents")}
+        >
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+              <FileText className="h-5 w-5 text-blue-500" />
+            </div>
+            <div className="flex-1">
+              <h4 className="font-semibold text-title mb-1">Documents</h4>
+              <p className="text-sm text-muted-foreground">Ordonnances, analyses, certificats</p>
+            </div>
+          </div>
+        </Card>
+
         <Card className="p-4 rounded-2xl">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
