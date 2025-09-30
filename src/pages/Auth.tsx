@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase, isSupabaseConfigured } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
 const signUpSchema = z.object({
@@ -38,16 +38,6 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    if (!isSupabaseConfigured) {
-      toast({
-        title: "Cloud non activé",
-        description: "Lovable Cloud doit être activé pour utiliser l'authentification.",
-        variant: "destructive",
-      });
-      setLoading(false);
-      return;
-    }
 
     try {
       const validated = signUpSchema.parse(signUpData);
@@ -87,16 +77,6 @@ const Auth = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    if (!isSupabaseConfigured) {
-      toast({
-        title: "Cloud non activé",
-        description: "Lovable Cloud doit être activé pour utiliser l'authentification.",
-        variant: "destructive",
-      });
-      setLoading(false);
-      return;
-    }
 
     try {
       const validated = signInSchema.parse(signInData);
