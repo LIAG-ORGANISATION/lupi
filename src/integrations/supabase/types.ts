@@ -14,7 +14,176 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dog_owner_profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      dog_professional_access: {
+        Row: {
+          created_at: string
+          dog_id: string
+          granted_at: string | null
+          id: string
+          professional_id: string
+          requested_at: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          granted_at?: string | null
+          id?: string
+          professional_id: string
+          requested_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          granted_at?: string | null
+          id?: string
+          professional_id?: string
+          requested_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_professional_access_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_professional_access_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professional_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dogs: {
+        Row: {
+          avatar_url: string | null
+          birth_date: string | null
+          breed: string | null
+          created_at: string
+          gender: string | null
+          id: string
+          medical_notes: string | null
+          name: string
+          owner_id: string
+          updated_at: string
+          weight: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          birth_date?: string | null
+          breed?: string | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          medical_notes?: string | null
+          name: string
+          owner_id: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          birth_date?: string | null
+          breed?: string | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          medical_notes?: string | null
+          name?: string
+          owner_id?: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dogs_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "dog_owner_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professional_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          phone: string | null
+          profession: string
+          updated_at: string
+          website: string | null
+          zone: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id: string
+          phone?: string | null
+          profession: string
+          updated_at?: string
+          website?: string | null
+          zone: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          profession?: string
+          updated_at?: string
+          website?: string | null
+          zone?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
