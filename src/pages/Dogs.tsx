@@ -21,12 +21,18 @@ const Dogs = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('[Dogs] 🔍 Checking user...', user);
     if (user) {
       fetchDogs();
+    } else {
+      console.log('[Dogs] ⚠️ No user, setting loading to false');
+      setLoading(false);
     }
   }, [user]);
 
   const fetchDogs = async () => {
+    console.log('[Dogs] 📡 Fetching dogs for user:', user?.id);
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from('dogs')
@@ -34,10 +40,13 @@ const Dogs = () => {
         .eq('owner_id', user?.id)
         .order('created_at', { ascending: false });
 
+      console.log('[Dogs] Response:', { data, error });
+
       if (error) throw error;
+      console.log('[Dogs] ✅ Dogs loaded:', data?.length || 0);
       setDogs(data || []);
     } catch (error) {
-      console.error('Error fetching dogs:', error);
+      console.error('[Dogs] ❌ Error fetching dogs:', error);
     } finally {
       setLoading(false);
     }
@@ -69,7 +78,20 @@ const Dogs = () => {
       </Card>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-title">Mes chiens</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-title">Mes chiens</h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              console.log('[Dogs] 🔄 Manual refresh');
+              fetchDogs();
+            }}
+            className="text-xs"
+          >
+            Actualiser
+          </Button>
+        </div>
         {loading ? (
           <div className="flex justify-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
