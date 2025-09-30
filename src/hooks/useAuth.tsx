@@ -35,8 +35,40 @@ export function useAuth() {
   }, []);
 
   const fetchUserRole = async (userId: string) => {
+    console.log('[useAuth] 🚀 START fetchUserRole for:', userId);
+    
+    // Timeout de sécurité
+    const timeout = setTimeout(() => {
+      console.error('[useAuth] ⚠️ TIMEOUT - Forçage du rôle guardian');
+      setUserRole('guardian');
+      setLoading(false);
+    }, 3000);
+    
     try {
-      console.log('[useAuth] Fetching role for user:', userId);
+      console.log('[useAuth] 1️⃣ About to query owners table...');
+      
+      // Check if user is an owner FIRST (plus probable)
+      const { data: ownerData, error: ownerError } = await supabase
+        .from('owners')
+        .select('user_id')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      console.log('[useAuth] 2️⃣ Owner query result:', { ownerData, ownerError });
+
+      if (ownerError) {
+        console.error('[useAuth] ❌ Error querying owners:', ownerError);
+      }
+
+      if (ownerData) {
+        console.log('[useAuth] ✅ User is GUARDIAN');
+        clearTimeout(timeout);
+        setUserRole('guardian');
+        setLoading(false);
+        return;
+      }
+
+      console.log('[useAuth] 3️⃣ About to query professionals table...');
       
       // Check if user is a professional
       const { data: professionalData, error: profError } = await supabase
@@ -45,44 +77,29 @@ export function useAuth() {
         .eq('user_id', userId)
         .maybeSingle();
 
-      console.log('[useAuth] Professional query result:', { professionalData, profError });
+      console.log('[useAuth] 4️⃣ Professional query result:', { professionalData, profError });
 
       if (profError) {
-        console.error('[useAuth] Error querying professionals:', profError);
+        console.error('[useAuth] ❌ Error querying professionals:', profError);
       }
 
       if (professionalData) {
-        console.log('[useAuth] Setting role to: professional');
+        console.log('[useAuth] ✅ User is PROFESSIONAL');
+        clearTimeout(timeout);
         setUserRole('professional');
         setLoading(false);
         return;
       }
 
-      // Check if user is an owner
-      const { data: ownerData, error: ownerError } = await supabase
-        .from('owners')
-        .select('user_id')
-        .eq('user_id', userId)
-        .maybeSingle();
-
-      console.log('[useAuth] Owner query result:', { ownerData, ownerError });
-
-      if (ownerError) {
-        console.error('[useAuth] Error querying owners:', ownerError);
-      }
-
-      if (ownerData) {
-        console.log('[useAuth] Setting role to: guardian');
-        setUserRole('guardian');
-      } else {
-        console.log('[useAuth] No role found, setting to null');
-        setUserRole(null);
-      }
+      console.log('[useAuth] ⚠️ No role found');
+      clearTimeout(timeout);
+      setUserRole(null);
     } catch (error) {
-      console.error('[useAuth] Exception in fetchUserRole:', error);
+      console.error('[useAuth] 💥 Exception in fetchUserRole:', error);
+      clearTimeout(timeout);
       setUserRole(null);
     } finally {
-      console.log('[useAuth] Finished fetching role, setting loading to false');
+      console.log('[useAuth] 🏁 FINISHED fetchUserRole');
       setLoading(false);
     }
   };
