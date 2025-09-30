@@ -14,6 +14,64 @@ export type Database = {
   }
   public: {
     Tables: {
+      dog_documents: {
+        Row: {
+          created_at: string
+          dog_id: string
+          file_name: string
+          file_size: number | null
+          file_type: string
+          id: string
+          owner_id: string
+          storage_path: string
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          file_name: string
+          file_size?: number | null
+          file_type: string
+          id?: string
+          owner_id: string
+          storage_path: string
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          file_name?: string
+          file_size?: number | null
+          file_type?: string
+          id?: string
+          owner_id?: string
+          storage_path?: string
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_documents_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_documents_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_documents_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "owners"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       dog_professional_access: {
         Row: {
           created_at: string
