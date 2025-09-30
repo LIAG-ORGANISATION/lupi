@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Document {
   id: string;
@@ -38,6 +39,7 @@ const GuardianDocuments = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { role, userId } = useUserRole();
+  const { user, loading: authLoading } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -55,11 +57,11 @@ const GuardianDocuments = () => {
   const isPro = role === "professional";
 
   useEffect(() => {
-    if (userId) {
+    if (!authLoading && user && userId) {
       fetchDogs();
       fetchDocuments();
     }
-  }, [userId, role]);
+  }, [userId, role, authLoading, user]);
 
   const fetchDogs = async () => {
     try {
@@ -348,6 +350,20 @@ const GuardianDocuments = () => {
     }
     return <FileText className="h-8 w-8 text-[#444444]" />;
   };
+
+  // Vérifier l'authentification
+  if (authLoading) {
+    return (
+      <div className="min-h-screen p-4 flex items-center justify-center bg-background">
+        <p className="text-muted-foreground">Chargement...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    navigate("/auth");
+    return null;
+  }
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background pb-24">
