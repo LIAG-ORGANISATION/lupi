@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, FileText, Image as ImageIcon, Download, Trash2, Edit2, ExternalLink } from "lucide-react";
+import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -15,8 +15,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 
 interface Document {
@@ -48,11 +46,6 @@ const GuardianDocuments = () => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
-  const [renameDialog, setRenameDialog] = useState<{ open: boolean; doc: Document | null; newTitle: string }>({ 
-    open: false, 
-    doc: null, 
-    newTitle: "" 
-  });
 
   useEffect(() => {
     if (!authLoading && user && userId && userRole !== null) {
@@ -242,56 +235,11 @@ const GuardianDocuments = () => {
     }
   };
 
-  const handleDownload = async (doc: Document) => {
-    try {
-      const { data, error } = await supabase.storage
-        .from("dog-documents")
-        .createSignedUrl(doc.storage_path, 60);
-
-      if (error) throw error;
-
-      if (data?.signedUrl) {
-        const link = document.createElement("a");
-        link.href = data.signedUrl;
-        link.download = doc.file_name;
-        link.click();
-      }
-    } catch (error) {
-      console.error("Error downloading document:", error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de télécharger le document.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleRename = async () => {
-    if (!renameDialog.doc) return;
-
-    try {
-      const { error } = await supabase
-        .from("dog_documents")
-        .update({ title: renameDialog.newTitle })
-        .eq("id", renameDialog.doc.id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Document renommé",
-        description: "Le titre a été mis à jour avec succès.",
-      });
-
-      fetchDocuments();
-      setRenameDialog({ open: false, doc: null, newTitle: "" });
-    } catch (error) {
-      console.error("Error renaming document:", error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de renommer le document.",
-        variant: "destructive",
-      });
-    }
+  const handleShare = (doc: Document) => {
+    toast({
+      title: "Partage",
+      description: "Fonction de partage à venir",
+    });
   };
 
   const handleDelete = async () => {
@@ -450,43 +398,35 @@ const GuardianDocuments = () => {
 
                   <div className="flex gap-2 flex-shrink-0">
                     <Button
+                      onClick={() => handleShare(doc)}
+                      size="sm"
+                      variant="ghost"
+                      className="rounded-full"
+                      title="Partager"
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+
+                    <Button
                       onClick={() => handleOpenDocument(doc)}
                       size="sm"
                       variant="ghost"
                       className="rounded-full"
+                      title="Afficher"
                     >
                       <ExternalLink className="h-4 w-4" />
                     </Button>
 
-                    <Button
-                      onClick={() => handleDownload(doc)}
-                      size="sm"
-                      variant="ghost"
-                      className="rounded-full"
-                    >
-                      <Download className="h-4 w-4" />
-                    </Button>
-
                     {!isProfessional && doc.owner_id === userId && (
-                      <>
-                        <Button
-                          onClick={() => setRenameDialog({ open: true, doc, newTitle: doc.title || doc.file_name })}
-                          size="sm"
-                          variant="ghost"
-                          className="rounded-full"
-                        >
-                          <Edit2 className="h-4 w-4" />
-                        </Button>
-
-                        <Button
-                          onClick={() => setDeleteDialog({ open: true, doc })}
-                          size="sm"
-                          variant="ghost"
-                          className="rounded-full text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </>
+                      <Button
+                        onClick={() => setDeleteDialog({ open: true, doc })}
+                        size="sm"
+                        variant="ghost"
+                        className="rounded-full text-destructive"
+                        title="Supprimer"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -516,36 +456,6 @@ const GuardianDocuments = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* Rename dialog */}
-      <Dialog open={renameDialog.open} onOpenChange={(open) => setRenameDialog({ open, doc: null, newTitle: "" })}>
-        <DialogContent className="rounded-3xl">
-          <DialogHeader>
-            <DialogTitle>Renommer le document</DialogTitle>
-          </DialogHeader>
-          <Input
-            value={renameDialog.newTitle}
-            onChange={(e) => setRenameDialog({ ...renameDialog, newTitle: e.target.value })}
-            placeholder="Nouveau titre"
-            className="rounded-full"
-          />
-          <DialogFooter>
-            <Button
-              onClick={() => setRenameDialog({ open: false, doc: null, newTitle: "" })}
-              variant="outline"
-              className="rounded-full"
-            >
-              Annuler
-            </Button>
-            <Button
-              onClick={handleRename}
-              className="rounded-full bg-[#FF6B6B] hover:bg-[#FF6B6B]/90"
-            >
-              Enregistrer
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
