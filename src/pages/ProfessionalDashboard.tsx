@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Users, MessageSquare, Settings } from "lucide-react";
+import { Users, MessageSquare, Settings, Home } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import AuthGuard from "@/components/AuthGuard";
@@ -44,8 +44,19 @@ const ProfessionalDashboard = () => {
     <AuthGuard requiredRole="professional">
       <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
         <div className="max-w-4xl mx-auto space-y-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-title">Tableau de bord</h1>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => navigate("/")}
+                variant="ghost"
+                size="sm"
+                className="rounded-full"
+              >
+                <Home className="h-4 w-4 mr-2" />
+                Accueil
+              </Button>
+              <h1 className="text-2xl font-bold text-title">Tableau de bord</h1>
+            </div>
             <Button
               onClick={() => navigate("/professional/edit-profile")}
               variant="outline"
