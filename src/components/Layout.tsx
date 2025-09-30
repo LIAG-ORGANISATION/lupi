@@ -1,0 +1,60 @@
+import { Home, Dog, User } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { cn } from "@/lib/utils";
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
+  return (
+    <div className="min-h-screen bg-background pb-20">
+      <main className="max-w-md mx-auto">{children}</main>
+      
+      <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border">
+        <div className="max-w-md mx-auto flex justify-around items-center h-16">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              cn(
+                "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
+                isActive ? "text-primary" : "text-muted-foreground"
+              )
+            }
+          >
+            <Home className="h-6 w-6" />
+            <span className="text-xs">Accueil</span>
+          </NavLink>
+          
+          <NavLink
+            to="/dogs"
+            className={({ isActive }) =>
+              cn(
+                "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
+                isActive ? "text-primary" : "text-muted-foreground"
+              )
+            }
+          >
+            <Dog className="h-6 w-6" />
+            <span className="text-xs">Mes chiens</span>
+          </NavLink>
+          
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              cn(
+                "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
+                isActive ? "text-primary" : "text-muted-foreground"
+              )
+            }
+          >
+            <User className="h-6 w-6" />
+            <span className="text-xs">Profil</span>
+          </NavLink>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+export default Layout;
