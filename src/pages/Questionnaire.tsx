@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const Questionnaire = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const dogId = searchParams.get('dogId');
   const [step, setStep] = useState(1);
+  const [saving, setSaving] = useState(false);
   const totalSteps = 9;
 
   const [formData, setFormData] = useState<any>({
@@ -71,15 +77,47 @@ const Questionnaire = () => {
     emotionalState: "",
   });
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      toast({
-        title: "Questionnaire complété !",
-        description: "Vos réponses ont été enregistrées.",
-      });
-      navigate("/dogs");
+      // Save questionnaire data
+      if (!dogId || !user) {
+        toast({
+          title: "Erreur",
+          description: "Impossible de sauvegarder le questionnaire.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setSaving(true);
+      try {
+        const { error } = await supabase
+          .from('dog_questionnaires')
+          .insert({
+            dog_id: dogId,
+            owner_id: user.id,
+            questionnaire_data: formData,
+          });
+
+        if (error) throw error;
+
+        toast({
+          title: "Questionnaire complété !",
+          description: "Vos réponses ont été enregistrées.",
+        });
+        navigate(`/dogs/${dogId}`);
+      } catch (error) {
+        console.error('Error saving questionnaire:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de sauvegarder le questionnaire.",
+          variant: "destructive",
+        });
+      } finally {
+        setSaving(false);
+      }
     }
   };
 
@@ -927,9 +965,10 @@ const Questionnaire = () => {
           onClick={handleNext}
           className="flex-1 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
           size="lg"
+          disabled={saving}
         >
-          {step === totalSteps ? "Terminer" : "Suivant"}
-          {step < totalSteps && <ArrowRight className="ml-2 h-4 w-4" />}
+          {saving ? "Enregistrement..." : step === totalSteps ? "Terminer" : "Suivant"}
+          {step < totalSteps && !saving && <ArrowRight className="ml-2 h-4 w-4" />}
         </Button>
       </div>
     </div>

@@ -28,11 +28,13 @@ const DogProfile = () => {
   const [loading, setLoading] = useState(true);
   const [vaccinationPassport, setVaccinationPassport] = useState<any>(null);
   const [uploadingPassport, setUploadingPassport] = useState(false);
+  const [hasQuestionnaire, setHasQuestionnaire] = useState(false);
 
   useEffect(() => {
     if (id && user) {
       fetchDog();
       fetchVaccinationPassport();
+      fetchQuestionnaire();
     }
   }, [id, user]);
 
@@ -69,6 +71,21 @@ const DogProfile = () => {
       setVaccinationPassport(data);
     } catch (error) {
       console.error('[DogProfile] Error fetching vaccination passport:', error);
+    }
+  };
+
+  const fetchQuestionnaire = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('dog_questionnaires')
+        .select('id')
+        .eq('dog_id', id)
+        .maybeSingle();
+
+      if (error) throw error;
+      setHasQuestionnaire(!!data);
+    } catch (error) {
+      console.error('[DogProfile] Error fetching questionnaire:', error);
     }
   };
 
@@ -261,19 +278,21 @@ const DogProfile = () => {
 
         {/* Questionnaire comportemental - à compléter */}
         <Card className="p-4 rounded-2xl flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-            <CheckCircle2 className="h-6 w-6 text-orange-500" />
+          <div className={`w-10 h-10 rounded-full ${hasQuestionnaire ? 'bg-green-100' : 'bg-orange-100'} flex items-center justify-center`}>
+            <CheckCircle2 className={`h-6 w-6 ${hasQuestionnaire ? 'text-green-500' : 'text-orange-500'}`} />
           </div>
           <div className="flex-1">
             <h4 className="font-semibold text-title">Questionnaire comportemental</h4>
-            <p className="text-sm text-muted-foreground">Non effectué</p>
+            <p className="text-sm text-muted-foreground">{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
           </div>
-          <Button 
-            onClick={() => navigate("/questionnaire")}
-            className="rounded-full"
-          >
-            Commencer
-          </Button>
+          {!hasQuestionnaire && (
+            <Button 
+              onClick={() => navigate(`/questionnaire?dogId=${id}`)}
+              className="rounded-full"
+            >
+              Commencer
+            </Button>
+          )}
         </Card>
       </div>
 

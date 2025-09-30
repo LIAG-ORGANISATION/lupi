@@ -127,6 +127,51 @@ export type Database = {
           },
         ]
       }
+      dog_questionnaires: {
+        Row: {
+          completed_at: string
+          created_at: string
+          dog_id: string
+          id: string
+          owner_id: string
+          questionnaire_data: Json
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          dog_id: string
+          id?: string
+          owner_id: string
+          questionnaire_data: Json
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          dog_id?: string
+          id?: string
+          owner_id?: string
+          questionnaire_data?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_questionnaires_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_questionnaires_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dog_shares: {
         Row: {
           created_at: string | null
