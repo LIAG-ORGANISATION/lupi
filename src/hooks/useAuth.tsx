@@ -39,13 +39,17 @@ export function useAuth() {
       console.log('[useAuth] Fetching role for user:', userId);
       
       // Check if user is a professional
-      const { data: professionalData } = await supabase
-        .from('professionals' as any)
+      const { data: professionalData, error: profError } = await supabase
+        .from('professionals')
         .select('user_id')
         .eq('user_id', userId)
         .maybeSingle();
 
-      console.log('[useAuth] Professional data:', professionalData);
+      console.log('[useAuth] Professional query result:', { professionalData, profError });
+
+      if (profError) {
+        console.error('[useAuth] Error querying professionals:', profError);
+      }
 
       if (professionalData) {
         console.log('[useAuth] Setting role to: professional');
@@ -55,13 +59,17 @@ export function useAuth() {
       }
 
       // Check if user is an owner
-      const { data: ownerData } = await supabase
-        .from('owners' as any)
+      const { data: ownerData, error: ownerError } = await supabase
+        .from('owners')
         .select('user_id')
         .eq('user_id', userId)
         .maybeSingle();
 
-      console.log('[useAuth] Owner data:', ownerData);
+      console.log('[useAuth] Owner query result:', { ownerData, ownerError });
+
+      if (ownerError) {
+        console.error('[useAuth] Error querying owners:', ownerError);
+      }
 
       if (ownerData) {
         console.log('[useAuth] Setting role to: guardian');
@@ -71,7 +79,7 @@ export function useAuth() {
         setUserRole(null);
       }
     } catch (error) {
-      console.error('Error fetching user role:', error);
+      console.error('[useAuth] Exception in fetchUserRole:', error);
       setUserRole(null);
     } finally {
       console.log('[useAuth] Finished fetching role, setting loading to false');
