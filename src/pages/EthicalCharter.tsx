@@ -15,56 +15,56 @@ const EthicalCharter = () => {
 
   const charter = [
     {
-      title: "1. Respect and Professionalism",
-      content: "Treat all members with respect and professionalism. Avoid offensive language, harassment, or discrimination of any kind.",
+      title: "1. Respect et Professionnalisme",
+      content: "Traitez tous les membres avec respect et professionnalisme. Évitez le langage offensant, le harcèlement ou la discrimination de toute nature.",
     },
     {
-      title: "2. Confidentiality",
-      content: "Respect the confidentiality of information shared within the network. Do not disclose sensitive or proprietary information without explicit consent.",
+      title: "2. Confidentialité",
+      content: "Respectez la confidentialité des informations partagées au sein du réseau. Ne divulguez pas d'informations sensibles ou propriétaires sans consentement explicite.",
     },
     {
-      title: "3. Collaboration and Support",
-      content: "Foster a collaborative and supportive environment. Offer assistance and guidance to fellow members, and engage in constructive discussions.",
+      title: "3. Collaboration et Soutien",
+      content: "Favorisez un environnement collaboratif et solidaire. Offrez assistance et conseils aux autres membres, et participez à des discussions constructives.",
     },
     {
-      title: "4. Integrity and Honesty",
-      content: "Maintain integrity and honesty in all interactions. Provide accurate information and avoid misrepresentation of your skills or experience.",
+      title: "4. Intégrité et Honnêteté",
+      content: "Maintenez l'intégrité et l'honnêteté dans toutes les interactions. Fournissez des informations précises et évitez de dénaturer vos compétences ou votre expérience.",
     },
     {
-      title: "5. Inclusivity and Diversity",
-      content: "Embrace diversity and inclusivity. Value different perspectives and experiences, and create a welcoming space for all members.",
+      title: "5. Inclusivité et Diversité",
+      content: "Embrassez la diversité et l'inclusivité. Valorisez les différentes perspectives et expériences, et créez un espace accueillant pour tous les membres.",
     },
     {
-      title: "6. Constructive Feedback",
-      content: "Provide constructive feedback when necessary. Focus on improving collaboration and outcomes, and avoid personal attacks or negativity.",
+      title: "6. Retour Constructif",
+      content: "Fournissez des retours constructifs lorsque nécessaire. Concentrez-vous sur l'amélioration de la collaboration et des résultats, et évitez les attaques personnelles ou la négativité.",
     },
     {
-      title: "7. Conflict Resolution",
-      content: "Address conflicts respectfully and professionally. Seek mediation or assistance from network administrators if necessary.",
+      title: "7. Résolution de Conflits",
+      content: "Abordez les conflits de manière respectueuse et professionnelle. Recherchez la médiation ou l'aide des administrateurs du réseau si nécessaire.",
     },
     {
-      title: "8. Intellectual Property",
-      content: "Respect intellectual property rights. Obtain proper authorization before using or sharing copyrighted materials.",
+      title: "8. Propriété Intellectuelle",
+      content: "Respectez les droits de propriété intellectuelle. Obtenez une autorisation appropriée avant d'utiliser ou de partager des matériaux protégés par des droits d'auteur.",
     },
     {
-      title: "9. Data Privacy",
-      content: "Protect the privacy of personal data. Adhere to data protection regulations and handle personal data responsibly.",
+      title: "9. Confidentialité des Données",
+      content: "Protégez la vie privée des données personnelles. Respectez les réglementations sur la protection des données et traitez les données personnelles de manière responsable.",
     },
     {
-      title: "10. Network Reputation",
-      content: "Uphold the reputation of the network. Avoid actions that could harm the network's image or credibility.",
+      title: "10. Réputation du Réseau",
+      content: "Défendez la réputation du réseau. Évitez les actions qui pourraient nuire à l'image ou à la crédibilité du réseau.",
     },
     {
-      title: "11. Compliance with Laws",
-      content: "Comply with all applicable laws and regulations. Do not engage in illegal activities or promote unlawful behavior.",
+      title: "11. Conformité aux Lois",
+      content: "Respectez toutes les lois et réglementations applicables. Ne vous engagez pas dans des activités illégales ou ne promouvez pas de comportements illicites.",
     },
     {
-      title: "12. Reporting Violations",
-      content: "Report any violations of this charter to network administrators. Provide accurate and complete information when reporting issues.",
+      title: "12. Signalement des Violations",
+      content: "Signalez toute violation de cette charte aux administrateurs du réseau. Fournissez des informations précises et complètes lors du signalement de problèmes.",
     },
     {
-      title: "13. Amendments",
-      content: "This charter may be amended from time to time. Members will be notified of any changes, and continued participation in the network implies acceptance of the updated charter.",
+      title: "13. Amendements",
+      content: "Cette charte peut être modifiée de temps à autre. Les membres seront informés de tout changement, et la participation continue au réseau implique l'acceptation de la charte mise à jour.",
     },
   ];
 
@@ -80,16 +80,16 @@ const EthicalCharter = () => {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-title">Ethical Charter</h1>
+          <h1 className="text-xl font-bold text-title">Charte Éthique</h1>
         </div>
 
         <div className="p-6 space-y-8">
           <div className="text-center space-y-4">
             <h2 className="text-2xl font-bold text-title">
-              Lupi's Ethical Charter of<br />Collaboration
+              Charte Éthique de<br />Collaboration Lupi
             </h2>
             <p className="text-foreground max-w-2xl mx-auto">
-              Welcome to Lupi! Before you join our network of professionals, please review and agree to our Ethical Charter of Collaboration. This charter outlines the principles and values that guide our community, ensuring a safe, inclusive, and productive environment for all members.
+              Bienvenue sur Lupi ! Avant de rejoindre notre réseau de professionnels, veuillez consulter et accepter notre Charte Éthique de Collaboration. Cette charte énonce les principes et les valeurs qui guident notre communauté, garantissant un environnement sûr, inclusif et productif pour tous les membres.
             </p>
           </div>
 
@@ -118,7 +118,7 @@ const EthicalCharter = () => {
                   htmlFor="read"
                   className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  I have read and understood the Lupi's Ethical Charter of Collaboration.
+                  J'ai lu et compris la Charte Éthique de Collaboration de Lupi.
                 </label>
               </div>
 
@@ -134,7 +134,7 @@ const EthicalCharter = () => {
                   htmlFor="abide"
                   className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  I agree to abide by the principles and values outlined in this charter.
+                  J'accepte de respecter les principes et les valeurs énoncés dans cette charte.
                 </label>
               </div>
             </div>
@@ -146,7 +146,7 @@ const EthicalCharter = () => {
                 className="rounded-full"
                 size="lg"
               >
-                Read the Ethical Charter
+                Relire la Charte
               </Button>
               
               <Button
@@ -155,7 +155,7 @@ const EthicalCharter = () => {
                 className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
                 size="lg"
               >
-                Join the Network
+                Rejoindre le Réseau
               </Button>
             </div>
           </div>

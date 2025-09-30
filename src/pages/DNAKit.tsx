@@ -8,15 +8,15 @@ const DNAKit = () => {
   const navigate = useNavigate();
 
   const included = [
-    { icon: TestTube2, text: "1 Swab (Sterile & Hygienic)" },
-    { icon: Heart, text: "Health Risk Assessment" },
-    { icon: Eye, text: "Ancestry & Trait Analysis" },
+    { icon: TestTube2, text: "1 Écouvillon (Stérile & Hygiénique)" },
+    { icon: Heart, text: "Évaluation des Risques de Santé" },
+    { icon: Eye, text: "Analyse d'Ascendance & de Traits" },
   ];
 
   const benefits = [
-    { icon: Dna, text: "Personalized breed identification" },
-    { icon: Heart, text: "Early detection of breed illnesses" },
-    { icon: Eye, text: "Enhanced understanding of Your Dog" },
+    { icon: Dna, text: "Identification personnalisée des races" },
+    { icon: Heart, text: "Détection précoce des maladies héréditaires" },
+    { icon: Eye, text: "Meilleure compréhension de votre chien" },
   ];
 
   return (
@@ -30,7 +30,7 @@ const DNAKit = () => {
         />
         <div className="relative z-10 space-y-4">
           <h1 className="text-3xl font-bold text-title">
-            Unlock the secrets of<br />your dog's DNA
+            Découvrez les secrets de<br />l'ADN de votre chien
           </h1>
           <Button
             onClick={() => {
@@ -40,7 +40,7 @@ const DNAKit = () => {
             className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
             size="lg"
           >
-            Get Started
+            Commencer
           </Button>
         </div>
       </div>
@@ -68,14 +68,14 @@ const DNAKit = () => {
           </div>
 
           <div className="space-y-3">
-            <h2 className="text-2xl font-bold text-title">Dog DNA Test Kit</h2>
+            <h2 className="text-2xl font-bold text-title">Kit Test ADN Canin</h2>
             <p className="text-sm text-foreground leading-relaxed">
-              Get to know your dog on a deeper level! Our DNA test analyzes over 350 breeds, types, and varieties, identifies genetic health risks, and uncovers unique personality traits to help you provide the best care possible.
+              Apprenez à mieux connaître votre chien ! Notre test ADN analyse plus de 350 races, types et variétés, identifie les risques de santé génétiques et révèle des traits de personnalité uniques pour vous aider à fournir les meilleurs soins possibles.
             </p>
           </div>
 
           <Card className="p-6 rounded-3xl space-y-4 bg-secondary/50">
-            <h3 className="text-lg font-bold text-title">What's Included</h3>
+            <h3 className="text-lg font-bold text-title">Contenu du Kit</h3>
             <div className="space-y-3">
               {included.map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
@@ -89,7 +89,7 @@ const DNAKit = () => {
           </Card>
 
           <Card className="p-6 rounded-3xl space-y-4">
-            <h3 className="text-lg font-bold text-title">Key Benefits</h3>
+            <h3 className="text-lg font-bold text-title">Avantages Clés</h3>
             <div className="space-y-3">
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-center gap-3">
@@ -104,11 +104,11 @@ const DNAKit = () => {
 
           <div className="space-y-3 pt-4 pb-20">
             <Button
-              onClick={() => navigate("/checkout")}
+              onClick={() => window.open('https://buy.stripe.com/4gM7sLgN23eHh055pX33W03', '_blank')}
               className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
               size="lg"
             >
-              Add to Cart - $99
+              Commander maintenant - 99€
             </Button>
           </div>
         </div>

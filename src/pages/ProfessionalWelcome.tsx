@@ -17,9 +17,9 @@ const ProfessionalWelcome = () => {
         </Card>
 
         <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold text-title">Welcome to Lupi Pro</h1>
+          <h1 className="text-3xl font-bold text-title">Bienvenue sur Lupi Pro</h1>
           <p className="text-foreground">
-            Connect with guardians and professionals who share your passion for animal care.
+            Connectez-vous avec des gardiens et des professionnels qui partagent votre passion pour le soin des animaux.
           </p>
         </div>
 
@@ -29,7 +29,7 @@ const ProfessionalWelcome = () => {
             className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
             size="lg"
           >
-            Read the Ethical Charter
+            Lire la Charte Éthique
           </Button>
           
           <Button
@@ -38,7 +38,7 @@ const ProfessionalWelcome = () => {
             className="w-full rounded-full"
             size="lg"
           >
-            Skip for now
+            Passer pour l'instant
           </Button>
         </div>
       </div>
