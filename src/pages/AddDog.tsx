@@ -26,7 +26,11 @@ const AddDog = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('[AddDog] 🚀 Starting dog creation...');
+    console.log('[AddDog] User:', user);
+    
     if (!user) {
+      console.error('[AddDog] ❌ No user found');
       toast({
         title: "Erreur",
         description: "Vous devez être connecté pour ajouter un chien.",
@@ -38,29 +42,41 @@ const AddDog = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase
+      const dogData = {
+        owner_id: user.id,
+        name: formData.name,
+        breed: formData.breed || null,
+        gender: formData.sex || null,
+        birth_date: formData.birthDate || null,
+        weight: formData.weight ? parseFloat(formData.weight) : null,
+      };
+      
+      console.log('[AddDog] 📝 Inserting dog data:', dogData);
+      
+      const { data, error } = await supabase
         .from('dogs')
-        .insert({
-          owner_id: user.id,
-          name: formData.name,
-          breed: formData.breed || null,
-          gender: formData.sex || null,
-          birth_date: formData.birthDate || null,
-          weight: formData.weight ? parseFloat(formData.weight) : null,
-        });
+        .insert(dogData)
+        .select();
 
-      if (error) throw error;
+      console.log('[AddDog] Response:', { data, error });
 
+      if (error) {
+        console.error('[AddDog] ❌ Supabase error:', error);
+        throw error;
+      }
+
+      console.log('[AddDog] ✅ Dog created successfully:', data);
+      
       toast({
         title: "Profil créé !",
         description: `${formData.name} a été ajouté avec succès.`,
       });
       navigate("/dogs");
     } catch (error) {
-      console.error('Error adding dog:', error);
+      console.error('[AddDog] 💥 Exception:', error);
       toast({
         title: "Erreur",
-        description: "Impossible d'ajouter le chien. Réessayez.",
+        description: error instanceof Error ? error.message : "Impossible d'ajouter le chien.",
         variant: "destructive",
       });
     } finally {
