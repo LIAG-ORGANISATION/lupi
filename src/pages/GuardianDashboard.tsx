@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { Plus, MessageSquare, FileText, Dog as DogIcon } from "lucide-react";
+import { Plus, MessageSquare, FileText, Dog as DogIcon, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Dog } from "@/types/database";
@@ -41,6 +41,15 @@ const GuardianDashboard = () => {
     <AuthGuard requiredRole="guardian">
       <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
         <div className="max-w-4xl mx-auto space-y-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/")}
+            className="rounded-full"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-title">Mes Chiens</h1>
             <Button
