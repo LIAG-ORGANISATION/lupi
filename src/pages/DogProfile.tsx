@@ -392,7 +392,10 @@ const DogProfile = () => {
           className="hidden"
         />
 
-        <Card className="p-4 rounded-2xl">
+        <Card 
+          className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all"
+          onClick={() => navigate(`/vaccination-calendar/${id}`)}
+        >
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
               <Calendar className="h-5 w-5 text-primary" />
