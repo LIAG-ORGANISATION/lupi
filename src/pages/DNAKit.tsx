@@ -108,7 +108,7 @@ const DNAKit = () => {
               className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
               size="lg"
             >
-              Commander maintenant - 99€
+              Commander maintenant - 187,70€
             </Button>
           </div>
         </div>
