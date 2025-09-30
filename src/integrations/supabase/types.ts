@@ -430,7 +430,10 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      professional_has_dog_access: {
+        Args: { _dog_id: string; _professional_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       share_permission: "read" | "write_notes"
