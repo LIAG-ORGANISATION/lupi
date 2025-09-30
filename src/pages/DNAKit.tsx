@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, TestTube2, Heart, Eye, Dna } from "lucide-react";
-import heroImage from "@/assets/hero-dog-dna.jpg";
 
 const DNAKit = () => {
   const navigate = useNavigate();
@@ -21,32 +20,7 @@ const DNAKit = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="relative h-[50vh] bg-secondary flex flex-col items-center justify-center text-center px-4">
-        <img 
-          src={heroImage} 
-          alt="DNA Kit Hero" 
-          className="absolute inset-0 w-full h-full object-cover opacity-20"
-        />
-        <div className="relative z-10 space-y-4">
-          <h1 className="text-3xl font-bold text-title">
-            Découvrez les secrets de<br />l'ADN de votre chien
-          </h1>
-          <Button
-            onClick={() => {
-              // Scroll to product details
-              document.getElementById('product-details')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8"
-            size="lg"
-          >
-            Commencer
-          </Button>
-        </div>
-      </div>
-
-      {/* Product Details */}
-      <div id="product-details" className="p-4 space-y-6 max-w-md mx-auto">
+      <div className="p-4 space-y-6 max-w-md mx-auto">
         <Button
           variant="ghost"
           size="icon"
@@ -57,22 +31,10 @@ const DNAKit = () => {
         </Button>
 
         <div className="space-y-4">
-          <div className="bg-[#5C9B9B] rounded-3xl p-8 flex items-center justify-center">
-            <div className="bg-white/90 rounded-2xl p-6 w-full max-w-[200px]">
-              <TestTube2 className="h-24 w-24 text-[#5C9B9B] mx-auto" />
-              <div className="text-center mt-4">
-                <p className="text-xs font-medium text-gray-600">DNA KIT</p>
-                <p className="text-xs text-gray-600">by Lupi</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <h2 className="text-2xl font-bold text-title">Kit Test ADN Canin</h2>
-            <p className="text-sm text-foreground leading-relaxed">
-              Apprenez à mieux connaître votre chien ! Notre test ADN analyse plus de 350 races, types et variétés, identifie les risques de santé génétiques et révèle des traits de personnalité uniques pour vous aider à fournir les meilleurs soins possibles.
-            </p>
-          </div>
+          <h2 className="text-2xl font-bold text-title">Kit Test ADN Canin</h2>
+          <p className="text-sm text-foreground leading-relaxed">
+            Apprenez à mieux connaître votre chien ! Notre test ADN analyse plus de 350 races, types et variétés, identifie les risques de santé génétiques et révèle des traits de personnalité uniques pour vous aider à fournir les meilleurs soins possibles.
+          </p>
 
           <Card className="p-6 rounded-3xl space-y-4 bg-secondary/50">
             <h3 className="text-lg font-bold text-title">Contenu du Kit</h3>
