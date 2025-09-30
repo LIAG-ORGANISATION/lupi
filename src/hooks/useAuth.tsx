@@ -8,8 +8,11 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('[useAuth] 🚀 Initializing...');
+    
     // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('[useAuth] 📱 Got session:', session ? 'YES' : 'NO');
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchUserRole(session.user.id);
@@ -20,10 +23,14 @@ export function useAuth() {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
+        console.log('[useAuth] 🔄 Auth state changed:', _event);
         setUser(session?.user ?? null);
         if (session?.user) {
-          await fetchUserRole(session.user.id);
+          // Ne pas attendre - utiliser setTimeout pour éviter le blocage
+          setTimeout(() => {
+            fetchUserRole(session.user.id);
+          }, 0);
         } else {
           setUserRole(null);
           setLoading(false);
