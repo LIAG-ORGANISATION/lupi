@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon, Plus, ExternalLink, Share2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 interface DogData {
   id: string;
@@ -21,12 +22,17 @@ const DogProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [dog, setDog] = useState<DogData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [vaccinationPassport, setVaccinationPassport] = useState<any>(null);
+  const [uploadingPassport, setUploadingPassport] = useState(false);
 
   useEffect(() => {
     if (id && user) {
       fetchDog();
+      fetchVaccinationPassport();
     }
   }, [id, user]);
 
@@ -48,6 +54,128 @@ const DogProfile = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchVaccinationPassport = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('dog_documents')
+        .select('*')
+        .eq('dog_id', id)
+        .eq('title', 'Passeport Vaccinal')
+        .maybeSingle();
+
+      if (error) throw error;
+      setVaccinationPassport(data);
+    } catch (error) {
+      console.error('[DogProfile] Error fetching vaccination passport:', error);
+    }
+  };
+
+  const handlePassportUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      toast({
+        title: "Format non supporté",
+        description: "Veuillez uploader un fichier PDF.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "Fichier trop volumineux",
+        description: "La taille maximale est de 10 Mo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadingPassport(true);
+
+    try {
+      const fileExt = 'pdf';
+      const fileName = `vaccination-passport-${Date.now()}.${fileExt}`;
+      const storagePath = `${user?.id}/${id}/${fileName}`;
+
+      // Upload to Storage
+      const { error: uploadError } = await supabase.storage
+        .from("dog-documents")
+        .upload(storagePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // Save metadata to database
+      const { error: dbError } = await supabase
+        .from("dog_documents")
+        .insert({
+          dog_id: id,
+          owner_id: user?.id,
+          title: 'Passeport Vaccinal',
+          file_name: file.name,
+          file_type: file.type,
+          file_size: file.size,
+          storage_path: storagePath,
+        });
+
+      if (dbError) throw dbError;
+
+      toast({
+        title: "Passeport vaccinal ajouté",
+        description: "Le document a été enregistré avec succès.",
+      });
+
+      fetchVaccinationPassport();
+    } catch (error) {
+      console.error('Error uploading vaccination passport:', error);
+      toast({
+        title: "Erreur d'upload",
+        description: "Impossible d'ajouter le passeport vaccinal.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingPassport(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleOpenPassport = async () => {
+    if (!vaccinationPassport) return;
+
+    try {
+      const { data, error } = await supabase.storage
+        .from("dog-documents")
+        .createSignedUrl(vaccinationPassport.storage_path, 300);
+
+      if (error) throw error;
+
+      if (data?.signedUrl) {
+        window.open(data.signedUrl, "_blank");
+      }
+    } catch (error) {
+      console.error('Error opening passport:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ouvrir le document.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSharePassport = () => {
+    toast({
+      title: "Partage",
+      description: "Fonction de partage à venir",
+    });
   };
 
   if (loading) {
@@ -198,17 +326,71 @@ const DogProfile = () => {
           </div>
         </Card>
 
-        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all">
+        <Card 
+          className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all"
+          onClick={vaccinationPassport ? handleOpenPassport : handlePassportUpload}
+        >
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
               <Syringe className="h-5 w-5 text-red-500" />
             </div>
             <div className="flex-1">
               <h4 className="font-semibold text-title mb-1">Passeport vaccinal</h4>
-              <p className="text-sm text-muted-foreground">Accès rapide aux vaccinations</p>
+              <p className="text-sm text-muted-foreground">
+                {vaccinationPassport 
+                  ? "Accès rapide aux vaccinations" 
+                  : "Ajouter le passeport vaccinal"}
+              </p>
             </div>
+            {vaccinationPassport ? (
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="rounded-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenPassport();
+                  }}
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="rounded-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSharePassport();
+                  }}
+                >
+                  <Share2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <Button
+                size="sm"
+                className="rounded-full"
+                disabled={uploadingPassport}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePassportUpload();
+                }}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                {uploadingPassport ? "Upload..." : "Ajouter"}
+              </Button>
+            )}
           </div>
         </Card>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="application/pdf"
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
         <Card className="p-4 rounded-2xl">
           <div className="flex items-start gap-3">
