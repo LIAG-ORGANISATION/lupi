@@ -292,8 +292,11 @@ const DogProfile = () => {
           </Button>
         </Card>
 
-        {/* Questionnaire comportemental - à compléter */}
-        <Card className="p-4 rounded-2xl flex items-center gap-4">
+        {/* Questionnaire comportemental */}
+        <Card 
+          className="p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:border-primary transition-all"
+          onClick={() => hasQuestionnaire ? navigate(`/questionnaire-results/${id}`) : navigate(`/questionnaire?dogId=${id}`)}
+        >
           <div className={`w-10 h-10 rounded-full ${hasQuestionnaire ? 'bg-green-100' : 'bg-orange-100'} flex items-center justify-center`}>
             <CheckCircle2 className={`h-6 w-6 ${hasQuestionnaire ? 'text-green-500' : 'text-orange-500'}`} />
           </div>
@@ -303,7 +306,10 @@ const DogProfile = () => {
           </div>
           {!hasQuestionnaire && (
             <Button 
-              onClick={() => navigate(`/questionnaire?dogId=${id}`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/questionnaire?dogId=${id}`);
+              }}
               className="rounded-full"
             >
               Commencer

@@ -39,6 +39,7 @@ import ProfessionalClients from "./pages/ProfessionalClients";
 import ProfessionalMessages from "./pages/ProfessionalMessages";
 import VaccinationCalendar from "./pages/VaccinationCalendar";
 import HealthAlerts from "./pages/HealthAlerts";
+import QuestionnaireResults from "./pages/QuestionnaireResults";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,7 @@ const App = () => (
           <Route path="/dogs/:id" element={<Layout><DogProfile /></Layout>} />
           <Route path="/vaccination-calendar/:id" element={<Layout><VaccinationCalendar /></Layout>} />
           <Route path="/health-alerts/:id" element={<Layout><HealthAlerts /></Layout>} />
+          <Route path="/questionnaire-results/:id" element={<Layout><QuestionnaireResults /></Layout>} />
           <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />
           <Route path="/questionnaire" element={<Layout><Questionnaire /></Layout>} />
           <Route path="/professionals" element={<Layout><Professionals /></Layout>} />
