@@ -1,0 +1,417 @@
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useNavigate } from "react-router-dom";
+import { Camera, ChevronDown } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { BottomNavigation } from "@/components/BottomNavigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+
+interface Profession {
+  id: string;
+  label: string;
+}
+
+interface Specialisation {
+  id: string;
+  label: string;
+}
+
+const ProfessionalEditProfileNew = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const [professions, setProfessions] = useState<Profession[]>([]);
+  const [allSpecialisations, setAllSpecialisations] = useState<Specialisation[]>([]);
+  const [filteredSpecialisations, setFilteredSpecialisations] = useState<Specialisation[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const [formData, setFormData] = useState({
+    nom: "",
+    profession_id: "",
+    specialisations_ids: [] as string[],
+    localisation: "",
+    preferences_contact: [] as string[],
+    tarifs: "",
+    photo_url: "",
+  });
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    if (formData.profession_id) {
+      loadFilteredSpecialisations(formData.profession_id);
+    } else {
+      setFilteredSpecialisations([]);
+    }
+  }, [formData.profession_id]);
+
+  const loadData = async () => {
+    try {
+      // Load professions
+      const { data: professionsData, error: professionsError } = await supabase
+        .from("professions")
+        .select("*")
+        .order("label");
+
+      if (professionsError) throw professionsError;
+      setProfessions(professionsData || []);
+
+      // Load all specialisations
+      const { data: specsData, error: specsError } = await supabase
+        .from("specialisations")
+        .select("*")
+        .order("label");
+
+      if (specsError) throw specsError;
+      setAllSpecialisations(specsData || []);
+
+      // Load user profile
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profileData } = await supabase
+          .from("professional_profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (profileData) {
+          setFormData({
+            nom: profileData.full_name || "",
+            profession_id: profileData.profession_id || "",
+            specialisations_ids: profileData.specialisations_ids || [],
+            localisation: profileData.localisation || "",
+            preferences_contact: profileData.preferences_contact || [],
+            tarifs: profileData.tarifs || "",
+            photo_url: profileData.photo_url || "",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error loading data:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les données",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadFilteredSpecialisations = async (professionId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("profession_specialisation")
+        .select(`
+          specialisation_id,
+          specialisations (id, label)
+        `)
+        .eq("profession_id", professionId);
+
+      if (error) throw error;
+
+      const specs = data
+        .map((item: any) => item.specialisations)
+        .filter(Boolean)
+        .sort((a, b) => a.label.localeCompare(b.label));
+
+      setFilteredSpecialisations(specs);
+      
+      // Reset selected specialisations when profession changes
+      setFormData(prev => ({ ...prev, specialisations_ids: [] }));
+    } catch (error) {
+      console.error("Error loading specialisations:", error);
+    }
+  };
+
+  const toggleSpecialisation = (specId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      specialisations_ids: prev.specialisations_ids.includes(specId)
+        ? prev.specialisations_ids.filter(id => id !== specId)
+        : [...prev.specialisations_ids, specId]
+    }));
+  };
+
+  const toggleContactPreference = (pref: string) => {
+    setFormData(prev => ({
+      ...prev,
+      preferences_contact: prev.preferences_contact.includes(pref)
+        ? prev.preferences_contact.filter(p => p !== pref)
+        : [...prev.preferences_contact, pref]
+    }));
+  };
+
+  const handleSave = async () => {
+    if (!formData.profession_id) {
+      toast({
+        title: "Champ requis",
+        description: "Veuillez sélectionner votre métier",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (formData.specialisations_ids.length === 0) {
+      toast({
+        title: "Astuce",
+        description: "Choisissez au moins une spécialisation pour être mieux référencé",
+      });
+    }
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { error } = await supabase
+        .from("professional_profiles")
+        .update({
+          full_name: formData.nom,
+          profession_id: formData.profession_id,
+          specialisations_ids: formData.specialisations_ids,
+          localisation: formData.localisation,
+          preferences_contact: formData.preferences_contact,
+          tarifs: formData.tarifs,
+          photo_url: formData.photo_url,
+        })
+        .eq("id", user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Profil professionnel mis à jour",
+        description: "Vos informations ont été enregistrées avec succès",
+      });
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'enregistrer le profil",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <p className="text-muted-foreground">Chargement...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background pb-24">
+      <div className="max-w-md mx-auto p-4 space-y-6">
+        {/* Header with photo */}
+        <Card className="p-6 rounded-3xl text-center space-y-4 shadow-md">
+          <div className="relative w-24 h-24 mx-auto">
+            <Avatar className="w-24 h-24">
+              <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
+                {formData.nom.split(" ").map(n => n[0]).join("").toUpperCase() || "?"}
+              </AvatarFallback>
+            </Avatar>
+            <button
+              type="button"
+              className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors"
+            >
+              <Camera className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="nom" className="text-sm font-medium text-title">
+              Nom
+            </Label>
+            <Input
+              id="nom"
+              value={formData.nom}
+              onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+              placeholder="Votre nom et prénom"
+              className="rounded-2xl border-border"
+            />
+          </div>
+        </Card>
+
+        {/* Professional Information */}
+        <Card className="p-6 rounded-3xl space-y-4 shadow-md">
+          <h3 className="font-bold text-title text-lg">Informations professionnelles</h3>
+          
+          <div className="space-y-2">
+            <Label htmlFor="profession" className="text-sm font-medium text-title">
+              Métier <span className="text-primary">*</span>
+            </Label>
+            <Select
+              value={formData.profession_id}
+              onValueChange={(value) => setFormData({ ...formData, profession_id: value })}
+            >
+              <SelectTrigger className="rounded-2xl border-border">
+                <SelectValue placeholder="Choisissez votre métier" />
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                {professions.map((prof) => (
+                  <SelectItem key={prof.id} value={prof.id}>
+                    {prof.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-title">
+              Spécialisations
+            </Label>
+            {!formData.profession_id ? (
+              <p className="text-sm text-muted-foreground italic">
+                Veuillez d'abord sélectionner votre métier
+              </p>
+            ) : filteredSpecialisations.length === 0 ? (
+              <p className="text-sm text-muted-foreground italic">
+                Aucune spécialisation disponible pour ce métier
+              </p>
+            ) : (
+              <>
+                <div className="flex flex-wrap gap-2 p-3 bg-secondary/30 rounded-2xl min-h-[60px]">
+                  {formData.specialisations_ids.length === 0 ? (
+                    <span className="text-sm text-muted-foreground italic">
+                      Sélectionnez vos spécialisations
+                    </span>
+                  ) : (
+                    formData.specialisations_ids.map(specId => {
+                      const spec = allSpecialisations.find(s => s.id === specId);
+                      return spec ? (
+                        <Badge
+                          key={specId}
+                          variant="secondary"
+                          className="bg-primary/10 text-title hover:bg-primary/20 cursor-pointer"
+                          onClick={() => toggleSpecialisation(specId)}
+                        >
+                          {spec.label} ×
+                        </Badge>
+                      ) : null;
+                    })
+                  )}
+                </div>
+                <div className="space-y-2 max-h-[200px] overflow-y-auto p-2 border border-border rounded-2xl">
+                  {filteredSpecialisations.map((spec) => (
+                    <div
+                      key={spec.id}
+                      className="flex items-center space-x-2 p-2 hover:bg-secondary/50 rounded-xl cursor-pointer"
+                      onClick={() => toggleSpecialisation(spec.id)}
+                    >
+                      <Checkbox
+                        id={spec.id}
+                        checked={formData.specialisations_ids.includes(spec.id)}
+                        onCheckedChange={() => toggleSpecialisation(spec.id)}
+                      />
+                      <label
+                        htmlFor={spec.id}
+                        className="text-sm cursor-pointer flex-1"
+                      >
+                        {spec.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground italic">
+                  💡 Choisissez au moins une spécialisation pour être mieux référencé
+                </p>
+              </>
+            )}
+          </div>
+        </Card>
+
+        {/* Location & Contact */}
+        <Card className="p-6 rounded-3xl space-y-4 shadow-md">
+          <h3 className="font-bold text-title text-lg">Coordonnées & visibilité</h3>
+          
+          <div className="space-y-2">
+            <Label htmlFor="localisation" className="text-sm font-medium text-title">
+              Localisation
+            </Label>
+            <Input
+              id="localisation"
+              value={formData.localisation}
+              onChange={(e) => setFormData({ ...formData, localisation: e.target.value })}
+              placeholder="Ville, secteur d'intervention..."
+              className="rounded-2xl border-border"
+            />
+          </div>
+
+          <div className="space-y-3">
+            <Label className="text-sm font-medium text-title">
+              Préférences de contact
+            </Label>
+            {["Email", "Téléphone", "Messagerie"].map((pref) => (
+              <div
+                key={pref}
+                className="flex items-center space-x-2 p-2 hover:bg-secondary/50 rounded-xl cursor-pointer"
+                onClick={() => toggleContactPreference(pref)}
+              >
+                <Checkbox
+                  id={pref}
+                  checked={formData.preferences_contact.includes(pref)}
+                  onCheckedChange={() => toggleContactPreference(pref)}
+                />
+                <label htmlFor={pref} className="text-sm cursor-pointer flex-1">
+                  {pref}
+                </label>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Pricing */}
+        <Card className="p-6 rounded-3xl space-y-4 shadow-md">
+          <h3 className="font-bold text-title text-lg">Tarifs (optionnel)</h3>
+          
+          <div className="space-y-2">
+            <Input
+              id="tarifs"
+              value={formData.tarifs}
+              onChange={(e) => setFormData({ ...formData, tarifs: e.target.value })}
+              placeholder="Ex. 60 € / séance"
+              className="rounded-2xl border-border"
+            />
+          </div>
+        </Card>
+
+        {/* Action buttons */}
+        <div className="space-y-3">
+          <Button
+            onClick={handleSave}
+            className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-md"
+            size="lg"
+          >
+            Enregistrer mes modifications
+          </Button>
+          <button
+            onClick={() => navigate("/professionals/preview")}
+            className="w-full text-center text-primary font-medium text-sm hover:underline"
+          >
+            Prévisualiser mon profil public
+          </button>
+        </div>
+      </div>
+
+      <BottomNavigation />
+    </div>
+  );
+};
+
+export default ProfessionalEditProfileNew;

@@ -142,6 +142,42 @@ export type Database = {
           },
         ]
       }
+      profession_specialisation: {
+        Row: {
+          created_at: string | null
+          id: string
+          profession_id: string
+          specialisation_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          profession_id: string
+          specialisation_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          profession_id?: string
+          specialisation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profession_specialisation_profession_id_fkey"
+            columns: ["profession_id"]
+            isOneToOne: false
+            referencedRelation: "professions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profession_specialisation_specialisation_id_fkey"
+            columns: ["specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "specialisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       professional_profiles: {
         Row: {
           avatar_url: string | null
@@ -150,8 +186,14 @@ export type Database = {
           email: string
           full_name: string
           id: string
+          localisation: string | null
           phone: string | null
+          photo_url: string | null
+          preferences_contact: string[] | null
           profession: string
+          profession_id: string | null
+          specialisations_ids: string[] | null
+          tarifs: string | null
           updated_at: string
           website: string | null
           zone: string
@@ -163,8 +205,14 @@ export type Database = {
           email: string
           full_name: string
           id: string
+          localisation?: string | null
           phone?: string | null
+          photo_url?: string | null
+          preferences_contact?: string[] | null
           profession: string
+          profession_id?: string | null
+          specialisations_ids?: string[] | null
+          tarifs?: string | null
           updated_at?: string
           website?: string | null
           zone: string
@@ -176,11 +224,61 @@ export type Database = {
           email?: string
           full_name?: string
           id?: string
+          localisation?: string | null
           phone?: string | null
+          photo_url?: string | null
+          preferences_contact?: string[] | null
           profession?: string
+          profession_id?: string | null
+          specialisations_ids?: string[] | null
+          tarifs?: string | null
           updated_at?: string
           website?: string | null
           zone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_profiles_profession_id_fkey"
+            columns: ["profession_id"]
+            isOneToOne: false
+            referencedRelation: "professions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professions: {
+        Row: {
+          created_at: string | null
+          id: string
+          label: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          label: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          label?: string
+        }
+        Relationships: []
+      }
+      specialisations: {
+        Row: {
+          created_at: string | null
+          id: string
+          label: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          label: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          label?: string
         }
         Relationships: []
       }

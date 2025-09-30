@@ -8,8 +8,9 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 27%;
+    /* LupiApp Design System */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 0 0% 27%; /* #444444 */
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 27%;
@@ -17,78 +18,71 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 27%;
 
-    --primary: 0 100% 71%;
+    --primary: 0 73% 69%; /* #FF6B6B - CTA & accents */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 74% 96%;
-    --secondary-foreground: 0 81% 20%;
+    --secondary: 0 85% 96%; /* #FDECEC - Fonds secondaires */
+    --secondary-foreground: 0 85% 18%; /* #5C0A0A - Titres */
 
-    --muted: 0 74% 96%;
-    --muted-foreground: 0 0% 27%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 27%; /* #444444 */
 
-    --accent: 0 74% 96%;
-    --accent-foreground: 0 81% 20%;
+    --accent: 0 73% 69%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 20% 90%;
-    --input: 0 20% 90%;
-    --ring: 0 100% 71%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 73% 69%;
 
     --radius: 1rem;
     
-    --title: 0 81% 20%;
-    --hero-gradient: linear-gradient(135deg, hsl(0 100% 71%), hsl(0 90% 60%));
+    --title: 0 85% 18%; /* #5C0A0A - Titres */
+    --hero-gradient: linear-gradient(135deg, hsl(0 73% 69%), hsl(0 90% 60%));
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 0 10% 10%;
+    --background: 0 0% 10%;
     --foreground: 0 0% 95%;
 
-    --card: 0 10% 15%;
+    --card: 0 0% 10%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 0 10% 15%;
+    --popover: 0 0% 10%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 0 100% 71%;
+    --primary: 0 73% 69%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 20% 20%;
+    --secondary: 0 85% 20%;
     --secondary-foreground: 0 0% 95%;
 
-    --muted: 0 20% 20%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 0 20% 20%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 0 73% 69%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 20% 25%;
-    --input: 0 20% 25%;
-    --ring: 0 100% 71%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 73% 69%;
     
-    --title: 0 100% 80%;
-    --hero-gradient: linear-gradient(135deg, hsl(0 100% 71%), hsl(0 90% 60%));
+    --title: 0 85% 85%;
+    --hero-gradient: linear-gradient(135deg, hsl(0 73% 69%), hsl(0 90% 60%));
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -113,3 +107,6 @@ All colors MUST be HSL.
     @apply font-bold text-title;
   }
 }
+
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');

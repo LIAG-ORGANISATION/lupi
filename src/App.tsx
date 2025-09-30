@@ -15,7 +15,7 @@ import ProfessionalProfile from "./pages/ProfessionalProfile";
 import ProfessionalSignUp from "./pages/ProfessionalSignUp";
 import ProfessionalWelcome from "./pages/ProfessionalWelcome";
 import EthicalCharter from "./pages/EthicalCharter";
-import ProfessionalEditProfile from "./pages/ProfessionalEditProfile";
+import ProfessionalEditProfileNew from "./pages/ProfessionalEditProfileNew";
 import DNAKit from "./pages/DNAKit";
 import Checkout from "./pages/Checkout";
 import OrderSummary from "./pages/OrderSummary";
@@ -66,7 +66,7 @@ const App = () => (
           <Route path="/professional/signup" element={<ProfessionalSignUp />} />
           <Route path="/professional/welcome" element={<ProfessionalWelcome />} />
           <Route path="/professional/ethical-charter" element={<EthicalCharter />} />
-          <Route path="/professional/edit-profile" element={<ProfessionalEditProfile />} />
+          <Route path="/professional/edit-profile" element={<ProfessionalEditProfileNew />} />
           <Route path="/dna-kit" element={<DNAKit />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-summary" element={<OrderSummary />} />
