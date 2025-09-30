@@ -15,30 +15,33 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { Database } from "@/integrations/supabase/types";
 
-type Vaccination = Database['public']['Tables']['dog_vaccinations']['Row'];
+interface CalendarEntry {
+  id: string;
+  dog_id: string;
+  event_date: string;
+  description: string;
+  created_at: string;
+}
 
 const VaccinationCalendar = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuth();
   const { toast } = useToast();
-  const [vaccinations, setVaccinations] = useState<Vaccination[]>([]);
+  const [entries, setEntries] = useState<CalendarEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [vaccineName, setVaccineName] = useState("");
-  const [vaccinationDate, setVaccinationDate] = useState("");
-  const [reminderInput, setReminderInput] = useState("");
-  const [reminders, setReminders] = useState<string[]>([]);
+  const [eventDate, setEventDate] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (id && user) {
-      fetchVaccinations();
+      fetchEntries();
     }
   }, [id, user]);
 
-  const fetchVaccinations = async () => {
+  const fetchEntries = async () => {
     try {
       const { data, error } = await supabase
         .from('dog_vaccinations')
@@ -47,30 +50,28 @@ const VaccinationCalendar = () => {
         .order('vaccination_date', { ascending: false });
 
       if (error) throw error;
-      setVaccinations(data || []);
+      
+      const mappedEntries = (data || []).map(item => ({
+        id: item.id,
+        dog_id: item.dog_id,
+        event_date: item.vaccination_date,
+        description: item.vaccine_name,
+        created_at: item.created_at
+      }));
+      
+      setEntries(mappedEntries);
     } catch (error) {
-      console.error('Error fetching vaccinations:', error);
+      console.error('Error fetching calendar entries:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddReminder = () => {
-    if (reminderInput) {
-      setReminders([...reminders, reminderInput]);
-      setReminderInput("");
-    }
-  };
-
-  const handleRemoveReminder = (index: number) => {
-    setReminders(reminders.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = async () => {
-    if (!vaccineName || !vaccinationDate) {
+    if (!eventDate || !description) {
       toast({
         title: "Champs requis",
-        description: "Veuillez remplir tous les champs obligatoires.",
+        description: "Veuillez remplir la date et la description.",
         variant: "destructive",
       });
       return;
@@ -81,55 +82,53 @@ const VaccinationCalendar = () => {
         .from('dog_vaccinations')
         .insert({
           dog_id: id,
-          vaccine_name: vaccineName,
-          vaccination_date: vaccinationDate,
-          reminders: reminders,
+          vaccine_name: description,
+          vaccination_date: eventDate,
+          reminders: [],
           owner_id: user?.id,
         });
 
       if (error) throw error;
 
       toast({
-        title: "Vaccination ajoutée",
-        description: "Le vaccin a été enregistré avec succès.",
+        title: "Événement ajouté",
+        description: "L'événement a été enregistré avec succès.",
       });
 
       setDialogOpen(false);
-      setVaccineName("");
-      setVaccinationDate("");
-      setReminders([]);
-      setReminderInput("");
-      fetchVaccinations();
+      setEventDate("");
+      setDescription("");
+      fetchEntries();
     } catch (error) {
-      console.error('Error adding vaccination:', error);
+      console.error('Error adding event:', error);
       toast({
         title: "Erreur",
-        description: "Impossible d'ajouter la vaccination.",
+        description: "Impossible d'ajouter l'événement.",
         variant: "destructive",
       });
     }
   };
 
-  const handleDeleteVaccination = async (vaccinationId: string) => {
+  const handleDeleteEntry = async (entryId: string) => {
     try {
       const { error } = await supabase
         .from('dog_vaccinations')
         .delete()
-        .eq('id', vaccinationId);
+        .eq('id', entryId);
 
       if (error) throw error;
 
       toast({
-        title: "Vaccination supprimée",
-        description: "Le vaccin a été supprimé avec succès.",
+        title: "Événement supprimé",
+        description: "L'événement a été supprimé avec succès.",
       });
 
-      fetchVaccinations();
+      fetchEntries();
     } catch (error) {
-      console.error('Error deleting vaccination:', error);
+      console.error('Error deleting entry:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de supprimer la vaccination.",
+        description: "Impossible de supprimer l'événement.",
         variant: "destructive",
       });
     }
@@ -155,7 +154,7 @@ const VaccinationCalendar = () => {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-2xl font-bold text-title">Calendrier de vaccination</h1>
+          <h1 className="text-2xl font-bold text-title">Calendrier</h1>
         </div>
         
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -167,65 +166,27 @@ const VaccinationCalendar = () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Ajouter une vaccination</DialogTitle>
+              <DialogTitle>Ajouter un événement</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="vaccine-name">Nom du vaccin</Label>
+                <Label htmlFor="event-date">Date</Label>
                 <Input
-                  id="vaccine-name"
-                  placeholder="Ex: Rage, DHPP..."
-                  value={vaccineName}
-                  onChange={(e) => setVaccineName(e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="vaccination-date">Date de vaccination</Label>
-                <Input
-                  id="vaccination-date"
+                  id="event-date"
                   type="date"
-                  value={vaccinationDate}
-                  onChange={(e) => setVaccinationDate(e.target.value)}
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Rappels (dates)</Label>
-                {reminders.length > 0 && (
-                  <div className="space-y-2 mb-2">
-                    {reminders.map((reminder, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <span className="text-sm flex-1">
-                          {new Date(reminder).toLocaleDateString('fr-FR')}
-                        </span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleRemoveReminder(index)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="flex gap-2">
-                  <Input
-                    type="date"
-                    value={reminderInput}
-                    onChange={(e) => setReminderInput(e.target.value)}
-                    placeholder="Date du rappel"
-                    className="flex-1"
-                  />
-                  <Button
-                    variant="secondary"
-                    onClick={handleAddReminder}
-                    disabled={!reminderInput}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Label htmlFor="description">Description</Label>
+                <Input
+                  id="description"
+                  placeholder="Ex: Vaccin rage, Rappel..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </div>
 
               <Button onClick={handleSubmit} className="w-full">
@@ -237,36 +198,26 @@ const VaccinationCalendar = () => {
       </div>
 
       <div className="space-y-4">
-        {vaccinations.length === 0 ? (
+        {entries.length === 0 ? (
           <Card className="p-6 rounded-3xl text-center">
-            <p className="text-muted-foreground">Aucune vaccination enregistrée</p>
+            <p className="text-muted-foreground">Aucun événement enregistré</p>
           </Card>
         ) : (
-          vaccinations.map((vaccination) => (
-            <Card key={vaccination.id} className="p-4 rounded-2xl">
-              <div className="flex items-start justify-between">
+          entries.map((entry) => (
+            <Card key={entry.id} className="p-4 rounded-2xl">
+              <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h4 className="font-semibold text-title mb-1">
-                    {vaccination.vaccine_name}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Date: {new Date(vaccination.vaccination_date).toLocaleDateString('fr-FR')}
+                  <p className="text-sm font-medium text-muted-foreground mb-1">
+                    {new Date(entry.event_date).toLocaleDateString('fr-FR')}
                   </p>
-                  {vaccination.reminders && vaccination.reminders.length > 0 && (
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-foreground">Rappels:</p>
-                      {vaccination.reminders.map((reminder, index) => (
-                        <p key={index} className="text-sm text-muted-foreground ml-2">
-                          • {new Date(reminder).toLocaleDateString('fr-FR')}
-                        </p>
-                      ))}
-                    </div>
-                  )}
+                  <h4 className="font-semibold text-title">
+                    {entry.description}
+                  </h4>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => handleDeleteVaccination(vaccination.id)}
+                  onClick={() => handleDeleteEntry(entry.id)}
                   className="text-destructive hover:text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
