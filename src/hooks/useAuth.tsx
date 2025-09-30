@@ -88,26 +88,19 @@ export function useAuth() {
   };
 
   const signOut = async () => {
-    try {
-      console.log('[useAuth] signOut appelé');
-      const { error } = await supabase.auth.signOut();
-      console.log('[useAuth] supabase.auth.signOut() terminé', { error });
-      
-      if (error) {
-        console.error('[useAuth] Erreur de déconnexion:', error);
-        throw error;
-      }
-      
-      setUser(null);
-      setUserRole(null);
-      console.log('[useAuth] États réinitialisés, déconnexion complète');
-    } catch (error) {
-      console.error('[useAuth] Exception dans signOut:', error);
-      // Même en cas d'erreur, on force la déconnexion côté client
-      setUser(null);
-      setUserRole(null);
-      throw error;
-    }
+    console.log('[useAuth] Déconnexion forcée - réinitialisation immédiate');
+    
+    // Réinitialiser les états immédiatement
+    setUser(null);
+    setUserRole(null);
+    setLoading(false);
+    
+    // Tenter la déconnexion Supabase en arrière-plan
+    supabase.auth.signOut().catch((error) => {
+      console.error('[useAuth] Erreur lors de la déconnexion Supabase (ignorée):', error);
+    });
+    
+    console.log('[useAuth] Déconnexion locale effectuée');
   };
 
   return {
