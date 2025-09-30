@@ -15,11 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
 
 type Vaccination = Database['public']['Tables']['dog_vaccinations']['Row'];
@@ -33,9 +28,9 @@ const VaccinationCalendar = () => {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [vaccineName, setVaccineName] = useState("");
-  const [vaccinationDate, setVaccinationDate] = useState<Date>();
-  const [reminders, setReminders] = useState<Date[]>([]);
-  const [currentReminderDate, setCurrentReminderDate] = useState<Date>();
+  const [vaccinationDate, setVaccinationDate] = useState("");
+  const [reminderInput, setReminderInput] = useState("");
+  const [reminders, setReminders] = useState<string[]>([]);
 
   useEffect(() => {
     if (id && user) {
@@ -61,9 +56,9 @@ const VaccinationCalendar = () => {
   };
 
   const handleAddReminder = () => {
-    if (currentReminderDate) {
-      setReminders([...reminders, currentReminderDate]);
-      setCurrentReminderDate(undefined);
+    if (reminderInput) {
+      setReminders([...reminders, reminderInput]);
+      setReminderInput("");
     }
   };
 
@@ -87,8 +82,8 @@ const VaccinationCalendar = () => {
         .insert({
           dog_id: id,
           vaccine_name: vaccineName,
-          vaccination_date: format(vaccinationDate, 'yyyy-MM-dd'),
-          reminders: reminders.map(date => format(date, 'yyyy-MM-dd')),
+          vaccination_date: vaccinationDate,
+          reminders: reminders,
           owner_id: user?.id,
         });
 
@@ -101,8 +96,9 @@ const VaccinationCalendar = () => {
 
       setDialogOpen(false);
       setVaccineName("");
-      setVaccinationDate(undefined);
+      setVaccinationDate("");
       setReminders([]);
+      setReminderInput("");
       fetchVaccinations();
     } catch (error) {
       console.error('Error adding vaccination:', error);
@@ -185,43 +181,23 @@ const VaccinationCalendar = () => {
               </div>
 
               <div className="space-y-2">
-                <Label>Date de vaccination</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !vaccinationDate && "text-muted-foreground"
-                      )}
-                    >
-                      {vaccinationDate ? (
-                        format(vaccinationDate, "PPP", { locale: fr })
-                      ) : (
-                        <span>Choisir une date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={vaccinationDate}
-                      onSelect={setVaccinationDate}
-                      initialFocus
-                      className="pointer-events-auto"
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Label htmlFor="vaccination-date">Date de vaccination</Label>
+                <Input
+                  id="vaccination-date"
+                  type="date"
+                  value={vaccinationDate}
+                  onChange={(e) => setVaccinationDate(e.target.value)}
+                />
               </div>
 
               <div className="space-y-2">
-                <Label>Rappels</Label>
+                <Label>Rappels (dates)</Label>
                 {reminders.length > 0 && (
-                  <div className="space-y-2">
+                  <div className="space-y-2 mb-2">
                     {reminders.map((reminder, index) => (
                       <div key={index} className="flex items-center gap-2">
                         <span className="text-sm flex-1">
-                          {format(reminder, "PPP", { locale: fr })}
+                          {new Date(reminder).toLocaleDateString('fr-FR')}
                         </span>
                         <Button
                           variant="ghost"
@@ -235,36 +211,17 @@ const VaccinationCalendar = () => {
                   </div>
                 )}
                 <div className="flex gap-2">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "flex-1 justify-start text-left font-normal",
-                          !currentReminderDate && "text-muted-foreground"
-                        )}
-                      >
-                        {currentReminderDate ? (
-                          format(currentReminderDate, "PPP", { locale: fr })
-                        ) : (
-                          <span>Date du rappel</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={currentReminderDate}
-                        onSelect={setCurrentReminderDate}
-                        initialFocus
-                        className="pointer-events-auto"
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <Input
+                    type="date"
+                    value={reminderInput}
+                    onChange={(e) => setReminderInput(e.target.value)}
+                    placeholder="Date du rappel"
+                    className="flex-1"
+                  />
                   <Button
                     variant="secondary"
                     onClick={handleAddReminder}
-                    disabled={!currentReminderDate}
+                    disabled={!reminderInput}
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
@@ -293,14 +250,14 @@ const VaccinationCalendar = () => {
                     {vaccination.vaccine_name}
                   </h4>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Date: {format(new Date(vaccination.vaccination_date), "PPP", { locale: fr })}
+                    Date: {new Date(vaccination.vaccination_date).toLocaleDateString('fr-FR')}
                   </p>
                   {vaccination.reminders && vaccination.reminders.length > 0 && (
                     <div className="space-y-1">
                       <p className="text-sm font-medium text-foreground">Rappels:</p>
                       {vaccination.reminders.map((reminder, index) => (
                         <p key={index} className="text-sm text-muted-foreground ml-2">
-                          • {format(new Date(reminder), "PPP", { locale: fr })}
+                          • {new Date(reminder).toLocaleDateString('fr-FR')}
                         </p>
                       ))}
                     </div>
