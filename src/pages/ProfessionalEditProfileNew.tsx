@@ -197,6 +197,9 @@ const ProfessionalEditProfileNew = () => {
         title: "Profil professionnel mis à jour",
         description: "Vos informations ont été enregistrées avec succès",
       });
+
+      // Redirect to profile page after save
+      navigate("/professional/my-profile");
     } catch (error) {
       console.error("Error saving profile:", error);
       toast({
@@ -400,12 +403,6 @@ const ProfessionalEditProfileNew = () => {
           >
             Enregistrer mes modifications
           </Button>
-          <button
-            onClick={() => navigate("/professionals/preview")}
-            className="w-full text-center text-primary font-medium text-sm hover:underline"
-          >
-            Prévisualiser mon profil public
-          </button>
         </div>
       </div>
 

@@ -12,6 +12,7 @@ import DNAResults from "./pages/DNAResults";
 import Questionnaire from "./pages/Questionnaire";
 import Professionals from "./pages/Professionals";
 import ProfessionalProfile from "./pages/ProfessionalProfile";
+import MyProfessionalProfile from "./pages/MyProfessionalProfile";
 import ProfessionalSignUp from "./pages/ProfessionalSignUp";
 import ProfessionalWelcome from "./pages/ProfessionalWelcome";
 import EthicalCharter from "./pages/EthicalCharter";
@@ -63,6 +64,7 @@ const App = () => (
           <Route path="/questionnaire" element={<Layout><Questionnaire /></Layout>} />
           <Route path="/professionals" element={<Layout><Professionals /></Layout>} />
           <Route path="/professional/:id" element={<ProfessionalProfile />} />
+          <Route path="/professional/my-profile" element={<MyProfessionalProfile />} />
           <Route path="/professional/signup" element={<ProfessionalSignUp />} />
           <Route path="/professional/welcome" element={<ProfessionalWelcome />} />
           <Route path="/professional/ethical-charter" element={<EthicalCharter />} />
