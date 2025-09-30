@@ -113,33 +113,38 @@ const DogProfile = () => {
 
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-title">Résumé des tests</h3>
+        
+        {/* Test ADN - à compléter */}
         <Card className="p-4 rounded-2xl flex items-center gap-4">
-          <CheckCircle2 className="h-8 w-8 text-green-500" />
+          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+            <CheckCircle2 className="h-6 w-6 text-orange-500" />
+          </div>
           <div className="flex-1">
             <h4 className="font-semibold text-title">Analyse ADN</h4>
-            <p className="text-sm text-muted-foreground">Terminé</p>
+            <p className="text-sm text-muted-foreground">Non effectué</p>
           </div>
           <Button
-            onClick={() => navigate(`/dogs/${id}/dna-results`)}
-            variant="outline"
+            onClick={() => navigate("/dna-kit")}
             className="rounded-full"
           >
-            Voir
+            Commander
           </Button>
         </Card>
 
+        {/* Questionnaire comportemental - à compléter */}
         <Card className="p-4 rounded-2xl flex items-center gap-4">
-          <CheckCircle2 className="h-8 w-8 text-green-500" />
+          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+            <CheckCircle2 className="h-6 w-6 text-orange-500" />
+          </div>
           <div className="flex-1">
             <h4 className="font-semibold text-title">Questionnaire comportemental</h4>
-            <p className="text-sm text-muted-foreground">Terminé</p>
+            <p className="text-sm text-muted-foreground">Non effectué</p>
           </div>
           <Button 
             onClick={() => navigate("/questionnaire")}
-            variant="outline" 
             className="rounded-full"
           >
-            Voir
+            Commencer
           </Button>
         </Card>
       </div>
@@ -169,8 +174,8 @@ const DogProfile = () => {
 
         <Card className="p-4 rounded-2xl">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="h-5 w-5 text-primary" />
+            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+              <CheckCircle2 className="h-5 w-5 text-red-500" />
             </div>
             <div className="flex-1">
               <h4 className="font-semibold text-title mb-1">Alertes santé</h4>
@@ -179,14 +184,14 @@ const DogProfile = () => {
           </div>
         </Card>
 
-        <Card className="p-4 rounded-2xl">
+        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-              <FileText className="h-5 w-5 text-primary" />
+            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+              <Syringe className="h-5 w-5 text-red-500" />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Profil comportemental</h4>
-              <p className="text-sm text-foreground">Confiant et joueur</p>
+              <h4 className="font-semibold text-title mb-1">Passeport vaccinal</h4>
+              <p className="text-sm text-muted-foreground">Accès rapide aux vaccinations</p>
             </div>
           </div>
         </Card>
@@ -199,18 +204,6 @@ const DogProfile = () => {
             <div className="flex-1">
               <h4 className="font-semibold text-title mb-1">Calendrier</h4>
               <p className="text-sm text-foreground">Rappels & rapports à venir</p>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4 rounded-2xl">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-              <Syringe className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Passeport vaccinal</h4>
-              <p className="text-sm text-foreground">Accès rapide aux vaccinations</p>
             </div>
           </div>
         </Card>
