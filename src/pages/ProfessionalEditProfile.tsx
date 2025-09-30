@@ -16,12 +16,12 @@ const ProfessionalEditProfile = () => {
   
   const [formData, setFormData] = useState({
     name: "Olivia Bennett",
-    profession: "Pet Care Specialist",
-    location: "San Francisco, CA",
+    profession: "Spécialiste en soins animaliers",
+    location: "Paris, France",
     bio: "",
-    specializations: ["Pet Sitting", "Dog Walking"],
+    specializations: ["Garde d'animaux", "Promenade de chiens"],
     certifications: [],
-    languages: ["English"],
+    languages: ["Français"],
     services: [],
     hourlyRate: "",
     emailContact: true,
@@ -53,13 +53,13 @@ const ProfessionalEditProfile = () => {
           >
             <X className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-title">Edit profile</h1>
+          <h1 className="text-xl font-bold text-title">Modifier le profil</h1>
           <Button
             onClick={handleSave}
             className="rounded-full bg-primary hover:bg-primary/90"
             size="sm"
           >
-            Save
+            Enregistrer
           </Button>
         </div>
 
@@ -85,10 +85,10 @@ const ProfessionalEditProfile = () => {
 
           {/* About Section */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">About</h3>
+            <h3 className="font-bold text-title">À propos</h3>
             
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Nom</Label>
               <Input
                 id="name"
                 value={formData.name}
@@ -108,7 +108,7 @@ const ProfessionalEditProfile = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location">Localisation</Label>
               <Input
                 id="location"
                 value={formData.location}
@@ -118,20 +118,20 @@ const ProfessionalEditProfile = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
+              <Label htmlFor="bio">Biographie</Label>
               <Textarea
                 id="bio"
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                 className="rounded-2xl bg-secondary/50 min-h-[100px]"
-                placeholder="Tell us about yourself and your experience..."
+                placeholder="Parlez-nous de vous et de votre expérience..."
               />
             </div>
           </Card>
 
           {/* Specializations */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">Specializations</h3>
+            <h3 className="font-bold text-title">Spécialisations</h3>
             <div className="flex flex-wrap gap-2">
               {formData.specializations.map((spec, index) => (
                 <span
@@ -146,7 +146,7 @@ const ProfessionalEditProfile = () => {
               <Input
                 value={newSpec}
                 onChange={(e) => setNewSpec(e.target.value)}
-                placeholder="Add specialization"
+                placeholder="Ajouter une spécialisation"
                 className="rounded-2xl bg-secondary/50"
               />
               <Button
@@ -171,21 +171,21 @@ const ProfessionalEditProfile = () => {
           <Card className="p-4 rounded-3xl space-y-4">
             <h3 className="font-bold text-title">Certifications</h3>
             <Button variant="outline" className="w-full rounded-full justify-between">
-              <span>Add certification</span>
+              <span>Ajouter une certification</span>
               <Plus className="h-4 w-4" />
             </Button>
           </Card>
 
           {/* Languages */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">Languages</h3>
+            <h3 className="font-bold text-title">Langues</h3>
             <div className="space-y-2">
               {formData.languages.map((lang, index) => (
                 <div key={index} className="text-sm">{lang}</div>
               ))}
             </div>
             <Button variant="outline" className="w-full rounded-full justify-between">
-              <span>Add language</span>
+              <span>Ajouter une langue</span>
               <Plus className="h-4 w-4" />
             </Button>
           </Card>
@@ -194,16 +194,16 @@ const ProfessionalEditProfile = () => {
           <Card className="p-4 rounded-3xl space-y-4">
             <h3 className="font-bold text-title">Services</h3>
             <Button variant="outline" className="w-full rounded-full justify-between">
-              <span>Add service</span>
+              <span>Ajouter un service</span>
               <Plus className="h-4 w-4" />
             </Button>
           </Card>
 
           {/* Pricing */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">Pricing</h3>
+            <h3 className="font-bold text-title">Tarifs</h3>
             <div className="space-y-2">
-              <Label htmlFor="rate">Hourly rate</Label>
+              <Label htmlFor="rate">Tarif horaire</Label>
               <Input
                 id="rate"
                 type="number"
@@ -217,7 +217,7 @@ const ProfessionalEditProfile = () => {
 
           {/* Contact Preferences */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">Contact preferences</h3>
+            <h3 className="font-bold text-title">Préférences de contact</h3>
             
             <div className="flex items-center justify-between">
               <Label htmlFor="email">Email</Label>
@@ -231,7 +231,7 @@ const ProfessionalEditProfile = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">Téléphone</Label>
               <Switch
                 id="phone"
                 checked={formData.phoneContact}
@@ -242,7 +242,7 @@ const ProfessionalEditProfile = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="messaging">Messaging</Label>
+              <Label htmlFor="messaging">Messagerie</Label>
               <Switch
                 id="messaging"
                 checked={formData.messagingContact}
@@ -255,11 +255,11 @@ const ProfessionalEditProfile = () => {
 
           {/* Visibility */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">Visibility</h3>
+            <h3 className="font-bold text-title">Visibilité</h3>
             
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <Label htmlFor="visible">Profile visibility</Label>
+                <Label htmlFor="visible">Visibilité du profil</Label>
                 <Switch
                   id="visible"
                   checked={formData.profileVisible}
@@ -269,8 +269,8 @@ const ProfessionalEditProfile = () => {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                By making your profile visible, you agree to our{" "}
-                <button className="text-primary underline">ethical charter</button>.
+                En rendant votre profil visible, vous acceptez notre{" "}
+                <button className="text-primary underline">charte éthique</button>.
               </p>
             </div>
           </Card>
@@ -282,14 +282,14 @@ const ProfessionalEditProfile = () => {
               className="flex-1 rounded-full"
               size="lg"
             >
-              Preview
+              Aperçu
             </Button>
             <Button
               onClick={handleSave}
               className="flex-1 rounded-full bg-primary hover:bg-primary/90"
               size="lg"
             >
-              Save
+              Enregistrer
             </Button>
           </div>
         </div>
