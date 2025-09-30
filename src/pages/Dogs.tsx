@@ -1,30 +1,47 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { Plus, TestTube2, FileText, Calendar, Stethoscope, Heart } from "lucide-react";
+import { Plus, TestTube2, FileText, Calendar, Stethoscope, Heart, Dog as DogIcon } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
-import buddyImage from "@/assets/dog-buddy.jpg";
-import lunaImage from "@/assets/dog-luna.jpg";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Dog {
+  id: string;
+  name: string;
+  breed: string | null;
+  avatar_url: string | null;
+}
 
 const Dogs = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [dogs, setDogs] = useState<Dog[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const dogs = [
-    { 
-      id: 1, 
-      name: "Buddy", 
-      status: "Analyse ADN en cours",
-      image: buddyImage,
-      statusColor: "text-yellow-600"
-    },
-    { 
-      id: 2, 
-      name: "Luna", 
-      status: "Analyse ADN terminée",
-      image: lunaImage,
-      statusColor: "text-green-600"
-    },
-  ];
+  useEffect(() => {
+    if (user) {
+      fetchDogs();
+    }
+  }, [user]);
+
+  const fetchDogs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('dogs')
+        .select('id, name, breed, avatar_url')
+        .eq('owner_id', user?.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setDogs(data || []);
+    } catch (error) {
+      console.error('Error fetching dogs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in">
@@ -53,25 +70,43 @@ const Dogs = () => {
 
       <div className="space-y-4">
         <h2 className="text-lg font-bold text-title">Mes chiens</h2>
-        {dogs.map((dog) => (
-          <Card
-            key={dog.id}
-            className="p-4 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer"
-            onClick={() => navigate(`/dogs/${dog.id}`)}
-          >
-            <div className="flex items-center gap-4">
-              <img
-                src={dog.image}
-                alt={dog.name}
-                className="w-16 h-16 rounded-full object-cover"
-              />
-              <div className="flex-1">
-                <h3 className="font-semibold text-title">{dog.name}</h3>
-                <p className={`text-sm ${dog.statusColor}`}>{dog.status}</p>
-              </div>
-            </div>
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        ) : dogs.length === 0 ? (
+          <Card className="p-6 rounded-3xl text-center">
+            <p className="text-muted-foreground">Aucun chien ajouté pour le moment</p>
           </Card>
-        ))}
+        ) : (
+          dogs.map((dog) => (
+            <Card
+              key={dog.id}
+              className="p-4 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer"
+              onClick={() => navigate(`/dogs/${dog.id}`)}
+            >
+              <div className="flex items-center gap-4">
+                {dog.avatar_url ? (
+                  <img
+                    src={dog.avatar_url}
+                    alt={dog.name}
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                    <DogIcon className="h-8 w-8 text-primary" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <h3 className="font-semibold text-title">{dog.name}</h3>
+                  {dog.breed && (
+                    <p className="text-sm text-muted-foreground">{dog.breed}</p>
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
       </div>
 
       <div>

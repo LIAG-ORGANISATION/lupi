@@ -6,10 +6,14 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const AddDog = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     breed: "",
@@ -19,13 +23,49 @@ const AddDog = () => {
     neutered: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Profil créé !",
-      description: `${formData.name} a été ajouté avec succès.`,
-    });
-    navigate("/dogs");
+    
+    if (!user) {
+      toast({
+        title: "Erreur",
+        description: "Vous devez être connecté pour ajouter un chien.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await supabase
+        .from('dogs')
+        .insert({
+          owner_id: user.id,
+          name: formData.name,
+          breed: formData.breed || null,
+          gender: formData.sex || null,
+          birth_date: formData.birthDate || null,
+          weight: formData.weight ? parseFloat(formData.weight) : null,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Profil créé !",
+        description: `${formData.name} a été ajouté avec succès.`,
+      });
+      navigate("/dogs");
+    } catch (error) {
+      console.error('Error adding dog:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter le chien. Réessayez.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -139,8 +179,9 @@ const AddDog = () => {
           type="submit"
           className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
           size="lg"
+          disabled={loading}
         >
-          Ajouter
+          {loading ? "Ajout en cours..." : "Ajouter"}
         </Button>
       </form>
     </div>
