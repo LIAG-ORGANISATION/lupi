@@ -14,36 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      dog_owner_profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string
-          email: string
-          full_name: string
-          id: string
-          phone: string | null
-          updated_at: string
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string
-          email: string
-          full_name: string
-          id: string
-          phone?: string | null
-          updated_at?: string
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string
-          email?: string
-          full_name?: string
-          id?: string
-          phone?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       dog_professional_access: {
         Row: {
           created_at: string
@@ -84,11 +54,73 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "dog_professional_access_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "dog_professional_access_professional_id_fkey"
             columns: ["professional_id"]
             isOneToOne: false
-            referencedRelation: "professional_profiles"
+            referencedRelation: "professionals"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      dog_shares: {
+        Row: {
+          created_at: string | null
+          dog_id: string
+          expires_at: string | null
+          id: string
+          permission: Database["public"]["Enums"]["share_permission"]
+          professional_id: string
+          status: Database["public"]["Enums"]["share_status"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          dog_id: string
+          expires_at?: string | null
+          id?: string
+          permission?: Database["public"]["Enums"]["share_permission"]
+          professional_id: string
+          status?: Database["public"]["Enums"]["share_status"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          dog_id?: string
+          expires_at?: string | null
+          id?: string
+          permission?: Database["public"]["Enums"]["share_permission"]
+          professional_id?: string
+          status?: Database["public"]["Enums"]["share_status"]
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_shares_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_shares_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_shares_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -137,10 +169,40 @@ export type Database = {
             foreignKeyName: "dogs_owner_id_fkey"
             columns: ["owner_id"]
             isOneToOne: false
-            referencedRelation: "dog_owner_profiles"
-            referencedColumns: ["id"]
+            referencedRelation: "owners"
+            referencedColumns: ["user_id"]
           },
         ]
+      }
+      owners: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profession_specialisation: {
         Row: {
@@ -178,14 +240,13 @@ export type Database = {
           },
         ]
       }
-      professional_profiles: {
+      professionals: {
         Row: {
           avatar_url: string | null
           bio: string | null
           created_at: string
           email: string
           full_name: string
-          id: string
           localisation: string | null
           phone: string | null
           photo_url: string | null
@@ -195,6 +256,7 @@ export type Database = {
           specialisations_ids: string[] | null
           tarifs: string | null
           updated_at: string
+          user_id: string
           website: string | null
           zone: string
         }
@@ -204,7 +266,6 @@ export type Database = {
           created_at?: string
           email: string
           full_name: string
-          id: string
           localisation?: string | null
           phone?: string | null
           photo_url?: string | null
@@ -214,6 +275,7 @@ export type Database = {
           specialisations_ids?: string[] | null
           tarifs?: string | null
           updated_at?: string
+          user_id: string
           website?: string | null
           zone: string
         }
@@ -223,7 +285,6 @@ export type Database = {
           created_at?: string
           email?: string
           full_name?: string
-          id?: string
           localisation?: string | null
           phone?: string | null
           photo_url?: string | null
@@ -233,6 +294,7 @@ export type Database = {
           specialisations_ids?: string[] | null
           tarifs?: string | null
           updated_at?: string
+          user_id?: string
           website?: string | null
           zone?: string
         }
@@ -284,13 +346,37 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      patients_for_pro: {
+        Row: {
+          avatar_url: string | null
+          birth_date: string | null
+          breed: string | null
+          created_at: string | null
+          gender: string | null
+          id: string | null
+          medical_notes: string | null
+          name: string | null
+          owner_id: string | null
+          updated_at: string | null
+          weight: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dogs_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "owners"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      share_permission: "read" | "write_notes"
+      share_status: "pending" | "accepted" | "revoked" | "expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -417,6 +503,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      share_permission: ["read", "write_notes"],
+      share_status: ["pending", "accepted", "revoked", "expired"],
+    },
   },
 } as const
