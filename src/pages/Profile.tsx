@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, User, Bell, Lock, CreditCard, HelpCircle, LogOut } from "lucide-react";
+import { ChevronRight, User, Bell, Lock, CreditCard, HelpCircle, LogOut, Plus } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { signOut, user } = useAuth();
+  const { signOut, user, isGuardian } = useAuth();
   const { toast } = useToast();
 
   const handleSignOut = async () => {
@@ -55,6 +55,26 @@ const Profile = () => {
           <p className="text-sm text-muted-foreground">Propriétaire de chien</p>
         </div>
       </Card>
+
+      {isGuardian && (
+        <Card className="bg-secondary p-6 rounded-3xl space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold text-title">
+              Créez un profil pour votre compagnon
+            </h2>
+            <p className="text-sm text-foreground/70 mt-1">
+              Suivez sa santé et son comportement
+            </p>
+          </div>
+          <Button
+            onClick={() => navigate("/dogs/add")}
+            className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Ajouter un chien
+          </Button>
+        </Card>
+      )}
 
       <div className="space-y-2">
         {menuItems.map((item, index) => (
