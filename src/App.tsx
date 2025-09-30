@@ -61,8 +61,8 @@ const App = () => (
           <Route path="/dogs" element={<Layout><DogsOrPatients /></Layout>} />
           <Route path="/dogs/add" element={<Layout><AddDog /></Layout>} />
           <Route path="/dogs/:id" element={<Layout><DogProfile /></Layout>} />
-          <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />
           <Route path="/vaccination-calendar/:id" element={<Layout><VaccinationCalendar /></Layout>} />
+          <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />
           <Route path="/questionnaire" element={<Layout><Questionnaire /></Layout>} />
           <Route path="/professionals" element={<Layout><Professionals /></Layout>} />
           <Route path="/professional/:id" element={<ProfessionalProfile />} />
