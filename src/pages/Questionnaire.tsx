@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
@@ -14,20 +16,59 @@ const Questionnaire = () => {
   const [step, setStep] = useState(1);
   const totalSteps = 9;
 
-  const [formData, setFormData] = useState({
-    // Step 1
+  const [formData, setFormData] = useState<any>({
+    // Step 1 - Identité
     idNumber: "",
     birthDate: "",
     sex: "",
     neutered: "",
     weight: "",
     disability: "",
-    // Step 2
+    // Step 2 - Historique
     previousHomes: "",
     transitionsCount: "",
     separationAge: "",
     socialization: "",
     trauma: "",
+    traumaDescription: "",
+    // Step 3 - Santé
+    medicalHistory: "",
+    currentTreatments: "",
+    vaccinations: "",
+    deworming: "",
+    allergies: "",
+    // Step 4 - Alimentation
+    foodType: "",
+    supplements: [] as string[],
+    digestiveSymptoms: [] as string[],
+    foodAllergies: "",
+    // Step 5 - Comportements
+    noiseReactions: [] as string[],
+    strangerReaction: "",
+    dogReaction: "",
+    carReaction: "",
+    vetReaction: "",
+    compulsiveBehaviors: [] as string[],
+    energyLevel: "",
+    // Step 6 - Environnement
+    habitatType: "",
+    householdComposition: [] as string[],
+    aloneTime: "",
+    householdRhythm: "",
+    // Step 7 - Activité
+    walkDuration: "",
+    regularActivities: [] as string[],
+    activityFrequency: "",
+    boredomSigns: [] as string[],
+    // Step 8 - Éducation
+    acquiredSkills: [] as string[],
+    educationMethods: [] as string[],
+    attentionDifficulties: "",
+    newSkills: "",
+    // Step 9 - Objectifs
+    relationshipDifficulties: "",
+    professionalSupport: "",
+    emotionalState: "",
   });
 
   const handleNext = () => {
@@ -54,7 +95,7 @@ const Questionnaire = () => {
         return (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">
-              Identité & statut du chien
+              Étape 1 - Identité & statut du chien
             </h2>
             
             <div className="space-y-2">
@@ -69,7 +110,7 @@ const Questionnaire = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="birthDate">Date de naissance</Label>
+              <Label htmlFor="birthDate">Date de naissance ou âge</Label>
               <Input
                 id="birthDate"
                 type="date"
@@ -137,7 +178,7 @@ const Questionnaire = () => {
 
             <div className="space-y-2">
               <Label htmlFor="disability">Handicap connu ?</Label>
-              <Input
+              <Textarea
                 id="disability"
                 placeholder="Décrivez si applicable"
                 value={formData.disability}
@@ -152,7 +193,7 @@ const Questionnaire = () => {
         return (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">
-              Historique de vie & socialisation
+              Étape 2 - Historique de vie & socialisation
             </h2>
             
             <div className="space-y-2">
@@ -192,7 +233,7 @@ const Questionnaire = () => {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="separationAge">Âge de séparation d'avec la mère (en semaines)</Label>
+              <Label htmlFor="separationAge">Âge de séparation d'avec la mère/lignée (en semaines)</Label>
               <Input
                 id="separationAge"
                 type="number"
@@ -211,7 +252,7 @@ const Questionnaire = () => {
                     key={level}
                     type="button"
                     variant={formData.socialization === level ? "default" : "outline"}
-                    className="flex-1 rounded-full"
+                    className="flex-1 rounded-full text-xs"
                     onClick={() => setFormData({ ...formData, socialization: level })}
                   >
                     {level}
@@ -221,29 +262,626 @@ const Questionnaire = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="trauma">Expériences traumatiques connues ?</Label>
-              <Input
-                id="trauma"
-                placeholder="Décrivez si applicable"
-                value={formData.trauma}
-                onChange={(e) => setFormData({ ...formData, trauma: e.target.value })}
+              <Label>Expériences traumatiques connues ?</Label>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant={formData.trauma === "yes" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, trauma: "yes" })}
+                >
+                  Oui
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.trauma === "no" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, trauma: "no" })}
+                >
+                  Non
+                </Button>
+              </div>
+            </div>
+
+            {formData.trauma === "yes" && (
+              <div className="space-y-2">
+                <Label htmlFor="traumaDescription">Description</Label>
+                <Textarea
+                  id="traumaDescription"
+                  placeholder="Décrivez l'expérience traumatique"
+                  value={formData.traumaDescription}
+                  onChange={(e) => setFormData({ ...formData, traumaDescription: e.target.value })}
+                  className="rounded-2xl"
+                />
+              </div>
+            )}
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">
+              Étape 3 - Santé & traitements
+            </h2>
+            
+            <div className="space-y-2">
+              <Label htmlFor="medicalHistory">Antécédents médicaux</Label>
+              <Textarea
+                id="medicalHistory"
+                placeholder="Décrivez les antécédents médicaux"
+                value={formData.medicalHistory}
+                onChange={(e) => setFormData({ ...formData, medicalHistory: e.target.value })}
+                className="rounded-2xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="currentTreatments">Traitements actuels</Label>
+              <Textarea
+                id="currentTreatments"
+                placeholder="Listez les traitements en cours"
+                value={formData.currentTreatments}
+                onChange={(e) => setFormData({ ...formData, currentTreatments: e.target.value })}
+                className="rounded-2xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Vaccinations</Label>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant={formData.vaccinations === "uptodate" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, vaccinations: "uptodate" })}
+                >
+                  À jour
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.vaccinations === "notuptodate" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, vaccinations: "notuptodate" })}
+                >
+                  Non à jour
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Vermifuge</Label>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant={formData.deworming === "uptodate" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, deworming: "uptodate" })}
+                >
+                  À jour
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.deworming === "notuptodate" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, deworming: "notuptodate" })}
+                >
+                  Non à jour
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="allergies">Allergies connues</Label>
+              <Textarea
+                id="allergies"
+                placeholder="Listez les allergies connues"
+                value={formData.allergies}
+                onChange={(e) => setFormData({ ...formData, allergies: e.target.value })}
                 className="rounded-2xl"
               />
             </div>
           </div>
         );
 
-      default:
+      case 4:
         return (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">
-              Étape {step} sur {totalSteps}
+              Étape 4 - Alimentation & digestion
             </h2>
-            <p className="text-muted-foreground">
-              Cette section du questionnaire sera complétée dans une prochaine itération.
-            </p>
+            
+            <div className="space-y-2">
+              <Label>Type d'alimentation</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {["Croquettes", "Pâtée", "Maison", "BARF", "Mixte"].map((type) => (
+                  <Button
+                    key={type}
+                    type="button"
+                    variant={formData.foodType === type ? "default" : "outline"}
+                    className="rounded-full text-sm"
+                    onClick={() => setFormData({ ...formData, foodType: type })}
+                  >
+                    {type}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Suppléments (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Aucun", "Probiotiques", "Enzymes digestives", "Fibres", "Autres"].map((supp) => (
+                  <div key={supp} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.supplements.includes(supp)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, supplements: [...formData.supplements, supp] });
+                        } else {
+                          setFormData({ ...formData, supplements: formData.supplements.filter((s: string) => s !== supp) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{supp}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Symptômes digestifs (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Vomissements", "Diarrhées", "Constipation", "Gaz", "Autres", "Aucun"].map((symptom) => (
+                  <div key={symptom} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.digestiveSymptoms.includes(symptom)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, digestiveSymptoms: [...formData.digestiveSymptoms, symptom] });
+                        } else {
+                          setFormData({ ...formData, digestiveSymptoms: formData.digestiveSymptoms.filter((s: string) => s !== symptom) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{symptom}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="foodAllergies">Allergies alimentaires connues</Label>
+              <Textarea
+                id="foodAllergies"
+                placeholder="Listez les allergies alimentaires"
+                value={formData.foodAllergies}
+                onChange={(e) => setFormData({ ...formData, foodAllergies: e.target.value })}
+                className="rounded-2xl"
+              />
+            </div>
           </div>
         );
+
+      case 5:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">
+              Étape 5 - Comportements observés
+            </h2>
+            
+            <div className="space-y-2">
+              <Label>Réactions face aux bruits (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Feux d'artifice", "Orages", "Aspirateur", "Sirènes", "Autres bruits forts"].map((noise) => (
+                  <div key={noise} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.noiseReactions.includes(noise)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, noiseReactions: [...formData.noiseReactions, noise] });
+                        } else {
+                          setFormData({ ...formData, noiseReactions: formData.noiseReactions.filter((n: string) => n !== noise) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{noise}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Réactions face aux étrangers</Label>
+              <div className="flex flex-col gap-2">
+                {["Amical", "Neutre", "Méfiant", "Agressif"].map((reaction) => (
+                  <Button
+                    key={reaction}
+                    type="button"
+                    variant={formData.strangerReaction === reaction ? "default" : "outline"}
+                    className="rounded-full"
+                    onClick={() => setFormData({ ...formData, strangerReaction: reaction })}
+                  >
+                    {reaction}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Réactions face aux autres chiens</Label>
+              <div className="flex flex-col gap-2">
+                {["Sociable", "Neutre", "Craintif", "Agressif"].map((reaction) => (
+                  <Button
+                    key={reaction}
+                    type="button"
+                    variant={formData.dogReaction === reaction ? "default" : "outline"}
+                    className="rounded-full"
+                    onClick={() => setFormData({ ...formData, dogReaction: reaction })}
+                  >
+                    {reaction}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Comportements compulsifs (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Léchage excessif", "Poursuite de queue", "Chasse aux ombres", "Autres", "Aucun"].map((behavior) => (
+                  <div key={behavior} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.compulsiveBehaviors.includes(behavior)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, compulsiveBehaviors: [...formData.compulsiveBehaviors, behavior] });
+                        } else {
+                          setFormData({ ...formData, compulsiveBehaviors: formData.compulsiveBehaviors.filter((b: string) => b !== behavior) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{behavior}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Niveau d'énergie</Label>
+              <div className="flex gap-2">
+                {["Faible", "Moyen", "Élevé"].map((level) => (
+                  <Button
+                    key={level}
+                    type="button"
+                    variant={formData.energyLevel === level ? "default" : "outline"}
+                    className="flex-1 rounded-full"
+                    onClick={() => setFormData({ ...formData, energyLevel: level })}
+                  >
+                    {level}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 6:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">
+              Étape 6 - Environnement & routine
+            </h2>
+            
+            <div className="space-y-2">
+              <Label>Type d'habitat</Label>
+              <div className="flex gap-2">
+                {["Appartement", "Maison", "Ferme"].map((type) => (
+                  <Button
+                    key={type}
+                    type="button"
+                    variant={formData.habitatType === type ? "default" : "outline"}
+                    className="flex-1 rounded-full"
+                    onClick={() => setFormData({ ...formData, habitatType: type })}
+                  >
+                    {type}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Composition du foyer (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Seul", "Avec enfants", "Avec autres animaux", "Mixte"].map((comp) => (
+                  <div key={comp} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.householdComposition.includes(comp)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, householdComposition: [...formData.householdComposition, comp] });
+                        } else {
+                          setFormData({ ...formData, householdComposition: formData.householdComposition.filter((h: string) => h !== comp) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{comp}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="aloneTime">Temps moyen seul par jour (heures)</Label>
+              <Input
+                id="aloneTime"
+                type="number"
+                placeholder="Ex: 4"
+                value={formData.aloneTime}
+                onChange={(e) => setFormData({ ...formData, aloneTime: e.target.value })}
+                className="rounded-2xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Rythme du foyer</Label>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant={formData.householdRhythm === "calm" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, householdRhythm: "calm" })}
+                >
+                  Calme
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.householdRhythm === "active" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, householdRhythm: "active" })}
+                >
+                  Actif
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 7:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">
+              Étape 7 - Activité physique & mentale
+            </h2>
+            
+            <div className="space-y-2">
+              <Label htmlFor="walkDuration">Durée moyenne des promenades (minutes)</Label>
+              <Input
+                id="walkDuration"
+                type="number"
+                placeholder="Ex: 60"
+                value={formData.walkDuration}
+                onChange={(e) => setFormData({ ...formData, walkDuration: e.target.value })}
+                className="rounded-2xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Activités régulières (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Jeu libre", "Randonnées", "Sports canins", "Autres"].map((activity) => (
+                  <div key={activity} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.regularActivities.includes(activity)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, regularActivities: [...formData.regularActivities, activity] });
+                        } else {
+                          setFormData({ ...formData, regularActivities: formData.regularActivities.filter((a: string) => a !== activity) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{activity}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Fréquence des activités</Label>
+              <div className="flex gap-2">
+                {["Quotidienne", "Hebdomadaire", "Occasionnelle"].map((freq) => (
+                  <Button
+                    key={freq}
+                    type="button"
+                    variant={formData.activityFrequency === freq ? "default" : "outline"}
+                    className="flex-1 rounded-full text-xs"
+                    onClick={() => setFormData({ ...formData, activityFrequency: freq })}
+                  >
+                    {freq}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Signes d'ennui (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Aboiements", "Destructions", "Agitation", "Autres", "Aucun"].map((sign) => (
+                  <div key={sign} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.boredomSigns.includes(sign)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, boredomSigns: [...formData.boredomSigns, sign] });
+                        } else {
+                          setFormData({ ...formData, boredomSigns: formData.boredomSigns.filter((s: string) => s !== sign) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{sign}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 8:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">
+              Étape 8 - Éducation & apprentissages
+            </h2>
+            
+            <div className="space-y-2">
+              <Label>Compétences acquises (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Assis", "Couché", "Rappel", "Marche en laisse", "Pas bouger"].map((skill) => (
+                  <div key={skill} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.acquiredSkills.includes(skill)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, acquiredSkills: [...formData.acquiredSkills, skill] });
+                        } else {
+                          setFormData({ ...formData, acquiredSkills: formData.acquiredSkills.filter((s: string) => s !== skill) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{skill}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Méthodes d'éducation (sélection multiple)</Label>
+              <div className="space-y-2">
+                {["Club canin", "À la maison", "Cours particuliers", "Aucune"].map((method) => (
+                  <div key={method} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={formData.educationMethods.includes(method)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({ ...formData, educationMethods: [...formData.educationMethods, method] });
+                        } else {
+                          setFormData({ ...formData, educationMethods: formData.educationMethods.filter((m: string) => m !== method) });
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{method}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Difficultés d'attention ou de concentration ?</Label>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant={formData.attentionDifficulties === "yes" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, attentionDifficulties: "yes" })}
+                >
+                  Oui
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.attentionDifficulties === "no" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, attentionDifficulties: "no" })}
+                >
+                  Non
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="newSkills">Nouvelles compétences à enseigner</Label>
+              <Textarea
+                id="newSkills"
+                placeholder="Listez les compétences que vous souhaitez enseigner"
+                value={formData.newSkills}
+                onChange={(e) => setFormData({ ...formData, newSkills: e.target.value })}
+                className="rounded-2xl"
+              />
+            </div>
+          </div>
+        );
+
+      case 9:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">
+              Étape 9 - Objectifs du binôme
+            </h2>
+            
+            <div className="space-y-2">
+              <Label>Rencontrez-vous des difficultés dans la relation avec votre chien ?</Label>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant={formData.relationshipDifficulties === "yes" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, relationshipDifficulties: "yes" })}
+                >
+                  Oui
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.relationshipDifficulties === "no" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, relationshipDifficulties: "no" })}
+                >
+                  Non
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Souhaitez-vous un accompagnement professionnel ?</Label>
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant={formData.professionalSupport === "yes" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, professionalSupport: "yes" })}
+                >
+                  Oui
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.professionalSupport === "no" ? "default" : "outline"}
+                  className="flex-1 rounded-full"
+                  onClick={() => setFormData({ ...formData, professionalSupport: "no" })}
+                >
+                  Non
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>État émotionnel vis-à-vis de la relation</Label>
+              <div className="flex flex-col gap-2">
+                {["Ouvert aux idées", "Débordé", "Besoin de soutien"].map((state) => (
+                  <Button
+                    key={state}
+                    type="button"
+                    variant={formData.emotionalState === state ? "default" : "outline"}
+                    className="rounded-full"
+                    onClick={() => setFormData({ ...formData, emotionalState: state })}
+                  >
+                    {state}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
     }
   };
 
@@ -258,7 +896,7 @@ const Questionnaire = () => {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-2xl font-bold text-title">Questionnaire</h1>
+        <h1 className="text-2xl font-bold text-title">Questionnaire comportemental</h1>
       </div>
 
       <div className="space-y-2">

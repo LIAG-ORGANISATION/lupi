@@ -13,14 +13,14 @@ const Dogs = () => {
     { 
       id: 1, 
       name: "Buddy", 
-      status: "Test en cours",
+      status: "Analyse ADN en cours",
       image: buddyImage,
       statusColor: "text-yellow-600"
     },
     { 
       id: 2, 
       name: "Luna", 
-      status: "Test terminé",
+      status: "Analyse ADN terminée",
       image: lunaImage,
       statusColor: "text-green-600"
     },

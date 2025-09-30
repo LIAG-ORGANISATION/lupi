@@ -39,7 +39,7 @@ const DogProfile = () => {
         <Card className="p-4 rounded-2xl flex items-center gap-4">
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div className="flex-1">
-            <h4 className="font-semibold text-title">Test ADN</h4>
+            <h4 className="font-semibold text-title">Analyse ADN</h4>
             <p className="text-sm text-muted-foreground">Terminé</p>
           </div>
           <Button
@@ -54,10 +54,14 @@ const DogProfile = () => {
         <Card className="p-4 rounded-2xl flex items-center gap-4">
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div className="flex-1">
-            <h4 className="font-semibold text-title">Test Comportement</h4>
+            <h4 className="font-semibold text-title">Questionnaire comportemental</h4>
             <p className="text-sm text-muted-foreground">Terminé</p>
           </div>
-          <Button variant="outline" className="rounded-full">
+          <Button 
+            onClick={() => navigate("/questionnaire")}
+            variant="outline" 
+            className="rounded-full"
+          >
             Voir
           </Button>
         </Card>
