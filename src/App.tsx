@@ -37,6 +37,7 @@ import GuardianDocuments from "./pages/GuardianDocuments";
 import ProfessionalDashboard from "./pages/ProfessionalDashboard";
 import ProfessionalClients from "./pages/ProfessionalClients";
 import ProfessionalMessages from "./pages/ProfessionalMessages";
+import VaccinationCalendar from "./pages/VaccinationCalendar";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/dogs/add" element={<Layout><AddDog /></Layout>} />
           <Route path="/dogs/:id" element={<Layout><DogProfile /></Layout>} />
           <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />
+          <Route path="/vaccination-calendar/:id" element={<Layout><VaccinationCalendar /></Layout>} />
           <Route path="/questionnaire" element={<Layout><Questionnaire /></Layout>} />
           <Route path="/professionals" element={<Layout><Professionals /></Layout>} />
           <Route path="/professional/:id" element={<ProfessionalProfile />} />

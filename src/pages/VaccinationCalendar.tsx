@@ -20,15 +20,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import type { Database } from "@/integrations/supabase/types";
 
-interface Vaccination {
-  id: string;
-  dog_id: string;
-  vaccine_name: string;
-  vaccination_date: string;
-  reminders: string[];
-  created_at: string;
-}
+type Vaccination = Database['public']['Tables']['dog_vaccinations']['Row'];
 
 const VaccinationCalendar = () => {
   const navigate = useNavigate();

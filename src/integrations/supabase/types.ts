@@ -182,6 +182,54 @@ export type Database = {
           },
         ]
       }
+      dog_vaccinations: {
+        Row: {
+          created_at: string
+          dog_id: string
+          id: string
+          owner_id: string
+          reminders: string[] | null
+          updated_at: string
+          vaccination_date: string
+          vaccine_name: string
+        }
+        Insert: {
+          created_at?: string
+          dog_id: string
+          id?: string
+          owner_id: string
+          reminders?: string[] | null
+          updated_at?: string
+          vaccination_date: string
+          vaccine_name: string
+        }
+        Update: {
+          created_at?: string
+          dog_id?: string
+          id?: string
+          owner_id?: string
+          reminders?: string[] | null
+          updated_at?: string
+          vaccination_date?: string
+          vaccine_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dog_vaccinations_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dog_vaccinations_dog_id_fkey"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dogs: {
         Row: {
           avatar_url: string | null
