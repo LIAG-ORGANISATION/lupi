@@ -3,9 +3,31 @@ import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, User, Bell, Lock, CreditCard, HelpCircle, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { signOut, user } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Déconnexion réussie",
+        description: "À bientôt !",
+      });
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de se déconnecter.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const menuItems = [
     { icon: User, label: "Modifier mon profil", path: "/profile/edit" },
@@ -52,6 +74,7 @@ const Profile = () => {
       </div>
 
       <Button
+        onClick={handleSignOut}
         variant="outline"
         className="w-full rounded-full border-destructive text-destructive hover:bg-destructive/10"
         size="lg"
