@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Plus, FileText, Image as ImageIcon, Download, Trash2, Edit2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { useUserRole } from "@/hooks/useUserRole";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,9 +37,10 @@ interface Document {
 const GuardianDocuments = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { role, userId } = useUserRole();
-  const { user, loading: authLoading } = useAuth();
+  const { user, userRole, loading: authLoading, isProfessional } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const userId = user?.id;
   
   const [documents, setDocuments] = useState<Document[]>([]);
   const [dogs, setDogs] = useState<any[]>([]);
@@ -54,18 +54,16 @@ const GuardianDocuments = () => {
     newTitle: "" 
   });
 
-  const isPro = role === "professional";
-
   useEffect(() => {
     if (!authLoading && user && userId) {
       fetchDogs();
       fetchDocuments();
     }
-  }, [userId, role, authLoading, user]);
+  }, [userId, userRole, authLoading, user]);
 
   const fetchDogs = async () => {
     try {
-      if (isPro) {
+      if (isProfessional) {
         // Fetch shared dogs for pros
         const { data, error } = await supabase
           .from("patients_for_pro")
@@ -371,7 +369,7 @@ const GuardianDocuments = () => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate(isPro ? "/professional/dashboard" : "/guardian/dashboard")}
+          onClick={() => navigate(isProfessional ? "/professional/dashboard" : "/guardian/dashboard")}
           className="rounded-full"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -381,7 +379,7 @@ const GuardianDocuments = () => {
 
       <div className="max-w-4xl mx-auto space-y-4">
         {/* Dog selector + Add button */}
-        {!isPro && (
+        {!isProfessional && (
           <div className="flex gap-3 items-center">
             <select
               value={selectedDog}
@@ -467,7 +465,7 @@ const GuardianDocuments = () => {
                       <Download className="h-4 w-4" />
                     </Button>
 
-                    {!isPro && doc.owner_id === userId && (
+                    {!isProfessional && doc.owner_id === userId && (
                       <>
                         <Button
                           onClick={() => setRenameDialog({ open: true, doc, newTitle: doc.title || doc.file_name })}
