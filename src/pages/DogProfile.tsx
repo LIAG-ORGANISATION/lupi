@@ -1,12 +1,80 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe } from "lucide-react";
-import buddyImage from "@/assets/dog-buddy.jpg";
+import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+
+interface DogData {
+  id: string;
+  name: string;
+  breed: string | null;
+  gender: string | null;
+  birth_date: string | null;
+  weight: number | null;
+  avatar_url: string | null;
+  medical_notes: string | null;
+}
 
 const DogProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useAuth();
+  const [dog, setDog] = useState<DogData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id && user) {
+      fetchDog();
+    }
+  }, [id, user]);
+
+  const fetchDog = async () => {
+    try {
+      console.log('[DogProfile] Fetching dog:', id);
+      const { data, error } = await supabase
+        .from('dogs')
+        .select('*')
+        .eq('id', id)
+        .eq('owner_id', user?.id)
+        .single();
+
+      if (error) throw error;
+      console.log('[DogProfile] Dog data:', data);
+      setDog(data);
+    } catch (error) {
+      console.error('[DogProfile] Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!dog) {
+    return (
+      <div className="min-h-screen p-4 space-y-6">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate("/dogs")}
+          className="rounded-full"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <Card className="p-6 rounded-3xl text-center">
+          <p className="text-muted-foreground">Chien introuvable</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in">
@@ -19,18 +87,27 @@ const DogProfile = () => {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-2xl font-bold text-title">Profil de Buddy</h1>
+        <h1 className="text-2xl font-bold text-title">Profil de {dog.name}</h1>
       </div>
 
       <Card className="p-6 rounded-3xl text-center space-y-4">
-        <img
-          src={buddyImage}
-          alt="Buddy"
-          className="w-32 h-32 rounded-full object-cover mx-auto shadow-lg"
-        />
+        {dog.avatar_url ? (
+          <img
+            src={dog.avatar_url}
+            alt={dog.name}
+            className="w-32 h-32 rounded-full object-cover mx-auto shadow-lg"
+          />
+        ) : (
+          <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+            <DogIcon className="h-16 w-16 text-primary" />
+          </div>
+        )}
         <div>
-          <h2 className="text-2xl font-bold text-title">Buddy</h2>
-          <p className="text-muted-foreground">Golden Retriever</p>
+          <h2 className="text-2xl font-bold text-title">{dog.name}</h2>
+          {dog.breed && <p className="text-muted-foreground">{dog.breed}</p>}
+          {dog.gender && (
+            <p className="text-sm text-muted-foreground capitalize">{dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>
+          )}
         </div>
       </Card>
 
@@ -76,8 +153,16 @@ const DogProfile = () => {
               <FileText className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Composition de race</h4>
-              <p className="text-sm text-foreground">50% Golden Retriever, 50% Labrador</p>
+              <h4 className="font-semibold text-title mb-1">Informations</h4>
+              {dog.birth_date && (
+                <p className="text-sm text-foreground">Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>
+              )}
+              {dog.weight && (
+                <p className="text-sm text-foreground">Poids: {dog.weight} kg</p>
+              )}
+              {dog.medical_notes && (
+                <p className="text-sm text-foreground mt-2">{dog.medical_notes}</p>
+              )}
             </div>
           </div>
         </Card>
