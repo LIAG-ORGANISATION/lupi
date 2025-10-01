@@ -250,7 +250,7 @@ const Home = () => {
             </div>
           </div>}
 
-        {!isGuardian && <div>
+        {isAuthenticated && !isGuardian && <div>
             <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
             <div className="grid grid-cols-2 gap-4">
               <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
