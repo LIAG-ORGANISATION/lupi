@@ -8,97 +8,97 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* LupiApp Design System */
-    --background: 0 0% 100%; /* #FFFFFF */
-    --foreground: 0 0% 27%; /* #444444 */
+    /* LupiApp Design System - Style Gilroy/Rose moderne */
+    --background: 330 75% 95%; /* #FAE8F0 - Fond rose pâle */
+    --foreground: 210 29% 25%; /* #2D3E50 - Texte navy */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 27%;
+    --card: 0 0% 100%; /* #FFFFFF - Cartes blanches */
+    --card-foreground: 210 29% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 27%;
+    --popover-foreground: 210 29% 25%;
 
-    --primary: 0 73% 69%; /* #FF6B6B - CTA & accents */
+    --primary: 340 100% 65%; /* #FF4D8D - Rose vif principal */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 85% 96%; /* #FDECEC - Fonds secondaires */
-    --secondary-foreground: 0 85% 18%; /* #5C0A0A - Titres */
+    --secondary: 330 75% 88%; /* #F4B3D2 - Rose pâle */
+    --secondary-foreground: 210 29% 25%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 27%; /* #444444 */
+    --muted: 330 50% 96%; /* #FCF5F8 - Gris rosé très pâle */
+    --muted-foreground: 210 15% 45%;
 
-    --accent: 0 73% 69%;
+    --accent: 340 100% 65%; /* #FF4D8D - Même que primary */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 73% 69%;
+    --border: 330 40% 92%; /* #F0DFE6 - Bordures rose pâle */
+    --input: 330 40% 92%;
+    --ring: 340 100% 65%;
 
-    --radius: 1rem;
+    --radius: 1.5rem; /* Coins plus arrondis */
     
-    --title: 0 85% 18%; /* #5C0A0A - Titres */
+    --title: 210 29% 25%; /* #2D3E50 - Navy pour les titres */
     
-    /* Gradients LupiApp */
-    --gradient-primary: linear-gradient(135deg, #FF6B6B 0%, #A855F7 100%); /* Rose → Violet */
-    --gradient-soft: linear-gradient(180deg, #FDECEC 0%, #FFF 100%); /* Rose clair → Blanc */
-    --gradient-card: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(168,85,247,0.1) 100%);
+    /* Gradients LupiApp Style Moderne */
+    --gradient-primary: linear-gradient(135deg, #FF4D8D 0%, #8B5CF6 100%); /* Rose vif → Violet */
+    --gradient-soft: linear-gradient(180deg, #FAE8F0 0%, #FFFFFF 100%); /* Rose pâle → Blanc */
+    --gradient-card: linear-gradient(135deg, rgba(255,77,141,0.08) 0%, rgba(139,92,246,0.08) 100%);
     
-    /* Shadows */
-    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+    /* Shadows modernes et douces */
+    --shadow-card: 0 8px 32px rgba(255, 77, 141, 0.12);
+    --shadow-hover: 0 12px 40px rgba(255, 77, 141, 0.18);
 
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-foreground: 210 29% 25%;
+    --sidebar-primary: 340 100% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 330 75% 95%;
+    --sidebar-accent-foreground: 210 29% 25%;
+    --sidebar-border: 330 40% 92%;
+    --sidebar-ring: 340 100% 65%;
   }
 
   .dark {
-    --background: 0 0% 10%;
+    --background: 210 35% 10%;
     --foreground: 0 0% 95%;
 
-    --card: 0 0% 10%;
+    --card: 210 30% 12%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 10%;
+    --popover: 210 30% 12%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 0 73% 69%;
+    --primary: 340 100% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 85% 20%;
+    --secondary: 340 60% 20%;
     --secondary-foreground: 0 0% 95%;
 
-    --muted: 0 0% 20%;
+    --muted: 210 20% 20%;
     --muted-foreground: 0 0% 65%;
 
-    --accent: 0 73% 69%;
+    --accent: 340 100% 65%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 73% 69%;
+    --border: 210 20% 25%;
+    --input: 210 20% 25%;
+    --ring: 340 100% 65%;
     
-    --title: 0 85% 85%;
-    --hero-gradient: linear-gradient(135deg, hsl(0 73% 69%), hsl(0 90% 60%));
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --title: 0 0% 95%;
+    
+    --sidebar-background: 210 30% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 340 100% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 210 25% 18%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 210 20% 25%;
+    --sidebar-ring: 340 100% 65%;
   }
 }
 
@@ -118,21 +118,26 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Card Style LupiApp */
+  /* Card Style LupiApp - Style moderne rose */
   .lupi-card {
-    @apply bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300;
+    @apply bg-white rounded-[2rem] p-6 transition-all duration-300;
     box-shadow: var(--shadow-card);
   }
   
   .lupi-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
   }
   
-  /* Button Primary */
+  /* Button Primary - Style moderne */
   .btn-lupi {
-    @apply bg-primary text-white font-semibold rounded-full px-8 py-3 transition-all duration-300;
-    @apply hover:scale-105 hover:shadow-lg;
+    @apply bg-primary text-white font-semibold rounded-full px-8 py-3.5 transition-all duration-300;
+    @apply hover:scale-[1.02] hover:shadow-lg;
+    box-shadow: 0 4px 16px rgba(255, 77, 141, 0.25);
+  }
+  
+  .btn-lupi:hover {
+    box-shadow: 0 6px 24px rgba(255, 77, 141, 0.35);
   }
   
   /* Gradient Background */
@@ -146,5 +151,5 @@ All colors MUST be HSL.
   }
 }
 
-/* Import Poppins font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* Import Outfit font (style Gilroy) */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
