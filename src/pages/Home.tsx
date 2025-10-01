@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon } from "lucide-react";
+import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import { useAuth } from "@/hooks/useAuth";
@@ -20,12 +20,17 @@ const Home = () => {
   const { isAuthenticated, isProfessional, isGuardian, user } = useAuth();
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [loadingDogs, setLoadingDogs] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState(0);
+  const [totalClients, setTotalClients] = useState(0);
 
   useEffect(() => {
     if (isGuardian && user) {
       fetchDogs();
     }
-  }, [isGuardian, user]);
+    if (isProfessional && user) {
+      fetchProStats();
+    }
+  }, [isGuardian, isProfessional, user]);
 
   const fetchDogs = async () => {
     setLoadingDogs(true);
@@ -45,6 +50,129 @@ const Home = () => {
       setLoadingDogs(false);
     }
   };
+
+  const fetchProStats = async () => {
+    try {
+      const { count: pending } = await supabase
+        .from('dog_professional_access')
+        .select('*', { count: 'exact', head: true })
+        .eq('professional_id', user?.id)
+        .eq('status', 'pending');
+
+      const { count: approved } = await supabase
+        .from('dog_professional_access')
+        .select('*', { count: 'exact', head: true })
+        .eq('professional_id', user?.id)
+        .eq('status', 'approved');
+
+      setPendingRequests(pending || 0);
+      setTotalClients(approved || 0);
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
+  // Professional Dashboard View
+  if (isProfessional) {
+    return (
+      <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="flex items-center justify-between gap-4">
+            <h1 className="text-2xl font-bold text-title">Tableau de bord</h1>
+            <Button
+              onClick={() => navigate("/professional/edit-profile")}
+              variant="outline"
+              size="sm"
+              className="rounded-full"
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Profil
+            </Button>
+          </div>
+
+          <Card className="bg-secondary p-6 rounded-3xl shadow-lg overflow-hidden relative">
+            <div className="relative z-10 space-y-4">
+              <h2 className="text-2xl font-bold text-title">
+                Commander un test ADN pour un patient
+              </h2>
+              <p className="text-sm text-foreground/80">
+                Analyse complète des races, prédispositions santé et profil comportemental
+              </p>
+              <Button 
+                onClick={() => navigate("/dna-kit")} 
+                className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" 
+                size="lg"
+              >
+                <TestTube2 className="h-5 w-5 mr-2" />
+                Commander un kit ADN
+              </Button>
+            </div>
+          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="p-6 rounded-3xl">
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">{pendingRequests}</div>
+                <p className="text-sm text-muted-foreground">Demandes en attente</p>
+              </div>
+            </Card>
+
+            <Card className="p-6 rounded-3xl">
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-secondary">{totalClients}</div>
+                <p className="text-sm text-muted-foreground">Clients actifs</p>
+              </div>
+            </Card>
+
+            <Card className="p-6 rounded-3xl">
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-accent">0</div>
+                <p className="text-sm text-muted-foreground">Messages non lus</p>
+              </div>
+            </Card>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card
+              className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
+              onClick={() => navigate("/professional/clients")}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-title">Mes Clients</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Gérer les accès et demandes
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card
+              className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
+              onClick={() => navigate("/professional/messages")}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
+                  <MessageSquare className="h-6 w-6 text-secondary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-title">Messages</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Communiquer avec les gardiens
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Guardian/Default View
   return <div className="min-h-screen p-4 space-y-6 animate-fade-in">
       <Card className="bg-secondary p-6 rounded-3xl shadow-lg overflow-hidden relative">
         <div className="relative z-10 space-y-4">
@@ -71,9 +199,6 @@ const Home = () => {
                       Mon tableau de bord
                     </Button>
                   </>}
-                {isProfessional && <Button onClick={() => navigate("/professional/dashboard")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
-                    Mon tableau de bord Pro
-                  </Button>}
               </>}
           </div>
         </div>

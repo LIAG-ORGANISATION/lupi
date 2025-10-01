@@ -46,7 +46,7 @@ const Layout = ({ children }: LayoutProps) => {
 
           {isAuthenticated && isProfessional && (
             <NavLink
-              to="/professional/dashboard"
+              to="/professional/clients"
               className={({ isActive }) =>
                 cn(
                   "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
@@ -55,7 +55,7 @@ const Layout = ({ children }: LayoutProps) => {
               }
             >
               <Briefcase className="h-6 w-6" />
-              <span className="text-xs">Dashboard</span>
+              <span className="text-xs">Mes patients</span>
             </NavLink>
           )}
           
