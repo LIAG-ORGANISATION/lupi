@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lupi-v1';
+const CACHE_NAME = 'lupi-v2';
 const urlsToCache = [
   '/',
   '/index.html',
