@@ -174,16 +174,10 @@ const Home = () => {
                       <Plus className="h-5 w-5 mr-2 inline" />
                       Ajouter un chien
                     </button>
-                    {dogs.some(dog => !dog.breed) ? (
-                      <button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
-                        <TestTube2 className="h-5 w-5 mr-2 inline" />
-                        Faire le test ADN
-                      </button>
-                    ) : (
-                      <button onClick={() => navigate("/guardian/dashboard")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
-                        Mon tableau de bord
-                      </button>
-                    )}
+                    <button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
+                      <TestTube2 className="h-5 w-5 mr-2 inline" />
+                      Faire le test ADN
+                    </button>
                   </>}
               </>}
           </div>
@@ -205,15 +199,15 @@ const Home = () => {
                       {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
                     </div>
                   </div>
-                  {!dog.breed && <div className="mt-4 pt-4 border-t border-border">
-                      <Button onClick={(e) => {
-                          e.stopPropagation();
-                          navigate("/dna-kit");
-                        }} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="sm">
-                        <TestTube2 className="h-4 w-4 mr-2" />
-                        Faire le test ADN
-                      </Button>
-                    </div>}
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <Button onClick={(e) => {
+                        e.stopPropagation();
+                        navigate("/dna-kit");
+                      }} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="sm">
+                      <TestTube2 className="h-4 w-4 mr-2" />
+                      Faire le test ADN
+                    </Button>
+                  </div>
                 </div>)}
             </div>
           </div>}
