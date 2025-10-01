@@ -33,6 +33,7 @@ const Home = () => {
   const [totalClients, setTotalClients] = useState(0);
   useEffect(() => {
     console.log('[Home] Auth state:', { isAuthenticated, isGuardian, isProfessional, user: !!user });
+    console.log('[Home] Dogs:', { dogsCount: dogs.length, loadingDogs });
     if (isGuardian && user) {
       fetchDogs();
     }
@@ -202,7 +203,9 @@ const Home = () => {
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 
-        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-6">
+        {isAuthenticated && isGuardian && (
+          <>
+            <div className="grid grid-cols-3 gap-3 mb-6">
             <div 
               className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
               onClick={() => navigate("/guardian/messages")}
@@ -259,11 +262,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>}
+          </div>
 
-        {isAuthenticated && isGuardian && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
             <div className="space-y-3">
               <a 
                 href="https://www.kozoo.eu" 
@@ -304,6 +306,7 @@ const Home = () => {
               </a>
             </div>
           </div>
+          </>
         )}
 
         {isGuardian && dogs.length > 0 && <div className="space-y-4">

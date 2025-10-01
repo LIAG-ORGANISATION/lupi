@@ -21,12 +21,8 @@ const AuthGuard = ({ children, requiredRole }: AuthGuardProps) => {
         navigate('/choose-account-type');
       } else if (requiredRole && userRole !== requiredRole) {
         console.log('[AuthGuard] Role mismatch. Required:', requiredRole, 'Actual:', userRole);
-        // Redirect to appropriate dashboard based on role
-        if (userRole === 'professional') {
-          navigate('/professional/dashboard');
-        } else {
-          navigate('/guardian/dashboard');
-        }
+        // Redirect to home page instead of specific dashboards
+        navigate('/');
       } else {
         console.log('[AuthGuard] Access granted');
       }
