@@ -7,8 +7,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Mail, MessageCircle, FileText, Shield } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SupportFAQ = () => {
+  const navigate = useNavigate();
   const faqs = [
     {
       question: "Comment ajouter un chien dans LupiApp ?",
@@ -102,13 +104,26 @@ const SupportFAQ = () => {
       <Card className="p-6 rounded-2xl">
         <h2 className="text-lg font-bold text-title mb-4">Ressources</h2>
         <div className="space-y-3">
-          <button className="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-secondary/50 transition-colors">
+          <button 
+            onClick={() => navigate('/terms-of-service')}
+            className="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+          >
             <FileText className="h-5 w-5 text-primary" />
             <span className="font-medium">Conditions générales d'utilisation</span>
           </button>
-          <button className="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-secondary/50 transition-colors">
+          <button 
+            onClick={() => navigate('/privacy-policy')}
+            className="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+          >
             <Shield className="h-5 w-5 text-primary" />
             <span className="font-medium">Politique de confidentialité</span>
+          </button>
+          <button 
+            onClick={() => navigate('/sales-terms')}
+            className="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+          >
+            <FileText className="h-5 w-5 text-primary" />
+            <span className="font-medium">Conditions générales de vente</span>
           </button>
         </div>
       </Card>

@@ -41,6 +41,9 @@ import VaccinationCalendar from "./pages/VaccinationCalendar";
 import HealthAlerts from "./pages/HealthAlerts";
 import QuestionnaireResults from "./pages/QuestionnaireResults";
 import SupportFAQ from "./pages/SupportFAQ";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import SalesTerms from "./pages/SalesTerms";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +90,9 @@ const App = () => (
           <Route path="/profile/privacy" element={<Layout><PrivacySettings /></Layout>} />
           <Route path="/profile/billing" element={<Layout><BillingSettings /></Layout>} />
           <Route path="/profile/support" element={<Layout><SupportFAQ /></Layout>} />
+          <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
+          <Route path="/terms-of-service" element={<Layout><TermsOfService /></Layout>} />
+          <Route path="/sales-terms" element={<Layout><SalesTerms /></Layout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
