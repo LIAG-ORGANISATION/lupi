@@ -160,7 +160,7 @@ const Home = () => {
       <div className="bg-gradient-lupi p-8 rounded-b-[3rem] shadow-xl">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
           <h1 className="text-3xl font-bold text-white">Découvrez & accompagnez votre chien</h1>
-          <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté à vos professionnels de santé, et ses données génétiques</p>
+          <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté à ses données génétiques, ses alertes, et son profil comportemental </p>
           
           <div className="space-y-3 pt-4">
             {!isAuthenticated ? <>
@@ -174,10 +174,12 @@ const Home = () => {
                       <Plus className="h-5 w-5 mr-2 inline" />
                       Ajouter un chien
                     </button>
-                    <button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
-                      <TestTube2 className="h-5 w-5 mr-2 inline" />
-                      Faire le test ADN
-                    </button>
+                    {dogs.some(dog => !dog.breed) ? <button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
+                        <TestTube2 className="h-5 w-5 mr-2 inline" />
+                        Faire le test ADN
+                      </button> : <button onClick={() => navigate("/guardian/dashboard")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
+                        Mon tableau de bord
+                      </button>}
                   </>}
               </>}
           </div>
@@ -194,20 +196,17 @@ const Home = () => {
                     {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
                         <DogIcon className="h-8 w-8 text-primary" />
                       </div>}
-                    <div className="flex-1">
-                      <h3 className="font-bold text-title text-lg">{dog.name}</h3>
-                      {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
-                    </div>
+                    
                   </div>
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <Button onClick={(e) => {
-                        e.stopPropagation();
-                        navigate("/dna-kit");
-                      }} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="sm">
-                      <TestTube2 className="h-4 w-4 mr-2" />
-                      Faire le test ADN
-                    </Button>
-                  </div>
+                  {!dog.breed && <div className="mt-4 pt-4 border-t border-border">
+                      <Button onClick={e => {
+                e.stopPropagation();
+                navigate("/dna-kit");
+              }} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="sm">
+                        <TestTube2 className="h-4 w-4 mr-2" />
+                        Faire le test ADN
+                      </Button>
+                    </div>}
                 </div>)}
             </div>
           </div>}
