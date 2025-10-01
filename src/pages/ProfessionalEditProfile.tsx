@@ -19,6 +19,7 @@ const ProfessionalEditProfile = () => {
     profession: "Spécialiste en soins animaliers",
     location: "Paris, France",
     bio: "",
+    phone: "",
     specializations: ["Garde d'animaux", "Promenade de chiens"],
     certifications: [],
     languages: ["Français"],
@@ -108,16 +109,6 @@ const ProfessionalEditProfile = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Localisation</Label>
-              <Input
-                id="location"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="rounded-2xl bg-secondary/50"
-              />
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="bio">Biographie</Label>
               <Textarea
                 id="bio"
@@ -199,56 +190,83 @@ const ProfessionalEditProfile = () => {
             </Button>
           </Card>
 
-          {/* Pricing */}
+
+          {/* Contact Info & Preferences */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">Tarifs</h3>
+            <h3 className="font-bold text-title">Coordonnées & visibilité</h3>
+            
             <div className="space-y-2">
-              <Label htmlFor="rate">Tarif horaire</Label>
+              <Label htmlFor="phoneNumber">Localisation</Label>
               <Input
-                id="rate"
-                type="number"
-                value={formData.hourlyRate}
-                onChange={(e) => setFormData({ ...formData, hourlyRate: e.target.value })}
-                placeholder="150"
+                id="location"
+                value={formData.location}
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                placeholder="Ex. Paris, France"
                 className="rounded-2xl bg-secondary/50"
               />
             </div>
+
+            <div className="space-y-4 border-t border-border pt-4">
+              <h4 className="font-semibold text-title text-sm">Préférences de contact</h4>
+              
+              <div className="flex items-center justify-between">
+                <Label htmlFor="email">Email</Label>
+                <Switch
+                  id="email"
+                  checked={formData.emailContact}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, emailContact: checked })
+                  }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="phone">Téléphone</Label>
+                  <Switch
+                    id="phone"
+                    checked={formData.phoneContact}
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, phoneContact: checked })
+                    }
+                  />
+                </div>
+                {formData.phoneContact && (
+                  <Input
+                    id="phoneNumber"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="Ex. +33 6 12 34 56 78"
+                    className="rounded-2xl bg-secondary/50"
+                  />
+                )}
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="messaging">Messagerie</Label>
+                <Switch
+                  id="messaging"
+                  checked={formData.messagingContact}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, messagingContact: checked })
+                  }
+                />
+              </div>
+            </div>
           </Card>
 
-          {/* Contact Preferences */}
+          {/* Pricing */}
           <Card className="p-4 rounded-3xl space-y-4">
-            <h3 className="font-bold text-title">Préférences de contact</h3>
-            
-            <div className="flex items-center justify-between">
-              <Label htmlFor="email">Email</Label>
-              <Switch
-                id="email"
-                checked={formData.emailContact}
-                onCheckedChange={(checked) =>
-                  setFormData({ ...formData, emailContact: checked })
-                }
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <Label htmlFor="phone">Téléphone</Label>
-              <Switch
-                id="phone"
-                checked={formData.phoneContact}
-                onCheckedChange={(checked) =>
-                  setFormData({ ...formData, phoneContact: checked })
-                }
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <Label htmlFor="messaging">Messagerie</Label>
-              <Switch
-                id="messaging"
-                checked={formData.messagingContact}
-                onCheckedChange={(checked) =>
-                  setFormData({ ...formData, messagingContact: checked })
-                }
+            <h3 className="font-bold text-title">Tarifs (optionnel)</h3>
+            <div className="space-y-2">
+              <Input
+                id="rate"
+                type="text"
+                value={formData.hourlyRate}
+                onChange={(e) => setFormData({ ...formData, hourlyRate: e.target.value })}
+                placeholder="Ex. 60 € / séance"
+                className="rounded-2xl bg-secondary/50"
               />
             </div>
           </Card>

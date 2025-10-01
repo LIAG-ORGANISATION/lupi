@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Share2, Star, ThumbsUp, MessageCircle, Clock, DollarSign, Award, Globe } from "lucide-react";
+import { ArrowLeft, Share2, Star, ThumbsUp, MessageCircle, Clock, DollarSign, Award, Globe, Phone } from "lucide-react";
 
 const ProfessionalProfile = () => {
   const navigate = useNavigate();
@@ -12,6 +12,8 @@ const ProfessionalProfile = () => {
     name: "Olivia Bennett",
     profession: "Pet Care Specialist",
     location: "San Francisco, CA",
+    phone: "+33 6 12 34 56 78",
+    phoneVisible: true,
     rating: 4.9,
     clients: "100+",
     years: 5,
@@ -233,6 +235,17 @@ const ProfessionalProfile = () => {
             >
               Prendre RDV
             </Button>
+            {professional.phoneVisible && professional.phone && (
+              <Button
+                variant="outline"
+                className="w-full rounded-full"
+                size="lg"
+                onClick={() => window.location.href = `tel:${professional.phone}`}
+              >
+                <Phone className="h-5 w-5 mr-2" />
+                Appeler
+              </Button>
+            )}
             <Button
               variant="outline"
               className="w-full rounded-full"
