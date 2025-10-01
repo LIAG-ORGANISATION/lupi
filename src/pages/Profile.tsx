@@ -2,14 +2,56 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, User, Bell, Lock, CreditCard, HelpCircle, LogOut, Plus } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { signOut, user, isGuardian } = useAuth();
+  const { signOut, user, isGuardian, isProfessional } = useAuth();
   const { toast } = useToast();
+  const [profileData, setProfileData] = useState<{
+    full_name: string;
+    avatar_url?: string;
+    profession?: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+
+      try {
+        if (isProfessional) {
+          const { data, error } = await supabase
+            .from('professionals')
+            .select('full_name, avatar_url, profession')
+            .eq('user_id', user.id)
+            .maybeSingle();
+
+          if (error) throw error;
+          if (data) setProfileData(data);
+        } else if (isGuardian) {
+          const { data, error } = await supabase
+            .from('owners')
+            .select('full_name, avatar_url')
+            .eq('user_id', user.id)
+            .maybeSingle();
+
+          if (error) throw error;
+          if (data) setProfileData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [user, isProfessional, isGuardian]);
 
   const handleSignOut = async () => {
     console.log('[Profile] Bouton Se déconnecter cliqué');
@@ -45,15 +87,34 @@ const Profile = () => {
       <h1 className="text-2xl font-bold text-title">Profil</h1>
 
       <Card className="p-6 rounded-3xl text-center space-y-4">
-        <Avatar className="w-24 h-24 mx-auto">
-          <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
-            JD
-          </AvatarFallback>
-        </Avatar>
-        <div>
-          <h2 className="text-xl font-bold text-title">Jean Dupont</h2>
-          <p className="text-sm text-muted-foreground">Propriétaire de chien</p>
-        </div>
+        {loading ? (
+          <div className="animate-pulse space-y-4">
+            <div className="w-24 h-24 mx-auto rounded-full bg-secondary" />
+            <div className="h-6 bg-secondary rounded w-32 mx-auto" />
+            <div className="h-4 bg-secondary rounded w-24 mx-auto" />
+          </div>
+        ) : (
+          <>
+            <Avatar className="w-24 h-24 mx-auto">
+              {profileData?.avatar_url && (
+                <AvatarImage src={profileData.avatar_url} />
+              )}
+              <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
+                {profileData?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h2 className="text-xl font-bold text-title">
+                {profileData?.full_name || 'Utilisateur'}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {isProfessional 
+                  ? profileData?.profession || 'Professionnel' 
+                  : 'Propriétaire de chien'}
+              </p>
+            </div>
+          </>
+        )}
       </Card>
 
       {isGuardian && (
