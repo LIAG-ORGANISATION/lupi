@@ -40,6 +40,7 @@ import ProfessionalMessages from "./pages/ProfessionalMessages";
 import VaccinationCalendar from "./pages/VaccinationCalendar";
 import HealthAlerts from "./pages/HealthAlerts";
 import QuestionnaireResults from "./pages/QuestionnaireResults";
+import SupportFAQ from "./pages/SupportFAQ";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ const App = () => (
           <Route path="/profile/notifications" element={<Layout><NotificationsSettings /></Layout>} />
           <Route path="/profile/privacy" element={<Layout><PrivacySettings /></Layout>} />
           <Route path="/profile/billing" element={<Layout><BillingSettings /></Layout>} />
+          <Route path="/profile/support" element={<Layout><SupportFAQ /></Layout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
