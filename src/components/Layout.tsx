@@ -1,4 +1,4 @@
-import { Home, Dog, User, Briefcase } from "lucide-react";
+import { Home, User, Briefcase } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
@@ -8,7 +8,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const { isAuthenticated, isProfessional, isGuardian } = useAuth();
+  const { isAuthenticated, isProfessional } = useAuth();
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -29,21 +29,6 @@ const Layout = ({ children }: LayoutProps) => {
             <span className="text-xs">Accueil</span>
           </NavLink>
           
-          {isAuthenticated && isGuardian && (
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                cn(
-                  "flex flex-col items-center gap-1 px-4 py-2 transition-colors",
-                  isActive ? "text-primary" : "text-muted-foreground"
-                )
-              }
-            >
-              <Dog className="h-6 w-6" />
-              <span className="text-xs">Mes chiens</span>
-            </NavLink>
-          )}
-
           {isAuthenticated && isProfessional && (
             <NavLink
               to="/professional/clients"
