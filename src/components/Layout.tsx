@@ -31,7 +31,7 @@ const Layout = ({ children }: LayoutProps) => {
           
           {isAuthenticated && isGuardian && (
             <NavLink
-              to="/guardian/dashboard"
+              to="/"
               className={({ isActive }) =>
                 cn(
                   "flex flex-col items-center gap-1 px-4 py-2 transition-colors",

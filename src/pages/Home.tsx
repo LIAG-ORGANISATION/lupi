@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings } from "lucide-react";
+import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import { useAuth } from "@/hooks/useAuth";
@@ -185,6 +185,44 @@ const Home = () => {
       </div>
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+
+        {isGuardian && <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <Card className="lupi-card cursor-pointer" onClick={() => navigate("/guardian/messages")}>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <MessageSquare className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-title">Messages</h3>
+                  <p className="text-sm text-muted-foreground">Avec les pros</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="lupi-card cursor-pointer" onClick={() => navigate("/guardian/documents")}>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-secondary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-title">Documents</h3>
+                  <p className="text-sm text-muted-foreground">Partagés</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="lupi-card cursor-pointer" onClick={() => navigate("/professionals")}>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+                  <Stethoscope className="h-6 w-6 text-accent" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-title">Professionnels</h3>
+                  <p className="text-sm text-muted-foreground">Trouver</p>
+                </div>
+              </div>
+            </Card>
+          </div>}
 
         {isGuardian && dogs.length > 0 && <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
