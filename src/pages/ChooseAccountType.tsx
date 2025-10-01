@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { Dog, Briefcase } from "lucide-react";
+import guardianImage from "@/assets/guardian-woman-dog.jpg";
+import professionalImage from "@/assets/professional-vet.jpg";
 
 const ChooseAccountType = () => {
   const navigate = useNavigate();
@@ -16,12 +16,16 @@ const ChooseAccountType = () => {
 
         <div className="space-y-4">
           <Card 
-            className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
+            className="p-6 rounded-2xl cursor-pointer hover:border-primary transition-all overflow-hidden"
             onClick={() => navigate('/auth?type=guardian')}
           >
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Dog className="h-8 w-8 text-primary" />
+              <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                <img 
+                  src={guardianImage} 
+                  alt="Gardien avec son chien" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-title text-lg">Gardien</h3>
@@ -33,12 +37,16 @@ const ChooseAccountType = () => {
           </Card>
 
           <Card 
-            className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
+            className="p-6 rounded-2xl cursor-pointer hover:border-primary transition-all overflow-hidden"
             onClick={() => navigate('/professional/auth')}
           >
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center">
-                <Briefcase className="h-8 w-8 text-secondary" />
+              <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                <img 
+                  src={professionalImage} 
+                  alt="Vétérinaire professionnel" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-title text-lg">Professionnel</h3>
