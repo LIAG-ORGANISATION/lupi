@@ -174,9 +174,16 @@ const Home = () => {
                       <Plus className="h-5 w-5 mr-2 inline" />
                       Ajouter un chien
                     </button>
-                    <button onClick={() => navigate("/guardian/dashboard")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
-                      Mon tableau de bord
-                    </button>
+                    {dogs.some(dog => !dog.breed) ? (
+                      <button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
+                        <TestTube2 className="h-5 w-5 mr-2 inline" />
+                        Faire le test ADN
+                      </button>
+                    ) : (
+                      <button onClick={() => navigate("/guardian/dashboard")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
+                        Mon tableau de bord
+                      </button>
+                    )}
                   </>}
               </>}
           </div>
