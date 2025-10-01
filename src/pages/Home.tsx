@@ -160,7 +160,7 @@ const Home = () => {
       <div className="bg-gradient-lupi p-8 rounded-b-[3rem] shadow-xl">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
           <h1 className="text-3xl font-bold text-white">Découvrez & accompagnez votre chien</h1>
-          <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté à vos professionnels de santé, et ses données génétiques</p>
+          <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div className="space-y-3 pt-4">
             {!isAuthenticated ? <>
