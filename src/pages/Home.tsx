@@ -6,6 +6,9 @@ import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as D
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import dogsOriginSection from "@/assets/dogs-origin-section.png";
+import messagesIcon from "@/assets/messages-icon.jpg";
+import documentsIcon from "@/assets/documents-icon.jpg";
+import professionalsIcon from "@/assets/professionals-icon.jpg";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 interface Dog {
@@ -202,8 +205,12 @@ const Home = () => {
               onClick={() => navigate("/guardian/messages")}
             >
               <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <MessageSquare className="h-6 w-6 text-primary" />
+                <div className="w-12 h-12 rounded-xl overflow-hidden">
+                  <img 
+                    src={messagesIcon} 
+                    alt="Messages" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Messages</h3>
@@ -217,8 +224,12 @@ const Home = () => {
               onClick={() => navigate("/guardian/documents")}
             >
               <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-secondary" />
+                <div className="w-12 h-12 rounded-xl overflow-hidden">
+                  <img 
+                    src={documentsIcon} 
+                    alt="Documents" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Documents</h3>
@@ -232,8 +243,12 @@ const Home = () => {
               onClick={() => navigate("/professionals")}
             >
               <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                  <Stethoscope className="h-6 w-6 text-accent" />
+                <div className="w-12 h-12 rounded-xl overflow-hidden">
+                  <img 
+                    src={professionalsIcon} 
+                    alt="Professionnels" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Professionnels</h3>
