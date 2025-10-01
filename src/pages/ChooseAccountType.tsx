@@ -30,7 +30,7 @@ const ChooseAccountType = () => {
               <div className="flex-1">
                 <h3 className="font-bold text-title text-lg">Gardien</h3>
                 <p className="text-sm text-muted-foreground">
-                  Je veux gérer mes chiens et trouver des professionnels
+                  Je veux suivre la santé de mes chiens ainsi que leurs données génétiques et comportementales
                 </p>
               </div>
             </div>
