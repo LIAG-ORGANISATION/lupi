@@ -13,7 +13,7 @@ const Layout = ({
     isProfessional,
     isGuardian
   } = useAuth();
-  return <div className="min-h-screen pb-20 bg-red-100">
+  return <div className="min-h-screen pb-20">
       <main className="max-w-md mx-auto">{children}</main>
       
       <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border">
