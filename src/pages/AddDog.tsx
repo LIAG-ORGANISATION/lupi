@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Camera, Dog as DogIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const AddDog = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     breed: "",
@@ -21,7 +25,36 @@ const AddDog = () => {
     birthDate: "",
     weight: "",
     neutered: "",
+    photoFile: null as File | null,
   });
+
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Erreur",
+        description: "Le fichier doit être une image.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Erreur",
+        description: "L'image ne doit pas dépasser 5 Mo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setFormData({ ...formData, photoFile: file });
+    setPhotoPreview(URL.createObjectURL(file));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +75,31 @@ const AddDog = () => {
     setLoading(true);
 
     try {
+      let avatarUrl = null;
+
+      // Upload photo if provided
+      if (formData.photoFile) {
+        setUploadingPhoto(true);
+        const fileExt = formData.photoFile.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+        
+        const { error: uploadError, data: uploadData } = await supabase.storage
+          .from('dog-documents')
+          .upload(fileName, formData.photoFile);
+
+        if (uploadError) {
+          console.error('[AddDog] Photo upload error:', uploadError);
+          throw uploadError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('dog-documents')
+          .getPublicUrl(fileName);
+
+        avatarUrl = publicUrl;
+        setUploadingPhoto(false);
+      }
+
       const dogData = {
         owner_id: user.id,
         name: formData.name,
@@ -49,6 +107,7 @@ const AddDog = () => {
         gender: formData.sex || null,
         birth_date: formData.birthDate || null,
         weight: formData.weight ? parseFloat(formData.weight) : null,
+        avatar_url: avatarUrl,
       };
       
       console.log('[AddDog] 📝 Inserting dog data:', dogData);
@@ -71,7 +130,13 @@ const AddDog = () => {
         title: "Profil créé !",
         description: `${formData.name} a été ajouté avec succès.`,
       });
-      navigate("/dogs");
+      
+      // Redirect to questionnaire if dog was created
+      if (data && data[0]) {
+        navigate(`/questionnaire?dogId=${data[0].id}`);
+      } else {
+        navigate("/dogs");
+      }
     } catch (error) {
       console.error('[AddDog] 💥 Exception:', error);
       toast({
@@ -81,6 +146,7 @@ const AddDog = () => {
       });
     } finally {
       setLoading(false);
+      setUploadingPhoto(false);
     }
   };
 
@@ -99,9 +165,43 @@ const AddDog = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Card className="p-6 rounded-3xl space-y-4">
+        <Card className="p-6 rounded-3xl space-y-6">
+          {/* Photo Upload */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative">
+              <Avatar className="w-32 h-32 cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                {photoPreview ? (
+                  <AvatarImage src={photoPreview} className="object-cover" />
+                ) : (
+                  <AvatarFallback className="bg-secondary">
+                    <DogIcon className="h-16 w-16 text-muted-foreground" />
+                  </AvatarFallback>
+                )}
+              </Avatar>
+              <Button
+                type="button"
+                size="icon"
+                variant="secondary"
+                className="absolute bottom-0 right-0 rounded-full shadow-lg"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Camera className="h-4 w-4" />
+              </Button>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handlePhotoChange}
+            />
+            <p className="text-sm text-muted-foreground text-center">
+              Ajoutez une photo de votre chien
+            </p>
+          </div>
+
           <div className="space-y-2">
-            <Label htmlFor="name">Nom du chien</Label>
+            <Label htmlFor="name">Nom du chien *</Label>
             <Input
               id="name"
               placeholder="Ex: Buddy"
@@ -195,9 +295,9 @@ const AddDog = () => {
           type="submit"
           className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
           size="lg"
-          disabled={loading}
+          disabled={loading || uploadingPhoto}
         >
-          {loading ? "Ajout en cours..." : "Ajouter"}
+          {uploadingPhoto ? "Upload de la photo..." : loading ? "Ajout en cours..." : "Continuer vers le questionnaire"}
         </Button>
       </form>
     </div>

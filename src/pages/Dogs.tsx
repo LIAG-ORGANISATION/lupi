@@ -54,28 +54,30 @@ const Dogs = () => {
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in">
-      <div className="space-y-2">
+      <div className="space-y-4">
         <h1 className="text-2xl font-bold text-title">Bienvenue</h1>
         <p className="text-muted-foreground">Gérez les profils de vos compagnons</p>
       </div>
 
-      <Card className="bg-secondary p-6 rounded-3xl space-y-4">
-        <div>
-          <h2 className="text-lg font-semibold text-title">
-            Créez un profil pour votre compagnon
-          </h2>
-          <p className="text-sm text-foreground/70 mt-1">
-            Suivez sa santé et son comportement
-          </p>
-        </div>
-        <Button
-          onClick={() => navigate("/dogs/add")}
-          className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Ajouter un chien
-        </Button>
-      </Card>
+      {!loading && dogs.length === 0 && (
+        <Card className="bg-secondary p-6 rounded-3xl space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold text-title">
+              Créez un profil pour votre compagnon
+            </h2>
+            <p className="text-sm text-foreground/70 mt-1">
+              Suivez sa santé et son comportement
+            </p>
+          </div>
+          <Button
+            onClick={() => navigate("/dogs/add")}
+            className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Ajouter un chien
+          </Button>
+        </Card>
+      )}
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -134,31 +136,41 @@ const Dogs = () => {
       <div>
         <h2 className="text-lg font-bold text-title mb-4">Accès rapide</h2>
         <div className="grid grid-cols-3 gap-3">
-          <QuickActionCard
-            icon={TestTube2}
-            label="Tests"
-            onClick={() => navigate("/questionnaire")}
-          />
-          <QuickActionCard
-            icon={Heart}
-            label="Santé"
-            onClick={() => navigate("/dogs/1")}
-          />
-          <QuickActionCard
-            icon={FileText}
-            label="Rapports"
-            onClick={() => navigate("/dogs/1")}
-          />
-          <QuickActionCard
-            icon={Stethoscope}
-            label="RDV"
-            onClick={() => navigate("/professionals")}
-          />
-          <QuickActionCard
-            icon={Calendar}
-            label="Calendrier"
-            onClick={() => navigate("/dogs/1")}
-          />
+          {dogs.length === 1 ? (
+            <>
+              <QuickActionCard
+                icon={TestTube2}
+                label="Tests"
+                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+              />
+              <QuickActionCard
+                icon={Heart}
+                label="Santé"
+                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+              />
+              <QuickActionCard
+                icon={FileText}
+                label="Rapports"
+                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+              />
+              <QuickActionCard
+                icon={Stethoscope}
+                label="RDV"
+                onClick={() => navigate("/professionals")}
+              />
+              <QuickActionCard
+                icon={Calendar}
+                label="Calendrier"
+                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+              />
+            </>
+          ) : dogs.length > 1 ? (
+            <QuickActionCard
+              icon={Calendar}
+              label="RDV"
+              onClick={() => navigate("/professionals")}
+            />
+          ) : null}
         </div>
       </div>
     </div>

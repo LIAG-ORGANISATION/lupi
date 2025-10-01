@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, User, Bell, Lock, CreditCard, HelpCircle, LogOut, Plus } from "lucide-react";
+import { ChevronRight, User, Bell, Lock, CreditCard, HelpCircle, LogOut, Plus, Camera, Dog as DogIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -18,6 +18,9 @@ const Profile = () => {
     profession?: string;
   } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [dogs, setDogs] = useState<any[]>([]);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -42,6 +45,14 @@ const Profile = () => {
 
           if (error) throw error;
           if (data) setProfileData(data);
+          
+          // Fetch dogs for guardian
+          const { data: dogsData } = await supabase
+            .from('dogs')
+            .select('id, name, avatar_url')
+            .eq('owner_id', user.id);
+          
+          setDogs(dogsData || []);
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
@@ -52,6 +63,70 @@ const Profile = () => {
 
     fetchProfile();
   }, [user, isProfessional, isGuardian]);
+
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Erreur",
+        description: "Le fichier doit être une image.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Erreur",
+        description: "L'image ne doit pas dépasser 5 Mo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadingPhoto(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `avatars/${user.id}/${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('dog-documents')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('dog-documents')
+        .getPublicUrl(fileName);
+
+      // Update profile with new avatar
+      const tableName = isProfessional ? 'professionals' : 'owners';
+      const { error: updateError } = await supabase
+        .from(tableName)
+        .update({ avatar_url: publicUrl })
+        .eq('user_id', user.id);
+
+      if (updateError) throw updateError;
+
+      setProfileData(prev => prev ? { ...prev, avatar_url: publicUrl } : null);
+      
+      toast({
+        title: "Photo mise à jour",
+        description: "Votre photo de profil a été modifiée.",
+      });
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de mettre à jour la photo.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
 
   const handleSignOut = async () => {
     console.log('[Profile] Bouton Se déconnecter cliqué');
@@ -95,14 +170,32 @@ const Profile = () => {
           </div>
         ) : (
           <>
-            <Avatar className="w-24 h-24 mx-auto">
-              {profileData?.avatar_url && (
-                <AvatarImage src={profileData.avatar_url} />
-              )}
-              <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
-                {profileData?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
-              </AvatarFallback>
-            </Avatar>
+            <div className="relative inline-block">
+              <Avatar className="w-24 h-24 mx-auto cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                {profileData?.avatar_url && (
+                  <AvatarImage src={profileData.avatar_url} />
+                )}
+                <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
+                  {profileData?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <Button
+                size="icon"
+                variant="secondary"
+                className="absolute bottom-0 right-0 rounded-full shadow-lg h-8 w-8"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadingPhoto}
+              >
+                <Camera className="h-4 w-4" />
+              </Button>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handlePhotoChange}
+            />
             <div>
               <h2 className="text-xl font-bold text-title">
                 {profileData?.full_name || 'Utilisateur'}
@@ -117,7 +210,27 @@ const Profile = () => {
         )}
       </Card>
 
-      {isGuardian && (
+      {isGuardian && dogs.length > 0 && (
+        <Card className="bg-secondary p-6 rounded-3xl space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold text-title">
+              Mes compagnons
+            </h2>
+            <p className="text-sm text-foreground/70 mt-1">
+              {dogs.length} chien{dogs.length > 1 ? 's' : ''} enregistré{dogs.length > 1 ? 's' : ''}
+            </p>
+          </div>
+          <Button
+            onClick={() => navigate("/dogs")}
+            className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+          >
+            <DogIcon className="mr-2 h-4 w-4" />
+            Accéder à mes chiens
+          </Button>
+        </Card>
+      )}
+
+      {isGuardian && dogs.length === 0 && (
         <Card className="bg-secondary p-6 rounded-3xl space-y-4">
           <div>
             <h2 className="text-lg font-semibold text-title">

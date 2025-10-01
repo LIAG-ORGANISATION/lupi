@@ -20,7 +20,38 @@ const Questionnaire = () => {
   const dogId = searchParams.get('dogId');
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
+  const [dogData, setDogData] = useState<any>(null);
   const totalSteps = 9;
+
+  useEffect(() => {
+    // Fetch dog data to prefill form
+    const fetchDogData = async () => {
+      if (!dogId) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('dogs')
+          .select('*')
+          .eq('id', dogId)
+          .single();
+        
+        if (error) throw error;
+        setDogData(data);
+        
+        // Prefill form with dog data
+        setFormData(prev => ({
+          ...prev,
+          birthDate: data.birth_date || prev.birthDate,
+          sex: data.gender || prev.sex,
+          weight: data.weight?.toString() || prev.weight,
+        }));
+      } catch (error) {
+        console.error('Error fetching dog data:', error);
+      }
+    };
+    
+    fetchDogData();
+  }, [dogId]);
 
   const [formData, setFormData] = useState<any>({
     // Step 1 - Identité
