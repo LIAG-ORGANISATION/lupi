@@ -7,6 +7,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Dog } from "@/types/database";
 import AuthGuard from "@/components/AuthGuard";
+import messagesIcon from "@/assets/messages-icon.jpg";
+import documentsIcon from "@/assets/documents-icon.jpg";
+import professionalsIcon from "@/assets/professionals-icon.jpg";
 
 const GuardianDashboard = () => {
   const navigate = useNavigate();
@@ -68,8 +71,12 @@ const GuardianDashboard = () => {
               onClick={() => navigate("/guardian/messages")}
             >
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <MessageSquare className="h-6 w-6 text-primary" />
+                <div className="w-12 h-12 rounded-xl overflow-hidden">
+                  <img 
+                    src={messagesIcon} 
+                    alt="Messages" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title">Messages</h3>
@@ -83,8 +90,12 @@ const GuardianDashboard = () => {
               onClick={() => navigate("/guardian/documents")}
             >
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-secondary" />
+                <div className="w-12 h-12 rounded-xl overflow-hidden">
+                  <img 
+                    src={documentsIcon} 
+                    alt="Documents" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title">Documents</h3>
@@ -98,8 +109,12 @@ const GuardianDashboard = () => {
               onClick={() => navigate("/professionals")}
             >
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                  <DogIcon className="h-6 w-6 text-accent" />
+                <div className="w-12 h-12 rounded-xl overflow-hidden">
+                  <img 
+                    src={professionalsIcon} 
+                    alt="Professionnels" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title">Professionnels</h3>
