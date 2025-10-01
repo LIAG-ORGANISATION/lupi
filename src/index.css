@@ -110,12 +110,12 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground font-sans;
     background: var(--gradient-soft);
-    font-weight: 400; /* Poppins Regular pour les textes */
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-title;
-    font-weight: 700; /* Poppins Bold pour les titres */
+    @apply text-title;
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-weight: 700; /* Poppins Bold pour les titres uniquement */
   }
 }
 
@@ -153,4 +153,5 @@ All colors MUST be HSL.
   }
 }
 
-/* Poppins est importé dans index.html */
+/* Poppins pour les titres uniquement */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
