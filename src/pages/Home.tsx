@@ -239,15 +239,17 @@ const Home = () => {
         </div>
       )}
 
-      <div>
-        <h2 className="text-lg font-bold text-title mb-4">Accès rapide</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
-          <QuickActionCard icon={ClipboardList} label="Questionnaire" onClick={() => navigate("/questionnaire")} />
-          <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
-          <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
+      {!isGuardian && (
+        <div>
+          <h2 className="text-lg font-bold text-title mb-4">Accès rapide</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
+            <QuickActionCard icon={ClipboardList} label="Questionnaire" onClick={() => navigate("/questionnaire")} />
+            <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
+            <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
+          </div>
         </div>
-      </div>
+      )}
     </div>;
 };
 export default Home;
