@@ -32,13 +32,14 @@ const Home = () => {
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
   useEffect(() => {
+    console.log('[Home] Auth state:', { isAuthenticated, isGuardian, isProfessional, user: !!user });
     if (isGuardian && user) {
       fetchDogs();
     }
     if (isProfessional && user) {
       fetchProStats();
     }
-  }, [isGuardian, isProfessional, user]);
+  }, [isGuardian, isProfessional, user, isAuthenticated]);
   const fetchDogs = async () => {
     setLoadingDogs(true);
     try {
@@ -260,7 +261,8 @@ const Home = () => {
             </div>
           </div>}
 
-        {isAuthenticated && isGuardian && <div className="space-y-4">
+        {isAuthenticated && isGuardian && (
+          <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
             <div className="space-y-3">
               <a 
@@ -301,7 +303,8 @@ const Home = () => {
                 </div>
               </a>
             </div>
-          </div>}
+          </div>
+        )}
 
         {isGuardian && dogs.length > 0 && <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
