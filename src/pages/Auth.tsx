@@ -41,7 +41,7 @@ const Auth = () => {
 
     try {
       const validated = signUpSchema.parse(signUpData);
-      const redirectUrl = `${window.location.origin}/guardian/dashboard`;
+      const redirectUrl = `${window.location.origin}/`;
 
       const { error } = await supabase.auth.signUp({
         email: validated.email,
@@ -62,7 +62,7 @@ const Auth = () => {
         description: "Vérifiez votre email pour confirmer votre compte.",
       });
       
-      navigate('/guardian/dashboard');
+      navigate('/');
     } catch (error: any) {
       toast({
         title: "Erreur d'inscription",
@@ -92,7 +92,7 @@ const Auth = () => {
         title: "Connexion réussie !",
       });
       
-      navigate('/guardian/dashboard');
+      navigate('/');
     } catch (error: any) {
       toast({
         title: "Erreur de connexion",
