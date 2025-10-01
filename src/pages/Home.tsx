@@ -7,22 +7,24 @@ import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-
 interface Dog {
   id: string;
   name: string;
   breed: string | null;
   avatar_url: string | null;
 }
-
 const Home = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, isProfessional, isGuardian, user } = useAuth();
+  const {
+    isAuthenticated,
+    isProfessional,
+    isGuardian,
+    user
+  } = useAuth();
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [loadingDogs, setLoadingDogs] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
-
   useEffect(() => {
     if (isGuardian && user) {
       fetchDogs();
@@ -31,17 +33,15 @@ const Home = () => {
       fetchProStats();
     }
   }, [isGuardian, isProfessional, user]);
-
   const fetchDogs = async () => {
     setLoadingDogs(true);
     try {
-      const { data, error } = await supabase
-        .from('dogs')
-        .select('id, name, breed, avatar_url')
-        .eq('owner_id', user?.id)
-        .order('created_at', { ascending: false })
-        .limit(3);
-
+      const {
+        data,
+        error
+      } = await supabase.from('dogs').select('id, name, breed, avatar_url').eq('owner_id', user?.id).order('created_at', {
+        ascending: false
+      }).limit(3);
       if (error) throw error;
       setDogs(data || []);
     } catch (error) {
@@ -50,21 +50,20 @@ const Home = () => {
       setLoadingDogs(false);
     }
   };
-
   const fetchProStats = async () => {
     try {
-      const { count: pending } = await supabase
-        .from('dog_professional_access')
-        .select('*', { count: 'exact', head: true })
-        .eq('professional_id', user?.id)
-        .eq('status', 'pending');
-
-      const { count: approved } = await supabase
-        .from('dog_professional_access')
-        .select('*', { count: 'exact', head: true })
-        .eq('professional_id', user?.id)
-        .eq('status', 'approved');
-
+      const {
+        count: pending
+      } = await supabase.from('dog_professional_access').select('*', {
+        count: 'exact',
+        head: true
+      }).eq('professional_id', user?.id).eq('status', 'pending');
+      const {
+        count: approved
+      } = await supabase.from('dog_professional_access').select('*', {
+        count: 'exact',
+        head: true
+      }).eq('professional_id', user?.id).eq('status', 'approved');
       setPendingRequests(pending || 0);
       setTotalClients(approved || 0);
     } catch (error) {
@@ -74,17 +73,11 @@ const Home = () => {
 
   // Professional Dashboard View
   if (isProfessional) {
-    return (
-      <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
+    return <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-2xl font-bold text-title">Tableau de bord</h1>
-            <Button
-              onClick={() => navigate("/professional/edit-profile")}
-              variant="outline"
-              size="sm"
-              className="rounded-full"
-            >
+            <Button onClick={() => navigate("/professional/edit-profile")} variant="outline" size="sm" className="rounded-full">
               <Settings className="h-4 w-4 mr-2" />
               Profil
             </Button>
@@ -98,11 +91,7 @@ const Home = () => {
               <p className="text-sm text-foreground/80">
                 Analyse complète des races, prédispositions santé et profil comportemental
               </p>
-              <Button 
-                onClick={() => navigate("/dna-kit")} 
-                className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" 
-                size="lg"
-              >
+              <Button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
                 <TestTube2 className="h-5 w-5 mr-2" />
                 Commander un kit ADN
               </Button>
@@ -133,10 +122,7 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card
-              className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
-              onClick={() => navigate("/professional/clients")}
-            >
+            <Card className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/clients")}>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                   <Users className="h-6 w-6 text-primary" />
@@ -150,10 +136,7 @@ const Home = () => {
               </div>
             </Card>
 
-            <Card
-              className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
-              onClick={() => navigate("/professional/messages")}
-            >
+            <Card className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
                   <MessageSquare className="h-6 w-6 text-secondary" />
@@ -168,8 +151,7 @@ const Home = () => {
             </Card>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
 
   // Guardian/Default View
@@ -177,12 +159,8 @@ const Home = () => {
       {/* Hero Section with Gradient */}
       <div className="bg-gradient-lupi p-8 rounded-b-[3rem] shadow-xl">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <h1 className="text-3xl font-bold text-white">
-            Découvrez l'ADN de votre chien 🐕
-          </h1>
-          <p className="text-white/90 text-sm">
-            Analyse complète des races, prédispositions santé et profil comportemental
-          </p>
+          <h1 className="text-3xl font-bold text-white">Découvrez & accompagnez votre chien</h1>
+          <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté à vos professionnels de santé, et ses données génétiques</p>
           
           <div className="space-y-3 pt-4">
             {!isAuthenticated ? <>
@@ -207,43 +185,24 @@ const Home = () => {
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 
-        {isGuardian && dogs.length > 0 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold text-title">Mes compagnons 🐾</h2>
+        {isGuardian && dogs.length > 0 && <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
             <div className="space-y-3">
-              {dogs.map((dog) => (
-                <div
-                  key={dog.id}
-                  className="lupi-card cursor-pointer"
-                  onClick={() => navigate(`/dogs/${dog.id}`)}
-                >
+              {dogs.map(dog => <div key={dog.id} className="lupi-card cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
                   <div className="flex items-center gap-4">
-                    {dog.avatar_url ? (
-                      <img
-                        src={dog.avatar_url}
-                        alt={dog.name}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
-                      />
-                    ) : (
-                      <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
+                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
                         <DogIcon className="h-8 w-8 text-primary" />
-                      </div>
-                    )}
+                      </div>}
                     <div className="flex-1">
                       <h3 className="font-bold text-title text-lg">{dog.name}</h3>
-                      {dog.breed && (
-                        <p className="text-sm text-muted-foreground">{dog.breed}</p>
-                      )}
+                      {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
-          </div>
-        )}
+          </div>}
 
-        {!isGuardian && (
-          <div>
+        {!isGuardian && <div>
             <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
             <div className="grid grid-cols-2 gap-4">
               <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
@@ -251,8 +210,7 @@ const Home = () => {
               <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
               <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
             </div>
-          </div>
-        )}
+          </div>}
       </div>
     </div>;
 };
