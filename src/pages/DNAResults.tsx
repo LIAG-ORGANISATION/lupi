@@ -36,11 +36,11 @@ const DNAResults = () => {
 
   // Example data - replace with actual data from database
   const breedComposition: BreedComposition[] = [
-    { name: "Border Collie", percentage: 45, emoji: "🐕", color: "bg-blue-500" },
-    { name: "Labrador", percentage: 26, emoji: "🦮", color: "bg-yellow-500" },
-    { name: "Aussie", percentage: 11, emoji: "🐕‍🦺", color: "bg-purple-500" },
-    { name: "Berger Allemand", percentage: 9.7, emoji: "🐺", color: "bg-green-500" },
-    { name: "Collie", percentage: 8, emoji: "🦴", color: "bg-orange-500" },
+    { name: "Border Collie", percentage: 45, emoji: "", color: "bg-blue-500" },
+    { name: "Labrador", percentage: 26, emoji: "", color: "bg-yellow-500" },
+    { name: "Aussie", percentage: 11, emoji: "", color: "bg-purple-500" },
+    { name: "Berger Allemand", percentage: 9.7, emoji: "", color: "bg-green-500" },
+    { name: "Collie", percentage: 8, emoji: "", color: "bg-orange-500" },
   ];
 
   const healthInfo: HealthInfo[] = [
@@ -119,7 +119,7 @@ const DNAResults = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in pb-24">
+    <div className="min-h-screen p-4 space-y-6 animate-fade-in pb-24 bg-background">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -136,7 +136,7 @@ const DNAResults = () => {
       </div>
 
       {/* Composition de race */}
-      <Card className="p-6 rounded-3xl space-y-4">
+      <Card className="lupi-card space-y-4">
         <h2 className="text-xl font-bold text-title">Composition de race</h2>
         <p className="text-sm text-muted-foreground">
           Analyse génétique des races détectées
@@ -145,7 +145,9 @@ const DNAResults = () => {
         <div className="space-y-3">
           {breedComposition.map((breed, index) => (
             <div key={index} className="flex items-center gap-4">
-              <span className="text-3xl">{breed.emoji}</span>
+              <div className="w-12 h-12 rounded-full bg-gradient-card flex items-center justify-center flex-shrink-0">
+                <div className={`w-8 h-8 rounded-full ${breed.color}`} />
+              </div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-title">{breed.name}</span>
@@ -164,7 +166,7 @@ const DNAResults = () => {
       </Card>
 
       {/* Santé */}
-      <Card className="p-6 rounded-3xl space-y-4">
+      <Card className="lupi-card space-y-4">
         <h2 className="text-xl font-bold text-title">Santé</h2>
         <p className="text-sm text-muted-foreground">
           Marqueurs génétiques de santé
@@ -188,7 +190,7 @@ const DNAResults = () => {
       </Card>
 
       {/* Génétique */}
-      <Card className="p-6 rounded-3xl space-y-4">
+      <Card className="lupi-card space-y-4">
         <h2 className="text-xl font-bold text-title">Génétique</h2>
         <p className="text-sm text-muted-foreground">
           Mutations génétiques détectées
@@ -212,7 +214,7 @@ const DNAResults = () => {
       </Card>
 
       {/* Rapport PDF */}
-      <Card className="p-6 rounded-3xl space-y-4 bg-gradient-to-br from-primary/10 to-secondary">
+      <Card className="lupi-card space-y-4 bg-gradient-card">
         <div className="text-center space-y-4">
           <FileText className="h-16 w-16 mx-auto text-primary" />
           <div>
@@ -221,7 +223,7 @@ const DNAResults = () => {
               Téléchargez ou partagez le rapport PDF détaillé
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              ⚠️ Fichier volumineux (environ 10 Mo)
+              Fichier volumineux (environ 10 Mo)
             </p>
           </div>
           
@@ -246,7 +248,7 @@ const DNAResults = () => {
       </Card>
 
       {/* Passeport vaccinal */}
-      <Card className="p-6 rounded-3xl space-y-4">
+      <Card className="lupi-card space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-title">Passeport vaccinal</h2>

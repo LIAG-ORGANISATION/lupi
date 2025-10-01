@@ -326,7 +326,7 @@ const DogProfile = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in">
+    <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -339,7 +339,7 @@ const DogProfile = () => {
         <h1 className="text-2xl font-bold text-title">Profil de {dog.name}</h1>
       </div>
 
-      <Card className="p-6 rounded-3xl text-center space-y-4">
+      <Card className="lupi-card text-center space-y-4">
         <div className="relative w-32 h-32 mx-auto">
           {dog.avatar_url ? (
             <img

@@ -353,7 +353,7 @@ const VaccinationPassport = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in pb-24 bg-[#FDECEC]">
+    <div className="min-h-screen p-4 space-y-6 animate-fade-in pb-24 bg-background">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -367,7 +367,7 @@ const VaccinationPassport = () => {
       </div>
 
       {/* Dog Info Header */}
-      <Card className="p-6 rounded-3xl text-center space-y-4">
+      <Card className="lupi-card text-center space-y-4">
         <Avatar className="w-24 h-24 mx-auto">
           {dogData.avatar_url && <AvatarImage src={dogData.avatar_url} />}
           <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
@@ -380,16 +380,16 @@ const VaccinationPassport = () => {
             <p className="text-sm text-muted-foreground">{dogData.breed}</p>
           )}
         </div>
-        <p className="text-xs text-muted-foreground">
-          Ajoutez vos certificats et vaccins. Vous choisissez ce que vous partagez.
-        </p>
+            <p className="text-xs text-muted-foreground">
+            Ajoutez vos certificats et vaccins
+          </p>
       </Card>
 
       {/* Professional Read-Only Banner */}
       {isProfessional && (
         <Card className="p-4 rounded-2xl bg-muted">
           <p className="text-sm text-muted-foreground text-center">
-            📋 Documents fournis par le propriétaire. Accès révocable.
+            Documents fournis par le propriétaire. Accès révocable.
           </p>
         </Card>
       )}
@@ -419,15 +419,15 @@ const VaccinationPassport = () => {
       {/* Documents List */}
       <div className="space-y-3">
         {documents.length === 0 ? (
-          <Card className="p-6 rounded-3xl text-center">
+          <Card className="lupi-card text-center">
             <p className="text-muted-foreground">Aucun document pour le moment</p>
           </Card>
         ) : (
           documents.map((doc) => (
             <Card key={doc.id} className="p-4 rounded-2xl space-y-3">
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 text-3xl">
-                  {doc.file_type.startsWith('image/') ? '🖼️' : '📄'}
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-title truncate">{doc.title}</h3>

@@ -151,7 +151,7 @@ const AddDog = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in">
+    <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -165,7 +165,7 @@ const AddDog = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Card className="p-6 rounded-3xl space-y-6">
+        <Card className="lupi-card space-y-6">
           {/* Photo Upload */}
           <div className="flex flex-col items-center gap-4">
             <div className="relative">

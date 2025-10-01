@@ -158,10 +158,10 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in">
+    <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
       <h1 className="text-2xl font-bold text-title">Profil</h1>
 
-      <Card className="p-6 rounded-3xl text-center space-y-4">
+      <Card className="lupi-card text-center space-y-4">
         {loading ? (
           <div className="animate-pulse space-y-4">
             <div className="w-24 h-24 mx-auto rounded-full bg-secondary" />
@@ -211,7 +211,7 @@ const Profile = () => {
       </Card>
 
       {isGuardian && dogs.length > 0 && (
-        <Card className="bg-secondary p-6 rounded-3xl space-y-4">
+        <Card className="lupi-card bg-secondary space-y-4">
           <div>
             <h2 className="text-lg font-semibold text-title">
               Mes compagnons
@@ -231,7 +231,7 @@ const Profile = () => {
       )}
 
       {isGuardian && dogs.length === 0 && (
-        <Card className="bg-secondary p-6 rounded-3xl space-y-4">
+        <Card className="lupi-card bg-secondary space-y-4">
           <div>
             <h2 className="text-lg font-semibold text-title">
               Créez un profil pour votre compagnon

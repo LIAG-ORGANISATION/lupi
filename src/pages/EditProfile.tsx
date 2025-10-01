@@ -137,7 +137,7 @@ const EditProfile = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in">
+    <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -151,7 +151,7 @@ const EditProfile = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <Card className="p-6 rounded-3xl text-center space-y-4">
+        <Card className="lupi-card text-center space-y-4">
           <div className="relative w-24 h-24 mx-auto">
             <Avatar className="w-24 h-24">
               {avatarUrl && <AvatarImage src={avatarUrl} alt="Avatar" />}
@@ -175,7 +175,7 @@ const EditProfile = () => {
           </div>
         </Card>
 
-        <Card className="p-6 rounded-3xl space-y-4">
+        <Card className="lupi-card space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Nom complet</Label>
             <Input

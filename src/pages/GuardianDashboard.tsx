@@ -64,7 +64,7 @@ const GuardianDashboard = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card
-              className="p-4 rounded-3xl cursor-pointer hover:border-primary transition-all"
+              className="lupi-card cursor-pointer"
               onClick={() => navigate("/guardian/messages")}
             >
               <div className="flex items-center gap-3">
@@ -79,7 +79,7 @@ const GuardianDashboard = () => {
             </Card>
 
             <Card
-              className="p-4 rounded-3xl cursor-pointer hover:border-primary transition-all"
+              className="lupi-card cursor-pointer"
               onClick={() => navigate("/guardian/documents")}
             >
               <div className="flex items-center gap-3">
@@ -94,7 +94,7 @@ const GuardianDashboard = () => {
             </Card>
 
             <Card
-              className="p-4 rounded-3xl cursor-pointer hover:border-primary transition-all"
+              className="lupi-card cursor-pointer"
               onClick={() => navigate("/professionals")}
             >
               <div className="flex items-center gap-3">
@@ -114,7 +114,7 @@ const GuardianDashboard = () => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
           ) : dogs.length === 0 ? (
-            <Card className="p-8 rounded-3xl text-center">
+            <Card className="lupi-card text-center">
               <p className="text-muted-foreground mb-4">Vous n'avez pas encore ajouté de chien</p>
               <Button onClick={() => navigate("/dogs/add")} className="rounded-full">
                 <Plus className="h-4 w-4 mr-2" />
@@ -126,7 +126,7 @@ const GuardianDashboard = () => {
               {dogs.map((dog) => (
                 <Card
                   key={dog.id}
-                  className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
+                  className="lupi-card cursor-pointer"
                   onClick={() => navigate(`/dogs/${dog.id}`)}
                 >
                   <div className="flex items-center gap-4">

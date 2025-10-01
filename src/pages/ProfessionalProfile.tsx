@@ -71,8 +71,12 @@ const ProfessionalProfile = () => {
         <div className="p-4 space-y-6">
           {/* Profile Header */}
           <div className="text-center space-y-4">
-            <div className="w-32 h-32 rounded-full bg-[#B5D4BA] mx-auto flex items-center justify-center">
-              <div className="text-5xl">👤</div>
+            <div className="w-32 h-32 rounded-full bg-secondary mx-auto flex items-center justify-center">
+              <Avatar className="w-32 h-32">
+                <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
+                  {professional.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
             </div>
             <div>
               <h1 className="text-2xl font-bold text-title">{professional.name}</h1>
@@ -110,12 +114,12 @@ const ProfessionalProfile = () => {
           </div>
 
           {/* Bio */}
-          <Card className="p-6 rounded-3xl">
+          <Card className="lupi-card">
             <p className="text-sm text-foreground leading-relaxed">{professional.bio}</p>
           </Card>
 
           {/* Certifications */}
-          <Card className="p-6 rounded-3xl space-y-3">
+          <Card className="lupi-card space-y-3">
             <h3 className="font-bold text-title flex items-center gap-2">
               <Award className="h-5 w-5 text-primary" />
               Certifications
@@ -131,7 +135,7 @@ const ProfessionalProfile = () => {
           </Card>
 
           {/* Languages */}
-          <Card className="p-6 rounded-3xl space-y-3">
+          <Card className="lupi-card space-y-3">
             <h3 className="font-bold text-title flex items-center gap-2">
               <Globe className="h-5 w-5 text-primary" />
               Languages
@@ -147,7 +151,7 @@ const ProfessionalProfile = () => {
           </Card>
 
           {/* Services */}
-          <Card className="p-6 rounded-3xl space-y-3">
+          <Card className="lupi-card space-y-3">
             <h3 className="font-bold text-title flex items-center gap-2">
               <Clock className="h-5 w-5 text-primary" />
               Services
@@ -168,7 +172,7 @@ const ProfessionalProfile = () => {
           </Card>
 
           {/* Pricing */}
-          <Card className="p-6 rounded-3xl">
+          <Card className="lupi-card">
             <h3 className="font-bold text-title flex items-center gap-2 mb-3">
               <DollarSign className="h-5 w-5 text-primary" />
               Pricing
@@ -180,7 +184,7 @@ const ProfessionalProfile = () => {
           </Card>
 
           {/* Reviews */}
-          <Card className="p-6 rounded-3xl space-y-4">
+          <Card className="lupi-card space-y-4">
             <h3 className="font-bold text-title flex items-center gap-2">
               <Star className="h-5 w-5 text-primary" />
               Reviews

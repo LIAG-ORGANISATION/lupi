@@ -33,7 +33,7 @@ const Recommendations = () => {
 
   return (
     <AuthGuard requiredRole="guardian">
-      <div className="min-h-screen p-4 space-y-6 animate-fade-in">
+      <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
       <div>
         <h1 className="text-2xl font-bold text-title mb-2">Recommandations</h1>
         <p className="text-sm text-muted-foreground">

@@ -36,7 +36,7 @@ const DNAKit = () => {
             Apprenez à mieux connaître votre chien ! Notre test ADN analyse plus de 350 races, types et variétés, identifie les risques de santé génétiques et révèle des traits de personnalité uniques pour vous aider à fournir les meilleurs soins possibles.
           </p>
 
-          <Card className="p-6 rounded-3xl space-y-4 bg-secondary/50">
+          <Card className="lupi-card space-y-4 bg-secondary/50">
             <h3 className="text-lg font-bold text-title">Contenu du Kit</h3>
             <div className="space-y-3">
               {included.map((item, index) => (
@@ -50,7 +50,7 @@ const DNAKit = () => {
             </div>
           </Card>
 
-          <Card className="p-6 rounded-3xl space-y-4">
+          <Card className="lupi-card space-y-4">
             <h3 className="text-lg font-bold text-title">Avantages Clés</h3>
             <div className="space-y-3">
               {benefits.map((benefit, index) => (

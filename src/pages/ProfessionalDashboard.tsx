@@ -69,21 +69,21 @@ const ProfessionalDashboard = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="p-6 rounded-3xl">
+            <Card className="lupi-card">
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-primary">{pendingRequests}</div>
                 <p className="text-sm text-muted-foreground">Demandes en attente</p>
               </div>
             </Card>
 
-            <Card className="p-6 rounded-3xl">
+            <Card className="lupi-card">
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-secondary">{totalClients}</div>
                 <p className="text-sm text-muted-foreground">Clients actifs</p>
               </div>
             </Card>
 
-            <Card className="p-6 rounded-3xl">
+            <Card className="lupi-card">
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-accent">0</div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
@@ -93,7 +93,7 @@ const ProfessionalDashboard = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card
-              className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
+              className="lupi-card cursor-pointer"
               onClick={() => navigate("/professional/clients")}
             >
               <div className="flex items-center gap-4">
@@ -110,7 +110,7 @@ const ProfessionalDashboard = () => {
             </Card>
 
             <Card
-              className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all"
+              className="lupi-card cursor-pointer"
               onClick={() => navigate("/professional/messages")}
             >
               <div className="flex items-center gap-4">

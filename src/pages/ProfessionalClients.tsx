@@ -99,12 +99,12 @@ const ProfessionalClients = () => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
           ) : requests.length === 0 ? (
-            <Card className="p-8 rounded-3xl text-center">
+            <Card className="lupi-card text-center">
               <p className="text-muted-foreground">Aucune demande pour le moment</p>
             </Card>
           ) : (
             requests.map((request) => (
-              <Card key={request.id} className="p-6 rounded-3xl">
+              <Card key={request.id} className="lupi-card">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-bold text-title">{request.dog.name}</h3>
