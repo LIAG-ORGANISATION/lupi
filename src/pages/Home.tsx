@@ -203,9 +203,9 @@ const Home = () => {
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 
+        {/* Quick actions for authenticated guardians */}
         {isAuthenticated && isGuardian && (
-          <>
-            <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="grid grid-cols-3 gap-3 mb-6">
             <div 
               className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
               onClick={() => navigate("/guardian/messages")}
@@ -263,51 +263,51 @@ const Home = () => {
               </div>
             </div>
           </div>
-
-            <div className="space-y-4">
-              <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
-            <div className="space-y-3">
-              <a 
-                href="https://www.kozoo.eu" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
-              >
-                <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                  <img 
-                    src={kozooLogo} 
-                    alt="KOZOO" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title text-lg">KOZOO</h3>
-                  <p className="text-sm text-muted-foreground">Assurance pour chien</p>
-                </div>
-              </a>
-
-              <a 
-                href="https://www.pennypet.fr" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
-              >
-                <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                  <img 
-                    src={pennypetLogo} 
-                    alt="PENNYPET" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
-                  <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
-                </div>
-              </a>
-            </div>
-          </div>
-          </>
         )}
+
+        {/* Partners section - visible to everyone */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
+          <div className="space-y-3">
+            <a 
+              href="https://www.kozoo.eu" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
+            >
+              <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+                <img 
+                  src={kozooLogo} 
+                  alt="KOZOO" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-title text-lg">KOZOO</h3>
+                <p className="text-sm text-muted-foreground">Assurance pour chien</p>
+              </div>
+            </a>
+
+            <a 
+              href="https://www.pennypet.fr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
+            >
+              <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+                <img 
+                  src={pennypetLogo} 
+                  alt="PENNYPET" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
+                <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
+              </div>
+            </a>
+          </div>
+        </div>
 
         {isGuardian && dogs.length > 0 && <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
@@ -336,6 +336,28 @@ const Home = () => {
             </div>
           </div>}
 
+        {/* CTA for non-authenticated users */}
+        {!isAuthenticated && (
+          <div className="mt-8 lupi-card p-8 text-center space-y-4 bg-gradient-card">
+            <DogIcon className="h-16 w-16 text-primary mx-auto" />
+            <h3 className="text-xl font-bold text-title">
+              Ajoutez votre chien pour démarrer l'expérience Lupi
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Commencez à suivre la santé et le bien-être de votre compagnon
+            </p>
+            <Button 
+              onClick={() => navigate("/choose-account-type")} 
+              className="w-full rounded-full"
+              size="lg"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Télécharger l'app et s'inscrire
+            </Button>
+          </div>
+        )}
+
+        {/* CTA for authenticated guardians without dogs */}
         {isAuthenticated && isGuardian && dogs.length === 0 && (
           <div className="mt-8 lupi-card p-8 text-center space-y-4 bg-gradient-card">
             <DogIcon className="h-16 w-16 text-primary mx-auto" />
