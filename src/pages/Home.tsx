@@ -9,6 +9,8 @@ import dogsOriginSection from "@/assets/dogs-origin-section.png";
 import messagesIcon from "@/assets/messages-icon.jpg";
 import documentsIcon from "@/assets/documents-icon.jpg";
 import professionalsIcon from "@/assets/professionals-icon.jpg";
+import kozooLogo from "@/assets/kozoo-logo.png";
+import pennypetLogo from "@/assets/pennypet-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 interface Dog {
@@ -268,12 +270,16 @@ const Home = () => {
                 className="lupi-card cursor-pointer hover:shadow-lg transition-all p-6"
               >
                 <div className="flex flex-col items-center gap-3 text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center">
-                    <span className="text-2xl font-bold text-primary">K</span>
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white flex items-center justify-center p-2">
+                    <img 
+                      src={kozooLogo} 
+                      alt="KOZOO" 
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   <div>
                     <h3 className="font-semibold text-title">KOZOO</h3>
-                    <p className="text-xs text-muted-foreground">Solutions pour animaux</p>
+                    <p className="text-xs text-muted-foreground">Assurance pour chien</p>
                   </div>
                 </div>
               </a>
@@ -285,12 +291,16 @@ const Home = () => {
                 className="lupi-card cursor-pointer hover:shadow-lg transition-all p-6"
               >
                 <div className="flex flex-col items-center gap-3 text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center">
-                    <span className="text-2xl font-bold text-primary">P</span>
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white flex items-center justify-center p-2">
+                    <img 
+                      src={pennypetLogo} 
+                      alt="PENNYPET" 
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   <div>
                     <h3 className="font-semibold text-title">PENNYPET</h3>
-                    <p className="text-xs text-muted-foreground">Produits pour animaux</p>
+                    <p className="text-xs text-muted-foreground">Cashback frais animaux</p>
                   </div>
                 </div>
               </a>
