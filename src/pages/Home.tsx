@@ -186,42 +186,51 @@ const Home = () => {
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 
-        {isGuardian && <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <Card className="lupi-card cursor-pointer" onClick={() => navigate("/guardian/messages")}>
-              <div className="flex items-center gap-3">
+        {isGuardian && <div className="grid grid-cols-3 gap-3 mb-6">
+            <div 
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
+              onClick={() => navigate("/guardian/messages")}
+            >
+              <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                   <MessageSquare className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-title">Messages</h3>
-                  <p className="text-sm text-muted-foreground">Avec les pros</p>
+                  <h3 className="font-semibold text-title text-sm">Messages</h3>
+                  <p className="text-xs text-muted-foreground">Avec les pros</p>
                 </div>
               </div>
-            </Card>
+            </div>
 
-            <Card className="lupi-card cursor-pointer" onClick={() => navigate("/guardian/documents")}>
-              <div className="flex items-center gap-3">
+            <div 
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
+              onClick={() => navigate("/guardian/documents")}
+            >
+              <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
                   <FileText className="h-6 w-6 text-secondary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-title">Documents</h3>
-                  <p className="text-sm text-muted-foreground">Partagés</p>
+                  <h3 className="font-semibold text-title text-sm">Documents</h3>
+                  <p className="text-xs text-muted-foreground">Partagés</p>
                 </div>
               </div>
-            </Card>
+            </div>
 
-            <Card className="lupi-card cursor-pointer" onClick={() => navigate("/professionals")}>
-              <div className="flex items-center gap-3">
+            <div 
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
+              onClick={() => navigate("/professionals")}
+            >
+              <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
                   <Stethoscope className="h-6 w-6 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-title">Professionnels</h3>
-                  <p className="text-sm text-muted-foreground">Trouver</p>
+                  <h3 className="font-semibold text-title text-sm">Professionnels</h3>
+                  <p className="text-xs text-muted-foreground">Trouver</p>
                 </div>
               </div>
-            </Card>
+            </div>
           </div>}
 
         {isGuardian && dogs.length > 0 && <div className="space-y-4">
