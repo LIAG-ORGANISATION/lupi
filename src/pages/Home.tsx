@@ -188,8 +188,8 @@ const Home = () => {
         {isGuardian && dogs.length > 0 && <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
             <div className="space-y-3">
-              {dogs.map(dog => <div key={dog.id} className="lupi-card cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                  <div className="flex items-center gap-4">
+              {dogs.map(dog => <div key={dog.id} className="lupi-card">
+                  <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
                     {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
                         <DogIcon className="h-8 w-8 text-primary" />
                       </div>}
@@ -198,6 +198,15 @@ const Home = () => {
                       {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
                     </div>
                   </div>
+                  {!dog.breed && <div className="mt-4 pt-4 border-t border-border">
+                      <Button onClick={(e) => {
+                          e.stopPropagation();
+                          navigate("/dna-kit");
+                        }} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="sm">
+                        <TestTube2 className="h-4 w-4 mr-2" />
+                        Faire le test ADN
+                      </Button>
+                    </div>}
                 </div>)}
             </div>
           </div>}
