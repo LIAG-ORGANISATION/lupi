@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
+import dogsOriginSection from "@/assets/dogs-origin-section.png";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 interface Dog {
@@ -182,6 +183,15 @@ const Home = () => {
               </>}
           </div>
         </div>
+      </div>
+
+      {/* D'où ils viennent Section */}
+      <div className="p-4 max-w-4xl mx-auto mt-6">
+        <img 
+          src={dogsOriginSection} 
+          alt="D'où ils viennent - Généalogie et traits comportementaux" 
+          className="w-full rounded-3xl shadow-lg"
+        />
       </div>
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
