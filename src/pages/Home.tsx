@@ -157,7 +157,7 @@ const Home = () => {
   // Guardian/Default View
   return <div className="min-h-screen pb-20 animate-fade-in">
       {/* Hero Section with Gradient */}
-      <div className="bg-gradient-lupi p-8 rounded-b-[3rem] shadow-xl">
+      <div className="bg-gradient-lupi p-8 rounded-b-[3rem] shadow-xl bg-slate-50">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
           <h1 className="text-3xl font-bold text-white">Découvrez & accompagnez votre chien</h1>
           <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté à ses données génétiques, ses alertes, et son profil comportemental </p>
