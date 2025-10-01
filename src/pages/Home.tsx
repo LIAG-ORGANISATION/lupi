@@ -186,7 +186,7 @@ const Home = () => {
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 
-        {isGuardian && <div className="grid grid-cols-3 gap-3 mb-6">
+        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-6">
             <div 
               className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
               onClick={() => navigate("/guardian/messages")}
