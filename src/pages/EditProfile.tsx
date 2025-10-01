@@ -13,7 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 const EditProfile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, isGuardian } = useAuth();
+  const { user, isGuardian, isProfessional } = useAuth();
   const [loading, setLoading] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -26,10 +26,14 @@ const EditProfile = () => {
   });
 
   useEffect(() => {
+    if (isProfessional) {
+      navigate("/professional/edit-profile");
+      return;
+    }
     if (user && isGuardian) {
       fetchProfileData();
     }
-  }, [user, isGuardian]);
+  }, [user, isGuardian, isProfessional, navigate]);
 
   const fetchProfileData = async () => {
     try {
