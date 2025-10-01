@@ -53,125 +53,133 @@ const Dogs = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in">
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-title">Bienvenue</h1>
-        <p className="text-muted-foreground">Gérez les profils de vos compagnons</p>
+    <div className="min-h-screen pb-20 animate-fade-in">
+      {/* Header avec gradient */}
+      <div className="bg-gradient-lupi p-6 rounded-b-[3rem] shadow-xl mb-6">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold text-white text-center">
+            Mes chiens 🐕
+          </h1>
+          <p className="text-white/90 text-center text-sm mt-2">Gérez les profils de vos compagnons</p>
+        </div>
       </div>
 
-      {!loading && dogs.length === 0 && (
-        <Card className="bg-secondary p-6 rounded-3xl space-y-4">
-          <div>
-            <h2 className="text-lg font-semibold text-title">
-              Créez un profil pour votre compagnon
-            </h2>
-            <p className="text-sm text-foreground/70 mt-1">
-              Suivez sa santé et son comportement
-            </p>
-          </div>
-          <Button
-            onClick={() => navigate("/dogs/add")}
-            className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Ajouter un chien
-          </Button>
-        </Card>
-      )}
+      <div className="px-4 space-y-6 max-w-4xl mx-auto">
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-title">Mes chiens</h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              console.log('[Dogs] 🔄 Manual refresh');
-              fetchDogs();
-            }}
-            className="text-xs"
-          >
-            Actualiser
-          </Button>
-        </div>
-        {loading ? (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        {!loading && dogs.length === 0 && (
+          <div className="lupi-card text-center space-y-6">
+            <div className="w-24 h-24 mx-auto rounded-full bg-gradient-card flex items-center justify-center">
+              <DogIcon className="h-12 w-12 text-primary" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-title mb-2">
+                Bienvenue sur LupiApp ! 🐾
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                Créez un profil pour votre compagnon et suivez sa santé
+              </p>
+              <button
+                onClick={() => navigate("/dogs/add")}
+                className="btn-lupi"
+              >
+                <Plus className="h-5 w-5 mr-2 inline" />
+                Ajouter mon premier chien
+              </button>
+            </div>
           </div>
-        ) : dogs.length === 0 ? (
-          <Card className="p-6 rounded-3xl text-center">
-            <p className="text-muted-foreground">Aucun chien ajouté pour le moment</p>
-          </Card>
-        ) : (
-          dogs.map((dog) => (
-            <Card
-              key={dog.id}
-              className="p-4 rounded-2xl shadow-sm hover:shadow-md transition-all cursor-pointer"
-              onClick={() => navigate(`/dogs/${dog.id}`)}
-            >
-              <div className="flex items-center gap-4">
-                {dog.avatar_url ? (
-                  <img
-                    src={dog.avatar_url}
-                    alt={dog.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                    <DogIcon className="h-8 w-8 text-primary" />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title">{dog.name}</h3>
-                  {dog.breed && (
-                    <p className="text-sm text-muted-foreground">{dog.breed}</p>
-                  )}
-                </div>
-              </div>
-            </Card>
-          ))
         )}
-      </div>
 
-      <div>
-        <h2 className="text-lg font-bold text-title mb-4">Accès rapide</h2>
-        <div className="grid grid-cols-3 gap-3">
-          {dogs.length === 1 ? (
-            <>
-              <QuickActionCard
-                icon={TestTube2}
-                label="Tests"
-                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-              />
-              <QuickActionCard
-                icon={Heart}
-                label="Santé"
-                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-              />
-              <QuickActionCard
-                icon={FileText}
-                label="Rapports"
-                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-              />
-              <QuickActionCard
-                icon={Stethoscope}
-                label="RDV"
-                onClick={() => navigate("/professionals")}
-              />
-              <QuickActionCard
-                icon={Calendar}
-                label="Calendrier"
-                onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-              />
-            </>
-          ) : dogs.length > 1 ? (
-            <QuickActionCard
-              icon={Calendar}
-              label="RDV"
-              onClick={() => navigate("/professionals")}
-            />
-          ) : null}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
+            {dogs.length > 0 && (
+              <button
+                onClick={() => navigate("/dogs/add")}
+                className="text-primary font-semibold text-sm hover:underline"
+              >
+                + Ajouter
+              </button>
+            )}
+          </div>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+            </div>
+          ) : dogs.length === 0 ? null : (
+            <div className="grid gap-4">
+              {dogs.map((dog) => (
+                <div
+                  key={dog.id}
+                  className="lupi-card cursor-pointer group"
+                  onClick={() => navigate(`/dogs/${dog.id}`)}
+                >
+                  <div className="flex items-center gap-4">
+                    {dog.avatar_url ? (
+                      <img
+                        src={dog.avatar_url}
+                        alt={dog.name}
+                        className="w-20 h-20 rounded-full object-cover border-2 border-primary/20 group-hover:border-primary transition-all"
+                      />
+                    ) : (
+                      <div className="w-20 h-20 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20 group-hover:border-primary transition-all">
+                        <DogIcon className="h-10 w-10 text-primary" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-title">{dog.name}</h3>
+                      {dog.breed && (
+                        <p className="text-sm text-muted-foreground">{dog.breed}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+
+        {dogs.length > 0 && (
+          <div>
+            <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
+            <div className="grid grid-cols-3 gap-3">
+              {dogs.length === 1 ? (
+                <>
+                  <QuickActionCard
+                    icon={TestTube2}
+                    label="Tests"
+                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+                  />
+                  <QuickActionCard
+                    icon={Heart}
+                    label="Santé"
+                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+                  />
+                  <QuickActionCard
+                    icon={FileText}
+                    label="Rapports"
+                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+                  />
+                  <QuickActionCard
+                    icon={Stethoscope}
+                    label="RDV"
+                    onClick={() => navigate("/professionals")}
+                  />
+                  <QuickActionCard
+                    icon={Calendar}
+                    label="Calendrier"
+                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
+                  />
+                </>
+              ) : (
+                <QuickActionCard
+                  icon={Calendar}
+                  label="RDV"
+                  onClick={() => navigate("/professionals")}
+                />
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

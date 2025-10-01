@@ -173,83 +173,87 @@ const Home = () => {
   }
 
   // Guardian/Default View
-  return <div className="min-h-screen p-4 space-y-6 animate-fade-in">
-      <Card className="bg-secondary p-6 rounded-3xl shadow-lg overflow-hidden relative">
-        <div className="relative z-10 space-y-4">
-          <h1 className="text-2xl font-bold text-title">
-            Découvrez l'ADN de votre chien
+  return <div className="min-h-screen pb-20 animate-fade-in">
+      {/* Hero Section with Gradient */}
+      <div className="bg-gradient-lupi p-8 rounded-b-[3rem] shadow-xl">
+        <div className="max-w-4xl mx-auto space-y-6 text-center">
+          <h1 className="text-3xl font-bold text-white">
+            Découvrez l'ADN de votre chien 🐕
           </h1>
-          <p className="text-sm text-foreground/80">
+          <p className="text-white/90 text-sm">
             Analyse complète des races, prédispositions santé et profil comportemental
           </p>
           
-          <div className="space-y-2">
+          <div className="space-y-3 pt-4">
             {!isAuthenticated ? <>
-                <Button onClick={() => navigate("/choose-account-type")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
-                  <LogIn className="h-5 w-5 mr-2" />
+                <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                  <LogIn className="h-5 w-5 mr-2 inline" />
                   Se connecter / S'inscrire
-                </Button>
+                </button>
               </> : <>
                 {isGuardian && <>
-                    <Button onClick={() => navigate("/dogs/add")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
-                      <Plus className="h-5 w-5 mr-2" />
+                    <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                      <Plus className="h-5 w-5 mr-2 inline" />
                       Ajouter un chien
-                    </Button>
-                    <Button onClick={() => navigate("/guardian/dashboard")} variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/10" size="lg">
+                    </button>
+                    <button onClick={() => navigate("/guardian/dashboard")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
                       Mon tableau de bord
-                    </Button>
+                    </button>
                   </>}
               </>}
           </div>
         </div>
-      </Card>
+      </div>
 
-      {isGuardian && dogs.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-bold text-title">Mes compagnons</h2>
-          <div className="space-y-3">
-            {dogs.map((dog) => (
-              <Card
-                key={dog.id}
-                className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all"
-                onClick={() => navigate(`/dogs/${dog.id}`)}
-              >
-                <div className="flex items-center gap-4">
-                  {dog.avatar_url ? (
-                    <img
-                      src={dog.avatar_url}
-                      alt={dog.name}
-                      className="w-14 h-14 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                      <DogIcon className="h-7 w-7 text-primary" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-title">{dog.name}</h3>
-                    {dog.breed && (
-                      <p className="text-sm text-muted-foreground">{dog.breed}</p>
+      <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+
+        {isGuardian && dogs.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">Mes compagnons 🐾</h2>
+            <div className="space-y-3">
+              {dogs.map((dog) => (
+                <div
+                  key={dog.id}
+                  className="lupi-card cursor-pointer"
+                  onClick={() => navigate(`/dogs/${dog.id}`)}
+                >
+                  <div className="flex items-center gap-4">
+                    {dog.avatar_url ? (
+                      <img
+                        src={dog.avatar_url}
+                        alt={dog.name}
+                        className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
+                        <DogIcon className="h-8 w-8 text-primary" />
+                      </div>
                     )}
+                    <div className="flex-1">
+                      <h3 className="font-bold text-title text-lg">{dog.name}</h3>
+                      {dog.breed && (
+                        <p className="text-sm text-muted-foreground">{dog.breed}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </Card>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {!isGuardian && (
-        <div>
-          <h2 className="text-lg font-bold text-title mb-4">Accès rapide</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
-            <QuickActionCard icon={ClipboardList} label="Questionnaire" onClick={() => navigate("/questionnaire")} />
-            <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
-            <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
+        {!isGuardian && (
+          <div>
+            <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
+              <QuickActionCard icon={ClipboardList} label="Questionnaire" onClick={() => navigate("/questionnaire")} />
+              <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
+              <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>;
 };
 export default Home;

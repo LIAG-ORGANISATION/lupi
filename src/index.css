@@ -40,7 +40,15 @@ All colors MUST be HSL.
     --radius: 1rem;
     
     --title: 0 85% 18%; /* #5C0A0A - Titres */
-    --hero-gradient: linear-gradient(135deg, hsl(0 73% 69%), hsl(0 90% 60%));
+    
+    /* Gradients LupiApp */
+    --gradient-primary: linear-gradient(135deg, #FF6B6B 0%, #A855F7 100%); /* Rose → Violet */
+    --gradient-soft: linear-gradient(180deg, #FDECEC 0%, #FFF 100%); /* Rose clair → Blanc */
+    --gradient-card: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(168,85,247,0.1) 100%);
+    
+    /* Shadows */
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -101,10 +109,40 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans;
+    background: var(--gradient-soft);
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold text-title;
+  }
+}
+
+@layer components {
+  /* Card Style LupiApp */
+  .lupi-card {
+    @apply bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+  
+  .lupi-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  
+  /* Button Primary */
+  .btn-lupi {
+    @apply bg-primary text-white font-semibold rounded-full px-8 py-3 transition-all duration-300;
+    @apply hover:scale-105 hover:shadow-lg;
+  }
+  
+  /* Gradient Background */
+  .bg-gradient-lupi {
+    background: var(--gradient-primary);
+  }
+  
+  /* Avatar Circle */
+  .avatar-circle {
+    @apply w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg;
   }
 }
 

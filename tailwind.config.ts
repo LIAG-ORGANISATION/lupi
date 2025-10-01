@@ -64,7 +64,13 @@ export default {
         title: "hsl(var(--title))",
       },
       backgroundImage: {
-        'hero-gradient': 'var(--hero-gradient)',
+        'gradient-lupi': 'var(--gradient-primary)',
+        'gradient-soft': 'var(--gradient-soft)',
+        'gradient-card': 'var(--gradient-card)',
+      },
+      boxShadow: {
+        'card': 'var(--shadow-card)',
+        'hover': 'var(--shadow-hover)',
       },
       borderRadius: {
         lg: "var(--radius)",
