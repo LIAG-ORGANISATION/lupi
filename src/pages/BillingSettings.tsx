@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, CreditCard, Calendar } from "lucide-react";
+import { ArrowLeft, CreditCard, Calendar, Wallet, TrendingUp } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useToast } from "@/hooks/use-toast";
 
@@ -37,38 +37,84 @@ const BillingSettings = () => {
         </Card>
 
         {isProfessional ? (
-          <Card className="p-6 rounded-3xl space-y-4 bg-gradient-to-br from-primary/10 to-secondary">
-            <h2 className="text-lg font-bold text-title">Abonnement Professionnel</h2>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <span>Référencement du profil professionnel</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <span>Accès à la messagerie clients</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <span>Être contacté par les propriétaires</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <span>Consulter et envoyer des documents</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <span>Recevoir des commissions sur les tests ADN</span>
-              </li>
-            </ul>
-            <div className="flex items-baseline gap-2 pt-2">
-              <span className="text-3xl font-bold text-title">14,99€</span>
-              <span className="text-muted-foreground">/mois</span>
-            </div>
-            <Button className="w-full rounded-full bg-primary hover:bg-primary/90">
-              Souscrire maintenant
-            </Button>
-          </Card>
+          <>
+            <Card className="p-6 rounded-3xl space-y-4 bg-gradient-to-br from-primary/10 to-secondary">
+              <h2 className="text-lg font-bold text-title">Abonnement Professionnel</h2>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Référencement du profil professionnel</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Accès à la messagerie clients</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Être contacté par les propriétaires</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Consulter et envoyer des documents</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span>Recevoir des commissions sur les tests ADN</span>
+                </li>
+              </ul>
+              <div className="flex items-baseline gap-2 pt-2">
+                <span className="text-3xl font-bold text-title">14,99€</span>
+                <span className="text-muted-foreground">/mois</span>
+              </div>
+              <Button className="w-full rounded-full bg-primary hover:bg-primary/90">
+                Souscrire maintenant
+              </Button>
+            </Card>
+
+            <Card className="p-6 rounded-3xl space-y-4 border-2 border-accent/20">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+                  <Wallet className="h-6 w-6 text-accent" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-title">Cagnotte commission test ADN</h2>
+                  <p className="text-sm text-muted-foreground">Commissions accumulées</p>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-2xl p-4">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-title">0,00 €</span>
+                  <TrendingUp className="h-5 w-5 text-accent" />
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Commission : 10% par test ADN vendu
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <Button 
+                  variant="outline" 
+                  className="rounded-full"
+                  onClick={() => toast({
+                    title: "Décaissement demandé",
+                    description: "Votre demande sera traitée sous 48h.",
+                  })}
+                >
+                  Décaisser
+                </Button>
+                <Button 
+                  className="rounded-full bg-accent hover:bg-accent/90"
+                  onClick={() => toast({
+                    title: "Merci pour votre générosité",
+                    description: "Choisissez une association bénéficiaire.",
+                  })}
+                >
+                  Reverser à une asso
+                </Button>
+              </div>
+            </Card>
+          </>
         ) : (
           <Card className="p-6 rounded-3xl space-y-4">
             <h2 className="text-xl font-bold text-title">Abonnement Guardian</h2>
