@@ -7,8 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useNavigate } from "react-router-dom";
 import { X, Camera, Plus } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const ProfessionalEditProfile = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const ProfessionalEditProfile = () => {
     location: "Paris, France",
     bio: "",
     phone: "",
+    photoUrl: "",
     specializations: ["Garde d'animaux", "Promenade de chiens"],
     certifications: [],
     languages: ["Français"],
@@ -34,6 +36,44 @@ const ProfessionalEditProfile = () => {
   const [newSpec, setNewSpec] = useState("");
   const [newLang, setNewLang] = useState("");
   const [newService, setNewService] = useState({ name: "", duration: "" });
+
+  const handlePhotoChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${user.id}/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('dog-documents')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('dog-documents')
+        .getPublicUrl(filePath);
+
+      setFormData(prev => ({ ...prev, photoUrl: publicUrl }));
+
+      toast({
+        title: "Photo mise à jour",
+        description: "Votre photo de profil a été modifiée.",
+      });
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de mettre à jour la photo.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleSave = () => {
     toast({
@@ -69,13 +109,26 @@ const ProfessionalEditProfile = () => {
           <div className="text-center space-y-4">
             <div className="relative w-24 h-24 mx-auto">
               <Avatar className="w-24 h-24">
+                {formData.photoUrl && (
+                  <AvatarImage src={formData.photoUrl} alt="Photo de profil" />
+                )}
                 <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
                   OB
                 </AvatarFallback>
               </Avatar>
-              <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+              <label
+                htmlFor="photo-upload"
+                className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer"
+              >
                 <Camera className="h-4 w-4" />
-              </button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handlePhotoChange}
+                  id="photo-upload"
+                />
+              </label>
             </div>
             <div>
               <h2 className="text-xl font-bold text-title">{formData.name}</h2>

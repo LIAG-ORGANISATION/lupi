@@ -157,6 +157,44 @@ const ProfessionalEditProfileNew = () => {
     }));
   };
 
+  const handlePhotoChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${user.id}/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('dog-documents')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('dog-documents')
+        .getPublicUrl(filePath);
+
+      setFormData(prev => ({ ...prev, photo_url: publicUrl }));
+
+      toast({
+        title: "Photo mise à jour",
+        description: "Votre photo de profil a été modifiée.",
+      });
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de mettre à jour la photo.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleSave = async () => {
     if (!formData.profession_id) {
       toast({
@@ -225,16 +263,26 @@ const ProfessionalEditProfileNew = () => {
         <Card className="p-6 rounded-3xl text-center space-y-4 shadow-md">
           <div className="relative w-24 h-24 mx-auto">
             <Avatar className="w-24 h-24">
+              {formData.photo_url && (
+                <img src={formData.photo_url} alt="Photo de profil" className="object-cover w-full h-full rounded-full" />
+              )}
               <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
                 {formData.nom.split(" ").map(n => n[0]).join("").toUpperCase() || "?"}
               </AvatarFallback>
             </Avatar>
-            <button
-              type="button"
-              className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors"
+            <label
+              htmlFor="photo-upload"
+              className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors cursor-pointer"
             >
               <Camera className="h-5 w-5" />
-            </button>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handlePhotoChange}
+                id="photo-upload"
+              />
+            </label>
           </div>
           <div className="space-y-2">
             <Label htmlFor="nom" className="text-sm font-medium text-title">
