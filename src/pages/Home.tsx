@@ -199,15 +199,6 @@ const Home = () => {
                       {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
                     </div>
                   </div>
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <Button onClick={(e) => {
-                        e.stopPropagation();
-                        navigate("/dna-kit");
-                      }} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="sm">
-                      <TestTube2 className="h-4 w-4 mr-2" />
-                      Faire le test ADN
-                    </Button>
-                  </div>
                 </div>)}
             </div>
           </div>}

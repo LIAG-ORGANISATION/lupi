@@ -131,12 +131,8 @@ const AddDog = () => {
         description: `${formData.name} a été ajouté avec succès.`,
       });
       
-      // Redirect to questionnaire if dog was created
-      if (data && data[0]) {
-        navigate(`/questionnaire?dogId=${data[0].id}`);
-      } else {
-        navigate("/dogs");
-      }
+      // Redirect to home page after creating dog
+      navigate("/");
     } catch (error) {
       console.error('[AddDog] 💥 Exception:', error);
       toast({
@@ -297,7 +293,7 @@ const AddDog = () => {
           size="lg"
           disabled={loading || uploadingPhoto}
         >
-          {uploadingPhoto ? "Upload de la photo..." : loading ? "Ajout en cours..." : "Continuer vers le questionnaire"}
+          {uploadingPhoto ? "Upload de la photo..." : loading ? "Ajout en cours..." : "Ajouter mon chien"}
         </Button>
       </form>
     </div>
