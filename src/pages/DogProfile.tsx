@@ -30,6 +30,7 @@ const DogProfile = () => {
   const [uploadingPassport, setUploadingPassport] = useState(false);
   const [hasQuestionnaire, setHasQuestionnaire] = useState(false);
   const [healthAlertsCount, setHealthAlertsCount] = useState(0);
+  const [vaccinationDocsCount, setVaccinationDocsCount] = useState(0);
 
   useEffect(() => {
     if (id && user) {
@@ -37,6 +38,7 @@ const DogProfile = () => {
       fetchVaccinationPassport();
       fetchQuestionnaire();
       fetchHealthAlertsCount();
+      fetchVaccinationDocsCount();
     }
   }, [id, user]);
 
@@ -102,6 +104,20 @@ const DogProfile = () => {
       setHealthAlertsCount(count || 0);
     } catch (error) {
       console.error('[DogProfile] Error fetching health alerts count:', error);
+    }
+  };
+
+  const fetchVaccinationDocsCount = async () => {
+    try {
+      const { count, error } = await supabase
+        .from('dog_documents')
+        .select('*', { count: 'exact', head: true })
+        .eq('dog_id', id);
+      
+      if (error) throw error;
+      setVaccinationDocsCount(count || 0);
+    } catch (error) {
+      console.error('[DogProfile] Error fetching vaccination docs count:', error);
     }
   };
 
@@ -376,59 +392,27 @@ const DogProfile = () => {
 
         <Card 
           className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all"
-          onClick={vaccinationPassport ? handleOpenPassport : handlePassportUpload}
+          onClick={() => navigate(`/dogs/${id}/vaccination-passport`)}
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
               <Syringe className="h-5 w-5 text-red-500" />
             </div>
             <div className="flex-1">
               <h4 className="font-semibold text-title mb-1">Passeport vaccinal</h4>
               <p className="text-sm text-muted-foreground">
-                {vaccinationPassport 
-                  ? "Accès rapide aux vaccinations" 
-                  : "Ajouter le passeport vaccinal"}
+                {vaccinationDocsCount === 0 
+                  ? "Aucun document" 
+                  : `${vaccinationDocsCount} ${vaccinationDocsCount === 1 ? 'document' : 'documents'}`}
               </p>
             </div>
-            {vaccinationPassport ? (
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="rounded-full"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenPassport();
-                  }}
-                >
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="rounded-full"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSharePassport();
-                  }}
-                >
-                  <Share2 className="h-4 w-4" />
-                </Button>
-              </div>
-            ) : (
-              <Button
-                size="sm"
-                className="rounded-full"
-                disabled={uploadingPassport}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePassportUpload();
-                }}
-              >
-                <Plus className="h-4 w-4 mr-1" />
-                {uploadingPassport ? "Upload..." : "Ajouter"}
-              </Button>
-            )}
+            <Button
+              size="sm"
+              variant="outline"
+              className="rounded-full"
+            >
+              Ouvrir
+            </Button>
           </div>
         </Card>
 
@@ -440,7 +424,7 @@ const DogProfile = () => {
           className="hidden"
         />
 
-        <Card 
+        <Card
           className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all"
           onClick={() => navigate(`/vaccination-calendar/${id}`)}
         >

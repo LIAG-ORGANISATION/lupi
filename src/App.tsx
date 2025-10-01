@@ -44,6 +44,7 @@ import SupportFAQ from "./pages/SupportFAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import SalesTerms from "./pages/SalesTerms";
+import VaccinationPassport from "./pages/VaccinationPassport";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,7 @@ const App = () => (
           <Route path="/health-alerts/:id" element={<Layout><HealthAlerts /></Layout>} />
           <Route path="/questionnaire-results/:id" element={<Layout><QuestionnaireResults /></Layout>} />
           <Route path="/dogs/:id/dna-results" element={<Layout><DNAResults /></Layout>} />
+          <Route path="/dogs/:id/vaccination-passport" element={<Layout><VaccinationPassport /></Layout>} />
           <Route path="/questionnaire" element={<Layout><Questionnaire /></Layout>} />
           <Route path="/professionals" element={<Layout><Professionals /></Layout>} />
           <Route path="/professional/:id" element={<ProfessionalProfile />} />
