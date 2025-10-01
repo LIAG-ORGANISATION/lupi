@@ -141,42 +141,17 @@ const Dogs = () => {
         {dogs.length > 0 && (
           <div>
             <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
-            <div className="grid grid-cols-3 gap-3">
-              {dogs.length === 1 ? (
-                <>
-                  <QuickActionCard
-                    icon={TestTube2}
-                    label="Tests"
-                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-                  />
-                  <QuickActionCard
-                    icon={Heart}
-                    label="Santé"
-                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-                  />
-                  <QuickActionCard
-                    icon={FileText}
-                    label="Rapports"
-                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-                  />
-                  <QuickActionCard
-                    icon={Stethoscope}
-                    label="RDV"
-                    onClick={() => navigate("/professionals")}
-                  />
-                  <QuickActionCard
-                    icon={Calendar}
-                    label="Calendrier"
-                    onClick={() => navigate(`/dogs/${dogs[0].id}`)}
-                  />
-                </>
-              ) : (
-                <QuickActionCard
-                  icon={Calendar}
-                  label="RDV"
-                  onClick={() => navigate("/professionals")}
-                />
-              )}
+            <div className="grid grid-cols-2 gap-3">
+              <QuickActionCard
+                icon={Stethoscope}
+                label="RDV"
+                onClick={() => navigate("/professionals")}
+              />
+              <QuickActionCard
+                icon={Calendar}
+                label="Calendrier"
+                onClick={() => navigate(dogs.length === 1 ? `/dogs/${dogs[0].id}` : "/dogs")}
+              />
             </div>
           </div>
         )}
