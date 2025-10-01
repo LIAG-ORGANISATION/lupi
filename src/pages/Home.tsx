@@ -267,17 +267,17 @@ const Home = () => {
                 href="https://www.kozoo.eu" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-6"
+                className="lupi-card cursor-pointer hover:shadow-lg transition-all overflow-hidden"
               >
-                <div className="flex flex-col items-center gap-3 text-center">
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white flex items-center justify-center p-2">
+                <div className="flex flex-col h-full">
+                  <div className="flex-1 bg-white flex items-center justify-center p-8">
                     <img 
                       src={kozooLogo} 
                       alt="KOZOO" 
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <div>
+                  <div className="p-4 text-center">
                     <h3 className="font-semibold text-title">KOZOO</h3>
                     <p className="text-xs text-muted-foreground">Assurance pour chien</p>
                   </div>
@@ -288,17 +288,17 @@ const Home = () => {
                 href="https://www.pennypet.fr" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-6"
+                className="lupi-card cursor-pointer hover:shadow-lg transition-all overflow-hidden"
               >
-                <div className="flex flex-col items-center gap-3 text-center">
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white flex items-center justify-center p-2">
+                <div className="flex flex-col h-full">
+                  <div className="flex-1 bg-white flex items-center justify-center p-8">
                     <img 
                       src={pennypetLogo} 
                       alt="PENNYPET" 
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <div>
+                  <div className="p-4 text-center">
                     <h3 className="font-semibold text-title">PENNYPET</h3>
                     <p className="text-xs text-muted-foreground">Cashback frais animaux</p>
                   </div>
@@ -333,6 +333,26 @@ const Home = () => {
               <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
             </div>
           </div>}
+
+        {isAuthenticated && isGuardian && dogs.length === 0 && (
+          <div className="mt-8 lupi-card p-8 text-center space-y-4 bg-gradient-card">
+            <DogIcon className="h-16 w-16 text-primary mx-auto" />
+            <h3 className="text-xl font-bold text-title">
+              Ajoutez votre chien pour démarrer l'expérience Lupi
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Commencez à suivre la santé et le bien-être de votre compagnon
+            </p>
+            <Button 
+              onClick={() => navigate("/dogs/add")} 
+              className="w-full rounded-full"
+              size="lg"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Ajouter mon chien
+            </Button>
+          </div>
+        )}
       </div>
     </div>;
 };
