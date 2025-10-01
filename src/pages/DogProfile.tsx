@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon, Plus, ExternalLink, Share2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon, Plus, ExternalLink, Share2, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -24,6 +24,7 @@ const DogProfile = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
   const [dog, setDog] = useState<DogData | null>(null);
   const [loading, setLoading] = useState(true);
   const [vaccinationPassport, setVaccinationPassport] = useState<any>(null);
@@ -227,6 +228,77 @@ const DogProfile = () => {
     });
   };
 
+  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Format non supporté",
+        description: "Veuillez uploader une image (JPG, PNG, etc.)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "Fichier trop volumineux",
+        description: "La taille maximale est de 10 Mo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `avatar-${Date.now()}.${fileExt}`;
+      const storagePath = `${user.id}/${id}/${fileName}`;
+
+      // Upload to Storage
+      const { error: uploadError } = await supabase.storage
+        .from('dog-documents')
+        .upload(storagePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('dog-documents')
+        .getPublicUrl(storagePath);
+
+      // Update dog avatar_url in database
+      const { error: updateError } = await supabase
+        .from('dogs')
+        .update({ avatar_url: publicUrl })
+        .eq('id', id)
+        .eq('owner_id', user.id);
+
+      if (updateError) throw updateError;
+
+      // Update local state
+      setDog(prev => prev ? { ...prev, avatar_url: publicUrl } : null);
+
+      toast({
+        title: "Photo mise à jour",
+        description: "La photo de profil a été modifiée avec succès.",
+      });
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      toast({
+        title: "Erreur d'upload",
+        description: "Impossible de mettre à jour la photo.",
+        variant: "destructive",
+      });
+    } finally {
+      if (avatarInputRef.current) {
+        avatarInputRef.current.value = "";
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -268,17 +340,33 @@ const DogProfile = () => {
       </div>
 
       <Card className="p-6 rounded-3xl text-center space-y-4">
-        {dog.avatar_url ? (
-          <img
-            src={dog.avatar_url}
-            alt={dog.name}
-            className="w-32 h-32 rounded-full object-cover mx-auto shadow-lg"
-          />
-        ) : (
-          <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-            <DogIcon className="h-16 w-16 text-primary" />
-          </div>
-        )}
+        <div className="relative w-32 h-32 mx-auto">
+          {dog.avatar_url ? (
+            <img
+              src={dog.avatar_url}
+              alt={dog.name}
+              className="w-32 h-32 rounded-full object-cover shadow-lg"
+            />
+          ) : (
+            <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
+              <DogIcon className="h-16 w-16 text-primary" />
+            </div>
+          )}
+          <label
+            htmlFor="avatar-upload"
+            className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors shadow-lg"
+          >
+            <Camera className="h-5 w-5" />
+            <input
+              id="avatar-upload"
+              ref={avatarInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
+            />
+          </label>
+        </div>
         <div>
           <h2 className="text-2xl font-bold text-title">{dog.name}</h2>
           {dog.breed && <p className="text-muted-foreground">{dog.breed}</p>}
