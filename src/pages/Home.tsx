@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText } from "lucide-react";
+import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText, Heart } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import dogsOriginSection from "@/assets/dogs-origin-section.png";
@@ -440,6 +440,40 @@ const Home = () => {
             </a>
           </div>
         </div>
+
+        {/* Association du moment section */}
+        {isGuardian && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-title">Association du moment</h2>
+            <a 
+              href="https://fourriere-animale-64.fr/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-6 bg-gradient-card border-2 border-primary/20"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Heart className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-title text-lg">SPA Bayonne</h3>
+                    <p className="text-sm text-muted-foreground">Fourrière animale 64</p>
+                  </div>
+                </div>
+                <p className="text-sm text-foreground">
+                  Soutenez une association sélectionnée par Lupi ! La SPA de Bayonne prend soin des animaux abandonnés et leur trouve une nouvelle famille.
+                </p>
+                <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                  <span>Faire un don</span>
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </a>
+          </div>
+        )}
 
         {isAuthenticated && !isGuardian && (
           <div>
