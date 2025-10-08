@@ -333,23 +333,44 @@ const Home = () => {
 
         {/* CTA to create dog for authenticated guardians without dogs */}
         {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && (
-          <div className="lupi-card p-6 text-center space-y-4 bg-gradient-card mb-6">
-            <DogIcon className="h-12 w-12 text-primary mx-auto" />
-            <h3 className="text-lg font-bold text-title">
-              Créez le profil de votre chien
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Commencez à suivre sa santé et son bien-être
-            </p>
-            <Button 
-              onClick={() => navigate("/dogs/add")} 
-              className="w-full rounded-full"
-              size="lg"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Créer mon chien
-            </Button>
-          </div>
+          <>
+            <div className="lupi-card p-6 text-center space-y-4 bg-gradient-card mb-4">
+              <DogIcon className="h-12 w-12 text-primary mx-auto" />
+              <h3 className="text-lg font-bold text-title">
+                Créez le profil de votre chien
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Commencez à suivre sa santé et son bien-être
+              </p>
+              <Button 
+                onClick={() => navigate("/dogs/add")} 
+                className="w-full rounded-full"
+                size="lg"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Créer mon chien
+              </Button>
+            </div>
+
+            <div className="lupi-card p-6 text-center space-y-4 mb-6">
+              <TestTube2 className="h-12 w-12 text-primary mx-auto" />
+              <h3 className="text-lg font-bold text-title">
+                Découvrez un exemple de résultats ADN
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Visualisez comment fonctionne l'analyse génétique complète
+              </p>
+              <Button 
+                onClick={() => navigate("/dna-demo")} 
+                variant="outline"
+                className="w-full rounded-full"
+                size="lg"
+              >
+                <TestTube2 className="h-5 w-5 mr-2" />
+                Voir la démo
+              </Button>
+            </div>
+          </>
         )}
 
         {/* Quick actions for authenticated guardians */}
