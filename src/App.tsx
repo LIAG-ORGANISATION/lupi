@@ -47,6 +47,7 @@ import TermsOfService from "./pages/TermsOfService";
 import SalesTerms from "./pages/SalesTerms";
 import VaccinationPassport from "./pages/VaccinationPassport";
 import DNADemo from "./pages/DNADemo";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,7 @@ const App = () => (
       <Sonner />
       <PWAInstallPrompt />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/choose-account-type" element={<ChooseAccountType />} />
