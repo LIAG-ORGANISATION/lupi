@@ -13,6 +13,7 @@ import kozooLogo from "@/assets/kozoo-logo.png";
 import pennypetLogo from "@/assets/pennypet-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import WelcomeTutorial from "@/components/WelcomeTutorial";
 interface Dog {
   id: string;
   name: string;
@@ -31,6 +32,20 @@ const Home = () => {
   const [loadingDogs, setLoadingDogs] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  // Check if user is first time logging in as guardian
+  useEffect(() => {
+    const checkFirstLogin = async () => {
+      if (isGuardian && user) {
+        const hasSeenTutorial = localStorage.getItem(`tutorial_seen_${user.id}`);
+        if (!hasSeenTutorial) {
+          setShowTutorial(true);
+        }
+      }
+    };
+    checkFirstLogin();
+  }, [isGuardian, user]);
   useEffect(() => {
     console.log('[Home] Auth state:', { isAuthenticated, isGuardian, isProfessional, user: !!user });
     console.log('[Home] Dogs:', { dogsCount: dogs.length, loadingDogs });
@@ -77,6 +92,14 @@ const Home = () => {
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
+  };
+
+  const handleTutorialComplete = () => {
+    if (user) {
+      localStorage.setItem(`tutorial_seen_${user.id}`, 'true');
+    }
+    setShowTutorial(false);
+    navigate('/dogs/add');
   };
 
   // Professional Dashboard View
@@ -158,12 +181,57 @@ const Home = () => {
               </div>
             </Card>
           </div>
+
+          {/* Partners section for professionals */}
+          <div className="space-y-4 mt-6">
+            <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
+            <div className="space-y-3">
+              <a 
+                href="https://www.kozoo.eu" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
+              >
+                <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+                  <img 
+                    src={kozooLogo} 
+                    alt="KOZOO" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-title text-lg">KOZOO</h3>
+                  <p className="text-sm text-muted-foreground">Assurance pour chien</p>
+                </div>
+              </a>
+
+              <a 
+                href="https://www.pennypet.fr" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
+              >
+                <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+                  <img 
+                    src={pennypetLogo} 
+                    alt="PENNYPET" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
+                  <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>;
   }
 
   // Guardian/Default View
   return <div className="min-h-screen pb-20 animate-fade-in">
+      {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section with Gradient */}
       <div className="p-8 rounded-b-[3rem] shadow-xl" style={{ backgroundColor: '#3D0000' }}>
         <div className="max-w-4xl mx-auto space-y-6 text-center">
@@ -202,6 +270,27 @@ const Home = () => {
       </div>
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+
+        {/* CTA to create dog for authenticated guardians without dogs */}
+        {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && (
+          <div className="lupi-card p-6 text-center space-y-4 bg-gradient-card mb-6">
+            <DogIcon className="h-12 w-12 text-primary mx-auto" />
+            <h3 className="text-lg font-bold text-title">
+              Créez le profil de votre chien
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Commencez à suivre sa santé et son bien-être
+            </p>
+            <Button 
+              onClick={() => navigate("/dogs/add")} 
+              className="w-full rounded-full"
+              size="lg"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              Créer mon chien
+            </Button>
+          </div>
+        )}
 
         {/* Quick actions for authenticated guardians */}
         {isAuthenticated && isGuardian && (
@@ -357,26 +446,6 @@ const Home = () => {
           </div>
         )}
 
-        {/* CTA for authenticated guardians without dogs */}
-        {isAuthenticated && isGuardian && dogs.length === 0 && (
-          <div className="mt-8 lupi-card p-8 text-center space-y-4 bg-gradient-card">
-            <DogIcon className="h-16 w-16 text-primary mx-auto" />
-            <h3 className="text-xl font-bold text-title">
-              Ajoutez votre chien pour démarrer l'expérience Lupi
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Commencez à suivre la santé et le bien-être de votre compagnon
-            </p>
-            <Button 
-              onClick={() => navigate("/dogs/add")} 
-              className="w-full rounded-full"
-              size="lg"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Ajouter mon chien
-            </Button>
-          </div>
-        )}
       </div>
     </div>;
 };

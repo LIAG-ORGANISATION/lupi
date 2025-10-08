@@ -75,11 +75,43 @@ const ProfessionalEditProfile = () => {
     }
   };
 
-  const handleSave = () => {
-    toast({
-      title: "Profil enregistré",
-      description: "Vos informations ont été mises à jour.",
-    });
+  const handleSave = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { error } = await supabase
+        .from('professionals')
+        .update({
+          full_name: formData.name,
+          profession: formData.profession,
+          localisation: formData.location,
+          bio: formData.bio,
+          phone: formData.phoneContact ? formData.phone : null,
+          avatar_url: formData.photoUrl,
+          tarifs: formData.hourlyRate,
+          preferences_contact: [
+            formData.emailContact ? 'email' : null,
+            formData.phoneContact ? 'phone' : null,
+            formData.messagingContact ? 'messaging' : null,
+          ].filter(Boolean),
+        })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Profil enregistré",
+        description: "Vos informations ont été mises à jour.",
+      });
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de sauvegarder le profil.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

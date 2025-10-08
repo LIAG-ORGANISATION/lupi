@@ -88,11 +88,27 @@ const Auth = () => {
 
       if (error) throw error;
 
+      // Check if user has dogs to redirect appropriately
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: dogs } = await supabase
+          .from('dogs')
+          .select('id')
+          .eq('owner_id', user.id)
+          .limit(1);
+
+        if (dogs && dogs.length > 0) {
+          navigate('/dogs');
+        } else {
+          navigate('/');
+        }
+      } else {
+        navigate('/');
+      }
+
       toast({
         title: "Connexion réussie !",
       });
-      
-      navigate('/');
     } catch (error: any) {
       toast({
         title: "Erreur de connexion",
