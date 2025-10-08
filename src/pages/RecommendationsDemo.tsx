@@ -10,7 +10,7 @@ const RecommendationsDemo = () => {
   return (
     <div className="min-h-screen pb-24">
       {/* Header avec retour */}
-      <div className="bg-gradient-lupi p-6">
+      <div className="p-6" style={{ backgroundColor: '#FF6B6B' }}>
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => navigate(-1)}
@@ -27,7 +27,7 @@ const RecommendationsDemo = () => {
               className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
             />
             <div className="text-white">
-              <h1 className="text-3xl font-bold mb-2">Recommandations personnalisées</h1>
+              <h1 className="text-3xl font-bold mb-2 text-white">Recommandations personnalisées</h1>
               <p className="text-white/90">Exemple basé sur les résultats ADN</p>
             </div>
           </div>
@@ -274,15 +274,15 @@ const RecommendationsDemo = () => {
         </section>
 
         {/* CTA Final */}
-        <Card className="p-8 bg-gradient-card border-2 border-primary/20">
+        <Card className="p-8 bg-gradient-card border-2 border-primary/20 rounded-3xl">
           <div className="text-center space-y-4">
-            <h2 className="text-2xl font-bold">Apprenez à connaître votre chien comme jamais auparavant</h2>
+            <h2 className="text-2xl font-bold text-title">Apprenez à connaître votre chien comme jamais auparavant</h2>
             <p className="text-foreground text-lg">
               Votre test ADN débloque de véritables informations sur la nutrition, le comportement et le bien-être de votre chien.
             </p>
             <Button 
               size="lg"
-              className="w-full sm:w-auto px-8"
+              className="w-full sm:w-auto px-8 rounded-full"
               onClick={() => navigate('/dna-kit')}
             >
               <ShoppingCart className="h-5 w-5 mr-2" />

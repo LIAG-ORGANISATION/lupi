@@ -390,19 +390,28 @@ const DogProfile = () => {
               <p className="text-sm text-muted-foreground">Non effectué</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                onClick={() => navigate("/dna-kit")}
+                className="rounded-full"
+              >
+                Commander
+              </Button>
+              <Button
+                onClick={() => navigate("/dna-demo")}
+                variant="outline"
+                className="rounded-full border-primary text-primary hover:bg-primary/10"
+              >
+                Voir une démo
+              </Button>
+            </div>
             <Button
-              onClick={() => navigate("/dna-kit")}
-              className="rounded-full"
-            >
-              Commander
-            </Button>
-            <Button
-              onClick={() => navigate("/dna-demo")}
+              onClick={() => navigate("/recommendations-demo")}
               variant="outline"
-              className="rounded-full border-primary text-primary hover:bg-primary/10"
+              className="w-full rounded-full border-primary text-primary hover:bg-primary/10"
             >
-              Voir une démo
+              Voir recommandations personnalisées
             </Button>
           </div>
         </Card>
