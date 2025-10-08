@@ -14,21 +14,21 @@ const RecommendationsDemo = () => {
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-primary-foreground mb-4 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2 text-primary-foreground mb-6 hover:opacity-80 transition-opacity"
           >
             <ArrowLeft className="h-5 w-5" />
             <span className="text-sm sm:text-base">Retour</span>
           </button>
           
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
+          <div className="flex flex-col items-center text-center gap-6">
             <img 
               src={oonaDemoImg} 
               alt="Oona" 
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-primary-foreground shadow-lg flex-shrink-0"
+              className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-primary-foreground shadow-lg"
             />
             <div className="text-primary-foreground">
-              <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Recommandations</h1>
-              <p className="text-sm sm:text-base text-primary-foreground/90">Basées sur l'ADN d'Oona</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">Recommandations personnalisées</h1>
+              <p className="text-sm sm:text-base text-white/90 mt-2">Basées sur l'ADN d'Oona</p>
             </div>
           </div>
         </div>
