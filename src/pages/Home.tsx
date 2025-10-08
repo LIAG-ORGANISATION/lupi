@@ -39,7 +39,18 @@ const Home = () => {
     const checkFirstLogin = async () => {
       if (isGuardian && user) {
         const hasSeenTutorial = localStorage.getItem(`tutorial_seen_${user.id}`);
-        if (!hasSeenTutorial) {
+        
+        // Check if user has any dogs
+        const { data: userDogs } = await supabase
+          .from('dogs')
+          .select('id')
+          .eq('owner_id', user.id)
+          .limit(1);
+        
+        const hasDogs = userDogs && userDogs.length > 0;
+        
+        // Show tutorial only if user hasn't seen it AND has no dogs
+        if (!hasSeenTutorial && !hasDogs) {
           setShowTutorial(true);
         }
       }
