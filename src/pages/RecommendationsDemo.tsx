@@ -20,15 +20,15 @@ const RecommendationsDemo = () => {
             <span className="text-sm sm:text-base">Retour</span>
           </button>
           
-          <div className="flex items-center gap-3 sm:gap-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
             <img 
               src={oonaDemoImg} 
               alt="Oona" 
-              className="w-16 h-16 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-primary-foreground shadow-lg flex-shrink-0"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-primary-foreground shadow-lg flex-shrink-0"
             />
-            <div className="text-primary-foreground min-w-0">
-              <h1 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">Recommandations personnalisées</h1>
-              <p className="text-sm sm:text-base text-primary-foreground/90">Exemple basé sur les résultats ADN</p>
+            <div className="text-primary-foreground">
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Recommandations</h1>
+              <p className="text-sm sm:text-base text-primary-foreground/90">Basées sur l'ADN d'Oona</p>
             </div>
           </div>
         </div>
@@ -52,10 +52,10 @@ const RecommendationsDemo = () => {
         {/* 1. Alimentation & Nutrition */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
-              <Utensils className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Utensils className="h-6 w-6 text-primary" />
             </div>
-            <h2 className="text-lg sm:text-2xl font-bold">Plan alimentaire idéal</h2>
+            <h2 className="text-xl sm:text-2xl font-bold">Alimentation</h2>
           </div>
 
           <Card className="p-4 sm:p-6 space-y-4">
@@ -82,9 +82,9 @@ const RecommendationsDemo = () => {
               </div>
             </div>
 
-            <div className="bg-accent p-3 sm:p-4 rounded-lg mt-4">
-              <p className="text-xs sm:text-sm font-semibold text-foreground mb-1">Régime recommandé :</p>
-              <p className="text-xs sm:text-sm text-muted-foreground">Croquettes hyperprotéinées + huile de poisson</p>
+            <div className="bg-primary/5 p-4 rounded-lg mt-4 border border-primary/10">
+              <p className="text-sm font-semibold text-foreground mb-1">Régime recommandé :</p>
+              <p className="text-sm text-muted-foreground">Croquettes hyperprotéinées + huile de poisson</p>
             </div>
 
             <Button 
@@ -99,10 +99,10 @@ const RecommendationsDemo = () => {
         {/* 2. Promenades & Activités */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
-              <Footprints className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Footprints className="h-6 w-6 text-primary" />
             </div>
-            <h2 className="text-lg sm:text-2xl font-bold">Activités recommandées</h2>
+            <h2 className="text-xl sm:text-2xl font-bold">Activités</h2>
           </div>
 
           <Card className="p-4 sm:p-6 space-y-4">
@@ -129,8 +129,8 @@ const RecommendationsDemo = () => {
               </div>
             </div>
 
-            <div className="bg-accent border-l-4 border-primary p-3 sm:p-4 rounded-r-lg mt-4">
-              <p className="text-xs sm:text-sm text-foreground italic">
+            <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg mt-4">
+              <p className="text-sm text-foreground italic">
                 Les bergers adorent résoudre des problèmes et travailler en équipe.
               </p>
             </div>
@@ -147,10 +147,10 @@ const RecommendationsDemo = () => {
         {/* 3. Jeux & Stimulation mentale */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
-              <Puzzle className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Puzzle className="h-6 w-6 text-primary" />
             </div>
-            <h2 className="text-lg sm:text-2xl font-bold">Idées de jeux</h2>
+            <h2 className="text-xl sm:text-2xl font-bold">Jeux</h2>
           </div>
 
           <Card className="p-4 sm:p-6 space-y-4">
@@ -171,9 +171,9 @@ const RecommendationsDemo = () => {
               </div>
             </div>
 
-            <div className="bg-accent p-3 sm:p-4 rounded-lg mt-4">
-              <p className="text-xs sm:text-sm font-semibold text-foreground mb-1">Rotation suggérée :</p>
-              <p className="text-xs sm:text-sm text-muted-foreground">Alterner jeux cérébraux et jeux d'énergie</p>
+            <div className="bg-primary/5 p-4 rounded-lg mt-4 border border-primary/10">
+              <p className="text-sm font-semibold text-foreground mb-1">Rotation suggérée :</p>
+              <p className="text-sm text-muted-foreground">Alterner jeux cérébraux et jeux d'énergie</p>
             </div>
 
             <Button 
@@ -188,10 +188,10 @@ const RecommendationsDemo = () => {
         {/* 4. Santé & Prévention */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
-              <Stethoscope className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Stethoscope className="h-6 w-6 text-primary" />
             </div>
-            <h2 className="text-lg sm:text-2xl font-bold">Surveillance santé</h2>
+            <h2 className="text-xl sm:text-2xl font-bold">Santé</h2>
           </div>
 
           <Card className="p-4 sm:p-6 space-y-4">
@@ -237,10 +237,10 @@ const RecommendationsDemo = () => {
         {/* 5. Personnalité & Lien */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
-              <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Heart className="h-6 w-6 text-primary" />
             </div>
-            <h2 className="text-lg sm:text-2xl font-bold">Comportement</h2>
+            <h2 className="text-xl sm:text-2xl font-bold">Comportement</h2>
           </div>
 
           <Card className="p-4 sm:p-6 space-y-4">
@@ -274,18 +274,18 @@ const RecommendationsDemo = () => {
         </section>
 
         {/* CTA Final */}
-        <Card className="p-6 sm:p-8 bg-accent border-2 border-primary/20 rounded-2xl sm:rounded-3xl">
-          <div className="text-center space-y-3 sm:space-y-4">
-            <h2 className="text-xl sm:text-2xl font-bold">Apprenez à connaître votre chien</h2>
+        <Card className="p-6 sm:p-8 bg-primary/5 border-2 border-primary/20 rounded-2xl">
+          <div className="text-center space-y-4">
+            <h2 className="text-xl sm:text-2xl font-bold">Découvrez l'ADN de votre chien</h2>
             <p className="text-sm sm:text-base text-muted-foreground">
-              Le test ADN débloque de véritables informations sur la nutrition, le comportement et le bien-être.
+              Nutrition, comportement et bien-être personnalisés selon sa génétique unique.
             </p>
             <Button 
               size="lg"
-              className="w-full rounded-full text-sm sm:text-base"
+              className="w-full sm:w-auto rounded-full"
               onClick={() => navigate('/dna-kit')}
             >
-              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              <ShoppingCart className="h-5 w-5 mr-2" />
               Commander pour mon chien
             </Button>
           </div>
