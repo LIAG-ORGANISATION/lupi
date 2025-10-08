@@ -246,17 +246,32 @@ const Home = () => {
       {/* Hero Section with Gradient */}
       <div className="p-8 rounded-b-[3rem] shadow-xl" style={{ backgroundColor: '#3D0000' }}>
         <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <h1 className="text-3xl font-bold text-white">Découvrez & accompagnez votre chien</h1>
+          <h1 className="text-3xl font-bold text-white">
+            {isGuardian && dogs.length > 0 
+              ? "Mieux comprendre pour mieux accompagner" 
+              : "Découvrez & accompagnez votre chien"}
+          </h1>
           <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div className="space-y-3 pt-4">
-            {!isAuthenticated ? <>
+            {!isAuthenticated ? (
+              <>
                 <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                   <LogIn className="h-5 w-5 mr-2 inline" />
                   Se connecter / S'inscrire
                 </button>
-              </> : <>
-                {isGuardian && <>
+              </>
+            ) : (
+              <>
+                {isGuardian && dogs.length > 0 ? (
+                  <>
+                    <button onClick={() => navigate("/dogs")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                      <DogIcon className="h-5 w-5 mr-2 inline" />
+                      Voir mes chiens
+                    </button>
+                  </>
+                ) : isGuardian ? (
+                  <>
                     <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                       <Plus className="h-5 w-5 mr-2 inline" />
                       Ajouter un chien
@@ -265,8 +280,10 @@ const Home = () => {
                       <TestTube2 className="h-5 w-5 mr-2 inline" />
                       Faire le test ADN
                     </button>
-                  </>}
-              </>}
+                  </>
+                ) : null}
+              </>
+            )}
           </div>
         </div>
       </div>
