@@ -9,7 +9,7 @@ const ProfessionalMessages = () => {
 
   return (
     <AuthGuard requiredRole="professional">
-      <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
+      <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background pb-24">
         <div className="flex items-center gap-4 max-w-4xl mx-auto">
           <Button
             variant="ghost"
