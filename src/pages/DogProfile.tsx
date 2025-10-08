@@ -381,7 +381,7 @@ const DogProfile = () => {
         
         {/* Test ADN - à compléter */}
         <Card className="p-4 rounded-2xl">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 mb-3">
             <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-6 w-6 text-orange-500" />
             </div>
@@ -389,20 +389,21 @@ const DogProfile = () => {
               <h4 className="font-semibold text-title">Analyse ADN</h4>
               <p className="text-sm text-muted-foreground">Non effectué</p>
             </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
             <Button
               onClick={() => navigate("/dna-kit")}
               className="rounded-full"
             >
               Commander
             </Button>
-          </div>
-          <div className="mt-3 text-center">
-            <button
+            <Button
               onClick={() => navigate("/dna-demo")}
-              className="text-sm text-primary hover:underline font-medium"
+              variant="outline"
+              className="rounded-full border-primary text-primary hover:bg-primary/10"
             >
               Voir une démo
-            </button>
+            </Button>
           </div>
         </Card>
 
