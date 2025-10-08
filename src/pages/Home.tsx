@@ -271,6 +271,38 @@ const Home = () => {
         </div>
       </div>
 
+      <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+        {/* My Dogs section - show first when user has dogs */}
+        {isGuardian && dogs.length > 0 && (
+          <div className="space-y-4 mb-6">
+            <h2 className="text-xl font-bold text-title">Mes chiens</h2>
+            <div className="space-y-3">
+              {dogs.map(dog => (
+                <div key={dog.id} className="lupi-card">
+                  <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
+                    {dog.avatar_url ? (
+                      <img 
+                        src={dog.avatar_url} 
+                        alt={dog.name} 
+                        className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" 
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
+                        <DogIcon className="h-8 w-8 text-primary" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="font-bold text-title text-lg">{dog.name}</h3>
+                      {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* D'où ils viennent Section */}
         <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
           <img 
@@ -361,36 +393,6 @@ const Home = () => {
                   <p className="text-xs text-muted-foreground">Trouver</p>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* My Dogs section - show first when user has dogs */}
-        {isGuardian && dogs.length > 0 && (
-          <div className="space-y-4 mb-6">
-            <h2 className="text-xl font-bold text-title">Mes chiens</h2>
-            <div className="space-y-3">
-              {dogs.map(dog => (
-                <div key={dog.id} className="lupi-card">
-                  <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                    {dog.avatar_url ? (
-                      <img 
-                        src={dog.avatar_url} 
-                        alt={dog.name} 
-                        className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" 
-                      />
-                    ) : (
-                      <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
-                        <DogIcon className="h-8 w-8 text-primary" />
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <h3 className="font-bold text-title text-lg">{dog.name}</h3>
-                      {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         )}
