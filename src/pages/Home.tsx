@@ -315,6 +315,19 @@ const Home = () => {
                   </div>
                 </div>
               ))}
+              
+              {/* Raccourci vers Recommandations personnalisées */}
+              <div className="lupi-card bg-gradient-card border-2 border-primary/20">
+                <div className="flex items-center gap-4 cursor-pointer p-4" onClick={() => navigate('/recommendations-demo')}>
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                    <Lightbulb className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-title text-lg">Recommandations personnalisées</h3>
+                    <p className="text-sm text-muted-foreground">Découvrez les conseils lifestyle adaptés</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
