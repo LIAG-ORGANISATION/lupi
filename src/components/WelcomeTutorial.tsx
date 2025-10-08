@@ -50,7 +50,7 @@ const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
 
   return (
     <Dialog open={true}>
-      <DialogContent className="max-w-md p-8 rounded-3xl">
+      <DialogContent className="max-w-md p-8 rounded-xl">
         <div className="space-y-6 text-center">
           <div className="w-20 h-20 mx-auto rounded-full bg-gradient-card flex items-center justify-center">
             <IconComponent className="h-10 w-10 text-primary" />

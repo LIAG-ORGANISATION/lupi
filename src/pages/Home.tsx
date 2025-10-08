@@ -114,7 +114,7 @@ const Home = () => {
             </Button>
           </div>
 
-          <Card className="bg-secondary p-6 rounded-3xl shadow-lg overflow-hidden relative">
+          <Card className="bg-secondary p-6 rounded-xl shadow-lg overflow-hidden relative">
             <div className="relative z-10 space-y-4">
               <h2 className="text-2xl font-bold text-title">
                 Commander un test ADN pour un patient
@@ -130,21 +130,21 @@ const Home = () => {
           </Card>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="p-6 rounded-3xl">
+            <Card className="p-6 rounded-xl">
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-primary">{pendingRequests}</div>
                 <p className="text-sm text-muted-foreground">Demandes en attente</p>
               </div>
             </Card>
 
-            <Card className="p-6 rounded-3xl">
+            <Card className="p-6 rounded-xl">
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-secondary">{totalClients}</div>
                 <p className="text-sm text-muted-foreground">Clients actifs</p>
               </div>
             </Card>
 
-            <Card className="p-6 rounded-3xl">
+            <Card className="p-6 rounded-xl">
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-accent">0</div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
@@ -153,7 +153,7 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/clients")}>
+            <Card className="p-6 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/clients")}>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                   <Users className="h-6 w-6 text-primary" />
@@ -167,7 +167,7 @@ const Home = () => {
               </div>
             </Card>
 
-            <Card className="p-6 rounded-3xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
+            <Card className="p-6 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
                   <MessageSquare className="h-6 w-6 text-secondary" />
@@ -261,13 +261,13 @@ const Home = () => {
       </div>
 
       {/* D'où ils viennent Section */}
-      <div className="p-4 max-w-4xl mx-auto mt-6">
-        <img 
-          src={dogsOriginSection} 
-          alt="D'où ils viennent - Généalogie et traits comportementaux" 
-          className="w-full rounded-3xl shadow-lg"
-        />
-      </div>
+        <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+          <img 
+            src={dogsOriginSection} 
+            alt="D'où ils viennent - Généalogie et traits comportementaux" 
+            className="w-full rounded-xl shadow-lg"
+          />
+        </div>
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 

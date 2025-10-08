@@ -37,7 +37,7 @@ All colors MUST be HSL.
     --input: 350 50% 93%;
     --ring: 0 100% 70%;
 
-    --radius: 2rem; /* Coins très arrondis comme sur le site */
+    --radius: 1rem; /* Arrondis modérés */
     
     --title: 20 50% 17%; /* #3D1F13 - Marron foncé pour les titres */
     
@@ -122,7 +122,7 @@ All colors MUST be HSL.
 @layer components {
   /* Card Style LupiApp - Style moderne rose */
   .lupi-card {
-    @apply bg-white rounded-[2rem] p-6 transition-all duration-300;
+    @apply bg-white rounded-xl p-6 transition-all duration-300;
     box-shadow: var(--shadow-card);
   }
   

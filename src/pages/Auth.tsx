@@ -143,7 +143,7 @@ const Auth = () => {
 
           <TabsContent value="signin">
             <form onSubmit={handleSignIn} className="space-y-4">
-              <Card className="p-6 rounded-3xl space-y-4">
+              <Card className="p-6 rounded-xl space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>
                   <Input
@@ -184,7 +184,7 @@ const Auth = () => {
 
           <TabsContent value="signup">
             <form onSubmit={handleSignUp} className="space-y-4">
-              <Card className="p-6 rounded-3xl space-y-4">
+              <Card className="p-6 rounded-xl space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Nom complet</Label>
                   <Input
