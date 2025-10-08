@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, TestTube2, Heart, Activity, Sparkles, Globe, TrendingUp } from "lucide-react";
+import { ArrowLeft, TestTube2, Heart, Activity, Sparkles, Globe, TrendingUp, Lightbulb } from "lucide-react";
 import oonaImage from "@/assets/oona-demo.jpg";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -314,6 +314,26 @@ const DNADemo = () => {
               </div>
             </div>
           </div>
+        </Card>
+
+        {/* CTA vers recommandations */}
+        <Card className="p-6 rounded-xl shadow-lg text-center bg-gradient-card">
+          <Lightbulb className="h-12 w-12 text-primary mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-title mb-2">
+            Découvrez les recommandations personnalisées
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Voyez comment le test ADN vous permet d'obtenir des conseils adaptés au mode de vie de votre chien
+          </p>
+          <Button
+            onClick={() => navigate("/recommendations-demo")}
+            variant="outline"
+            className="w-full rounded-full"
+            size="lg"
+          >
+            <Lightbulb className="h-5 w-5 mr-2" />
+            Voir les recommandations
+          </Button>
         </Card>
 
         {/* CTA Final */}

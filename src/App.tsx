@@ -47,6 +47,7 @@ import TermsOfService from "./pages/TermsOfService";
 import SalesTerms from "./pages/SalesTerms";
 import VaccinationPassport from "./pages/VaccinationPassport";
 import DNADemo from "./pages/DNADemo";
+import RecommendationsDemo from "./pages/RecommendationsDemo";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -88,6 +89,7 @@ const App = () => (
           <Route path="/professional/edit-profile" element={<ProfessionalEditProfileNew />} />
           <Route path="/dna-kit" element={<DNAKit />} />
           <Route path="/dna-demo" element={<Layout><DNADemo /></Layout>} />
+          <Route path="/recommendations-demo" element={<Layout><RecommendationsDemo /></Layout>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-summary" element={<OrderSummary />} />
           <Route path="/recommendations" element={<Layout><Recommendations /></Layout>} />

@@ -370,6 +370,25 @@ const Home = () => {
                 Voir la démo
               </Button>
             </div>
+
+            <div className="lupi-card p-6 text-center space-y-4 mb-6">
+              <Lightbulb className="h-12 w-12 text-primary mx-auto" />
+              <h3 className="text-lg font-bold text-title">
+                Recommandations personnalisées
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Quand vous réalisez un test, Lupi vous fournit des recommandations lifestyle personnalisées
+              </p>
+              <Button 
+                onClick={() => navigate("/recommendations-demo")} 
+                variant="outline"
+                className="w-full rounded-full"
+                size="lg"
+              >
+                <Lightbulb className="h-5 w-5 mr-2" />
+                Voir les recommandations
+              </Button>
+            </div>
           </>
         )}
 
