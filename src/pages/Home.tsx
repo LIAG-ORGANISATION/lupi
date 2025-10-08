@@ -365,6 +365,36 @@ const Home = () => {
           </div>
         )}
 
+        {/* My Dogs section - show first when user has dogs */}
+        {isGuardian && dogs.length > 0 && (
+          <div className="space-y-4 mb-6">
+            <h2 className="text-xl font-bold text-title">Mes chiens</h2>
+            <div className="space-y-3">
+              {dogs.map(dog => (
+                <div key={dog.id} className="lupi-card">
+                  <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
+                    {dog.avatar_url ? (
+                      <img 
+                        src={dog.avatar_url} 
+                        alt={dog.name} 
+                        className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" 
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
+                        <DogIcon className="h-8 w-8 text-primary" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="font-bold text-title text-lg">{dog.name}</h3>
+                      {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Partners section - visible to everyone */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
@@ -409,24 +439,8 @@ const Home = () => {
           </div>
         </div>
 
-        {isGuardian && dogs.length > 0 && <div className="space-y-4">
-            <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
-            <div className="space-y-3">
-              {dogs.map(dog => <div key={dog.id} className="lupi-card">
-                  <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
-                        <DogIcon className="h-8 w-8 text-primary" />
-                      </div>}
-                    <div className="flex-1">
-                      <h3 className="font-bold text-title text-lg">{dog.name}</h3>
-                      {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
-                    </div>
-                  </div>
-                </div>)}
-            </div>
-          </div>}
-
-        {isAuthenticated && !isGuardian && <div>
+        {isAuthenticated && !isGuardian && (
+          <div>
             <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
             <div className="grid grid-cols-2 gap-4">
               <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
@@ -434,7 +448,8 @@ const Home = () => {
               <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
               <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
             </div>
-          </div>}
+          </div>
+        )}
 
         {/* CTA for non-authenticated users */}
         {!isAuthenticated && (
