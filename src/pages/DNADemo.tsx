@@ -175,13 +175,13 @@ const DNADemo = () => {
                 </AccordionTrigger>
                 <AccordionContent className="space-y-3 pt-3">
                   <div className="p-3 bg-background rounded-lg">
-                    <div className="font-medium text-sm text-title">ALT Activity</div>
+                    <div className="font-semibold text-sm text-foreground">ALT Activity</div>
                     <p className="text-xs text-muted-foreground mt-1">
                       Taux d'enzymes hépatiques naturellement plus bas. À surveiller par le vétérinaire lors des bilans sanguins.
                     </p>
                   </div>
                   <div className="p-3 bg-background rounded-lg">
-                    <div className="font-medium text-sm text-title">Dégénérescence Myélinique (DM)</div>
+                    <div className="font-semibold text-sm text-foreground">Dégénérescence Myélinique (DM)</div>
                     <p className="text-xs text-muted-foreground mt-1">
                       Porteuse saine, sans risque de développement de la maladie.
                     </p>
