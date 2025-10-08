@@ -321,7 +321,7 @@ const Home = () => {
       </div>
 
       {/* D'où ils viennent Section */}
-        <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+        <div className="p-4 space-y-6 max-w-4xl mx-auto">
           <img 
             src={dogsOriginSection} 
             alt="D'où ils viennent - Généalogie et traits comportementaux" 
