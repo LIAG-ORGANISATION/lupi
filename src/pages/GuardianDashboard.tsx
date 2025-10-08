@@ -5,16 +5,22 @@ import { useNavigate } from "react-router-dom";
 import { Plus, MessageSquare, FileText, Dog as DogIcon, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Dog } from "@/types/database";
 import AuthGuard from "@/components/AuthGuard";
 import messagesIcon from "@/assets/messages-icon.jpg";
 import documentsIcon from "@/assets/documents-icon.jpg";
 import professionalsIcon from "@/assets/professionals-icon.jpg";
 
+interface DogData {
+  id: string;
+  name: string;
+  breed: string | null;
+  avatar_url: string | null;
+}
+
 const GuardianDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [dogs, setDogs] = useState<Dog[]>([]);
+  const [dogs, setDogs] = useState<DogData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -145,9 +151,9 @@ const GuardianDashboard = () => {
                   onClick={() => navigate(`/dogs/${dog.id}`)}
                 >
                   <div className="flex items-center gap-4">
-                    {dog.photo_url ? (
+                    {dog.avatar_url ? (
                       <img
-                        src={dog.photo_url}
+                        src={dog.avatar_url}
                         alt={dog.name}
                         className="w-16 h-16 rounded-full object-cover"
                       />
