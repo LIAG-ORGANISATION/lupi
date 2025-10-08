@@ -46,6 +46,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import SalesTerms from "./pages/SalesTerms";
 import VaccinationPassport from "./pages/VaccinationPassport";
+import DNADemo from "./pages/DNADemo";
 
 const queryClient = new QueryClient();
 
@@ -84,6 +85,7 @@ const App = () => (
           <Route path="/professional/ethical-charter" element={<EthicalCharter />} />
           <Route path="/professional/edit-profile" element={<ProfessionalEditProfileNew />} />
           <Route path="/dna-kit" element={<DNAKit />} />
+          <Route path="/dna-demo" element={<Layout><DNADemo /></Layout>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-summary" element={<OrderSummary />} />
           <Route path="/recommendations" element={<Layout><Recommendations /></Layout>} />
