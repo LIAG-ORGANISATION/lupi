@@ -286,7 +286,7 @@ const RecommendationsDemo = () => {
               onClick={() => navigate('/dna-kit')}
             >
               <ShoppingCart className="h-5 w-5 mr-2" />
-              Commander le test ADN de mon chien maintenant
+              Commander pour mon chien
             </Button>
           </div>
         </Card>
