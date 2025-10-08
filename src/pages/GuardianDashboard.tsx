@@ -65,13 +65,13 @@ const GuardianDashboard = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-3">
             <Card
-              className="lupi-card cursor-pointer"
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
               onClick={() => navigate("/guardian/messages")}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl overflow-hidden">
+              <div className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
                   <img 
                     src={messagesIcon} 
                     alt="Messages" 
@@ -79,18 +79,18 @@ const GuardianDashboard = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-title">Messages</h3>
-                  <p className="text-sm text-muted-foreground">Avec les pros</p>
+                  <h3 className="font-semibold text-title text-sm">Messages</h3>
+                  <p className="text-xs text-muted-foreground">Avec les pros</p>
                 </div>
               </div>
             </Card>
 
             <Card
-              className="lupi-card cursor-pointer"
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
               onClick={() => navigate("/guardian/documents")}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl overflow-hidden">
+              <div className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
                   <img 
                     src={documentsIcon} 
                     alt="Documents" 
@@ -98,18 +98,18 @@ const GuardianDashboard = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-title">Documents</h3>
-                  <p className="text-sm text-muted-foreground">Partagés</p>
+                  <h3 className="font-semibold text-title text-sm">Documents</h3>
+                  <p className="text-xs text-muted-foreground">Partagés</p>
                 </div>
               </div>
             </Card>
 
             <Card
-              className="lupi-card cursor-pointer"
+              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
               onClick={() => navigate("/professionals")}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl overflow-hidden">
+              <div className="flex flex-col items-center gap-2 text-center">
+                <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
                   <img 
                     src={professionalsIcon} 
                     alt="Professionnels" 
@@ -117,8 +117,8 @@ const GuardianDashboard = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-title">Professionnels</h3>
-                  <p className="text-sm text-muted-foreground">Trouver</p>
+                  <h3 className="font-semibold text-title text-sm">Professionnels</h3>
+                  <p className="text-xs text-muted-foreground">Trouver</p>
                 </div>
               </div>
             </Card>
