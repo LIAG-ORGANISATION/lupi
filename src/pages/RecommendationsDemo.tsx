@@ -8,27 +8,27 @@ const RecommendationsDemo = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen pb-24 bg-background">
       {/* Header avec retour */}
-      <div className="p-6" style={{ backgroundColor: '#FF6B6B' }}>
+      <div className="p-4 sm:p-6 bg-primary">
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-white mb-6 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2 text-primary-foreground mb-4 hover:opacity-80 transition-opacity"
           >
             <ArrowLeft className="h-5 w-5" />
-            Retour
+            <span className="text-sm sm:text-base">Retour</span>
           </button>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             <img 
               src={oonaDemoImg} 
               alt="Oona" 
-              className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+              className="w-16 h-16 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-primary-foreground shadow-lg flex-shrink-0"
             />
-            <div className="text-white">
-              <h1 className="text-3xl font-bold mb-2 text-white">Recommandations personnalisées</h1>
-              <p className="text-white/90">Exemple basé sur les résultats ADN</p>
+            <div className="text-primary-foreground min-w-0">
+              <h1 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">Recommandations personnalisées</h1>
+              <p className="text-sm sm:text-base text-primary-foreground/90">Exemple basé sur les résultats ADN</p>
             </div>
           </div>
         </div>
@@ -43,141 +43,141 @@ const RecommendationsDemo = () => {
         </div>
 
         {/* Intro */}
-        <Card className="p-6">
-          <p className="text-foreground text-lg leading-relaxed">
+        <Card className="p-4 sm:p-6">
+          <p className="text-foreground text-sm sm:text-lg leading-relaxed">
             Une fois l'ADN de votre chien analysé, vous recevrez un ensemble complet de conseils personnalisés sur la nutrition, l'exercice et les soins adaptés à sa génétique unique.
           </p>
         </Card>
 
         {/* 1. Alimentation & Nutrition */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-card flex items-center justify-center">
-              <Utensils className="h-6 w-6 text-primary" />
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+              <Utensils className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold">Plan alimentaire idéal pour Oona</h2>
+            <h2 className="text-lg sm:text-2xl font-bold">Plan alimentaire idéal</h2>
           </div>
 
-          <Card className="p-6 space-y-4">
+          <Card className="p-4 sm:p-6 space-y-4">
             <div className="space-y-3">
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Repas riches en protéines</span> - Les races de bergers actives nécessitent de l'énergie pour leurs muscles.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Repas riches en protéines</span> - Races actives.
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Ajout d'antioxydants</span> - Aide à soutenir les chiens de type colley sujets à la sensibilité oculaire.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Ajout d'antioxydants</span> - Sensibilité oculaire.
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Éviter les croquettes à base de blé</span> - Les lignées Border Collie présentent fréquemment des intolérances.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Éviter le blé</span> - Intolérances fréquentes.
                 </p>
               </div>
             </div>
 
-            <div className="bg-gradient-card p-4 rounded-lg mt-4">
-              <p className="text-sm font-semibold text-foreground mb-1">Régime recommandé :</p>
-              <p className="text-sm text-muted-foreground">Croquettes hyperprotéinées + huile de poisson + faible teneur en céréales</p>
+            <div className="bg-accent p-3 sm:p-4 rounded-lg mt-4">
+              <p className="text-xs sm:text-sm font-semibold text-foreground mb-1">Régime recommandé :</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Croquettes hyperprotéinées + huile de poisson</p>
             </div>
 
             <Button 
-              className="w-full mt-4"
+              className="w-full mt-4 text-sm sm:text-base"
               onClick={() => navigate('/dna-kit')}
             >
-              Voir le plan nutritionnel personnalisé
+              Voir le plan nutritionnel
             </Button>
           </Card>
         </section>
 
         {/* 2. Promenades & Activités */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-card flex items-center justify-center">
-              <Footprints className="h-6 w-6 text-primary" />
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+              <Footprints className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold">Meilleures activités pour la génétique d'Oona</h2>
+            <h2 className="text-lg sm:text-2xl font-bold">Activités recommandées</h2>
           </div>
 
-          <Card className="p-6 space-y-4">
+          <Card className="p-4 sm:p-6 space-y-4">
             <div className="space-y-3">
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Jeu extérieur quotidien ou agility</span> - Minimum 1h par jour.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Jeu extérieur ou agility</span> - Min. 1h/jour.
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Jeux de pistage et de recherche</span> - Instincts de berger et border naturels.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Pistage et recherche</span> - Instincts naturels.
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Jeux cérébraux à la maison</span> - Pour éviter l'ennui (côté Labrador = curiosité).
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Jeux cérébraux</span> - Éviter l'ennui.
                 </p>
               </div>
             </div>
 
-            <div className="bg-accent/10 border-l-4 border-primary p-4 rounded-r-lg mt-4">
-              <p className="text-sm text-foreground italic">
-                Les chiens avec un mélange élevé de berger adorent résoudre des problèmes et travailler en équipe.
+            <div className="bg-accent border-l-4 border-primary p-3 sm:p-4 rounded-r-lg mt-4">
+              <p className="text-xs sm:text-sm text-foreground italic">
+                Les bergers adorent résoudre des problèmes et travailler en équipe.
               </p>
             </div>
 
             <Button 
-              className="w-full mt-4"
+              className="w-full mt-4 text-sm sm:text-base"
               onClick={() => navigate('/dna-kit')}
             >
-              Voir le plan d'activités personnalisé
+              Voir le plan d'activités
             </Button>
           </Card>
         </section>
 
         {/* 3. Jeux & Stimulation mentale */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-card flex items-center justify-center">
-              <Puzzle className="h-6 w-6 text-primary" />
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+              <Puzzle className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold">Idées de jeux pour Oona</h2>
+            <h2 className="text-lg sm:text-2xl font-bold">Idées de jeux</h2>
           </div>
 
-          <Card className="p-6 space-y-4">
+          <Card className="p-4 sm:p-6 space-y-4">
             <div className="space-y-3">
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">Gamelles interactives ou tapis de fouille</p>
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">Gamelles interactives ou tapis de fouille</p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">Jouets de cache-cache</p>
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">Jouets de cache-cache</p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">Exercices d'obéissance de base avec friandises (renforcement positif)</p>
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">Exercices d'obéissance avec friandises</p>
               </div>
             </div>
 
-            <div className="bg-gradient-card p-4 rounded-lg mt-4">
-              <p className="text-sm font-semibold text-foreground mb-1">Rotation hebdomadaire suggérée :</p>
-              <p className="text-sm text-muted-foreground">Alterner entre jeux cérébraux et jeux d'énergie</p>
+            <div className="bg-accent p-3 sm:p-4 rounded-lg mt-4">
+              <p className="text-xs sm:text-sm font-semibold text-foreground mb-1">Rotation suggérée :</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Alterner jeux cérébraux et jeux d'énergie</p>
             </div>
 
             <Button 
-              className="w-full mt-4"
+              className="w-full mt-4 text-sm sm:text-base"
               onClick={() => navigate('/dna-kit')}
             >
               Voir les jeux adaptés
@@ -186,106 +186,106 @@ const RecommendationsDemo = () => {
         </section>
 
         {/* 4. Santé & Prévention */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-card flex items-center justify-center">
-              <Stethoscope className="h-6 w-6 text-primary" />
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+              <Stethoscope className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold">Surveillance santé basée sur la génétique</h2>
+            <h2 className="text-lg sm:text-2xl font-bold">Surveillance santé</h2>
           </div>
 
-          <Card className="p-6 space-y-4">
+          <Card className="p-4 sm:p-6 space-y-4">
             <div className="space-y-3">
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500 mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Excellente santé génétique globale</span>
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500 mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Excellente santé génétique</span>
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-yellow-500 mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Surveiller les niveaux d'enzymes hépatiques (ALT)</span> - Une fois par an.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-yellow-500 mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Enzymes hépatiques</span> - 1x/an.
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Suppléments articulaires réguliers recommandés</span> - Races de berger.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Suppléments articulaires</span> - Recommandés.
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Exercice équilibré</span> - Éviter le surentraînement pendant la croissance.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Exercice équilibré</span> - Éviter le surentraînement.
                 </p>
               </div>
             </div>
 
             <Button 
-              className="w-full mt-4"
+              className="w-full mt-4 text-sm sm:text-base"
               onClick={() => navigate('/dna-kit')}
             >
-              Voir le résumé de santé personnalisé
+              Voir le résumé de santé
             </Button>
           </Card>
         </section>
 
         {/* 5. Personnalité & Lien */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-card flex items-center justify-center">
-              <Heart className="h-6 w-6 text-primary" />
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+              <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold">Comprendre le comportement d'Oona</h2>
+            <h2 className="text-lg sm:text-2xl font-bold">Comportement</h2>
           </div>
 
-          <Card className="p-6 space-y-4">
-            <p className="text-foreground text-lg italic leading-relaxed">
-              Oona est intelligente, sensible et profondément attachée à ses humains. Elle s'épanouit lorsqu'elle se sent utile et aimée - typique de son mélange Border Collie et Labrador.
+          <Card className="p-4 sm:p-6 space-y-4">
+            <p className="text-foreground text-sm sm:text-base italic leading-relaxed">
+              Intelligente, sensible et attachée à ses humains. S'épanouit en se sentant utile et aimée.
             </p>
 
             <div className="space-y-3 mt-4">
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Activités de lien suggérées :</span> Entraînement au clicker, travail olfactif, jeu social.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Activités de lien :</span> Clicker, olfactif, jeu social.
                 </p>
               </div>
               
-              <div className="flex gap-3">
-                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <p className="text-foreground">
-                  <span className="font-semibold">Équilibre du tempérament :</span> Intelligent + affectueux + protecteur.
+              <div className="flex gap-2 sm:gap-3">
+                <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Tempérament :</span> Intelligent + affectueux + protecteur.
                 </p>
               </div>
             </div>
 
             <Button 
-              className="w-full mt-4"
+              className="w-full mt-4 text-sm sm:text-base"
               onClick={() => navigate('/dna-kit')}
             >
-              Voir les insights de personnalité
+              Voir les insights
             </Button>
           </Card>
         </section>
 
         {/* CTA Final */}
-        <Card className="p-8 bg-gradient-card border-2 border-primary/20 rounded-3xl">
-          <div className="text-center space-y-4">
-            <h2 className="text-2xl font-bold text-title">Apprenez à connaître votre chien comme jamais auparavant</h2>
-            <p className="text-foreground text-lg">
-              Votre test ADN débloque de véritables informations sur la nutrition, le comportement et le bien-être de votre chien.
+        <Card className="p-6 sm:p-8 bg-accent border-2 border-primary/20 rounded-2xl sm:rounded-3xl">
+          <div className="text-center space-y-3 sm:space-y-4">
+            <h2 className="text-xl sm:text-2xl font-bold">Apprenez à connaître votre chien</h2>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              Le test ADN débloque de véritables informations sur la nutrition, le comportement et le bien-être.
             </p>
             <Button 
               size="lg"
-              className="w-full sm:w-auto px-8 rounded-full"
+              className="w-full rounded-full text-sm sm:text-base"
               onClick={() => navigate('/dna-kit')}
             >
-              <ShoppingCart className="h-5 w-5 mr-2" />
+              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Commander pour mon chien
             </Button>
           </div>
