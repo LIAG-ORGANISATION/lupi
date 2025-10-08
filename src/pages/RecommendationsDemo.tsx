@@ -91,7 +91,7 @@ const RecommendationsDemo = () => {
               className="w-full mt-4"
               onClick={() => navigate('/dna-kit')}
             >
-              Voir le plan nutritionnel de mon chien après test ADN
+              Voir le plan nutritionnel personnalisé
             </Button>
           </Card>
         </section>
@@ -139,7 +139,7 @@ const RecommendationsDemo = () => {
               className="w-full mt-4"
               onClick={() => navigate('/dna-kit')}
             >
-              Obtenir le plan d'activités personnalisé de votre chien
+              Voir le plan d'activités personnalisé
             </Button>
           </Card>
         </section>
@@ -180,7 +180,7 @@ const RecommendationsDemo = () => {
               className="w-full mt-4"
               onClick={() => navigate('/dna-kit')}
             >
-              Découvrir les jeux adaptés aux gènes de votre chien
+              Voir les jeux adaptés
             </Button>
           </Card>
         </section>
@@ -229,7 +229,7 @@ const RecommendationsDemo = () => {
               className="w-full mt-4"
               onClick={() => navigate('/dna-kit')}
             >
-              Accéder à votre résumé de santé personnalisé après test ADN
+              Voir le résumé de santé personnalisé
             </Button>
           </Card>
         </section>
@@ -268,7 +268,7 @@ const RecommendationsDemo = () => {
               className="w-full mt-4"
               onClick={() => navigate('/dna-kit')}
             >
-              Débloquer les insights de personnalité de votre chien
+              Voir les insights de personnalité
             </Button>
           </Card>
         </section>
