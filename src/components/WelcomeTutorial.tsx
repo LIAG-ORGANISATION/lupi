@@ -15,19 +15,19 @@ const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
   const steps = [
     {
       icon: Plus,
-      title: "Bienvenue sur LupiApp ! 🎉",
+      title: "Bienvenue sur LupiApp",
       description: "Créez le profil de votre chien pour commencer à suivre sa santé et son bien-être.",
       action: "Commencer"
     },
     {
       icon: Users,
-      title: "Connectez-vous avec des professionnels 🏥",
+      title: "Connectez-vous avec des professionnels",
       description: "Partagez le profil de votre chien avec des vétérinaires et éducateurs canins.",
       action: "Suivant"
     },
     {
       icon: FileText,
-      title: "Centralisez vos documents 📋",
+      title: "Centralisez vos documents",
       description: "Stockez vaccins, ordonnances et documents médicaux au même endroit.",
       action: "Terminer"
     }
