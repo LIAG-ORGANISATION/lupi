@@ -17,32 +17,44 @@ const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
       icon: Plus,
       title: "Bienvenue sur LupiApp",
       description: "Créez le profil de votre chien pour commencer à suivre sa santé et son bien-être.",
-      action: "Commencer"
+      primaryAction: "Ajouter un chien",
+      primaryLink: "/dogs/add",
+      secondaryAction: "Continuer le tuto"
     },
     {
       icon: Users,
       title: "Connectez-vous avec des professionnels",
       description: "Partagez le profil de votre chien avec des vétérinaires et éducateurs canins.",
-      action: "Suivant"
+      primaryAction: "Trouver des pros",
+      primaryLink: "/professionals",
+      secondaryAction: "Continuer le tuto"
     },
     {
       icon: FileText,
       title: "Centralisez vos documents",
       description: "Stockez vaccins, ordonnances et documents médicaux au même endroit.",
-      action: "Terminer"
+      primaryAction: "Voir mes documents",
+      primaryLink: "/guardian/documents",
+      secondaryAction: "Ajouter un chien"
     }
   ];
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
+  const handlePrimaryAction = () => {
+    const currentStepData = steps[currentStep];
+    if (currentStepData.primaryLink) {
       onComplete();
+      navigate(currentStepData.primaryLink);
     }
   };
 
-  const handleSkip = () => {
-    onComplete();
+  const handleSecondaryAction = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      // Dernière étape : "Ajouter un chien"
+      onComplete();
+      navigate("/dogs/add");
+    }
   };
 
   const currentStepData = steps[currentStep];
@@ -80,22 +92,20 @@ const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
 
           <div className="space-y-3 pt-4">
             <Button 
-              onClick={handleNext}
+              onClick={handlePrimaryAction}
               className="w-full rounded-full"
               size="lg"
             >
-              {currentStepData.action}
+              {currentStepData.primaryAction}
             </Button>
             
-            {currentStep === 0 && (
-              <Button 
-                onClick={handleSkip}
-                variant="ghost"
-                className="w-full rounded-full"
-              >
-                Passer
-              </Button>
-            )}
+            <Button 
+              onClick={handleSecondaryAction}
+              variant="outline"
+              className="w-full rounded-full"
+            >
+              {currentStepData.secondaryAction}
+            </Button>
           </div>
         </div>
       </DialogContent>
