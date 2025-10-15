@@ -273,8 +273,8 @@ const Home = () => {
             <div className="space-y-3">
               {dogs.map(dog => <div key={dog.id} className="lupi-card">
                   <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
-                        <DogIcon className="h-8 w-8 text-primary" />
+                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-24 h-24 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-24 h-24 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
+                        <DogIcon className="h-12 w-12 text-primary" />
                       </div>}
                     <div className="flex-1">
                       <h3 className="font-bold text-title text-lg">{dog.name}</h3>
