@@ -202,9 +202,9 @@ const Profile = () => {
               {dogs.length} chien{dogs.length > 1 ? 's' : ''} enregistré{dogs.length > 1 ? 's' : ''}
             </p>
           </div>
-          <Button onClick={() => navigate("/dogs")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
+          <Button onClick={() => navigate(dogs.length === 1 ? `/dogs/${dogs[0].id}` : "/dogs")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
             <DogIcon className="mr-2 h-4 w-4" />
-            Accéder à mes chiens
+            {dogs.length === 1 ? 'Voir mon chien' : 'Accéder à mes chiens'}
           </Button>
         </Card>}
 
