@@ -231,13 +231,15 @@ const Home = () => {
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section with Gradient */}
       <div style={{
-      backgroundColor: '#3D0000'
-    }} className="p-8 rounded-b-[3rem] shadow-xl bg-white">
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }} className="p-8 rounded-b-[3rem] shadow-xl">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <h1 className="text-3xl font-bold text-inherit">
+          <h1 className="text-3xl font-bold text-white">
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
-          <p className="text-sm text-gray-500">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
+          <p className="text-sm text-white/90">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div className="space-y-3 pt-4">
             {!isAuthenticated ? <>
