@@ -232,12 +232,12 @@ const Home = () => {
       {/* Hero Section with Gradient */}
       <div style={{
       backgroundColor: '#3D0000'
-    }} className="p-8 rounded-b-[3rem] shadow-xl bg-stone-200">
+    }} className="p-8 rounded-b-[3rem] shadow-xl bg-white">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <h1 className="text-3xl font-bold text-gray-950">
+          <h1 className="text-3xl font-bold text-inherit">
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
-          <p className="text-sm text-zinc-600">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
+          <p className="text-sm text-gray-500">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div className="space-y-3 pt-4">
             {!isAuthenticated ? <>
@@ -286,7 +286,7 @@ const Home = () => {
               {/* Raccourci vers Recommandations personnalisées */}
               <div className="lupi-card bg-gradient-card border-2 border-primary/20">
                 <div className="flex items-center gap-4 cursor-pointer p-4" onClick={() => navigate('/recommendations-demo')}>
-                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 rounded-md bg-black">
                     <Lightbulb className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
