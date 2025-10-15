@@ -63,6 +63,7 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
     title: "",
     description: "",
     event_type: "reminder" as CalendarEvent["event_type"],
+    event_date: format(new Date(), "yyyy-MM-dd"),
     event_time: "",
   });
   const { toast } = useToast();
@@ -121,7 +122,7 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
       });
 
       setShowAddEventDialog(false);
-      setNewEvent({ title: "", description: "", event_type: "reminder", event_time: "" });
+      setNewEvent({ title: "", description: "", event_type: "reminder", event_date: format(new Date(), "yyyy-MM-dd"), event_time: "" });
       fetchEvents();
     } catch (error) {
       console.error("Error adding event:", error);
@@ -362,6 +363,15 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
                 value={newEvent.title}
                 onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
                 placeholder="Ex: Rappel vaccin"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Date *</label>
+              <Input
+                type="date"
+                value={newEvent.event_date}
+                onChange={(e) => setNewEvent({ ...newEvent, event_date: e.target.value })}
               />
             </div>
 
