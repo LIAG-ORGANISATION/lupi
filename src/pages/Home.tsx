@@ -230,14 +230,14 @@ const Home = () => {
   return <div className="min-h-screen pb-20 animate-fade-in">
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section with Gradient */}
-      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-6 rounded-b-[3rem] shadow-card">
-        <div className="max-w-4xl mx-auto space-y-4 text-center">
+      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 rounded-b-[3rem] shadow-card">
+        <div className="max-w-4xl mx-auto space-y-3 text-center">
           <h1 className="text-3xl font-bold text-white">
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
           <p className="text-sm text-white/80">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
-          <div className="space-y-2 pt-2">
+          <div className="space-y-2 pt-1">
             {!isAuthenticated ? <>
                 <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                   <LogIn className="h-5 w-5 mr-2 inline" />
@@ -264,9 +264,9 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="p-3 space-y-4 max-w-4xl mx-auto mt-4">
+      <div className="p-2 space-y-3 max-w-4xl mx-auto mt-2">
         {/* My Dogs section - show first when user has dogs */}
-        {isGuardian && dogs.length > 0 && <div className="space-y-3 mb-4">
+        {isGuardian && dogs.length > 0 && <div className="space-y-2 mb-3">
             <h2 className="text-xl font-bold text-title">Mes chiens</h2>
             <div className="space-y-2">
               {dogs.map(dog => <div key={dog.id} className="lupi-card">
@@ -300,7 +300,7 @@ const Home = () => {
       {/* D'où ils viennent Section */}
         
 
-      <div className="p-3 space-y-4 max-w-4xl mx-auto mt-4">
+      <div className="p-2 space-y-3 max-w-4xl mx-auto mt-2">
 
         {/* CTA to create dog for authenticated guardians without dogs */}
         {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && <>
@@ -348,39 +348,39 @@ const Home = () => {
           </>}
 
         {/* Quick actions for authenticated guardians */}
-        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-2 mb-4">
-            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-3" onClick={() => navigate("/guardian/messages")}>
-              <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-xl overflow-hidden">
+        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-3">
+            <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/messages")}>
+              <div className="flex flex-col items-center gap-1.5 text-center">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm">
                   <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Messages</h3>
-                  <p className="text-xs text-muted-foreground">Avec les pros</p>
+                  <p className="text-xs text-primary">Avec les pros</p>
                 </div>
               </div>
             </div>
 
-            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-3" onClick={() => navigate("/guardian/documents")}>
-              <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-xl overflow-hidden">
+            <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/documents")}>
+              <div className="flex flex-col items-center gap-1.5 text-center">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm">
                   <img src={documentsIcon} alt="Documents" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Documents</h3>
-                  <p className="text-xs text-muted-foreground">Partagés</p>
+                  <p className="text-xs text-primary">Partagés</p>
                 </div>
               </div>
             </div>
 
-            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-3" onClick={() => navigate("/professionals")}>
-              <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-xl overflow-hidden">
+            <div className="cursor-pointer transition-all" onClick={() => navigate("/professionals")}>
+              <div className="flex flex-col items-center gap-1.5 text-center">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm">
                   <img src={professionalsIcon} alt="Professionnels" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Professionnels</h3>
-                  <p className="text-xs text-muted-foreground">Trouver</p>
+                  <p className="text-xs text-primary">Trouver</p>
                 </div>
               </div>
             </div>
