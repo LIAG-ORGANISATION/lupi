@@ -9,8 +9,8 @@ import dogsOriginSection from "@/assets/dogs-origin-section.png";
 import messagesIcon from "@/assets/messages-icon.jpg";
 import documentsIcon from "@/assets/documents-icon.jpg";
 import professionalsIcon from "@/assets/professionals-icon.jpg";
-import kozooLogo from "@/assets/kozoo-logo.png";
-import pennypetLogo from "@/assets/pennypet-logo.png";
+import kozooLogo from "@/assets/kozoo-logo-new.png";
+import pennypetLogo from "@/assets/pennypet-logo-new.png";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
@@ -211,7 +211,7 @@ const Home = () => {
                 </div>
               </a>
 
-              <a href="https://www.pennypet.fr" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
+              <a href="https://pennypet.io/" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
                 <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
                   <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
                 </div>
