@@ -298,9 +298,7 @@ const Home = () => {
       </div>
 
       {/* D'où ils viennent Section */}
-        <div className="p-4 space-y-6 max-w-4xl mx-auto">
-          <img src={dogsOriginSection} alt="D'où ils viennent - Généalogie et traits comportementaux" className="w-full rounded-xl shadow-lg" />
-        </div>
+        
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 
@@ -420,7 +418,7 @@ const Home = () => {
             <div className="lupi-card p-6">
               <div className="flex gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
                     <Heart className="h-5 w-5 text-red-500 fill-red-500" />
                   </div>
                 </div>
