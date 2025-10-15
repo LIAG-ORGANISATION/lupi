@@ -8,97 +8,97 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* LupiApp Design System - Charte graphique lupiapp.fr */
-    --background: 350 100% 98%; /* #FFF5F7 - Fond rose très pâle */
-    --foreground: 20 50% 17%; /* #3D1F13 - Texte marron foncé */
+    /* Clean Medical App Design System with Gold Accent #b49262 */
+    --background: 0 0% 98%; /* #FAFAFA - Light gray background */
+    --foreground: 222 47% 11%; /* #0F172A - Dark text */
 
-    --card: 0 0% 100%; /* #FFFFFF - Cartes blanches */
-    --card-foreground: 20 50% 17%;
+    --card: 0 0% 100%; /* #FFFFFF - White cards */
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 50% 17%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 0 100% 70%; /* #FF6B6B - Rouge corail */
+    --primary: 35 40% 55%; /* #B49262 - Gold accent */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 350 100% 95%; /* #FFE5EA - Rose pâle badges */
-    --secondary-foreground: 20 50% 17%;
+    --secondary: 210 40% 96%; /* #F1F5F9 - Light blue-gray */
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 350 60% 97%; /* #FFF8F9 - Gris rosé très pâle */
-    --muted-foreground: 20 30% 45%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 0 100% 70%; /* #FF6B6B - Rouge corail */
-    --accent-foreground: 0 0% 100%;
+    --accent: 35 40% 95%; /* Light gold tint */
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 350 50% 93%; /* #FFE8EB - Bordures rose pâle */
-    --input: 350 50% 93%;
-    --ring: 0 100% 70%;
+    --border: 214 32% 91%; /* #E2E8F0 - Light borders */
+    --input: 214 32% 91%;
+    --ring: 35 40% 55%;
 
-    --radius: 1rem; /* Arrondis modérés */
+    --radius: 1rem;
     
-    --title: 20 50% 17%; /* #3D1F13 - Marron foncé pour les titres */
+    --title: 222 47% 11%;
     
-    /* Gradients LupiApp Style Site */
-    --gradient-primary: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%); /* Rouge corail dégradé */
-    --gradient-soft: linear-gradient(180deg, #FFF5F7 0%, #FFFFFF 100%); /* Rose très pâle → Blanc */
-    --gradient-card: linear-gradient(135deg, rgba(255,107,107,0.05) 0%, rgba(255,142,142,0.05) 100%);
+    /* Gradients with gold accent */
+    --gradient-primary: linear-gradient(135deg, hsl(35 40% 55%), hsl(35 50% 65%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 98%));
+    --gradient-card: linear-gradient(135deg, hsl(35 40% 97%), hsl(35 30% 95%));
     
-    /* Shadows douces et élégantes */
-    --shadow-card: 0 4px 24px rgba(61, 31, 19, 0.08);
-    --shadow-hover: 0 8px 32px rgba(61, 31, 19, 0.12);
+    /* Clean, subtle shadows */
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 4px 16px rgba(180, 146, 98, 0.15), 0 2px 4px rgba(0, 0, 0, 0.05);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 210 29% 25%;
-    --sidebar-primary: 340 100% 65%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 35 40% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 330 75% 95%;
-    --sidebar-accent-foreground: 210 29% 25%;
-    --sidebar-border: 330 40% 92%;
-    --sidebar-ring: 340 100% 65%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 35 40% 55%;
   }
 
   .dark {
-    --background: 20 30% 12%;
-    --foreground: 0 0% 95%;
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
 
-    --card: 20 25% 15%;
-    --card-foreground: 0 0% 95%;
+    --card: 222 47% 15%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 20 25% 15%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 222 47% 15%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 0 100% 70%;
+    --primary: 35 40% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 50% 25%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 20 15% 20%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 0 100% 70%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 217 33% 20%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 20 20% 25%;
-    --input: 20 20% 25%;
-    --ring: 0 100% 70%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 35 40% 55%;
     
-    --title: 0 0% 95%;
+    --title: 210 40% 98%;
     
-    --sidebar-background: 20 25% 15%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 100% 70%;
+    --sidebar-background: 222 47% 15%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 35 40% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 20% 20%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 20 20% 25%;
-    --sidebar-ring: 0 100% 70%;
+    --sidebar-accent: 217 33% 20%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 20%;
+    --sidebar-ring: 35 40% 55%;
   }
 }
 
@@ -120,26 +120,26 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Card Style LupiApp - Style moderne rose */
+  /* Clean Medical App Style - Cards */
   .lupi-card {
-    @apply bg-white rounded-xl p-6 transition-all duration-300;
+    @apply bg-card rounded-2xl p-5 transition-all duration-200;
     box-shadow: var(--shadow-card);
   }
   
   .lupi-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-4px);
+    transform: translateY(-2px);
   }
   
-  /* Button Primary - Style site lupiapp.fr */
+  /* Primary Button - Gold accent */
   .btn-lupi {
-    @apply bg-primary text-white font-semibold rounded-full px-8 py-3.5 transition-all duration-300;
-    @apply hover:scale-[1.02] hover:shadow-lg;
-    box-shadow: 0 2px 12px rgba(255, 107, 107, 0.2);
+    @apply bg-primary text-primary-foreground font-semibold rounded-xl px-6 py-3.5 transition-all duration-200;
+    @apply hover:bg-primary/90;
+    box-shadow: 0 2px 8px rgba(180, 146, 98, 0.15);
   }
   
   .btn-lupi:hover {
-    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 4px 12px rgba(180, 146, 98, 0.25);
   }
   
   /* Gradient Background */
@@ -147,9 +147,24 @@ All colors MUST be HSL.
     background: var(--gradient-primary);
   }
   
-  /* Avatar Circle */
+  /* Avatar Circle - Clean borders */
   .avatar-circle {
-    @apply w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg;
+    @apply rounded-full object-cover border-2 border-background shadow-md;
+  }
+  
+  /* List Item Card */
+  .list-item-card {
+    @apply bg-card rounded-2xl p-4 transition-all duration-200 cursor-pointer;
+    box-shadow: var(--shadow-card);
+  }
+  
+  .list-item-card:hover {
+    box-shadow: var(--shadow-hover);
+  }
+  
+  /* Icon Container */
+  .icon-container {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10;
   }
 }
 
