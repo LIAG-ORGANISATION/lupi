@@ -19,10 +19,19 @@ interface CalendarEvent {
   event_time: string | null;
   event_type: 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other';
   status: 'upcoming' | 'completed' | 'cancelled';
+  dog_id?: string;
+}
+
+interface Dog {
+  id: string;
+  name: string;
+  avatar_url: string | null;
 }
 
 interface DogCalendarProps {
-  dogId: string;
+  dogId?: string; // Pour le mode single dog
+  dogIds?: string[]; // Pour le mode multi dogs
+  dogs?: Dog[]; // Pour afficher les avatars
   ownerId: string;
   compact?: boolean; // Pour afficher seulement 2 semaines
 }
@@ -54,7 +63,7 @@ const eventTypeLabels = {
   other: "Autre",
 };
 
-export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProps) => {
+export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: DogCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -65,22 +74,28 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
     event_type: "reminder" as CalendarEvent["event_type"],
     event_date: format(new Date(), "yyyy-MM-dd"),
     event_time: "",
+    dog_id: dogId || (dogs && dogs.length > 0 ? dogs[0].id : ""),
   });
   const { toast } = useToast();
 
+  // Determine which dog IDs to fetch events for
+  const targetDogIds = dogId ? [dogId] : (dogIds || (dogs?.map(d => d.id) || []));
+
   useEffect(() => {
     fetchEvents();
-  }, [currentDate, dogId]);
+  }, [currentDate, targetDogIds.join(',')]);
 
   const fetchEvents = async () => {
+    if (targetDogIds.length === 0) return;
+    
     try {
       const start = startOfMonth(currentDate);
       const end = endOfMonth(currentDate);
 
       const { data, error } = await supabase
         .from("dog_calendar_events")
-        .select("id, title, description, event_date, event_time, event_type, status")
-        .eq("dog_id", dogId)
+        .select("id, title, description, event_date, event_time, event_type, status, dog_id")
+        .in("dog_id", targetDogIds)
         .gte("event_date", format(start, "yyyy-MM-dd"))
         .lte("event_date", format(end, "yyyy-MM-dd"))
         .order("event_date", { ascending: true });
@@ -93,7 +108,7 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
   };
 
   const handleAddEvent = async () => {
-    if (!selectedDate || !newEvent.title) {
+    if (!newEvent.dog_id || !newEvent.title) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs obligatoires",
@@ -104,11 +119,11 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
 
     try {
       const { error } = await supabase.from("dog_calendar_events").insert({
-        dog_id: dogId,
+        dog_id: newEvent.dog_id,
         owner_id: ownerId,
         title: newEvent.title,
         description: newEvent.description || null,
-        event_date: format(selectedDate, "yyyy-MM-dd"),
+        event_date: newEvent.event_date,
         event_time: newEvent.event_time || null,
         event_type: newEvent.event_type,
         status: "upcoming",
@@ -122,7 +137,14 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
       });
 
       setShowAddEventDialog(false);
-      setNewEvent({ title: "", description: "", event_type: "reminder", event_date: format(new Date(), "yyyy-MM-dd"), event_time: "" });
+      setNewEvent({ 
+        title: "", 
+        description: "", 
+        event_type: "reminder", 
+        event_date: format(new Date(), "yyyy-MM-dd"), 
+        event_time: "",
+        dog_id: dogId || (dogs && dogs.length > 0 ? dogs[0].id : ""),
+      });
       fetchEvents();
     } catch (error) {
       console.error("Error adding event:", error);
@@ -132,6 +154,10 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
         variant: "destructive",
       });
     }
+  };
+
+  const getDogForEvent = (eventDogId: string) => {
+    return dogs?.find(d => d.id === eventDogId);
   };
 
   // Pour le mode compact, afficher seulement 2 semaines à venir
@@ -252,6 +278,7 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
                       <div className="space-y-2">
                         {dayEvents.map((event) => {
                           const Icon = eventTypeIcons[event.event_type];
+                          const dog = getDogForEvent((event as any).dog_id);
                           return (
                             <div
                               key={event.id}
@@ -259,6 +286,17 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
                             >
                               <div className="flex items-start gap-2">
                                 <Icon className="h-4 w-4 mt-0.5" />
+                                {dog && (
+                                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                                    {dog.avatar_url ? (
+                                      <img src={dog.avatar_url} alt={dog.name} className="w-full h-full object-cover" />
+                                    ) : (
+                                      <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                                        <span className="text-[10px] font-bold text-primary">{dog.name[0]}</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
                                 <div className="flex-1">
                                   <div className="font-semibold text-sm">{event.title}</div>
                                   {event.event_time && (
@@ -307,6 +345,7 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
           <div className="space-y-2">
             {upcomingEvents.map((event) => {
               const Icon = eventTypeIcons[event.event_type];
+              const dog = getDogForEvent((event as any).dog_id);
               return (
                 <div
                   key={event.id}
@@ -314,6 +353,17 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
                 >
                   <div className="flex items-start gap-2">
                     <Icon className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                    {dog && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        {dog.avatar_url ? (
+                          <img src={dog.avatar_url} alt={dog.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                            <span className="text-[10px] font-bold text-primary">{dog.name[0]}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold truncate">{event.title}</div>
                       <div className="text-xs opacity-80">
@@ -336,6 +386,34 @@ export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProp
             <DialogTitle>Ajouter un événement</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            {dogs && dogs.length > 1 && (
+              <div>
+                <label className="text-sm font-medium mb-1 block">Chien *</label>
+                <Select
+                  value={newEvent.dog_id}
+                  onValueChange={(value: string) =>
+                    setNewEvent({ ...newEvent, dog_id: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {dogs.map((dog) => (
+                      <SelectItem key={dog.id} value={dog.id}>
+                        <div className="flex items-center gap-2">
+                          {dog.avatar_url && (
+                            <img src={dog.avatar_url} alt={dog.name} className="w-5 h-5 rounded-full object-cover" />
+                          )}
+                          <span>{dog.name}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <div>
               <label className="text-sm font-medium mb-1 block">Type d'événement *</label>
               <Select

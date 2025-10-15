@@ -297,9 +297,13 @@ const Home = () => {
             </div>
           </div>}
 
-        {/* Calendar for first dog - compact version */}
+        {/* Calendar for all dogs - compact version */}
         {isGuardian && dogs.length > 0 && user && (
-          <DogCalendar dogId={dogs[0].id} ownerId={user.id} compact={true} />
+          <DogCalendar 
+            dogs={dogs} 
+            ownerId={user.id} 
+            compact={true} 
+          />
         )}
       </div>
 
