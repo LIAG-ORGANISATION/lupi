@@ -49,11 +49,8 @@ import VaccinationPassport from "./pages/VaccinationPassport";
 import DNADemo from "./pages/DNADemo";
 import RecommendationsDemo from "./pages/RecommendationsDemo";
 import ScrollToTop from "./components/ScrollToTop";
-
 const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -94,7 +91,7 @@ const App = () => (
           <Route path="/order-summary" element={<OrderSummary />} />
           <Route path="/recommendations" element={<Layout><Recommendations /></Layout>} />
           <Route path="/recommendations/:id" element={<Layout><RecommendationDetail /></Layout>} />
-          <Route path="/profile" element={<Layout><Profile /></Layout>} />
+          <Route path="/profile" element={<Layout><Profile /></Layout>} className="bg-white" />
           <Route path="/profile/edit" element={<Layout><EditProfile /></Layout>} />
           <Route path="/profile/notifications" element={<Layout><NotificationsSettings /></Layout>} />
           <Route path="/profile/privacy" element={<Layout><PrivacySettings /></Layout>} />
@@ -107,7 +104,5 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
-);
-
+  </QueryClientProvider>;
 export default App;
