@@ -119,8 +119,8 @@ const Home = () => {
 
   // Professional Dashboard View
   if (isProfessional) {
-    return <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
-        <div className="max-w-4xl mx-auto space-y-6">
+    return <div className="min-h-screen p-3 space-y-4 animate-fade-in bg-background">
+        <div className="max-w-4xl mx-auto space-y-4">
           <div className="flex items-center justify-between gap-4">
             <h1 className="text-2xl font-bold text-title">Tableau de bord</h1>
             <Button onClick={() => navigate("/professional/edit-profile")} variant="outline" size="sm" className="rounded-full">
@@ -129,8 +129,8 @@ const Home = () => {
             </Button>
           </div>
 
-          <Card className="bg-secondary p-6 rounded-xl shadow-lg overflow-hidden relative">
-            <div className="relative z-10 space-y-4">
+          <Card className="bg-secondary p-4 rounded-xl shadow-lg overflow-hidden relative">
+            <div className="relative z-10 space-y-3">
               <h2 className="text-2xl font-bold text-title">
                 Commander un test ADN pour un patient
               </h2>
@@ -144,32 +144,32 @@ const Home = () => {
             </div>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="p-6 rounded-xl">
-              <div className="text-center space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <Card className="p-4 rounded-xl">
+              <div className="text-center space-y-1">
                 <div className="text-3xl font-bold text-primary">{pendingRequests}</div>
                 <p className="text-sm text-muted-foreground">Demandes en attente</p>
               </div>
             </Card>
 
-            <Card className="p-6 rounded-xl">
-              <div className="text-center space-y-2">
+            <Card className="p-4 rounded-xl">
+              <div className="text-center space-y-1">
                 <div className="text-3xl font-bold text-secondary">{totalClients}</div>
                 <p className="text-sm text-muted-foreground">Clients actifs</p>
               </div>
             </Card>
 
-            <Card className="p-6 rounded-xl">
-              <div className="text-center space-y-2">
+            <Card className="p-4 rounded-xl">
+              <div className="text-center space-y-1">
                 <div className="text-3xl font-bold text-accent">0</div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
               </div>
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card className="p-6 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/clients")}>
-              <div className="flex items-center gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Card className="p-4 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/clients")}>
+              <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
@@ -182,8 +182,8 @@ const Home = () => {
               </div>
             </Card>
 
-            <Card className="p-6 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
-              <div className="flex items-center gap-4">
+            <Card className="p-4 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
+              <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
                   <MessageSquare className="h-6 w-6 text-secondary" />
                 </div>
@@ -198,9 +198,9 @@ const Home = () => {
           </div>
 
           {/* Partners section for professionals */}
-          <div className="space-y-4 mt-6">
+          <div className="space-y-3 mt-4">
             <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
-            <div className="space-y-3">
+            <div className="space-y-2">
               <a href="https://www.kozoo.eu" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
                 <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
                   <img src={kozooLogo} alt="KOZOO" className="w-full h-full object-contain" />
@@ -230,14 +230,14 @@ const Home = () => {
   return <div className="min-h-screen pb-20 animate-fade-in">
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section with Gradient */}
-      <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-8 rounded-b-[3rem] shadow-card">
-        <div className="max-w-4xl mx-auto space-y-6 text-center">
+      <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 rounded-b-[3rem] shadow-card">
+        <div className="max-w-4xl mx-auto space-y-4 text-center">
           <h1 className="text-3xl font-bold text-foreground">
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
           <p className="text-sm text-muted-foreground">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
-          <div className="space-y-3 pt-4">
+          <div className="space-y-2 pt-2">
             {!isAuthenticated ? <>
                 <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                   <LogIn className="h-5 w-5 mr-2 inline" />
@@ -264,13 +264,13 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+      <div className="p-3 space-y-4 max-w-4xl mx-auto mt-4">
         {/* My Dogs section - show first when user has dogs */}
-        {isGuardian && dogs.length > 0 && <div className="space-y-4 mb-6">
+        {isGuardian && dogs.length > 0 && <div className="space-y-3 mb-4">
             <h2 className="text-xl font-bold text-title">Mes chiens</h2>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {dogs.map(dog => <div key={dog.id} className="lupi-card">
-                  <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
+                  <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
                     {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-20 h-20 rounded-2xl object-cover border-2 border-primary/20" /> : <div className="w-20 h-20 rounded-2xl bg-gradient-card flex items-center justify-center border-2 border-primary/20">
                         <DogIcon className="h-10 w-10 text-primary" />
                       </div>}
@@ -283,7 +283,7 @@ const Home = () => {
               
               {/* Raccourci vers Recommandations personnalisées */}
               <div className="lupi-card bg-gradient-card border-2 border-primary/20">
-                <div className="flex items-center gap-4 cursor-pointer p-4" onClick={() => navigate('/recommendations-demo')}>
+                <div className="flex items-center gap-3 cursor-pointer p-3" onClick={() => navigate('/recommendations-demo')}>
                   <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 rounded-md bg-black">
                     <Lightbulb className="h-6 w-6 text-white" />
                   </div>
@@ -300,11 +300,11 @@ const Home = () => {
       {/* D'où ils viennent Section */}
         
 
-      <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
+      <div className="p-3 space-y-4 max-w-4xl mx-auto mt-4">
 
         {/* CTA to create dog for authenticated guardians without dogs */}
         {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && <>
-            <div className="lupi-card p-6 text-center space-y-4 bg-gradient-card mb-4">
+            <div className="lupi-card p-4 text-center space-y-3 bg-gradient-card mb-3">
               <DogIcon className="h-12 w-12 text-primary mx-auto" />
               <h3 className="text-lg font-bold text-title">
                 Créez le profil de votre chien
@@ -318,7 +318,7 @@ const Home = () => {
               </Button>
             </div>
 
-            <div className="lupi-card p-6 text-center space-y-4 mb-6">
+            <div className="lupi-card p-4 text-center space-y-3 mb-3">
               <TestTube2 className="h-12 w-12 text-primary mx-auto" />
               <h3 className="text-lg font-bold text-title">
                 Découvrez un exemple de résultats ADN
@@ -332,7 +332,7 @@ const Home = () => {
               </Button>
             </div>
 
-            <div className="lupi-card p-6 text-center space-y-4 mb-6">
+            <div className="lupi-card p-4 text-center space-y-3 mb-3">
               <Lightbulb className="h-12 w-12 text-primary mx-auto" />
               <h3 className="text-lg font-bold text-title">
                 Recommandations personnalisées
@@ -348,8 +348,8 @@ const Home = () => {
           </>}
 
         {/* Quick actions for authenticated guardians */}
-        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-6">
-            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4" onClick={() => navigate("/guardian/messages")}>
+        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-2 mb-4">
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-3" onClick={() => navigate("/guardian/messages")}>
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-xl overflow-hidden">
                   <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
@@ -361,7 +361,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4" onClick={() => navigate("/guardian/documents")}>
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-3" onClick={() => navigate("/guardian/documents")}>
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-xl overflow-hidden">
                   <img src={documentsIcon} alt="Documents" className="w-full h-full object-cover" />
@@ -373,7 +373,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4" onClick={() => navigate("/professionals")}>
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-3" onClick={() => navigate("/professionals")}>
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-xl overflow-hidden">
                   <img src={professionalsIcon} alt="Professionnels" className="w-full h-full object-cover" />

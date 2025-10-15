@@ -136,7 +136,7 @@ All colors MUST be HSL.
 @layer components {
   /* Minimal elevation cards */
   .lupi-card {
-    @apply bg-card rounded-2xl p-5 transition-all duration-200 border-0;
+    @apply bg-card rounded-2xl p-3 transition-all duration-200 border-0;
     box-shadow: var(--shadow-card);
   }
   
@@ -169,7 +169,7 @@ All colors MUST be HSL.
   
   /* List Item Card - élévation subtile */
   .list-item-card {
-    @apply bg-card rounded-2xl p-4 transition-all duration-200 cursor-pointer border-0;
+    @apply bg-card rounded-2xl p-3 transition-all duration-200 cursor-pointer border-0;
     box-shadow: var(--shadow-card);
   }
   
@@ -179,7 +179,7 @@ All colors MUST be HSL.
   
   /* Icon Container - couleur très subtile */
   .icon-container {
-    @apply w-12 h-12 rounded-2xl flex items-center justify-center;
+    @apply w-10 h-10 rounded-xl flex items-center justify-center;
     background: hsl(35 40% 55% / 0.08);
   }
   
