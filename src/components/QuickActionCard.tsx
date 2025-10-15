@@ -16,8 +16,8 @@ const QuickActionCard = ({
     <button
       onClick={onClick}
       className={cn(
-        "bg-card rounded-2xl p-4 cursor-pointer transition-all duration-200 border border-transparent hover:border-border",
-        "shadow-card hover:shadow-hover",
+        "bg-card rounded-2xl p-4 cursor-pointer transition-all duration-200 border-0",
+        "shadow-sm hover:shadow-md",
         className
       )}
     >
