@@ -351,7 +351,7 @@ const Home = () => {
         {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-3">
             <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/messages")}>
               <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm">
+                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
                   <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
                 </div>
                 <div>
@@ -363,7 +363,7 @@ const Home = () => {
 
             <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/documents")}>
               <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm">
+                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
                   <img src={documentsIcon} alt="Documents" className="w-full h-full object-cover" />
                 </div>
                 <div>
@@ -375,7 +375,7 @@ const Home = () => {
 
             <div className="cursor-pointer transition-all" onClick={() => navigate("/professionals")}>
               <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm">
+                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
                   <img src={professionalsIcon} alt="Professionnels" className="w-full h-full object-cover" />
                 </div>
                 <div>

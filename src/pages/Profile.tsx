@@ -161,7 +161,7 @@ const Profile = () => {
     label: "Support & FAQ",
     path: "/profile/support"
   }];
-  return <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-pink-50">
+  return <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-white">
       <h1 className="text-2xl font-bold text-title">Profil</h1>
 
       <Card className="lupi-card text-center space-y-4">
