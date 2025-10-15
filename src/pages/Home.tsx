@@ -232,9 +232,9 @@ const Home = () => {
       {/* Hero Section with Gradient */}
       <div style={{
       backgroundColor: '#3D0000'
-    }} className="p-8 rounded-b-[3rem] shadow-xl bg-gray-100">
+    }} className="p-8 rounded-b-[3rem] shadow-xl bg-stone-200">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <h1 className="text-3xl font-bold text-slate-800">
+          <h1 className="text-3xl font-bold text-gray-950">
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
           <p className="text-sm text-zinc-600">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
