@@ -387,11 +387,11 @@ const Home = () => {
           </div>}
 
         {/* Partners section - visible to everyone */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
-          <div className="space-y-3">
+          <div className="space-y-2">
             <a href="https://www.kozoo.eu" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
-              <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+              <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
                 <img src={kozooLogo} alt="KOZOO" className="w-full h-full object-contain" />
               </div>
               <div className="flex-1">
@@ -400,8 +400,8 @@ const Home = () => {
               </div>
             </a>
 
-            <a href="https://www.pennypet.fr" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
-              <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+            <a href="https://pennypet.io/" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
+              <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
                 <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
               </div>
               <div className="flex-1">
@@ -413,16 +413,16 @@ const Home = () => {
         </div>
 
         {/* Association du moment section */}
-        {isGuardian && <div className="space-y-4">
+        {isGuardian && <div className="space-y-3">
             <h2 className="text-xl font-bold text-title">Association du moment</h2>
-            <div className="lupi-card p-6">
+            <div className="lupi-card p-4">
               <div className="flex gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white shadow-sm">
                     <Heart className="h-5 w-5 text-red-500 fill-red-500" />
                   </div>
                 </div>
-                <div className="flex-1 space-y-3">
+                <div className="flex-1 space-y-2">
                   <div>
                     <h3 className="font-bold text-title text-lg">SPA Bayonne</h3>
                     <p className="text-sm text-muted-foreground">Fourrière animale 64</p>
