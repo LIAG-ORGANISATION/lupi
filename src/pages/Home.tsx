@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText, Heart } from "lucide-react";
+import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText, Heart, Gift, Check } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import dogsOriginSection from "@/assets/dogs-origin-section.png";
@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
 import { DogCalendar } from "@/components/DogCalendar";
+import { useToast } from "@/hooks/use-toast";
 interface Dog {
   id: string;
   name: string;
@@ -23,6 +24,7 @@ interface Dog {
 }
 const Home = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const {
     isAuthenticated,
     isProfessional,
@@ -35,6 +37,7 @@ const Home = () => {
   const [totalClients, setTotalClients] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
   const [hasTestedDogs, setHasTestedDogs] = useState(false);
+  const [copiedPromo, setCopiedPromo] = useState<string | null>(null);
 
   // Check if user is first time logging in as guardian
   useEffect(() => {
@@ -129,6 +132,23 @@ const Home = () => {
     }
     setShowTutorial(false);
     navigate('/dogs/add');
+  };
+
+  const handleCopyPromo = (code: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    navigator.clipboard.writeText(code).then(() => {
+      setCopiedPromo(code);
+      toast({
+        title: "Code promo copié !",
+        description: `Le code ${code} a été copié dans le presse-papier.`,
+      });
+      
+      setTimeout(() => {
+        setCopiedPromo(null);
+      }, 2000);
+    });
   };
 
   // Professional Dashboard View
@@ -419,25 +439,55 @@ const Home = () => {
         <div className="space-y-3">
           <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
           <div className="space-y-2">
-            <a href="https://www.kozoo.eu" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
-              <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                <img src={kozooLogo} alt="KOZOO" className="w-full h-full object-contain" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-title text-lg">KOZOO</h3>
-                <p className="text-sm text-muted-foreground">Assurance pour chien</p>
-              </div>
-            </a>
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4 relative">
+              <a href="https://www.kozoo.eu" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 flex-1">
+                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+                  <img src={kozooLogo} alt="KOZOO" className="w-full h-full object-contain" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-title text-lg">KOZOO</h3>
+                  <p className="text-sm text-muted-foreground">Assurance pour chien</p>
+                </div>
+              </a>
+              {isGuardian && (
+                <button
+                  onClick={(e) => handleCopyPromo('lupixkozoo', e)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all"
+                  title="Copier le code promo"
+                >
+                  {copiedPromo === 'lupixkozoo' ? (
+                    <Check className="h-5 w-5 text-primary" />
+                  ) : (
+                    <Gift className="h-5 w-5 text-primary" />
+                  )}
+                </button>
+              )}
+            </div>
 
-            <a href="https://pennypet.io/" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
-              <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
-                <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
-              </div>
-            </a>
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4 relative">
+              <a href="https://pennypet.io/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 flex-1">
+                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+                  <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
+                  <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
+                </div>
+              </a>
+              {isGuardian && (
+                <button
+                  onClick={(e) => handleCopyPromo('lupixpennypet', e)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all"
+                  title="Copier le code promo"
+                >
+                  {copiedPromo === 'lupixpennypet' ? (
+                    <Check className="h-5 w-5 text-primary" />
+                  ) : (
+                    <Gift className="h-5 w-5 text-primary" />
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
