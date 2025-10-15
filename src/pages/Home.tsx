@@ -34,6 +34,7 @@ const Home = () => {
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [hasTestedDogs, setHasTestedDogs] = useState(false);
 
   // Check if user is first time logging in as guardian
   useEffect(() => {
@@ -84,6 +85,18 @@ const Home = () => {
       }).limit(3);
       if (error) throw error;
       setDogs(data || []);
+      
+      // Check if any dog has completed questionnaires (DNA test)
+      if (data && data.length > 0) {
+        const dogIds = data.map(d => d.id);
+        const { data: questionnaires } = await supabase
+          .from('dog_questionnaires')
+          .select('id')
+          .in('dog_id', dogIds)
+          .limit(1);
+        
+        setHasTestedDogs((questionnaires && questionnaires.length > 0) || false);
+      }
     } catch (error) {
       console.error('Error fetching dogs:', error);
     } finally {
@@ -246,10 +259,16 @@ const Home = () => {
                 </button>
               </> : <>
                 {isGuardian && dogs.length > 0 ? <>
-                    <button onClick={() => navigate("/dogs")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
-                      
-                      Voir mes chiens
-                    </button>
+                    {hasTestedDogs ? (
+                      <button onClick={() => navigate("/dogs")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                        Voir mes chiens
+                      </button>
+                    ) : (
+                      <button onClick={() => navigate("/dna-kit")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                        <TestTube2 className="h-5 w-5 mr-2 inline" />
+                        Commander un test ADN
+                      </button>
+                    )}
                   </> : isGuardian ? <>
                     <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                       <Plus className="h-5 w-5 mr-2 inline" />
