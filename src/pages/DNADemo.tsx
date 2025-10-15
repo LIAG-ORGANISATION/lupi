@@ -53,7 +53,7 @@ const DNADemo = () => {
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate('/')} className="rounded-full">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-bold text-title">Résultats ADN - Exemple</h1>
