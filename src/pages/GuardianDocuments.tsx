@@ -46,6 +46,8 @@ const GuardianDocuments = () => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
+  const [shareDialog, setShareDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
+  const [sharedProfessionals, setSharedProfessionals] = useState<any[]>([]);
 
   useEffect(() => {
     if (!authLoading && user && userId && userRole !== null) {
@@ -216,30 +218,53 @@ const GuardianDocuments = () => {
 
   const handleOpenDocument = async (doc: Document) => {
     try {
-      const { data, error } = await supabase.storage
+      const { data } = supabase.storage
         .from("dog-documents")
-        .createSignedUrl(doc.storage_path, 300); // 5 minutes
+        .getPublicUrl(doc.storage_path);
 
-      if (error) throw error;
-
-      if (data?.signedUrl) {
-        window.open(data.signedUrl, "_blank");
+      if (data?.publicUrl) {
+        window.open(data.publicUrl, "_blank");
       }
     } catch (error) {
       console.error("Error opening document:", error);
       toast({
         title: "Erreur",
-        description: "Impossible d'ouvrir le document. Le lien a peut-être expiré.",
+        description: "Impossible d'ouvrir le document.",
         variant: "destructive",
       });
     }
   };
 
-  const handleShare = (doc: Document) => {
-    toast({
-      title: "Partage",
-      description: "Fonction de partage à venir",
-    });
+  const handleShare = async (doc: Document) => {
+    try {
+      // Fetch professionals who have access to this dog
+      const { data, error } = await supabase
+        .from("dog_shares")
+        .select(`
+          id,
+          status,
+          professionals (
+            user_id,
+            full_name,
+            profession,
+            avatar_url
+          )
+        `)
+        .eq("dog_id", doc.dog_id)
+        .eq("status", "accepted");
+
+      if (error) throw error;
+      
+      setSharedProfessionals(data || []);
+      setShareDialog({ open: true, doc });
+    } catch (error) {
+      console.error("Error fetching shared professionals:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger la liste des professionnels.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDelete = async () => {
@@ -453,6 +478,52 @@ const GuardianDocuments = () => {
             >
               Supprimer
             </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Share dialog */}
+      <AlertDialog open={shareDialog.open} onOpenChange={(open) => setShareDialog({ open, doc: null })}>
+        <AlertDialogContent className="rounded-3xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Document partagé avec</AlertDialogTitle>
+            <AlertDialogDescription>
+              Ce document est accessible par les professionnels ayant accès à {shareDialog.doc?.dogs?.name || "ce chien"}.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <div className="space-y-3 py-4">
+            {sharedProfessionals.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                Aucun professionnel n'a accès à ce chien pour le moment.
+              </p>
+            ) : (
+              sharedProfessionals.map((share) => (
+                <div key={share.id} className="flex items-center gap-3 p-3 rounded-2xl bg-muted/50">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    {share.professionals?.avatar_url ? (
+                      <img 
+                        src={share.professionals.avatar_url} 
+                        alt={share.professionals?.full_name}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-sm font-semibold text-primary">
+                        {share.professionals?.full_name?.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm truncate">{share.professionals?.full_name}</p>
+                    <p className="text-xs text-muted-foreground">{share.professionals?.profession}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full">Fermer</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
