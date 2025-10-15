@@ -39,16 +39,13 @@ const Home = () => {
     const checkFirstLogin = async () => {
       if (isGuardian && user) {
         const hasSeenTutorial = localStorage.getItem(`tutorial_seen_${user.id}`);
-        
+
         // Check if user has any dogs
-        const { data: userDogs } = await supabase
-          .from('dogs')
-          .select('id')
-          .eq('owner_id', user.id)
-          .limit(1);
-        
+        const {
+          data: userDogs
+        } = await supabase.from('dogs').select('id').eq('owner_id', user.id).limit(1);
         const hasDogs = userDogs && userDogs.length > 0;
-        
+
         // Show tutorial only if user hasn't seen it AND has no dogs
         if (!hasSeenTutorial && !hasDogs) {
           setShowTutorial(true);
@@ -58,8 +55,16 @@ const Home = () => {
     checkFirstLogin();
   }, [isGuardian, user]);
   useEffect(() => {
-    console.log('[Home] Auth state:', { isAuthenticated, isGuardian, isProfessional, user: !!user });
-    console.log('[Home] Dogs:', { dogsCount: dogs.length, loadingDogs });
+    console.log('[Home] Auth state:', {
+      isAuthenticated,
+      isGuardian,
+      isProfessional,
+      user: !!user
+    });
+    console.log('[Home] Dogs:', {
+      dogsCount: dogs.length,
+      loadingDogs
+    });
     if (isGuardian && user) {
       fetchDogs();
     }
@@ -104,7 +109,6 @@ const Home = () => {
       console.error('Error fetching stats:', error);
     }
   };
-
   const handleTutorialComplete = () => {
     if (user) {
       localStorage.setItem(`tutorial_seen_${user.id}`, 'true');
@@ -197,18 +201,9 @@ const Home = () => {
           <div className="space-y-4 mt-6">
             <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
             <div className="space-y-3">
-              <a 
-                href="https://www.kozoo.eu" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
-              >
+              <a href="https://www.kozoo.eu" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
                 <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                  <img 
-                    src={kozooLogo} 
-                    alt="KOZOO" 
-                    className="w-full h-full object-contain"
-                  />
+                  <img src={kozooLogo} alt="KOZOO" className="w-full h-full object-contain" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title text-lg">KOZOO</h3>
@@ -216,18 +211,9 @@ const Home = () => {
                 </div>
               </a>
 
-              <a 
-                href="https://www.pennypet.fr" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
-              >
+              <a href="https://www.pennypet.fr" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
                 <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                  <img 
-                    src={pennypetLogo} 
-                    alt="PENNYPET" 
-                    className="w-full h-full object-contain"
-                  />
+                  <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
@@ -244,34 +230,28 @@ const Home = () => {
   return <div className="min-h-screen pb-20 animate-fade-in">
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section with Gradient */}
-      <div className="p-8 rounded-b-[3rem] shadow-xl" style={{ backgroundColor: '#3D0000' }}>
+      <div style={{
+      backgroundColor: '#3D0000'
+    }} className="p-8 rounded-b-[3rem] shadow-xl bg-gray-100">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <h1 className="text-3xl font-bold text-white">
-            {isGuardian && dogs.length > 0 
-              ? "Mieux comprendre pour mieux accompagner" 
-              : "Découvrez & accompagnez votre chien"}
+          <h1 className="text-3xl font-bold text-slate-800">
+            {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
-          <p className="text-white/90 text-sm">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
+          <p className="text-sm text-zinc-600">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div className="space-y-3 pt-4">
-            {!isAuthenticated ? (
-              <>
+            {!isAuthenticated ? <>
                 <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                   <LogIn className="h-5 w-5 mr-2 inline" />
                   Se connecter / S'inscrire
                 </button>
-              </>
-            ) : (
-              <>
-                {isGuardian && dogs.length > 0 ? (
-                  <>
+              </> : <>
+                {isGuardian && dogs.length > 0 ? <>
                     <button onClick={() => navigate("/dogs")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
-                      <DogIcon className="h-5 w-5 mr-2 inline" />
+                      
                       Voir mes chiens
                     </button>
-                  </>
-                ) : isGuardian ? (
-                  <>
+                  </> : isGuardian ? <>
                     <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                       <Plus className="h-5 w-5 mr-2 inline" />
                       Ajouter un chien
@@ -280,41 +260,28 @@ const Home = () => {
                       <TestTube2 className="h-5 w-5 mr-2 inline" />
                       Faire le test ADN
                     </button>
-                  </>
-                ) : null}
-              </>
-            )}
+                  </> : null}
+              </>}
           </div>
         </div>
       </div>
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
         {/* My Dogs section - show first when user has dogs */}
-        {isGuardian && dogs.length > 0 && (
-          <div className="space-y-4 mb-6">
+        {isGuardian && dogs.length > 0 && <div className="space-y-4 mb-6">
             <h2 className="text-xl font-bold text-title">Mes chiens</h2>
             <div className="space-y-3">
-              {dogs.map(dog => (
-                <div key={dog.id} className="lupi-card">
+              {dogs.map(dog => <div key={dog.id} className="lupi-card">
                   <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                    {dog.avatar_url ? (
-                      <img 
-                        src={dog.avatar_url} 
-                        alt={dog.name} 
-                        className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" 
-                      />
-                    ) : (
-                      <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
+                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-16 h-16 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-16 h-16 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
                         <DogIcon className="h-8 w-8 text-primary" />
-                      </div>
-                    )}
+                      </div>}
                     <div className="flex-1">
                       <h3 className="font-bold text-title text-lg">{dog.name}</h3>
                       {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
               
               {/* Raccourci vers Recommandations personnalisées */}
               <div className="lupi-card bg-gradient-card border-2 border-primary/20">
@@ -329,24 +296,18 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </div>}
       </div>
 
       {/* D'où ils viennent Section */}
         <div className="p-4 space-y-6 max-w-4xl mx-auto">
-          <img 
-            src={dogsOriginSection} 
-            alt="D'où ils viennent - Généalogie et traits comportementaux" 
-            className="w-full rounded-xl shadow-lg"
-          />
+          <img src={dogsOriginSection} alt="D'où ils viennent - Généalogie et traits comportementaux" className="w-full rounded-xl shadow-lg" />
         </div>
 
       <div className="p-4 space-y-6 max-w-4xl mx-auto mt-6">
 
         {/* CTA to create dog for authenticated guardians without dogs */}
-        {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && (
-          <>
+        {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && <>
             <div className="lupi-card p-6 text-center space-y-4 bg-gradient-card mb-4">
               <DogIcon className="h-12 w-12 text-primary mx-auto" />
               <h3 className="text-lg font-bold text-title">
@@ -355,11 +316,7 @@ const Home = () => {
               <p className="text-sm text-muted-foreground">
                 Commencez à suivre sa santé et son bien-être
               </p>
-              <Button 
-                onClick={() => navigate("/dogs/add")} 
-                className="w-full rounded-full"
-                size="lg"
-              >
+              <Button onClick={() => navigate("/dogs/add")} className="w-full rounded-full" size="lg">
                 <Plus className="h-5 w-5 mr-2" />
                 Créer mon chien
               </Button>
@@ -373,12 +330,7 @@ const Home = () => {
               <p className="text-sm text-muted-foreground">
                 Visualisez comment fonctionne l'analyse génétique complète
               </p>
-              <Button 
-                onClick={() => navigate("/dna-demo")} 
-                variant="outline"
-                className="w-full rounded-full"
-                size="lg"
-              >
+              <Button onClick={() => navigate("/dna-demo")} variant="outline" className="w-full rounded-full" size="lg">
                 <TestTube2 className="h-5 w-5 mr-2" />
                 Voir la démo
               </Button>
@@ -392,33 +344,19 @@ const Home = () => {
               <p className="text-sm text-muted-foreground">
                 Quand vous réalisez un test, Lupi vous fournit des recommandations lifestyle personnalisées
               </p>
-              <Button 
-                onClick={() => navigate("/recommendations-demo")} 
-                variant="outline"
-                className="w-full rounded-full"
-                size="lg"
-              >
+              <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full rounded-full" size="lg">
                 <Lightbulb className="h-5 w-5 mr-2" />
                 Voir les recommandations
               </Button>
             </div>
-          </>
-        )}
+          </>}
 
         {/* Quick actions for authenticated guardians */}
-        {isAuthenticated && isGuardian && (
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <div 
-              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
-              onClick={() => navigate("/guardian/messages")}
-            >
+        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4" onClick={() => navigate("/guardian/messages")}>
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-xl overflow-hidden">
-                  <img 
-                    src={messagesIcon} 
-                    alt="Messages" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Messages</h3>
@@ -427,17 +365,10 @@ const Home = () => {
               </div>
             </div>
 
-            <div 
-              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
-              onClick={() => navigate("/guardian/documents")}
-            >
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4" onClick={() => navigate("/guardian/documents")}>
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-xl overflow-hidden">
-                  <img 
-                    src={documentsIcon} 
-                    alt="Documents" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={documentsIcon} alt="Documents" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Documents</h3>
@@ -446,17 +377,10 @@ const Home = () => {
               </div>
             </div>
 
-            <div 
-              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
-              onClick={() => navigate("/professionals")}
-            >
+            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4" onClick={() => navigate("/professionals")}>
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="w-12 h-12 rounded-xl overflow-hidden">
-                  <img 
-                    src={professionalsIcon} 
-                    alt="Professionnels" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={professionalsIcon} alt="Professionnels" className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Professionnels</h3>
@@ -464,25 +388,15 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </div>}
 
         {/* Partners section - visible to everyone */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
           <div className="space-y-3">
-            <a 
-              href="https://www.kozoo.eu" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
-            >
+            <a href="https://www.kozoo.eu" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
               <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                <img 
-                  src={kozooLogo} 
-                  alt="KOZOO" 
-                  className="w-full h-full object-contain"
-                />
+                <img src={kozooLogo} alt="KOZOO" className="w-full h-full object-contain" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-title text-lg">KOZOO</h3>
@@ -490,18 +404,9 @@ const Home = () => {
               </div>
             </a>
 
-            <a 
-              href="https://www.pennypet.fr" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4"
-            >
+            <a href="https://www.pennypet.fr" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
               <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                <img 
-                  src={pennypetLogo} 
-                  alt="PENNYPET" 
-                  className="w-full h-full object-contain"
-                />
+                <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
@@ -512,8 +417,7 @@ const Home = () => {
         </div>
 
         {/* Association du moment section */}
-        {isGuardian && (
-          <div className="space-y-4">
+        {isGuardian && <div className="space-y-4">
             <h2 className="text-xl font-bold text-title">Association du moment</h2>
             <div className="lupi-card p-6">
               <div className="flex gap-4">
@@ -530,12 +434,7 @@ const Home = () => {
                   <p className="text-sm text-foreground leading-relaxed">
                     Soutenez une association sélectionnée par Lupi ! La SPA de Bayonne prend soin des animaux abandonnés et leur trouve une nouvelle famille.
                   </p>
-                  <a 
-                    href="https://fourriere-animale-64.fr/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
-                  >
+                  <a href="https://fourriere-animale-64.fr/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
                     Faire un don
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -544,11 +443,9 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </div>}
 
-        {isAuthenticated && !isGuardian && (
-          <div>
+        {isAuthenticated && !isGuardian && <div>
             <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
             <div className="grid grid-cols-2 gap-4">
               <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
@@ -556,12 +453,10 @@ const Home = () => {
               <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
               <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
             </div>
-          </div>
-        )}
+          </div>}
 
         {/* CTA for non-authenticated users */}
-        {!isAuthenticated && (
-          <div className="mt-8 lupi-card p-8 text-center space-y-4 bg-gradient-card">
+        {!isAuthenticated && <div className="mt-8 lupi-card p-8 text-center space-y-4 bg-gradient-card">
             <DogIcon className="h-16 w-16 text-primary mx-auto" />
             <h3 className="text-xl font-bold text-title">
               Ajoutez votre chien pour démarrer l'expérience Lupi
@@ -569,16 +464,11 @@ const Home = () => {
             <p className="text-sm text-muted-foreground">
               Commencez à suivre la santé et le bien-être de votre compagnon
             </p>
-            <Button 
-              onClick={() => navigate("/choose-account-type")} 
-              className="w-full rounded-full"
-              size="lg"
-            >
+            <Button onClick={() => navigate("/choose-account-type")} className="w-full rounded-full" size="lg">
               <Plus className="h-5 w-5 mr-2" />
               Télécharger l'app et s'inscrire
             </Button>
-          </div>
-        )}
+          </div>}
 
       </div>
     </div>;
