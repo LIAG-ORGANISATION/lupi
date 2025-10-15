@@ -7,18 +7,18 @@ const RecommendationsDemo = () => {
   const navigate = useNavigate();
   return <div className="min-h-screen pb-24 bg-background">
       {/* Header avec retour */}
-      <div className="p-4 sm:p-6 bg-red-800">
+      <div className="p-4 sm:p-6">
         <div className="max-w-4xl mx-auto">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-primary-foreground mb-6 hover:opacity-80 transition-opacity">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-foreground mb-6 hover:opacity-80 transition-opacity">
             <ArrowLeft className="h-5 w-5" />
             <span className="text-sm sm:text-base">Retour</span>
           </button>
           
           <div className="flex flex-col items-center text-center gap-6">
-            <img src={oonaDemoImg} alt="Oona" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-primary-foreground shadow-lg" />
-            <div className="text-primary-foreground">
-              <h1 className="text-2xl sm:text-3xl font-bold text-white">Recommandations personnalisées</h1>
-              <p className="text-sm sm:text-base text-white/90 mt-2">Basées sur l'ADN d'Oona</p>
+            <img src={oonaDemoImg} alt="Oona" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-primary/20 shadow-lg" />
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-title">Recommandations personnalisées</h1>
+              <p className="text-sm sm:text-base text-muted-foreground mt-2">Basées sur l'ADN d'Oona</p>
             </div>
           </div>
         </div>
