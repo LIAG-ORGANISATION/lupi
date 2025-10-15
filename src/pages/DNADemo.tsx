@@ -4,39 +4,56 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, TestTube2, Heart, Activity, Sparkles, Globe, TrendingUp, Lightbulb } from "lucide-react";
 import oonaImage from "@/assets/oona-demo.jpg";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-
 const DNADemo = () => {
   const navigate = useNavigate();
-
-  const breedData = [
-    { breed: "Border Collie", percentage: 45.2, color: "#10b981" },
-    { breed: "Labrador Retriever", percentage: 25.8, color: "#3b82f6" },
-    { breed: "Australian Shepherd", percentage: 11.3, color: "#8b5cf6" },
-    { breed: "German Shepherd", percentage: 9.7, color: "#f59e0b" },
-    { breed: "Collie", percentage: 8.0, color: "#ec4899" },
-  ];
-
-  const appearanceTraits = [
-    { label: "Type de pelage", value: "Long et lisse" },
-    { label: "Couleur principale", value: "Noire et blanche" },
-    { label: "Motifs", value: "Zones blanches sur poitrail et pattes" },
-    { label: "Mue", value: "Saisonnière et abondante" },
-    { label: "Museau", value: "Moyenne à longue" },
-    { label: "Queue", value: "Longue" },
-    { label: "Taille", value: "Moyenne à grande (22 kg)" },
-  ];
-
-  return (
-    <div className="min-h-screen pb-20 bg-background">
+  const breedData = [{
+    breed: "Border Collie",
+    percentage: 45.2,
+    color: "#10b981"
+  }, {
+    breed: "Labrador Retriever",
+    percentage: 25.8,
+    color: "#3b82f6"
+  }, {
+    breed: "Australian Shepherd",
+    percentage: 11.3,
+    color: "#8b5cf6"
+  }, {
+    breed: "German Shepherd",
+    percentage: 9.7,
+    color: "#f59e0b"
+  }, {
+    breed: "Collie",
+    percentage: 8.0,
+    color: "#ec4899"
+  }];
+  const appearanceTraits = [{
+    label: "Type de pelage",
+    value: "Long et lisse"
+  }, {
+    label: "Couleur principale",
+    value: "Noire et blanche"
+  }, {
+    label: "Motifs",
+    value: "Zones blanches sur poitrail et pattes"
+  }, {
+    label: "Mue",
+    value: "Saisonnière et abondante"
+  }, {
+    label: "Museau",
+    value: "Moyenne à longue"
+  }, {
+    label: "Queue",
+    value: "Longue"
+  }, {
+    label: "Taille",
+    value: "Moyenne à grande (22 kg)"
+  }];
+  return <div className="min-h-screen pb-20 bg-background">
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-            className="rounded-full"
-          >
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-bold text-title">Résultats ADN - Exemple</h1>
@@ -48,11 +65,7 @@ const DNADemo = () => {
         <Card className="p-6 rounded-xl shadow-lg border-2 border-primary/20">
           <div className="flex flex-col items-center text-center space-y-4">
             <div className="relative">
-              <img
-                src={oonaImage}
-                alt="Oona"
-                className="w-32 h-32 rounded-full object-cover border-4 border-primary/30"
-              />
+              <img src={oonaImage} alt="Oona" className="w-32 h-32 rounded-full object-cover border-4 border-primary/30" />
               <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-semibold">
                 Démo
               </div>
@@ -86,25 +99,22 @@ const DNADemo = () => {
           </div>
           
           <div className="space-y-3">
-            {breedData.map((breed) => (
-              <div key={breed.breed} className="space-y-2">
+            {breedData.map(breed => <div key={breed.breed} className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-title">{breed.breed}</span>
-                  <span className="text-sm font-bold" style={{ color: breed.color }}>
+                  <span className="text-sm font-bold" style={{
+                color: breed.color
+              }}>
                     {breed.percentage}%
                   </span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                  <div
-                    className="h-2.5 rounded-full transition-all duration-500"
-                    style={{
-                      width: `${breed.percentage}%`,
-                      backgroundColor: breed.color,
-                    }}
-                  />
+                  <div className="h-2.5 rounded-full transition-all duration-500" style={{
+                width: `${breed.percentage}%`,
+                backgroundColor: breed.color
+              }} />
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
 
           <p className="text-sm text-muted-foreground mt-4 p-4 bg-secondary/30 rounded-lg">
@@ -138,11 +148,9 @@ const DNADemo = () => {
             </div>
 
             <div className="grid grid-cols-4 gap-2 text-center">
-              {["Collie", "Berger Allemand", "Australian Shepherd", "Labrador"].map((ancestor) => (
-                <div key={ancestor} className="bg-muted/50 p-2 rounded text-xs">
+              {["Collie", "Berger Allemand", "Australian Shepherd", "Labrador"].map(ancestor => <div key={ancestor} className="bg-muted/50 p-2 rounded text-xs">
                   {ancestor}
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </Card>
@@ -169,7 +177,7 @@ const DNADemo = () => {
               <AccordionItem value="item-1" className="border rounded-lg px-4 bg-accent/10">
                 <AccordionTrigger className="hover:no-underline">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-accent rounded-full"></div>
+                    <div className="w-3 h-3 rounded-full bg-red-700"></div>
                     <span className="font-semibold text-accent-foreground">Facteurs à surveiller (2)</span>
                   </div>
                 </AccordionTrigger>
@@ -194,7 +202,9 @@ const DNADemo = () => {
               <div className="font-semibold text-sm text-primary mb-1">Diversité génétique</div>
               <div className="flex items-center gap-2">
                 <div className="flex-1 bg-muted rounded-full h-2">
-                  <div className="bg-primary h-2 rounded-full" style={{ width: "98%" }}></div>
+                  <div className="bg-primary h-2 rounded-full" style={{
+                  width: "98%"
+                }}></div>
                 </div>
                 <span className="text-sm font-bold text-primary">98%</span>
               </div>
@@ -213,12 +223,10 @@ const DNADemo = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            {appearanceTraits.map((trait) => (
-              <div key={trait.label} className="bg-secondary/30 p-4 rounded-lg">
+            {appearanceTraits.map(trait => <div key={trait.label} className="bg-secondary/30 p-4 rounded-lg">
                 <div className="text-xs text-muted-foreground mb-1">{trait.label}</div>
                 <div className="text-sm font-semibold text-title">{trait.value}</div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </Card>
 
@@ -325,12 +333,7 @@ const DNADemo = () => {
           <p className="text-sm text-muted-foreground mb-4">
             Voyez comment le test ADN vous permet d'obtenir des conseils adaptés au mode de vie de votre chien
           </p>
-          <Button
-            onClick={() => navigate("/recommendations-demo")}
-            variant="outline"
-            className="w-full rounded-full"
-            size="lg"
-          >
+          <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full rounded-full" size="lg">
             <Lightbulb className="h-5 w-5 mr-2" />
             Voir les recommandations
           </Button>
@@ -344,18 +347,12 @@ const DNADemo = () => {
           <p className="text-sm text-muted-foreground mb-4">
             Commandez votre test ADN et accédez à une analyse complète comme celle-ci
           </p>
-          <Button
-            onClick={() => navigate("/dna-kit")}
-            className="w-full rounded-full"
-            size="lg"
-          >
+          <Button onClick={() => navigate("/dna-kit")} className="w-full rounded-full" size="lg">
             <TestTube2 className="h-5 w-5 mr-2" />
             Je veux tester mon chien aussi
           </Button>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default DNADemo;
