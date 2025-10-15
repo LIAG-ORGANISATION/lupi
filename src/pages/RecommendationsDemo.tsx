@@ -3,29 +3,19 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ShoppingCart, Utensils, Footprints, Puzzle, Stethoscope, Heart } from "lucide-react";
 import oonaDemoImg from "@/assets/oona-demo.jpg";
-
 const RecommendationsDemo = () => {
   const navigate = useNavigate();
-
-  return (
-    <div className="min-h-screen pb-24 bg-background">
+  return <div className="min-h-screen pb-24 bg-background">
       {/* Header avec retour */}
-      <div className="p-4 sm:p-6 bg-primary">
+      <div className="p-4 sm:p-6 bg-red-800">
         <div className="max-w-4xl mx-auto">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-primary-foreground mb-6 hover:opacity-80 transition-opacity"
-          >
+          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-primary-foreground mb-6 hover:opacity-80 transition-opacity">
             <ArrowLeft className="h-5 w-5" />
             <span className="text-sm sm:text-base">Retour</span>
           </button>
           
           <div className="flex flex-col items-center text-center gap-6">
-            <img 
-              src={oonaDemoImg} 
-              alt="Oona" 
-              className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-primary-foreground shadow-lg"
-            />
+            <img src={oonaDemoImg} alt="Oona" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-primary-foreground shadow-lg" />
             <div className="text-primary-foreground">
               <h1 className="text-2xl sm:text-3xl font-bold text-white">Recommandations personnalisées</h1>
               <p className="text-sm sm:text-base text-white/90 mt-2">Basées sur l'ADN d'Oona</p>
@@ -87,10 +77,7 @@ const RecommendationsDemo = () => {
               <p className="text-sm text-muted-foreground">Croquettes hyperprotéinées + huile de poisson</p>
             </div>
 
-            <Button 
-              className="w-full mt-4 text-sm sm:text-base"
-              onClick={() => navigate('/dna-kit')}
-            >
+            <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
               Voir le plan nutritionnel
             </Button>
           </Card>
@@ -135,10 +122,7 @@ const RecommendationsDemo = () => {
               </p>
             </div>
 
-            <Button 
-              className="w-full mt-4 text-sm sm:text-base"
-              onClick={() => navigate('/dna-kit')}
-            >
+            <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
               Voir le plan d'activités
             </Button>
           </Card>
@@ -176,10 +160,7 @@ const RecommendationsDemo = () => {
               <p className="text-sm text-muted-foreground">Alterner jeux cérébraux et jeux d'énergie</p>
             </div>
 
-            <Button 
-              className="w-full mt-4 text-sm sm:text-base"
-              onClick={() => navigate('/dna-kit')}
-            >
+            <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
               Voir les jeux adaptés
             </Button>
           </Card>
@@ -225,10 +206,7 @@ const RecommendationsDemo = () => {
               </div>
             </div>
 
-            <Button 
-              className="w-full mt-4 text-sm sm:text-base"
-              onClick={() => navigate('/dna-kit')}
-            >
+            <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
               Voir le résumé de santé
             </Button>
           </Card>
@@ -264,10 +242,7 @@ const RecommendationsDemo = () => {
               </div>
             </div>
 
-            <Button 
-              className="w-full mt-4 text-sm sm:text-base"
-              onClick={() => navigate('/dna-kit')}
-            >
+            <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
               Voir les insights
             </Button>
           </Card>
@@ -280,19 +255,13 @@ const RecommendationsDemo = () => {
             <p className="text-sm sm:text-base text-muted-foreground">
               Nutrition, comportement et bien-être personnalisés selon sa génétique unique.
             </p>
-            <Button 
-              size="lg"
-              className="w-full sm:w-auto rounded-full"
-              onClick={() => navigate('/dna-kit')}
-            >
+            <Button size="lg" className="w-full sm:w-auto rounded-full" onClick={() => navigate('/dna-kit')}>
               <ShoppingCart className="h-5 w-5 mr-2" />
               Commander pour mon chien
             </Button>
           </div>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default RecommendationsDemo;
