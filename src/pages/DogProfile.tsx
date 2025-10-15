@@ -287,7 +287,7 @@ const DogProfile = () => {
   }
   if (!dog) {
     return <div className="min-h-screen p-4 space-y-6">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/dogs")} className="rounded-full">
+        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <Card className="p-6 rounded-3xl text-center">
@@ -297,7 +297,7 @@ const DogProfile = () => {
   }
   return <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/dogs")} className="rounded-full">
+        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <h1 className="text-2xl font-bold text-title">Profil de {dog.name}</h1>

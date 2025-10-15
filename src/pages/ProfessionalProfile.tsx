@@ -56,7 +56,7 @@ const ProfessionalProfile = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/professionals")}
+            onClick={() => navigate(-1)}
             className="rounded-full"
           >
             <ArrowLeft className="h-5 w-5" />

@@ -149,7 +149,7 @@ const VaccinationCalendar = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(`/dogs/${id}`)}
+            onClick={() => navigate(-1)}
             className="rounded-full"
           >
             <ArrowLeft className="h-5 w-5" />

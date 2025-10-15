@@ -95,12 +95,12 @@ const OrderSummary = () => {
           </Button>
           
           <Button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             variant="outline"
             className="w-full rounded-full"
             size="lg"
           >
-            Retour à l'accueil
+            Retour
           </Button>
         </div>
       </div>

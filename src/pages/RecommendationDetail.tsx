@@ -12,7 +12,7 @@ const RecommendationDetail = () => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate("/recommendations")}
+          onClick={() => navigate(-1)}
           className="rounded-full"
         >
           <ArrowLeft className="h-5 w-5" />

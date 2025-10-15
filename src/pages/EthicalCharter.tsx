@@ -75,7 +75,7 @@ const EthicalCharter = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/professional/welcome")}
+            onClick={() => navigate(-1)}
             className="rounded-full"
           >
             <ArrowLeft className="h-5 w-5" />
