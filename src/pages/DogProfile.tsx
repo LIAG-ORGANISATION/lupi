@@ -429,14 +429,14 @@ const DogProfile = () => {
 
         <input ref={fileInputRef} type="file" accept="application/pdf" onChange={handleFileChange} className="hidden" />
 
-        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/vaccination-calendar/${id}`)}>
+        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/dogs/${id}/calendar`)}>
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-orange-100">
               <Calendar className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1">
               <h4 className="font-semibold text-title mb-1">Calendrier</h4>
-              <p className="text-sm text-foreground">Rappels & rapports à venir</p>
+              <p className="text-sm text-foreground">Rappels, rendez-vous & événements</p>
             </div>
           </div>
         </Card>

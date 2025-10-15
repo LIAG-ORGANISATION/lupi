@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      dog_calendar_events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          dog_id: string
+          event_date: string
+          event_time: string | null
+          event_type: string
+          id: string
+          owner_id: string
+          professional_id: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          dog_id: string
+          event_date: string
+          event_time?: string | null
+          event_type: string
+          id?: string
+          owner_id: string
+          professional_id?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          dog_id?: string
+          event_date?: string
+          event_time?: string | null
+          event_type?: string
+          id?: string
+          owner_id?: string
+          professional_id?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       dog_documents: {
         Row: {
           created_at: string

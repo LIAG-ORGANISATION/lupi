@@ -14,6 +14,7 @@ import pennypetLogo from "@/assets/pennypet-logo-new.png";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
+import { DogCalendar } from "@/components/DogCalendar";
 interface Dog {
   id: string;
   name: string;
@@ -295,6 +296,11 @@ const Home = () => {
               </div>
             </div>
           </div>}
+
+        {/* Calendar for first dog */}
+        {isGuardian && dogs.length > 0 && user && (
+          <DogCalendar dogId={dogs[0].id} ownerId={user.id} />
+        )}
       </div>
 
       {/* D'où ils viennent Section */}

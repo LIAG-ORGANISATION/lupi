@@ -48,6 +48,7 @@ import SalesTerms from "./pages/SalesTerms";
 import VaccinationPassport from "./pages/VaccinationPassport";
 import DNADemo from "./pages/DNADemo";
 import RecommendationsDemo from "./pages/RecommendationsDemo";
+import DogCalendarPage from "./pages/DogCalendar";
 import ScrollToTop from "./components/ScrollToTop";
 const queryClient = new QueryClient();
 const App = () => <QueryClientProvider client={queryClient}>
@@ -71,6 +72,7 @@ const App = () => <QueryClientProvider client={queryClient}>
           <Route path="/dogs" element={<Layout><Home /></Layout>} />
           <Route path="/dogs/add" element={<Layout><AddDog /></Layout>} />
           <Route path="/dogs/:id" element={<Layout><DogProfile /></Layout>} />
+          <Route path="/dogs/:id/calendar" element={<Layout><DogCalendarPage /></Layout>} />
           <Route path="/vaccination-calendar/:id" element={<Layout><VaccinationCalendar /></Layout>} />
           <Route path="/health-alerts/:id" element={<Layout><HealthAlerts /></Layout>} />
           <Route path="/questionnaire-results/:id" element={<Layout><QuestionnaireResults /></Layout>} />
