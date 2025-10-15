@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, Syringe, Stethoscope, Scissors, GraduationCap, Bell, MoreHorizontal } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, startOfDay } from "date-fns";
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, startOfDay, addDays, startOfToday } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ interface CalendarEvent {
 interface DogCalendarProps {
   dogId: string;
   ownerId: string;
+  compact?: boolean; // Pour afficher seulement 2 semaines
 }
 
 const eventTypeIcons = {
@@ -53,7 +54,7 @@ const eventTypeLabels = {
   other: "Autre",
 };
 
-export const DogCalendar = ({ dogId, ownerId }: DogCalendarProps) => {
+export const DogCalendar = ({ dogId, ownerId, compact = false }: DogCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -132,9 +133,11 @@ export const DogCalendar = ({ dogId, ownerId }: DogCalendarProps) => {
     }
   };
 
-  const monthStart = startOfMonth(currentDate);
-  const monthEnd = endOfMonth(currentDate);
-  const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
+  // Pour le mode compact, afficher seulement 2 semaines à venir
+  const today = startOfToday();
+  const calendarStart = compact ? today : startOfMonth(currentDate);
+  const calendarEnd = compact ? addDays(today, 13) : endOfMonth(currentDate);
+  const daysToDisplay = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
 
   const getEventsForDate = (date: Date) => {
     return events.filter((event) =>
@@ -155,27 +158,41 @@ export const DogCalendar = ({ dogId, ownerId }: DogCalendarProps) => {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold text-title flex items-center gap-2">
             <CalendarIcon className="h-5 w-5 text-primary" />
-            Calendrier
+            {compact ? "Prochains jours" : "Calendrier"}
           </h3>
-          <div className="flex items-center gap-2">
+          {!compact ? (
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <span className="text-sm font-medium capitalize">
+                {format(currentDate, "MMMM yyyy", { locale: fr })}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
             <Button
               variant="ghost"
-              size="icon"
-              onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
+              size="sm"
+              onClick={() => {
+                setSelectedDate(new Date());
+                setShowAddEventDialog(true);
+              }}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <Plus className="h-4 w-4 mr-1" />
+              Ajouter
             </Button>
-            <span className="text-sm font-medium capitalize">
-              {format(currentDate, "MMMM yyyy", { locale: fr })}
-            </span>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
+          )}
         </div>
 
         <div className="grid grid-cols-7 gap-1 mb-2">
@@ -186,8 +203,8 @@ export const DogCalendar = ({ dogId, ownerId }: DogCalendarProps) => {
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1">
-          {daysInMonth.map((day) => {
+        <div className={`grid ${compact ? 'grid-cols-7' : 'grid-cols-7'} gap-1`}>
+          {daysToDisplay.map((day) => {
             const dayEvents = getEventsForDate(day);
             const hasEvents = dayEvents.length > 0;
             const isCurrentDay = isToday(day);

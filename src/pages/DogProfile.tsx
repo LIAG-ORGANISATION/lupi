@@ -6,6 +6,11 @@ import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon, P
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { format } from "date-fns";
 interface DogData {
   id: string;
   name: string;
@@ -36,6 +41,14 @@ const DogProfile = () => {
   const [hasQuestionnaire, setHasQuestionnaire] = useState(false);
   const [healthAlertsCount, setHealthAlertsCount] = useState(0);
   const [vaccinationDocsCount, setVaccinationDocsCount] = useState(0);
+  const [showAddEventDialog, setShowAddEventDialog] = useState(false);
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    description: "",
+    event_type: "reminder" as 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other',
+    event_date: format(new Date(), "yyyy-MM-dd"),
+    event_time: "",
+  });
   useEffect(() => {
     if (id && user) {
       fetchDog();
@@ -280,6 +293,54 @@ const DogProfile = () => {
       }
     }
   };
+  
+  const handleAddEvent = async () => {
+    if (!newEvent.title || !newEvent.event_date) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs obligatoires",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from("dog_calendar_events").insert({
+        dog_id: id,
+        owner_id: user?.id,
+        title: newEvent.title,
+        description: newEvent.description || null,
+        event_date: newEvent.event_date,
+        event_time: newEvent.event_time || null,
+        event_type: newEvent.event_type,
+        status: "upcoming",
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Événement ajouté",
+        description: "L'événement a été ajouté au calendrier",
+      });
+
+      setShowAddEventDialog(false);
+      setNewEvent({ 
+        title: "", 
+        description: "", 
+        event_type: "reminder", 
+        event_date: format(new Date(), "yyyy-MM-dd"),
+        event_time: "" 
+      });
+    } catch (error) {
+      console.error("Error adding event:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter l'événement",
+        variant: "destructive",
+      });
+    }
+  };
+  
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -438,9 +499,103 @@ const DogProfile = () => {
               <h4 className="font-semibold text-title mb-1">Calendrier</h4>
               <p className="text-sm text-foreground">Rappels, rendez-vous & événements</p>
             </div>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="rounded-full"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowAddEventDialog(true);
+              }}
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Ajouter
+            </Button>
           </div>
         </Card>
       </div>
+
+      {/* Dialog pour ajouter un événement */}
+      <Dialog open={showAddEventDialog} onOpenChange={setShowAddEventDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Ajouter un événement</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-1 block">Type d'événement *</label>
+              <Select
+                value={newEvent.event_type}
+                onValueChange={(value: typeof newEvent.event_type) =>
+                  setNewEvent({ ...newEvent, event_type: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="vaccination">Vaccination</SelectItem>
+                  <SelectItem value="veterinary">Vétérinaire</SelectItem>
+                  <SelectItem value="grooming">Toilettage</SelectItem>
+                  <SelectItem value="training">Éducation</SelectItem>
+                  <SelectItem value="reminder">Rappel</SelectItem>
+                  <SelectItem value="other">Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Titre *</label>
+              <Input
+                value={newEvent.title}
+                onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+                placeholder="Ex: Rappel vaccin"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Date *</label>
+              <Input
+                type="date"
+                value={newEvent.event_date}
+                onChange={(e) => setNewEvent({ ...newEvent, event_date: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Heure (optionnel)</label>
+              <Input
+                type="time"
+                value={newEvent.event_time}
+                onChange={(e) => setNewEvent({ ...newEvent, event_time: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Description (optionnel)</label>
+              <Textarea
+                value={newEvent.description}
+                onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
+                placeholder="Détails supplémentaires..."
+                rows={3}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <Button onClick={handleAddEvent} className="flex-1">
+                Ajouter
+              </Button>
+              <Button
+                onClick={() => setShowAddEventDialog(false)}
+                variant="outline"
+                className="flex-1"
+              >
+                Annuler
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>;
 };
 export default DogProfile;
