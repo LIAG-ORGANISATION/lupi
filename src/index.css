@@ -8,55 +8,56 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Clean Medical App Design System with Gold Accent #b49262 */
-    --background: 0 0% 98%; /* #FAFAFA - Light gray background */
-    --foreground: 222 47% 11%; /* #0F172A - Dark text */
+    /* Ultra-minimal design system - nuances de blanc uniquement */
+    --background: 0 0% 100%; /* #FFFFFF - Blanc pur */
+    --foreground: 0 0% 13%; /* #212121 - Texte très foncé */
 
-    --card: 0 0% 100%; /* #FFFFFF - White cards */
-    --card-foreground: 222 47% 11%;
+    --card: 0 0% 100%; /* #FFFFFF - Cartes blanches */
+    --card-foreground: 0 0% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 0 0% 13%;
 
-    --primary: 35 40% 55%; /* #B49262 - Gold accent */
+    --primary: 35 40% 55%; /* #B49262 - Gold (utilisé avec parcimonie) */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96%; /* #F1F5F9 - Light blue-gray */
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 0 0% 98%; /* #FAFAFA - Blanc cassé */
+    --secondary-foreground: 0 0% 13%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 0 0% 96%; /* #F5F5F5 - Gris très pâle */
+    --muted-foreground: 0 0% 45%; /* #737373 - Gris moyen */
 
-    --accent: 35 40% 95%; /* Light gold tint */
-    --accent-foreground: 222 47% 11%;
+    --accent: 0 0% 97%; /* #F8F8F8 - Presque blanc */
+    --accent-foreground: 0 0% 13%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%; /* #E2E8F0 - Light borders */
-    --input: 214 32% 91%;
+    --border: 0 0% 93%; /* #EDEDED - Bordures subtiles */
+    --input: 0 0% 93%;
     --ring: 35 40% 55%;
 
     --radius: 1rem;
     
-    --title: 222 47% 11%;
+    --title: 0 0% 13%;
     
-    /* Gradients with gold accent */
-    --gradient-primary: linear-gradient(135deg, hsl(35 40% 55%), hsl(35 50% 65%));
-    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 98%));
-    --gradient-card: linear-gradient(135deg, hsl(35 40% 97%), hsl(35 30% 95%));
+    /* Gradients ultra-subtils */
+    --gradient-primary: linear-gradient(135deg, hsl(35 40% 55%), hsl(35 45% 60%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 99%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 99%));
     
-    /* Clean, subtle shadows */
-    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-    --shadow-hover: 0 4px 16px rgba(180, 146, 98, 0.15), 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Élévations très subtiles */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03);
+    --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 47% 11%;
+    --sidebar-foreground: 0 0% 13%;
     --sidebar-primary: 35 40% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 40% 96%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 214 32% 91%;
+    --sidebar-accent: 0 0% 98%;
+    --sidebar-accent-foreground: 0 0% 13%;
+    --sidebar-border: 0 0% 93%;
     --sidebar-ring: 35 40% 55%;
   }
 
@@ -108,65 +109,100 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
-    background: var(--gradient-soft);
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: hsl(0 0% 100%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply text-title;
-    font-family: 'Poppins', system-ui, sans-serif;
-    font-weight: 700; /* Poppins Bold pour les titres uniquement */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  
+  h1 { @apply text-2xl; font-weight: 700; }
+  h2 { @apply text-xl; font-weight: 600; }
+  h3 { @apply text-lg; font-weight: 600; }
+  
+  p, span, div {
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer components {
-  /* Clean Medical App Style - Cards */
+  /* Minimal elevation cards */
   .lupi-card {
-    @apply bg-card rounded-2xl p-5 transition-all duration-200;
+    @apply bg-card rounded-2xl p-5 transition-all duration-200 border border-border;
     box-shadow: var(--shadow-card);
   }
   
   .lupi-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
   }
   
-  /* Primary Button - Gold accent */
+  /* Primary Button - Minimal with gold accent */
   .btn-lupi {
-    @apply bg-primary text-primary-foreground font-semibold rounded-xl px-6 py-3.5 transition-all duration-200;
+    @apply bg-primary text-primary-foreground font-semibold rounded-full px-8 py-3.5 transition-all duration-200;
     @apply hover:bg-primary/90;
-    box-shadow: 0 2px 8px rgba(180, 146, 98, 0.15);
+    box-shadow: 0 2px 8px rgba(180, 146, 98, 0.12);
+    letter-spacing: -0.01em;
   }
   
   .btn-lupi:hover {
-    box-shadow: 0 4px 12px rgba(180, 146, 98, 0.25);
+    box-shadow: 0 4px 12px rgba(180, 146, 98, 0.2);
   }
   
-  /* Gradient Background */
+  /* Gradient Background - très subtil */
   .bg-gradient-lupi {
     background: var(--gradient-primary);
   }
   
-  /* Avatar Circle - Clean borders */
+  /* Avatar Circle - bordure minimale */
   .avatar-circle {
-    @apply rounded-full object-cover border-2 border-background shadow-md;
+    @apply rounded-full object-cover border-2 border-white;
+    box-shadow: var(--shadow-card);
   }
   
-  /* List Item Card */
+  /* List Item Card - élévation subtile */
   .list-item-card {
-    @apply bg-card rounded-2xl p-4 transition-all duration-200 cursor-pointer;
+    @apply bg-card rounded-2xl p-4 transition-all duration-200 cursor-pointer border border-transparent;
     box-shadow: var(--shadow-card);
   }
   
   .list-item-card:hover {
+    @apply border-border;
     box-shadow: var(--shadow-hover);
   }
   
-  /* Icon Container */
+  /* Icon Container - couleur très subtile */
   .icon-container {
-    @apply w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10;
+    @apply w-12 h-12 rounded-2xl flex items-center justify-center;
+    background: hsl(35 40% 55% / 0.08);
+  }
+  
+  /* Badge with minimal color */
+  .badge-minimal {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium;
+    background: hsl(35 40% 55% / 0.08);
+    color: hsl(35 40% 45%);
+  }
+  
+  /* Input minimal */
+  .input-minimal {
+    @apply w-full px-4 py-3 rounded-xl border border-border bg-background;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40;
+    @apply transition-all duration-200;
+    box-shadow: var(--shadow-card);
+  }
+  
+  .input-minimal:focus {
+    box-shadow: var(--shadow-hover);
   }
 }
 
-/* Poppins pour les titres uniquement */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+/* Inter font - clean and minimal */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
