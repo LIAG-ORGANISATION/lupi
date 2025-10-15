@@ -9,7 +9,7 @@ const RecommendationsDemo = () => {
       {/* Header avec retour */}
       <div className="p-4 sm:p-6 bg-red-800">
         <div className="max-w-4xl mx-auto">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-primary-foreground mb-6 hover:opacity-80 transition-opacity">
+          <button onClick={() => navigate('/')} className="flex items-center gap-2 text-primary-foreground mb-6 hover:opacity-80 transition-opacity">
             <ArrowLeft className="h-5 w-5" />
             <span className="text-sm sm:text-base">Retour</span>
           </button>
