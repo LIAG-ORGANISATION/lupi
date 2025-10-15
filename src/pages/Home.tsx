@@ -230,16 +230,12 @@ const Home = () => {
   return <div className="min-h-screen pb-20 animate-fade-in">
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section with Gradient */}
-      <div style={{
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }} className="p-8 rounded-b-[3rem] shadow-xl">
+      <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-8 rounded-b-[3rem] shadow-card">
         <div className="max-w-4xl mx-auto space-y-6 text-center">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-foreground">
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
-          <p className="text-sm text-white/90">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
+          <p className="text-sm text-muted-foreground">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div className="space-y-3 pt-4">
             {!isAuthenticated ? <>
@@ -275,8 +271,8 @@ const Home = () => {
             <div className="space-y-3">
               {dogs.map(dog => <div key={dog.id} className="lupi-card">
                   <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-24 h-24 rounded-full object-cover border-2 border-primary/20" /> : <div className="w-24 h-24 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20">
-                        <DogIcon className="h-12 w-12 text-primary" />
+                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-20 h-20 rounded-2xl object-cover border-2 border-primary/20" /> : <div className="w-20 h-20 rounded-2xl bg-gradient-card flex items-center justify-center border-2 border-primary/20">
+                        <DogIcon className="h-10 w-10 text-primary" />
                       </div>}
                     <div className="flex-1">
                       <h3 className="font-bold text-title text-lg">{dog.name}</h3>
