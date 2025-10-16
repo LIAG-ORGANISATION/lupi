@@ -545,7 +545,7 @@ const DogProfile = () => {
         </Card>
 
         <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/guardian/documents")}>
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
               <FileText className="h-5 w-5 text-blue-500" />
             </div>
@@ -553,11 +553,14 @@ const DogProfile = () => {
               <h4 className="font-semibold text-title mb-1">Documents</h4>
               <p className="text-sm text-muted-foreground">Ordonnances, analyses, certificats</p>
             </div>
+            <Button size="sm" variant="outline" className="rounded-full">
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
         </Card>
 
         <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/health-alerts/${id}`)}>
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-5 w-5 text-red-500" />
             </div>
@@ -567,6 +570,9 @@ const DogProfile = () => {
                 {healthAlertsCount === 0 ? 'Aucune anomalie détectée' : `${healthAlertsCount} ${healthAlertsCount === 1 ? 'alerte' : 'alertes'}`}
               </p>
             </div>
+            <Button size="sm" variant="outline" className="rounded-full">
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
         </Card>
 
@@ -582,7 +588,7 @@ const DogProfile = () => {
               </p>
             </div>
             <Button size="sm" variant="outline" className="rounded-full">
-              Ouvrir
+              <Plus className="h-4 w-4" />
             </Button>
           </div>
         </Card>
@@ -590,7 +596,7 @@ const DogProfile = () => {
         <input ref={fileInputRef} type="file" accept="application/pdf" onChange={handleFileChange} className="hidden" />
 
         <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/dogs/${id}/calendar`)}>
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-orange-100">
               <Calendar className="h-5 w-5 text-primary" />
             </div>
@@ -598,17 +604,8 @@ const DogProfile = () => {
               <h4 className="font-semibold text-title mb-1">Calendrier</h4>
               <p className="text-sm text-foreground">Rappels, rendez-vous & événements</p>
             </div>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="rounded-full"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowAddEventDialog(true);
-              }}
-            >
-              <Plus className="h-4 w-4 mr-1" />
-              Ajouter
+            <Button size="sm" variant="outline" className="rounded-full">
+              <Plus className="h-4 w-4" />
             </Button>
           </div>
         </Card>

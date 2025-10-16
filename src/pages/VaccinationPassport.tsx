@@ -97,6 +97,7 @@ const VaccinationPassport = () => {
         .from('dog_documents')
         .select('*')
         .eq('dog_id', dogId)
+        .eq('category', 'vaccination')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -175,6 +176,7 @@ const VaccinationPassport = () => {
           file_type: file.type,
           file_size: file.size,
           storage_path: fileName,
+          category: 'vaccination',
         });
 
       if (insertError) throw insertError;

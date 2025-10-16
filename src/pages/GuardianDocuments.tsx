@@ -546,9 +546,17 @@ const GuardianDocuments = () => {
                                 {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
                               </p>
                               {doc.dogs?.name && (
-                                <p className="text-xs text-muted-foreground">
-                                  🐕 {doc.dogs.name}
-                                </p>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <img 
+                                    src={dogs.find(d => d.id === doc.dog_id)?.avatar_url || ''} 
+                                    alt={doc.dogs.name}
+                                    className="w-5 h-5 rounded-full object-cover"
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
+                                  />
+                                  <p className="text-xs text-muted-foreground">{doc.dogs.name}</p>
+                                </div>
                               )}
                             </div>
                           </div>
@@ -630,9 +638,17 @@ const GuardianDocuments = () => {
                                 {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
                               </p>
                               {doc.dogs?.name && (
-                                <p className="text-xs text-muted-foreground">
-                                  🐕 {doc.dogs.name}
-                                </p>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <img 
+                                    src={dogs.find(d => d.id === doc.dog_id)?.avatar_url || ''} 
+                                    alt={doc.dogs.name}
+                                    className="w-5 h-5 rounded-full object-cover"
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
+                                  />
+                                  <p className="text-xs text-muted-foreground">{doc.dogs.name}</p>
+                                </div>
                               )}
                             </div>
                           </div>
