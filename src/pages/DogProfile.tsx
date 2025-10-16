@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { QuestionnaireSummary } from "@/components/QuestionnaireSummary";
 import { format } from "date-fns";
 interface DogData {
   id: string;
@@ -416,27 +415,44 @@ const DogProfile = () => {
         </Card>
 
         {/* Questionnaire comportemental */}
-        <Card className="p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:border-primary transition-all" onClick={() => hasQuestionnaire ? navigate(`/questionnaire-results/${id}`) : navigate(`/questionnaire?dogId=${id}`)}>
-          <div className={`w-10 h-10 rounded-full ${hasQuestionnaire ? 'bg-green-100' : 'bg-orange-100'} flex items-center justify-center`}>
-            <CheckCircle2 className={`h-6 w-6 ${hasQuestionnaire ? 'text-green-500' : 'text-orange-500'}`} />
+        <Card className="p-4 rounded-2xl">
+          <div className="flex items-center gap-4">
+            <div className={`w-10 h-10 rounded-full ${hasQuestionnaire ? 'bg-green-100' : 'bg-orange-100'} flex items-center justify-center flex-shrink-0`}>
+              <CheckCircle2 className={`h-6 w-6 ${hasQuestionnaire ? 'text-green-500' : 'text-orange-500'}`} />
+            </div>
+            <div className="flex-1">
+              <h4 className="font-semibold text-title">Questionnaire comportemental</h4>
+              <p className="text-sm text-muted-foreground">{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
+            </div>
+            {hasQuestionnaire ? (
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => navigate(`/questionnaire-results/${id}`)} 
+                  variant="outline" 
+                  className="rounded-full"
+                  size="sm"
+                >
+                  Voir
+                </Button>
+                <Button 
+                  onClick={() => navigate(`/questionnaire?dogId=${id}`)} 
+                  className="rounded-full"
+                  size="sm"
+                >
+                  Modifier
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                onClick={() => navigate(`/questionnaire?dogId=${id}`)} 
+                className="rounded-full"
+              >
+                Commencer
+              </Button>
+            )}
           </div>
-          <div className="flex-1">
-            <h4 className="font-semibold text-title">Questionnaire comportemental</h4>
-            <p className="text-sm text-muted-foreground">{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
-          </div>
-          {!hasQuestionnaire && <Button onClick={e => {
-          e.stopPropagation();
-          navigate(`/questionnaire?dogId=${id}`);
-        }} className="rounded-full">
-              Commencer
-            </Button>}
         </Card>
       </div>
-
-      {/* Questionnaire Summary */}
-      {hasQuestionnaire && questionnaireData && (
-        <QuestionnaireSummary data={questionnaireData} />
-      )}
 
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-title">Informations clés</h3>
