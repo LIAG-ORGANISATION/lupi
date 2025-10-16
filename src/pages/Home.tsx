@@ -445,12 +445,14 @@ const Home = () => {
         {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-3">
             <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/messages")}>
               <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm relative">
-                  <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
+                    <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
+                  </div>
                   {unreadCount > 0 && (
                     <Badge 
                       variant="destructive" 
-                      className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                      className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs font-bold"
                     >
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </Badge>

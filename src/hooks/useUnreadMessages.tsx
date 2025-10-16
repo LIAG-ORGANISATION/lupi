@@ -47,8 +47,8 @@ export const useUnreadMessages = () => {
 
     fetchUnreadCount();
 
-    // S'abonner aux changements en temps réel
-    const channel = supabase
+    // S'abonner aux changements en temps réel sur les messages
+    const messagesChannel = supabase
       .channel('unread-messages-changes')
       .on(
         'postgres_changes',
@@ -58,13 +58,16 @@ export const useUnreadMessages = () => {
           table: 'messages'
         },
         () => {
-          fetchUnreadCount();
+          // Petit délai pour s'assurer que l'update est bien enregistré
+          setTimeout(() => {
+            fetchUnreadCount();
+          }, 100);
         }
       )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      supabase.removeChannel(messagesChannel);
     };
   }, [user]);
 
