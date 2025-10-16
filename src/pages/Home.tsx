@@ -198,6 +198,12 @@ const Home = () => {
     return Math.round(profileScore + dnaScore + questionnaireScore);
   };
 
+  const getProgressColor = (percentage: number): string => {
+    if (percentage < 50) return 'text-red-500';
+    if (percentage < 80) return 'text-orange-500';
+    return 'text-green-500';
+  };
+
   // Professional Dashboard View
   if (isProfessional) {
     return <div className="min-h-screen p-3 space-y-4 animate-fade-in bg-background">
@@ -382,7 +388,7 @@ const Home = () => {
                             fill="none"
                             strokeDasharray={`${2 * Math.PI * 20}`}
                             strokeDashoffset={`${2 * Math.PI * 20 * (1 - completion / 100)}`}
-                            className="text-primary transition-all duration-300"
+                            className={`${getProgressColor(completion)} transition-all duration-300`}
                             strokeLinecap="round"
                           />
                         </svg>
