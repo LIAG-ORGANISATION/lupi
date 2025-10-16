@@ -1,23 +1,49 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { Users, MessageSquare, Settings, Home } from "lucide-react";
+import { Users, MessageSquare, Settings, Home, Bell } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import AuthGuard from "@/components/AuthGuard";
+import { useUnreadMessages } from "@/hooks/useUnreadMessages";
+import { useToast } from "@/hooks/use-toast";
 
 const ProfessionalDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
+  const { unreadCount } = useUnreadMessages();
+  const [previousUnreadCount, setPreviousUnreadCount] = useState(0);
 
   useEffect(() => {
     if (user) {
       fetchStats();
     }
   }, [user]);
+
+  // Show toast notification when new messages arrive
+  useEffect(() => {
+    if (unreadCount > previousUnreadCount && previousUnreadCount > 0) {
+      toast({
+        title: "Nouveau message",
+        description: `Vous avez ${unreadCount} message${unreadCount > 1 ? 's' : ''} non lu${unreadCount > 1 ? 's' : ''}`,
+        action: (
+          <Button
+            size="sm"
+            onClick={() => navigate("/professional/messages")}
+            className="rounded-full"
+          >
+            Voir
+          </Button>
+        ),
+      });
+    }
+    setPreviousUnreadCount(unreadCount);
+  }, [unreadCount]);
 
   const fetchStats = async () => {
     try {
@@ -83,9 +109,17 @@ const ProfessionalDashboard = () => {
               </div>
             </Card>
 
-            <Card className="lupi-card">
+            <Card
+              className="lupi-card cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={() => navigate("/professional/messages")}
+            >
               <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-title">0</div>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="text-3xl font-bold text-primary">{unreadCount}</div>
+                  {unreadCount > 0 && (
+                    <Bell className="h-5 w-5 text-primary animate-pulse" />
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
               </div>
             </Card>
@@ -110,15 +144,30 @@ const ProfessionalDashboard = () => {
             </Card>
 
             <Card
-              className="lupi-card cursor-pointer"
+              className="lupi-card cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => navigate("/professional/messages")}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center relative">
                   <MessageSquare className="h-6 w-6 text-primary" />
+                  {unreadCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                    >
+                      {unreadCount}
+                    </Badge>
+                  )}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-title">Messages</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-title">Messages</h3>
+                    {unreadCount > 0 && (
+                      <Badge variant="default" className="h-5 px-2">
+                        {unreadCount}
+                      </Badge>
+                    )}
+                  </div>
                   <p className="text-sm text-muted-foreground">
                     Communiquer avec les gardiens
                   </p>
