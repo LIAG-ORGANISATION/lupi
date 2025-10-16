@@ -77,7 +77,7 @@ const DNADemo = () => {
             <div className="grid grid-cols-3 gap-4 w-full mt-4">
               <div className="bg-secondary/50 rounded-lg p-3">
                 <div className="text-2xl font-bold text-primary">22 kg</div>
-                <div className="text-xs text-muted-foreground">Poids adulte</div>
+                <div className="text-xs text-muted-foreground">Poids adulte idéal</div>
               </div>
               <div className="bg-secondary/50 rounded-lg p-3">
                 <div className="text-2xl font-bold text-primary">0,9%</div>
