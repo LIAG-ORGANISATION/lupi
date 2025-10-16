@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { AlertCircle, Leaf, Sun, Cloud, Snowflake } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AlertCircle, Leaf, Sun, Cloud, Snowflake, ChevronDown, ChevronUp } from "lucide-react";
 
 interface SeasonData {
   name: string;
@@ -91,6 +93,7 @@ const getSeasonData = (): SeasonData => {
 
 export const SeasonalAllergies = () => {
   const seasonData = getSeasonData();
+  const [isExpanded, setIsExpanded] = useState(false);
   
   return (
     <div className="space-y-3">
@@ -125,38 +128,60 @@ export const SeasonalAllergies = () => {
             </ul>
           </div>
           
-          {/* Symptômes */}
-          <div>
-            <h4 className="font-semibold text-foreground mb-2">Symptômes à surveiller</h4>
-            <ul className="space-y-1">
-              {seasonData.symptoms.map((symptom, index) => (
-                <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-                  <span className="text-primary mt-0.5">•</span>
-                  <span>{symptom}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Contenu déployable */}
+          {isExpanded && (
+            <div className="space-y-4 animate-fade-in">
+              {/* Symptômes */}
+              <div>
+                <h4 className="font-semibold text-foreground mb-2">Symptômes à surveiller</h4>
+                <ul className="space-y-1">
+                  {seasonData.symptoms.map((symptom, index) => (
+                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <span className="text-primary mt-0.5">•</span>
+                      <span>{symptom}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              {/* Conseils préventifs */}
+              <div>
+                <h4 className="font-semibold text-foreground mb-2">Conseils préventifs</h4>
+                <ul className="space-y-1">
+                  {seasonData.tips.map((tip, index) => (
+                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              {/* Fun Fact */}
+              <div className="bg-secondary/50 p-3 rounded-xl">
+                <p className="text-sm text-foreground">
+                  <span className="font-semibold">Le saviez-vous ?</span> {seasonData.funFact}
+                </p>
+              </div>
+            </div>
+          )}
           
-          {/* Conseils préventifs */}
-          <div>
-            <h4 className="font-semibold text-foreground mb-2">Conseils préventifs</h4>
-            <ul className="space-y-1">
-              {seasonData.tips.map((tip, index) => (
-                <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span>
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          {/* Fun Fact */}
-          <div className="bg-secondary/50 p-3 rounded-xl">
-            <p className="text-sm text-foreground">
-              <span className="font-semibold">Le saviez-vous ?</span> {seasonData.funFact}
-            </p>
-          </div>
+          {/* Bouton Voir plus/moins */}
+          <Button
+            variant="ghost"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full text-primary hover:text-primary/90"
+          >
+            {isExpanded ? (
+              <>
+                Voir moins <ChevronUp className="ml-2 h-4 w-4" />
+              </>
+            ) : (
+              <>
+                Voir plus <ChevronDown className="ml-2 h-4 w-4" />
+              </>
+            )}
+          </Button>
         </div>
       </Card>
     </div>
