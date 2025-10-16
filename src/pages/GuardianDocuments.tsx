@@ -155,13 +155,16 @@ const GuardianDocuments = () => {
 
   const handleUploadOption = (type: 'pdf' | 'photo' | 'camera') => {
     setShowUploadDialog(false);
-    if (type === 'pdf') {
-      fileInputRef.current?.click();
-    } else if (type === 'photo') {
-      photoInputRef.current?.click();
-    } else {
-      cameraInputRef.current?.click();
-    }
+    // Use setTimeout to ensure the dialog is closed before triggering the input
+    setTimeout(() => {
+      if (type === 'pdf' && fileInputRef.current) {
+        fileInputRef.current.click();
+      } else if (type === 'photo' && photoInputRef.current) {
+        photoInputRef.current.click();
+      } else if (type === 'camera' && cameraInputRef.current) {
+        cameraInputRef.current.click();
+      }
+    }, 100);
   };
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
