@@ -169,7 +169,7 @@ const DNADemo = () => {
                 <span className="font-semibold text-primary">Bonne santé globale</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Sur 265 maladies génétiques testées, Oona n'en présente aucune à risque élevé.
+                Sur +150 gènes testés, Oona n'en présente aucune à risque élevé.
               </p>
             </div>
 
@@ -290,7 +290,7 @@ const DNADemo = () => {
               <TestTube2 className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
               <div>
                 <div className="font-semibold text-sm text-title">Analyse complète</div>
-                <div className="text-xs text-muted-foreground">265 maladies testées</div>
+                <div className="text-xs text-muted-foreground">+150 gènes testés</div>
               </div>
             </div>
             <div className="flex items-start gap-3">
