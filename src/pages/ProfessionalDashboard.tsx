@@ -8,12 +8,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import AuthGuard from "@/components/AuthGuard";
 import { useUnreadMessages } from "@/hooks/useUnreadMessages";
-import { useToast } from "@/hooks/use-toast";
 
 const ProfessionalDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { toast } = useToast();
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
   const { unreadCount } = useUnreadMessages();
