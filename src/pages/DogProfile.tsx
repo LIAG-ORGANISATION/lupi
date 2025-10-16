@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { QuestionnaireSummary } from "@/components/QuestionnaireSummary";
 import { format } from "date-fns";
 interface DogData {
   id: string;
@@ -39,6 +40,7 @@ const DogProfile = () => {
   const [vaccinationPassport, setVaccinationPassport] = useState<any>(null);
   const [uploadingPassport, setUploadingPassport] = useState(false);
   const [hasQuestionnaire, setHasQuestionnaire] = useState(false);
+  const [questionnaireData, setQuestionnaireData] = useState<any>(null);
   const [healthAlertsCount, setHealthAlertsCount] = useState(0);
   const [vaccinationDocsCount, setVaccinationDocsCount] = useState(0);
   const [showAddEventDialog, setShowAddEventDialog] = useState(false);
@@ -91,9 +93,12 @@ const DogProfile = () => {
       const {
         data,
         error
-      } = await supabase.from('dog_questionnaires').select('id').eq('dog_id', id).maybeSingle();
+      } = await supabase.from('dog_questionnaires').select('*').eq('dog_id', id).maybeSingle();
       if (error) throw error;
       setHasQuestionnaire(!!data);
+      if (data) {
+        setQuestionnaireData(data.questionnaire_data);
+      }
     } catch (error) {
       console.error('[DogProfile] Error fetching questionnaire:', error);
     }
@@ -427,6 +432,11 @@ const DogProfile = () => {
             </Button>}
         </Card>
       </div>
+
+      {/* Questionnaire Summary */}
+      {hasQuestionnaire && questionnaireData && (
+        <QuestionnaireSummary data={questionnaireData} />
+      )}
 
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-title">Informations clés</h3>

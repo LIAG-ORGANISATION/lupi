@@ -6,11 +6,21 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Questionnaire = () => {
   const navigate = useNavigate();
@@ -21,6 +31,7 @@ const Questionnaire = () => {
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
   const [dogData, setDogData] = useState<any>(null);
+  const [showStartDialog, setShowStartDialog] = useState(true);
   const totalSteps = 9;
 
   useEffect(() => {
@@ -956,6 +967,40 @@ const Questionnaire = () => {
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in">
+      {/* Start Warning Dialog */}
+      <AlertDialog open={showStartDialog} onOpenChange={setShowStartDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Clock className="h-6 w-6 text-primary" />
+              </div>
+              <AlertDialogTitle className="text-xl">Questionnaire comportemental</AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="space-y-3 text-base">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                <p>
+                  Ce questionnaire approfondi vous prendra environ <span className="font-semibold text-foreground">20 minutes</span> à compléter.
+                </p>
+              </div>
+              <p className="text-muted-foreground">
+                Il nous permet de mieux comprendre le comportement, l'environnement et les besoins de votre chien afin de vous proposer des recommandations personnalisées.
+              </p>
+              <p className="text-muted-foreground">
+                Vos réponses seront enregistrées et vous pourrez les consulter à tout moment dans le profil de votre chien.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => navigate(-1)}>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={() => setShowStartDialog(false)}>
+              Commencer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
