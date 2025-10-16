@@ -249,12 +249,13 @@ const GuardianDocuments = () => {
 
   const handleOpenDocument = async (doc: Document) => {
     try {
-      const { data } = supabase.storage
+      const { data, error } = await supabase.storage
         .from("dog-documents")
-        .getPublicUrl(doc.storage_path);
+        .createSignedUrl(doc.storage_path, 3600); // 1 hour expiry
 
-      if (data?.publicUrl) {
-        window.open(data.publicUrl, "_blank");
+      if (error) throw error;
+      if (data?.signedUrl) {
+        window.open(data.signedUrl, "_blank");
       }
     } catch (error) {
       console.error("Error opening document:", error);
@@ -333,12 +334,14 @@ const GuardianDocuments = () => {
 
   const handleExport = async (doc: Document) => {
     try {
-      const { data } = supabase.storage
+      const { data, error } = await supabase.storage
         .from("dog-documents")
-        .getPublicUrl(doc.storage_path);
+        .createSignedUrl(doc.storage_path, 3600); // 1 hour expiry
 
-      if (data?.publicUrl) {
-        const response = await fetch(data.publicUrl);
+      if (error) throw error;
+
+      if (data?.signedUrl) {
+        const response = await fetch(data.signedUrl);
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
