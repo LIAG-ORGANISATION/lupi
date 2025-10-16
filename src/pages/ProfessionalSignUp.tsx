@@ -16,8 +16,12 @@ const ProfessionalSignUp = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    password: "",
     profession: "",
     zone: "",
+    phone: "",
+    bio: "",
+    tarifs: "",
     photoUrl: "",
   });
 
@@ -59,13 +63,57 @@ const ProfessionalSignUp = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Inscription réussie !",
-      description: "Bienvenue dans la communauté Lupi Pro.",
-    });
-    navigate("/professional/welcome");
+    
+    try {
+      // Créer le compte utilisateur
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            role: 'professional',
+            full_name: formData.fullName,
+            profession: formData.profession,
+            zone: formData.zone,
+          },
+          emailRedirectTo: `${window.location.origin}/professional/welcome`,
+        },
+      });
+
+      if (authError) throw authError;
+
+      if (authData.user) {
+        // Mettre à jour le profil professionnel avec les données supplémentaires
+        const { error: profileError } = await supabase
+          .from('professionals')
+          .update({
+            phone: formData.phone || null,
+            bio: formData.bio || null,
+            tarifs: formData.tarifs || null,
+            photo_url: formData.photoUrl || null,
+            localisation: formData.zone,
+          })
+          .eq('user_id', authData.user.id);
+
+        if (profileError) throw profileError;
+      }
+
+      toast({
+        title: "Inscription réussie !",
+        description: "Bienvenue dans la communauté Lupi Pro. Vérifiez votre email pour confirmer votre compte.",
+      });
+      
+      navigate("/professional/welcome");
+    } catch (error: any) {
+      console.error('Error signing up:', error);
+      toast({
+        title: "Erreur",
+        description: error.message || "Impossible de créer le compte.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -82,16 +130,17 @@ const ProfessionalSignUp = () => {
         <h1 className="text-2xl font-bold text-title">Sign Up</h1>
       </div>
 
-      <div className="max-w-md mx-auto space-y-6">
+      <div className="max-w-md mx-auto space-y-6 pb-8">
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-bold text-title">
-            Join our community of<br />professionals
+            Rejoignez notre communauté<br />de professionnels
           </h2>
+          <p className="text-sm text-muted-foreground">Remplissez tous les champs pour créer votre profil</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Card className="p-6 rounded-3xl space-y-4">
-            {/* Photo de profil */}
+          {/* Photo de profil */}
+          <Card className="p-6 rounded-3xl">
             <div className="flex justify-center">
               <div className="relative">
                 <Avatar className="w-24 h-24">
@@ -117,12 +166,20 @@ const ProfessionalSignUp = () => {
                 </label>
               </div>
             </div>
+            <p className="text-xs text-center text-muted-foreground mt-2">
+              Ajoutez votre photo ou logo professionnel
+            </p>
+          </Card>
 
+          {/* Informations de compte */}
+          <Card className="p-6 rounded-3xl space-y-4">
+            <h3 className="font-semibold text-title">Compte</h3>
+            
             <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label htmlFor="fullName">Nom complet *</Label>
               <Input
                 id="fullName"
-                placeholder="John Doe"
+                placeholder="Ex: Dr. Marie Dupont"
                 value={formData.fullName}
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                 className="rounded-2xl"
@@ -131,11 +188,11 @@ const ProfessionalSignUp = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Business Email</Label>
+              <Label htmlFor="email">Email professionnel *</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder="contact@exemple.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="rounded-2xl"
@@ -144,7 +201,26 @@ const ProfessionalSignUp = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="profession">Profession</Label>
+              <Label htmlFor="password">Mot de passe *</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Minimum 6 caractères"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="rounded-2xl"
+                required
+                minLength={6}
+              />
+            </div>
+          </Card>
+
+          {/* Informations professionnelles */}
+          <Card className="p-6 rounded-3xl space-y-4">
+            <h3 className="font-semibold text-title">Profil professionnel</h3>
+
+            <div className="space-y-2">
+              <Label htmlFor="profession">Profession *</Label>
               <Input
                 id="profession"
                 placeholder="Ex: Vétérinaire, Éducateur canin"
@@ -156,7 +232,7 @@ const ProfessionalSignUp = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="zone">Zone</Label>
+              <Label htmlFor="zone">Zone d'exercice *</Label>
               <Input
                 id="zone"
                 placeholder="Ex: Paris, Île-de-France"
@@ -166,29 +242,39 @@ const ProfessionalSignUp = () => {
                 required
               />
             </div>
-          </Card>
 
-          <Card className="p-6 rounded-3xl space-y-4 bg-secondary/50">
-            <h3 className="font-bold text-title">Subscription</h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Pro</span>
-                <span className="text-sm text-muted-foreground">€49/month</span>
-              </div>
-              <ul className="space-y-2 text-sm text-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">✓</span>
-                  <span>Unlimited connections</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">✓</span>
-                  <span>Priority profile visibility</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary">✓</span>
-                  <span>Exclusive events access</span>
-                </li>
-              </ul>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Téléphone</Label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Ex: +33 6 12 34 56 78"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="rounded-2xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bio">Biographie</Label>
+              <Textarea
+                id="bio"
+                placeholder="Présentez votre expérience et vos compétences..."
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                className="rounded-2xl min-h-[100px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="tarifs">Tarifs (optionnel)</Label>
+              <Input
+                id="tarifs"
+                placeholder="Ex: 60€ / consultation"
+                value={formData.tarifs}
+                onChange={(e) => setFormData({ ...formData, tarifs: e.target.value })}
+                className="rounded-2xl"
+              />
             </div>
           </Card>
 
@@ -197,17 +283,17 @@ const ProfessionalSignUp = () => {
             className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
             size="lg"
           >
-            Start My Pro Subscription
+            Créer mon profil professionnel
           </Button>
 
           <p className="text-xs text-center text-muted-foreground">
-            By continuing, you agree to our{" "}
-            <button type="button" className="text-primary underline">
-              Terms of Service
+            En continuant, vous acceptez nos{" "}
+            <button type="button" onClick={() => navigate("/terms")} className="text-primary underline">
+              Conditions d'utilisation
             </button>{" "}
-            and{" "}
-            <button type="button" className="text-primary underline">
-              Privacy Policy
+            et notre{" "}
+            <button type="button" onClick={() => navigate("/privacy")} className="text-primary underline">
+              Politique de confidentialité
             </button>
           </p>
         </form>
