@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2, Users } from "lucide-react";
+import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2, Users, Camera, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -15,6 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 
 interface Document {
@@ -37,8 +38,11 @@ const GuardianDocuments = () => {
   const { toast } = useToast();
   const { user, userRole, loading: authLoading, isProfessional } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   
   const userId = user?.id;
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
   
   const [documents, setDocuments] = useState<Document[]>([]);
   const [dogs, setDogs] = useState<any[]>([]);
@@ -131,7 +135,18 @@ const GuardianDocuments = () => {
       });
       return;
     }
-    fileInputRef.current?.click();
+    setShowUploadDialog(true);
+  };
+
+  const handleUploadOption = (type: 'pdf' | 'photo' | 'camera') => {
+    setShowUploadDialog(false);
+    if (type === 'pdf') {
+      fileInputRef.current?.click();
+    } else if (type === 'photo') {
+      photoInputRef.current?.click();
+    } else {
+      cameraInputRef.current?.click();
+    }
   };
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -388,8 +403,24 @@ const GuardianDocuments = () => {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/jpeg,image/png,application/pdf"
+              accept="application/pdf"
               multiple
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/jpg"
+              multiple
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <input
+              ref={cameraInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
               onChange={handleFileChange}
               className="hidden"
             />
@@ -474,6 +505,58 @@ const GuardianDocuments = () => {
           </div>
         )}
       </div>
+
+      {/* Upload options dialog */}
+      <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+        <DialogContent className="rounded-3xl max-w-[90vw] sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Ajouter un document</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-4">
+            <Button
+              onClick={() => handleUploadOption('pdf')}
+              variant="outline"
+              className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
+            >
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <FileText className="h-6 w-6 text-primary" />
+              </div>
+              <div className="text-left flex-1">
+                <p className="font-semibold">Importer un PDF</p>
+                <p className="text-xs text-muted-foreground">Ordonnances, analyses...</p>
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => handleUploadOption('camera')}
+              variant="outline"
+              className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
+            >
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Camera className="h-6 w-6 text-primary" />
+              </div>
+              <div className="text-left flex-1">
+                <p className="font-semibold">Prendre une photo</p>
+                <p className="text-xs text-muted-foreground">Utiliser l'appareil photo</p>
+              </div>
+            </Button>
+
+            <Button
+              onClick={() => handleUploadOption('photo')}
+              variant="outline"
+              className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
+            >
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Upload className="h-6 w-6 text-primary" />
+              </div>
+              <div className="text-left flex-1">
+                <p className="font-semibold">Importer une photo</p>
+                <p className="text-xs text-muted-foreground">Depuis la galerie</p>
+              </div>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Delete confirmation dialog */}
       <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open, doc: null })}>
