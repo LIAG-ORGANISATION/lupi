@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText, Heart, Gift, Check } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroImage from "@/assets/hero-dog-dna.jpg";
 import dogsOriginSection from "@/assets/dogs-origin-section.png";
@@ -21,6 +22,10 @@ interface Dog {
   name: string;
   breed: string | null;
   avatar_url: string | null;
+  birth_date: string | null;
+  weight: number | null;
+  gender: string | null;
+  medical_notes: string | null;
 }
 const Home = () => {
   const navigate = useNavigate();
@@ -83,7 +88,7 @@ const Home = () => {
       const {
         data,
         error
-      } = await supabase.from('dogs').select('id, name, breed, avatar_url').eq('owner_id', user?.id).order('created_at', {
+      } = await supabase.from('dogs').select('id, name, breed, avatar_url, birth_date, weight, gender, medical_notes').eq('owner_id', user?.id).order('created_at', {
         ascending: false
       }).limit(3);
       if (error) throw error;
@@ -149,6 +154,20 @@ const Home = () => {
         setCopiedPromo(null);
       }, 2000);
     });
+  };
+
+  const calculateProfileCompletion = (dog: Dog): number => {
+    const fields = [
+      dog.name,
+      dog.breed,
+      dog.avatar_url,
+      dog.birth_date,
+      dog.weight,
+      dog.gender,
+      dog.medical_notes,
+    ];
+    const filledFields = fields.filter(field => field !== null && field !== undefined && field !== '').length;
+    return Math.round((filledFields / fields.length) * 100);
   };
 
   // Professional Dashboard View
@@ -309,7 +328,9 @@ const Home = () => {
         {isGuardian && dogs.length > 0 && <div className="space-y-2 mb-3">
             <h2 className="text-xl font-bold text-title">Mes chiens</h2>
             <div className="space-y-2">
-              {dogs.map(dog => <div key={dog.id} className="lupi-card">
+              {dogs.map(dog => {
+                const completion = calculateProfileCompletion(dog);
+                return <div key={dog.id} className="lupi-card">
                   <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
                     {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-20 h-20 rounded-2xl object-cover border-2 border-primary/20" /> : <div className="w-20 h-20 rounded-2xl bg-gradient-card flex items-center justify-center border-2 border-primary/20">
                         <DogIcon className="h-10 w-10 text-primary" />
@@ -318,8 +339,40 @@ const Home = () => {
                       <h3 className="font-bold text-title text-lg">{dog.name}</h3>
                       {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
                     </div>
+                    <div className="flex flex-col items-center gap-1 min-w-[80px]">
+                      <div className="relative w-12 h-12">
+                        <svg className="w-12 h-12 transform -rotate-90">
+                          <circle
+                            cx="24"
+                            cy="24"
+                            r="20"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                            className="text-secondary"
+                          />
+                          <circle
+                            cx="24"
+                            cy="24"
+                            r="20"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                            strokeDasharray={`${2 * Math.PI * 20}`}
+                            strokeDashoffset={`${2 * Math.PI * 20 * (1 - completion / 100)}`}
+                            className="text-primary transition-all duration-300"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xs font-bold text-foreground">{completion}%</span>
+                        </div>
+                      </div>
+                      <span className="text-xs text-muted-foreground">Profil</span>
+                    </div>
                   </div>
-                </div>)}
+                </div>
+              })}
               
               {/* Raccourci vers Recommandations personnalisées */}
               <div className="lupi-card bg-gradient-card border-2 border-primary/20">
