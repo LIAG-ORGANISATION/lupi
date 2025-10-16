@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Share2, Star, ThumbsUp, MessageCircle, Clock, DollarSign, Award, Globe, Phone, Mail } from "lucide-react";
+import { ArrowLeft, Share2, Clock, DollarSign, Award, Globe, Phone, Mail, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -139,22 +139,6 @@ const ProfessionalProfile = () => {
     languages: ["Français"],
     services: [],
     pricing: professional.tarifs ? `${professional.tarifs} €` : "Nous consulter",
-    reviews: [
-      {
-        name: "Sophie Martin",
-        date: "Il y a 2 mois",
-        rating: 5,
-        text: "Olivia est une éducatrice extraordinaire ! Notre chien, Max, avait des problèmes comportementaux, et elle nous a aidés à les résoudre efficacement. Nous lui sommes très reconnaissants pour son expertise et sa patience.",
-        likes: 2,
-      },
-      {
-        name: "Thomas Dubois",
-        date: "Il y a 4 mois",
-        rating: 5,
-        text: "Olivia est fantastique ! Elle nous a aidés à dresser notre nouveau chiot, Luna, et nous a fourni des conseils précieux. Nous recommandons vivement ses services.",
-        likes: 1,
-      },
-    ],
   };
 
   return (
@@ -301,50 +285,6 @@ const ProfessionalProfile = () => {
               <div className="flex items-center gap-2">
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
                 <span className="text-lg font-semibold text-title">{professionalData.pricing}</span>
-              </div>
-            </Card>
-          )}
-
-          {/* Reviews */}
-          {professionalData.reviews && professionalData.reviews.length > 0 && (
-            <Card className="lupi-card space-y-4">
-              <h3 className="font-bold text-title flex items-center gap-2">
-                <Star className="h-5 w-5 text-primary" />
-                Avis
-              </h3>
-              <div className="space-y-4">
-                {professionalData.reviews.map((review, index) => (
-                <div key={index} className="space-y-2 pb-4 border-b border-border last:border-0">
-                  <div className="flex items-start gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarFallback className="bg-secondary">
-                        {review.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="font-semibold text-sm">{review.name}</p>
-                        <p className="text-xs text-muted-foreground">{review.date}</p>
-                      </div>
-                      <div className="flex gap-0.5 mb-2">
-                        {Array.from({ length: review.rating }).map((_, i) => (
-                          <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                      <p className="text-sm text-foreground leading-relaxed">{review.text}</p>
-                      <div className="flex items-center gap-4 mt-2">
-                        <button className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary">
-                          <ThumbsUp className="h-3 w-3" />
-                          <span>{review.likes}</span>
-                        </button>
-                        <button className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary">
-                          <MessageCircle className="h-3 w-3" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                ))}
               </div>
             </Card>
           )}
