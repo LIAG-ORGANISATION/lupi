@@ -17,33 +17,12 @@ const ProfessionalDashboard = () => {
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
   const { unreadCount } = useUnreadMessages();
-  const [previousUnreadCount, setPreviousUnreadCount] = useState(0);
 
   useEffect(() => {
     if (user) {
       fetchStats();
     }
   }, [user]);
-
-  // Show toast notification when new messages arrive
-  useEffect(() => {
-    if (unreadCount > previousUnreadCount && previousUnreadCount > 0) {
-      toast({
-        title: "Nouveau message",
-        description: `Vous avez ${unreadCount} message${unreadCount > 1 ? 's' : ''} non lu${unreadCount > 1 ? 's' : ''}`,
-        action: (
-          <Button
-            size="sm"
-            onClick={() => navigate("/professional/messages")}
-            className="rounded-full"
-          >
-            Voir
-          </Button>
-        ),
-      });
-    }
-    setPreviousUnreadCount(unreadCount);
-  }, [unreadCount]);
 
   const fetchStats = async () => {
     try {
