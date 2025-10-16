@@ -2,13 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, MessageCircle } from "lucide-react";
+import { Search, MapPin, MessageCircle, Filter, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ProfessionalData {
   user_id: string;
@@ -30,9 +37,14 @@ const Professionals = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [professionals, setProfessionals] = useState<ProfessionalData[]>([]);
+  const [professions, setProfessions] = useState<Array<{ id: string; label: string }>>([]);
   const [specialisations, setSpecialisations] = useState<Record<string, string>>({});
+  const [specialisationsList, setSpecialisationsList] = useState<Array<{ id: string; label: string }>>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedProfession, setSelectedProfession] = useState<string>("");
+  const [selectedSpecialisation, setSelectedSpecialisation] = useState<string>("");
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     loadProfessionals();
@@ -40,16 +52,26 @@ const Professionals = () => {
 
   const loadProfessionals = async () => {
     try {
-      // Load all specialisations first
+      // Load professions
+      const { data: profsData } = await supabase
+        .from("professions")
+        .select("id, label")
+        .order("label");
+      
+      setProfessions(profsData || []);
+
+      // Load all specialisations
       const { data: specsData } = await supabase
         .from("specialisations")
-        .select("id, label");
+        .select("id, label")
+        .order("label");
       
       const specsMap: Record<string, string> = {};
       specsData?.forEach(spec => {
         specsMap[spec.id] = spec.label;
       });
       setSpecialisations(specsMap);
+      setSpecialisationsList(specsData || []);
 
       // Load professionals with their profession
       const { data, error } = await supabase
@@ -88,12 +110,30 @@ const Professionals = () => {
   };
 
   const filteredProfessionals = professionals.filter((pro) => {
+    // Search filter
     const searchLower = searchQuery.toLowerCase();
     const nameMatch = pro.full_name.toLowerCase().includes(searchLower);
     const professionMatch = pro.professions?.label.toLowerCase().includes(searchLower);
     const locationMatch = pro.localisation?.toLowerCase().includes(searchLower);
-    return nameMatch || professionMatch || locationMatch;
+    const searchMatch = !searchQuery || nameMatch || professionMatch || locationMatch;
+
+    // Profession filter
+    const professionFilterMatch = !selectedProfession || pro.profession_id === selectedProfession;
+
+    // Specialisation filter
+    const specialisationFilterMatch = !selectedSpecialisation || 
+      (pro.specialisations_ids && pro.specialisations_ids.includes(selectedSpecialisation));
+
+    return searchMatch && professionFilterMatch && specialisationFilterMatch;
   });
+
+  const clearFilters = () => {
+    setSelectedProfession("");
+    setSelectedSpecialisation("");
+    setSearchQuery("");
+  };
+
+  const hasActiveFilters = selectedProfession || selectedSpecialisation || searchQuery;
 
   const handleSendMessage = async (e: React.MouseEvent, professionalId: string) => {
     e.stopPropagation();
@@ -166,6 +206,110 @@ const Professionals = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+      </div>
+
+      {/* Filters */}
+      <div className="space-y-3">
+        <Button
+          variant="outline"
+          onClick={() => setShowFilters(!showFilters)}
+          className="w-full rounded-2xl flex items-center justify-center gap-2"
+        >
+          <Filter className="h-4 w-4" />
+          Filtres
+          {hasActiveFilters && (
+            <Badge variant="default" className="ml-2 h-5 w-5 rounded-full p-0 flex items-center justify-center">
+              !
+            </Badge>
+          )}
+        </Button>
+
+        {showFilters && (
+          <Card className="lupi-card space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-sm">Filtrer par</h3>
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="text-xs"
+                >
+                  <X className="h-3 w-3 mr-1" />
+                  Effacer
+                </Button>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-muted-foreground mb-2 block">Profession</label>
+                <Select value={selectedProfession} onValueChange={setSelectedProfession}>
+                  <SelectTrigger className="rounded-2xl">
+                    <SelectValue placeholder="Toutes les professions" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Toutes les professions</SelectItem>
+                    {professions.map((prof) => (
+                      <SelectItem key={prof.id} value={prof.id}>
+                        {prof.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-xs text-muted-foreground mb-2 block">Spécialité</label>
+                <Select value={selectedSpecialisation} onValueChange={setSelectedSpecialisation}>
+                  <SelectTrigger className="rounded-2xl">
+                    <SelectValue placeholder="Toutes les spécialités" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Toutes les spécialités</SelectItem>
+                    {specialisationsList.map((spec) => (
+                      <SelectItem key={spec.id} value={spec.id}>
+                        {spec.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {hasActiveFilters && !showFilters && (
+          <div className="flex flex-wrap gap-2">
+            {searchQuery && (
+              <Badge variant="secondary" className="gap-1">
+                Recherche: {searchQuery}
+                <X
+                  className="h-3 w-3 cursor-pointer"
+                  onClick={() => setSearchQuery("")}
+                />
+              </Badge>
+            )}
+            {selectedProfession && (
+              <Badge variant="secondary" className="gap-1">
+                {professions.find(p => p.id === selectedProfession)?.label}
+                <X
+                  className="h-3 w-3 cursor-pointer"
+                  onClick={() => setSelectedProfession("")}
+                />
+              </Badge>
+            )}
+            {selectedSpecialisation && (
+              <Badge variant="secondary" className="gap-1">
+                {specialisations[selectedSpecialisation]}
+                <X
+                  className="h-3 w-3 cursor-pointer"
+                  onClick={() => setSelectedSpecialisation("")}
+                />
+              </Badge>
+            )}
+          </div>
+        )}
       </div>
 
       {loading ? (
