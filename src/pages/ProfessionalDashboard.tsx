@@ -6,12 +6,14 @@ import { Users, MessageSquare, Settings, Home } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import AuthGuard from "@/components/AuthGuard";
+import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 
 const ProfessionalDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [pendingRequests, setPendingRequests] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
+  const unreadCount = useUnreadMessages();
 
   useEffect(() => {
     if (user) {
@@ -85,7 +87,7 @@ const ProfessionalDashboard = () => {
 
             <Card className="lupi-card">
               <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-title">0</div>
+                <div className="text-3xl font-bold text-title">{unreadCount}</div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
               </div>
             </Card>
@@ -114,15 +116,25 @@ const ProfessionalDashboard = () => {
               onClick={() => navigate("/professional/messages")}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center relative">
                   <MessageSquare className="h-6 w-6 text-primary" />
+                  {unreadCount > 0 && (
+                    <div className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </div>
+                  )}
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title">Messages</h3>
                   <p className="text-sm text-muted-foreground">
-                    Communiquer avec les gardiens
+                    {unreadCount > 0 ? `${unreadCount} nouveau${unreadCount > 1 ? 'x' : ''} message${unreadCount > 1 ? 's' : ''}` : 'Communiquer avec les gardiens'}
                   </p>
                 </div>
+                {unreadCount > 0 && (
+                  <Button variant="outline" size="sm" className="rounded-full">
+                    Consulter
+                  </Button>
+                )}
               </div>
             </Card>
           </div>

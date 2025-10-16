@@ -9,6 +9,8 @@ import AuthGuard from "@/components/AuthGuard";
 import messagesIcon from "@/assets/messages-icon.jpg";
 import documentsIcon from "@/assets/documents-icon.jpg";
 import professionalsIcon from "@/assets/professionals-icon.jpg";
+import { useUnreadMessages } from "@/hooks/useUnreadMessages";
+import { Badge } from "@/components/ui/badge";
 
 interface DogData {
   id: string;
@@ -22,6 +24,7 @@ const GuardianDashboard = () => {
   const { user } = useAuth();
   const [dogs, setDogs] = useState<DogData[]>([]);
   const [loading, setLoading] = useState(true);
+  const unreadCount = useUnreadMessages();
 
   useEffect(() => {
     if (user) {
@@ -77,16 +80,26 @@ const GuardianDashboard = () => {
               onClick={() => navigate("/guardian/messages")}
             >
               <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+                <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 relative">
                   <img 
                     src={messagesIcon} 
                     alt="Messages" 
                     className="w-full h-full object-cover"
                   />
+                  {unreadCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                    >
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </Badge>
+                  )}
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Messages</h3>
-                  <p className="text-xs text-muted-foreground">Avec les pros</p>
+                  <p className="text-xs text-muted-foreground">
+                    {unreadCount > 0 ? `${unreadCount} nouveau${unreadCount > 1 ? 'x' : ''}` : 'Avec les pros'}
+                  </p>
                 </div>
               </div>
             </Card>
