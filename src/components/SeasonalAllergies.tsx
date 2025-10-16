@@ -19,7 +19,7 @@ const getSeasonData = (): SeasonData => {
     return {
       name: "Printemps",
       icon: <Leaf className="h-6 w-6" />,
-      color: "bg-green-500",
+      color: "bg-gradient-to-br from-primary/10 to-primary/5",
       allergens: ["Pollens (arbres : bouleau, chêne, platane, aulne)", "Herbes en floraison", "Acariens", "Poussières accumulées"],
       symptoms: ["Démangeaisons, léchage excessif des pattes", "Otites récidivantes", "Yeux rouges et larmoyants", "Éruptions cutanées sur le ventre"],
       tips: [
@@ -38,7 +38,7 @@ const getSeasonData = (): SeasonData => {
     return {
       name: "Été",
       icon: <Sun className="h-6 w-6" />,
-      color: "bg-yellow-500",
+      color: "bg-gradient-to-br from-primary/10 to-primary/5",
       allergens: ["Piqûres de puces, tiques, moustiques", "Pollens d'herbes hautes (graminées)", "Moisissures dues à la chaleur", "Produits chimiques (eau chlorée)"],
       symptoms: ["Grattage intensif, rougeurs", "Perte de poils localisée", "Allergies de contact (pattes irritées)", "Dermatite estivale, eczéma humide"],
       tips: [
@@ -57,7 +57,7 @@ const getSeasonData = (): SeasonData => {
     return {
       name: "Automne",
       icon: <Cloud className="h-6 w-6" />,
-      color: "bg-orange-500",
+      color: "bg-gradient-to-br from-primary/10 to-primary/5",
       allergens: ["Moisissures (feuilles humides)", "Acariens en forte activité", "Pollens tardifs (ambroisie)", "Débris organiques en décomposition"],
       symptoms: ["Démangeaisons au ventre ou aux oreilles", "Rougeurs autour des yeux", "Léchage excessif des pattes", "Écoulements nasaux légers"],
       tips: [
@@ -75,7 +75,7 @@ const getSeasonData = (): SeasonData => {
   return {
     name: "Hiver",
     icon: <Snowflake className="h-6 w-6" />,
-    color: "bg-blue-500",
+    color: "bg-gradient-to-br from-primary/10 to-primary/5",
     allergens: ["Acariens (espaces chauffés)", "Produits chimiques (sels de déneigement)", "Moisissures intérieures", "Poussières et poils accumulés"],
     symptoms: ["Peau sèche, pellicules, grattage", "Irritation des coussinets (froid, sel)", "Toux ou éternuements légers", "Rougeurs entre les doigts"],
     tips: [
@@ -102,19 +102,19 @@ export const SeasonalAllergies = () => {
       <Card className="lupi-card overflow-hidden">
         {/* Header with season */}
         <div className={`${seasonData.color} p-4 flex items-center gap-3`}>
-          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
             {seasonData.icon}
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-white">{seasonData.name}</h3>
-            <p className="text-sm text-white/90">Conseils pour protéger votre chien</p>
+            <h3 className="text-lg font-bold text-title">{seasonData.name}</h3>
+            <p className="text-sm text-muted-foreground">Conseils pour protéger votre chien</p>
           </div>
         </div>
         
         <div className="p-4 space-y-4">
           {/* Allergènes fréquents */}
           <div>
-            <h4 className="font-semibold text-foreground mb-2">🦠 Allergènes fréquents</h4>
+            <h4 className="font-semibold text-foreground mb-2">Allergènes fréquents</h4>
             <ul className="space-y-1">
               {seasonData.allergens.map((allergen, index) => (
                 <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
@@ -127,7 +127,7 @@ export const SeasonalAllergies = () => {
           
           {/* Symptômes */}
           <div>
-            <h4 className="font-semibold text-foreground mb-2">⚠️ Symptômes à surveiller</h4>
+            <h4 className="font-semibold text-foreground mb-2">Symptômes à surveiller</h4>
             <ul className="space-y-1">
               {seasonData.symptoms.map((symptom, index) => (
                 <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
@@ -140,7 +140,7 @@ export const SeasonalAllergies = () => {
           
           {/* Conseils préventifs */}
           <div>
-            <h4 className="font-semibold text-foreground mb-2">💡 Conseils préventifs</h4>
+            <h4 className="font-semibold text-foreground mb-2">Conseils préventifs</h4>
             <ul className="space-y-1">
               {seasonData.tips.map((tip, index) => (
                 <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
@@ -153,8 +153,8 @@ export const SeasonalAllergies = () => {
           
           {/* Fun Fact */}
           <div className="bg-secondary/50 p-3 rounded-xl">
-            <p className="text-sm text-foreground italic">
-              💬 <span className="font-semibold">Le saviez-vous ?</span> {seasonData.funFact}
+            <p className="text-sm text-foreground">
+              <span className="font-semibold">Le saviez-vous ?</span> {seasonData.funFact}
             </p>
           </div>
         </div>
