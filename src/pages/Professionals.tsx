@@ -2,11 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin } from "lucide-react";
+import { Search, MapPin, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProfessionalData {
   user_id: string;
@@ -25,6 +27,8 @@ interface ProfessionalData {
 
 const Professionals = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [professionals, setProfessionals] = useState<ProfessionalData[]>([]);
   const [specialisations, setSpecialisations] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
@@ -91,6 +95,60 @@ const Professionals = () => {
     return nameMatch || professionMatch || locationMatch;
   });
 
+  const handleSendMessage = async (e: React.MouseEvent, professionalId: string) => {
+    e.stopPropagation();
+    
+    if (!user) {
+      toast({
+        title: "Erreur",
+        description: "Vous devez être connecté pour envoyer un message",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Check if conversation already exists
+      const { data: existingConv, error: searchError } = await supabase
+        .from("conversations")
+        .select("id")
+        .eq("owner_id", user.id)
+        .eq("professional_id", professionalId)
+        .is("dog_id", null)
+        .maybeSingle();
+
+      if (searchError && searchError.code !== "PGRST116") throw searchError;
+
+      let conversationId = existingConv?.id;
+
+      // Create conversation if it doesn't exist
+      if (!conversationId) {
+        const { data: newConv, error: createError } = await supabase
+          .from("conversations")
+          .insert({
+            owner_id: user.id,
+            professional_id: professionalId,
+            dog_id: null,
+          })
+          .select("id")
+          .single();
+
+        if (createError) throw createError;
+        conversationId = newConv.id;
+      }
+
+      // Navigate to messages page
+      navigate("/guardian/messages");
+    } catch (error) {
+      console.error("Error creating conversation:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ouvrir la conversation",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
       <div>
@@ -128,8 +186,8 @@ const Professionals = () => {
             >
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <Avatar className="w-12 h-12">
-                    {pro.photo_url && <AvatarImage src={pro.photo_url} alt={pro.full_name} />}
+                  <Avatar className="w-12 h-12 flex-shrink-0">
+                    <AvatarImage src={pro.photo_url || undefined} alt={pro.full_name} />
                     <AvatarFallback className="bg-secondary text-title font-semibold">
                       {getInitials(pro.full_name)}
                     </AvatarFallback>
@@ -147,37 +205,41 @@ const Professionals = () => {
                 </div>
 
                 {pro.specialisations_ids && pro.specialisations_ids.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {pro.specialisations_ids.slice(0, 3).map((specId) => (
-                      <Badge
-                        key={specId}
-                        variant="secondary"
-                        className="bg-secondary text-xs"
-                      >
-                        {specialisations[specId] || specId}
-                      </Badge>
-                    ))}
-                    {pro.specialisations_ids.length > 3 && (
-                      <Badge variant="secondary" className="bg-secondary text-xs">
-                        +{pro.specialisations_ids.length - 3}
-                      </Badge>
-                    )}
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-2">Spécialités :</p>
+                    <div className="flex flex-wrap gap-2">
+                      {pro.specialisations_ids.slice(0, 3).map((specId) => (
+                        <Badge
+                          key={specId}
+                          variant="secondary"
+                          className="bg-secondary text-xs"
+                        >
+                          {specialisations[specId] || specId}
+                        </Badge>
+                      ))}
+                      {pro.specialisations_ids.length > 3 && (
+                        <Badge variant="secondary" className="bg-secondary text-xs">
+                          +{pro.specialisations_ids.length - 3}
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-2">
-                  <span className="text-sm font-medium text-title">
-                    {pro.tarifs || "Tarifs sur demande"}
-                  </span>
+                <div className="flex items-center justify-between pt-2 gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-muted-foreground">Tarif horaire :</p>
+                    <span className="text-sm font-medium text-title">
+                      {pro.tarifs ? `${pro.tarifs} €` : "Sur demande"}
+                    </span>
+                  </div>
                   <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/professional/${pro.user_id}`);
-                    }}
-                    className="rounded-full bg-primary hover:bg-primary/90"
+                    onClick={(e) => handleSendMessage(e, pro.user_id)}
+                    className="rounded-full bg-primary hover:bg-primary/90 flex-shrink-0"
                     size="sm"
                   >
-                    Voir profil
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Message
                   </Button>
                 </div>
               </div>
