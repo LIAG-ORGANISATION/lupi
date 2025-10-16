@@ -537,11 +537,11 @@ const Home = () => {
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/xoldokogaina')}
                   >
-                    <div className="aspect-[4/3] relative overflow-hidden">
+                    <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
                       <img 
-                        src={baladeXoldokogaina} 
+                        src={baladeXoldokogaina}
                         alt="Lac de Xoldokogaina" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-t-lg"
                       />
                     </div>
                     <div className="p-3 space-y-1">
@@ -557,11 +557,11 @@ const Home = () => {
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/guethary')}
                   >
-                    <div className="aspect-[4/3] relative overflow-hidden">
+                    <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
                       <img 
-                        src={baladeGuethary} 
+                        src={baladeGuethary}
                         alt="Sentier littoral" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-t-lg"
                       />
                     </div>
                     <div className="p-3 space-y-1">
@@ -577,11 +577,11 @@ const Home = () => {
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/mondarrain')}
                   >
-                    <div className="aspect-[4/3] relative overflow-hidden">
+                    <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
                       <img 
-                        src={baladeMondarrain} 
+                        src={baladeMondarrain}
                         alt="Boucle du Mondarrain" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-t-lg"
                       />
                     </div>
                     <div className="p-3 space-y-1">
@@ -597,11 +597,11 @@ const Home = () => {
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/ossas-suhare')}
                   >
-                    <div className="aspect-[4/3] relative overflow-hidden">
+                    <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
                       <img 
-                        src={baladeOssasSuhare} 
+                        src={baladeOssasSuhare}
                         alt="Randonnée Ossas-Suhare" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-t-lg"
                       />
                     </div>
                     <div className="p-3 space-y-1">
@@ -617,11 +617,11 @@ const Home = () => {
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/adarra')}
                   >
-                    <div className="aspect-[4/3] relative overflow-hidden">
+                    <div className="aspect-[4/3] relative overflow-hidden rounded-t-lg">
                       <img 
-                        src={baladeAdarra} 
+                        src={baladeAdarra}
                         alt="Mont Adarra" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-t-lg"
                       />
                     </div>
                     <div className="p-3 space-y-1">
