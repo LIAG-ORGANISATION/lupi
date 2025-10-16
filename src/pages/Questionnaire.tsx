@@ -978,17 +978,11 @@ const Questionnaire = () => {
               <AlertDialogTitle className="text-xl">Questionnaire comportemental</AlertDialogTitle>
             </div>
             <AlertDialogDescription className="space-y-3 text-base">
-              <div className="flex items-start gap-2">
-                <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                <p>
-                  Ce questionnaire approfondi vous prendra environ <span className="font-semibold text-foreground">20 minutes</span> à compléter.
-                </p>
-              </div>
-              <p className="text-muted-foreground">
-                Il nous permet de mieux comprendre le comportement, l'environnement et les besoins de votre chien afin de vous proposer des recommandations personnalisées.
+              <p>
+                Ce questionnaire vous prendra environ <span className="font-semibold text-foreground">20 minutes</span> à compléter.
               </p>
               <p className="text-muted-foreground">
-                Vos réponses seront enregistrées et vous pourrez les consulter à tout moment dans le profil de votre chien.
+                Il nous permet de mieux comprendre votre chien afin de vous proposer des recommandations personnalisées.
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -1016,7 +1010,6 @@ const Questionnaire = () => {
       <div className="space-y-2">
         <div className="flex justify-between text-sm text-muted-foreground">
           <span>Étape {step} sur {totalSteps}</span>
-          <span>{Math.round((step / totalSteps) * 100)}%</span>
         </div>
         <Progress value={(step / totalSteps) * 100} className="h-2" />
       </div>
