@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,23 +10,26 @@ import { X, Camera, Plus } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 const ProfessionalEditProfile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
   
   const [formData, setFormData] = useState({
-    name: "Olivia Bennett",
-    profession: "Spécialiste en soins animaliers",
-    location: "Paris, France",
+    name: "",
+    profession: "",
+    location: "",
     bio: "",
     email: "",
     phone: "",
     photoUrl: "",
-    specializations: ["Garde d'animaux", "Promenade de chiens"],
-    certifications: [],
-    languages: ["Français"],
-    services: [],
+    specializations: [] as string[],
+    certifications: [] as string[],
+    languages: [] as string[],
+    services: [] as string[],
     hourlyRate: "",
     emailVisible: false,
     phoneVisible: false,
@@ -37,6 +40,55 @@ const ProfessionalEditProfile = () => {
   const [newSpec, setNewSpec] = useState("");
   const [newLang, setNewLang] = useState("");
   const [newService, setNewService] = useState({ name: "", duration: "" });
+
+  // Charger les données du professionnel
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (!user) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('professionals')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (error) throw error;
+
+        if (data) {
+          setFormData({
+            name: data.full_name || "",
+            profession: data.profession || "",
+            location: data.localisation || data.zone || "",
+            bio: data.bio || "",
+            email: data.email || user.email || "",
+            phone: data.phone || "",
+            photoUrl: data.photo_url || data.avatar_url || "",
+            specializations: data.specialisations_ids || [],
+            certifications: [],
+            languages: [],
+            services: [],
+            hourlyRate: data.tarifs || "",
+            emailVisible: data.preferences_contact?.includes('email') || false,
+            phoneVisible: data.preferences_contact?.includes('phone') || false,
+            messagingContact: data.preferences_contact?.includes('messaging') || true,
+            profileVisible: false,
+          });
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger le profil.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [user, toast]);
 
   const handlePhotoChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -78,7 +130,6 @@ const ProfessionalEditProfile = () => {
 
   const handleSave = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
       const { error } = await supabase
@@ -88,10 +139,10 @@ const ProfessionalEditProfile = () => {
           profession: formData.profession,
           localisation: formData.location,
           bio: formData.bio,
-          email: formData.emailVisible ? formData.email : user.email,
-          phone: formData.phoneVisible ? formData.phone : null,
-          avatar_url: formData.photoUrl,
-          tarifs: formData.hourlyRate,
+          email: formData.email,
+          phone: formData.phone || null,
+          photo_url: formData.photoUrl || null,
+          tarifs: formData.hourlyRate || null,
           preferences_contact: [
             formData.emailVisible ? 'email' : null,
             formData.phoneVisible ? 'phone' : null,
@@ -106,6 +157,8 @@ const ProfessionalEditProfile = () => {
         title: "Profil enregistré",
         description: "Vos informations ont été mises à jour.",
       });
+      
+      navigate('/professional/dashboard');
     } catch (error) {
       console.error('Error saving profile:', error);
       toast({
@@ -116,14 +169,25 @@ const ProfessionalEditProfile = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground">Chargement du profil...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24">
       <div className="max-w-md mx-auto">
         <div className="sticky top-0 bg-background/95 backdrop-blur-sm border-b border-border p-4 flex items-center justify-between z-10">
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/professionals")}
+            onClick={() => navigate("/professional/dashboard")}
             className="rounded-full"
           >
             <X className="h-5 w-5" />
@@ -147,7 +211,7 @@ const ProfessionalEditProfile = () => {
                   <AvatarImage src={formData.photoUrl} alt="Photo de profil" />
                 )}
                 <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
-                  OB
+                  {formData.name ? formData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?'}
                 </AvatarFallback>
               </Avatar>
               <label
