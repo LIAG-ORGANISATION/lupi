@@ -519,7 +519,7 @@ const Home = () => {
 
         {/* Formation section - only for guardians */}
         {isGuardian && <div className="space-y-3 mb-3">
-            <h2 className="text-xl font-bold text-title">Formation</h2>
+            <h2 className="text-xl font-bold text-title">Formation coup de cœur</h2>
             <a href="https://www.espritdog.com/esprit-dog-1er-secours/" target="_blank" rel="noopener noreferrer" className="block">
               <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4">
                 <div className="flex items-center gap-4">
