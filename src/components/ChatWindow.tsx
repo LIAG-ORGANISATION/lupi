@@ -201,15 +201,15 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
   const otherPartyName = otherParty?.full_name || "Utilisateur";
 
   return (
-    <Card className="flex-1 flex flex-col h-[calc(100vh-200px)]">
+    <Card className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b flex items-center gap-3">
+      <div className="p-4 border-b flex items-center gap-3 flex-shrink-0">
         {onBack && (
-          <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden">
+          <Button variant="ghost" size="icon" onClick={onBack} className="md:hidden flex-shrink-0">
             <ArrowLeft className="h-5 w-5" />
           </Button>
         )}
-        <Avatar className="h-10 w-10">
+        <Avatar className="h-10 w-10 flex-shrink-0">
           <AvatarImage src={otherPartyAvatar || undefined} />
           <AvatarFallback>
             {otherPartyName
@@ -221,9 +221,9 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm">{otherPartyName}</p>
+          <p className="font-semibold text-sm truncate">{otherPartyName}</p>
           {conversationDetails.dogs?.name && (
-            <p className="text-xs text-muted-foreground">Concernant: {conversationDetails.dogs.name}</p>
+            <p className="text-xs text-muted-foreground truncate">Concernant: {conversationDetails.dogs.name}</p>
           )}
         </div>
       </div>
@@ -262,7 +262,7 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSendMessage} className="p-4 border-t">
+      <form onSubmit={handleSendMessage} className="p-4 border-t flex-shrink-0">
         <div className="flex gap-2">
           <Input
             value={newMessage}
@@ -271,7 +271,7 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
             className="flex-1 rounded-full"
             disabled={sending}
           />
-          <Button type="submit" size="icon" className="rounded-full" disabled={sending || !newMessage.trim()}>
+          <Button type="submit" size="icon" className="rounded-full flex-shrink-0" disabled={sending || !newMessage.trim()}>
             <Send className="h-4 w-4" />
           </Button>
         </div>

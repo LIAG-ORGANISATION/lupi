@@ -15,11 +15,11 @@ const GuardianMessages = () => {
       <div className="min-h-screen bg-background pb-24">
         {/* Hero Section with Gradient */}
         <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 pb-12 rounded-b-[3rem] shadow-card">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/guardian/dashboard")}
               className="rounded-full mb-4 text-white hover:bg-white/10"
             >
               <ArrowLeft className="h-5 w-5" />
@@ -32,9 +32,9 @@ const GuardianMessages = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 -mt-6 animate-fade-in">
-          <div className="grid md:grid-cols-[350px,1fr] gap-4">
+          <div className="grid md:grid-cols-[350px,1fr] gap-4 h-[calc(100vh-250px)]">
             {/* Conversations list - hidden on mobile when a conversation is selected */}
-            <div className={`${selectedConversationId ? "hidden md:block" : "block"}`}>
+            <div className={`${selectedConversationId ? "hidden md:block" : "block"} md:overflow-y-auto`}>
               <ConversationsList
                 onSelectConversation={setSelectedConversationId}
                 selectedConversationId={selectedConversationId}
@@ -49,7 +49,7 @@ const GuardianMessages = () => {
                   onBack={() => setSelectedConversationId(null)}
                 />
               ) : (
-                <div className="hidden md:flex h-[calc(100vh-200px)] items-center justify-center bg-muted/30 rounded-3xl">
+                <div className="hidden md:flex h-full items-center justify-center bg-muted/30 rounded-3xl">
                   <p className="text-muted-foreground">Sélectionnez une conversation pour commencer</p>
                 </div>
               )}

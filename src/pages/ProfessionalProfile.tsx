@@ -123,7 +123,7 @@ const ProfessionalProfile = () => {
     certifications: [],
     languages: ["Français"],
     services: [],
-    pricing: professional.tarifs || "Nous consulter",
+    pricing: professional.tarifs ? `${professional.tarifs} €` : "Nous consulter",
     reviews: [
       {
         name: "Sophie Martin",
