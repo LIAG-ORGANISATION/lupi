@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Share2, Clock, DollarSign, Award, Globe, Phone, Mail, MessageCircle } from "lucide-react";
+import { ArrowLeft, Share2, Clock, Award, Globe, Phone, Mail, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -279,11 +279,11 @@ const ProfessionalProfile = () => {
           {professionalData.pricing && (
             <Card className="lupi-card">
               <h3 className="font-bold text-title flex items-center gap-2 mb-3">
-                <DollarSign className="h-5 w-5 text-primary" />
+                <span className="text-primary">€</span>
                 Tarifs
               </h3>
               <div className="flex items-center gap-2">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <span className="text-primary">€</span>
                 <span className="text-lg font-semibold text-title">{professionalData.pricing}</span>
               </div>
             </Card>
