@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, Syringe, Stethoscope, Scissors, GraduationCap, Bell, MoreHorizontal } from "lucide-react";
+import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, Syringe, Stethoscope, Scissors, GraduationCap, Bell, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, startOfDay, addDays, startOfToday } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -68,6 +69,10 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showAddEventDialog, setShowAddEventDialog] = useState(false);
+  const [showEditEventDialog, setShowEditEventDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [eventToEdit, setEventToEdit] = useState<CalendarEvent | null>(null);
+  const [eventToDelete, setEventToDelete] = useState<CalendarEvent | null>(null);
   const [newEvent, setNewEvent] = useState({
     title: "",
     description: "",
@@ -151,6 +156,70 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
       toast({
         title: "Erreur",
         description: "Impossible d'ajouter l'événement",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditEvent = async () => {
+    if (!eventToEdit) return;
+
+    try {
+      const { error } = await supabase
+        .from("dog_calendar_events")
+        .update({
+          title: eventToEdit.title,
+          description: eventToEdit.description,
+          event_date: eventToEdit.event_date,
+          event_time: eventToEdit.event_time,
+          event_type: eventToEdit.event_type,
+        })
+        .eq("id", eventToEdit.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Événement modifié",
+        description: "L'événement a été mis à jour",
+      });
+
+      setShowEditEventDialog(false);
+      setEventToEdit(null);
+      fetchEvents();
+    } catch (error) {
+      console.error("Error updating event:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de modifier l'événement",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteEvent = async () => {
+    if (!eventToDelete) return;
+
+    try {
+      const { error } = await supabase
+        .from("dog_calendar_events")
+        .delete()
+        .eq("id", eventToDelete.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Événement supprimé",
+        description: "L'événement a été supprimé du calendrier",
+      });
+
+      setShowDeleteDialog(false);
+      setEventToDelete(null);
+      fetchEvents();
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer l'événement",
         variant: "destructive",
       });
     }
@@ -371,6 +440,28 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
                         {event.event_time && ` • ${event.event_time}`}
                       </div>
                     </div>
+                    <div className="flex gap-1 flex-shrink-0">
+                      <button
+                        onClick={() => {
+                          setEventToEdit(event);
+                          setShowEditEventDialog(true);
+                        }}
+                        className="w-7 h-7 rounded-full hover:bg-black/10 flex items-center justify-center transition-colors"
+                        title="Modifier"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEventToDelete(event);
+                          setShowDeleteDialog(true);
+                        }}
+                        className="w-7 h-7 rounded-full hover:bg-black/10 flex items-center justify-center transition-colors"
+                        title="Supprimer"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -487,6 +578,115 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Edit Event Dialog */}
+      <Dialog open={showEditEventDialog} onOpenChange={setShowEditEventDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Modifier l'événement</DialogTitle>
+          </DialogHeader>
+          {eventToEdit && (
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Type d'événement *</label>
+                <Select
+                  value={eventToEdit.event_type}
+                  onValueChange={(value: CalendarEvent["event_type"]) =>
+                    setEventToEdit({ ...eventToEdit, event_type: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(eventTypeLabels).map(([key, label]) => (
+                      <SelectItem key={key} value={key}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-1 block">Titre *</label>
+                <Input
+                  value={eventToEdit.title}
+                  onChange={(e) => setEventToEdit({ ...eventToEdit, title: e.target.value })}
+                  placeholder="Ex: Rappel vaccin"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-1 block">Date *</label>
+                <Input
+                  type="date"
+                  value={eventToEdit.event_date}
+                  onChange={(e) => setEventToEdit({ ...eventToEdit, event_date: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-1 block">Heure (optionnel)</label>
+                <Input
+                  type="time"
+                  value={eventToEdit.event_time || ""}
+                  onChange={(e) => setEventToEdit({ ...eventToEdit, event_time: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-1 block">Description (optionnel)</label>
+                <Textarea
+                  value={eventToEdit.description || ""}
+                  onChange={(e) => setEventToEdit({ ...eventToEdit, description: e.target.value })}
+                  placeholder="Détails supplémentaires..."
+                  rows={3}
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <Button onClick={handleEditEvent} className="flex-1">
+                  Enregistrer
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowEditEventDialog(false);
+                    setEventToEdit(null);
+                  }}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Annuler
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent className="rounded-3xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer cet événement ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. L'événement "{eventToDelete?.title}" sera définitivement supprimé.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full" onClick={() => setEventToDelete(null)}>
+              Annuler
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteEvent}
+              className="rounded-full bg-destructive hover:bg-destructive/90"
+            >
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
