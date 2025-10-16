@@ -522,7 +522,7 @@ const Home = () => {
           </div>}
 
         {/* Balades autour de vous section - visible to guardians */}
-        {isGuardian && <div className="space-y-3">
+        {isGuardian && <div className="space-y-2">
             <h2 className="text-xl font-bold text-title">Balades autour de vous</h2>
             <Carousel
               opts={{
@@ -531,8 +531,8 @@ const Home = () => {
               }}
               className="w-full"
             >
-              <CarouselContent className="-ml-2 md:-ml-4">
-                <CarouselItem className="pl-2 md:pl-4 basis-[70%] md:basis-1/3">
+              <CarouselContent className="-ml-1 md:-ml-4">
+                <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
                   <div 
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/xoldokogaina')}
@@ -552,7 +552,7 @@ const Home = () => {
                   </div>
                 </CarouselItem>
 
-                <CarouselItem className="pl-2 md:pl-4 basis-[70%] md:basis-1/3">
+                <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
                   <div 
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/guethary')}
@@ -572,7 +572,7 @@ const Home = () => {
                   </div>
                 </CarouselItem>
 
-                <CarouselItem className="pl-2 md:pl-4 basis-[70%] md:basis-1/3">
+                <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
                   <div 
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/mondarrain')}
@@ -592,7 +592,7 @@ const Home = () => {
                   </div>
                 </CarouselItem>
 
-                <CarouselItem className="pl-2 md:pl-4 basis-[70%] md:basis-1/3">
+                <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
                   <div 
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/ossas-suhare')}
@@ -612,7 +612,7 @@ const Home = () => {
                   </div>
                 </CarouselItem>
 
-                <CarouselItem className="pl-2 md:pl-4 basis-[70%] md:basis-1/3">
+                <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
                   <div 
                     className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                     onClick={() => navigate('/balade/adarra')}
