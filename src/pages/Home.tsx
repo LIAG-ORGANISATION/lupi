@@ -16,6 +16,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
 import { DogCalendar } from "@/components/DogCalendar";
+import { SeasonalAllergies } from "@/components/SeasonalAllergies";
 import { useToast } from "@/hooks/use-toast";
 interface Dog {
   id: string;
@@ -570,6 +571,9 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        {/* Seasonal Allergies section */}
+        {isGuardian && <SeasonalAllergies />}
 
         {/* Association du moment section */}
         {isGuardian && <div className="space-y-3">
