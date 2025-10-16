@@ -27,6 +27,12 @@ interface Dog {
   gender: string | null;
   medical_notes: string | null;
 }
+
+interface DogCompletion {
+  dogId: string;
+  hasDnaTest: boolean;
+  hasQuestionnaire: boolean;
+}
 const Home = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -43,6 +49,7 @@ const Home = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [hasTestedDogs, setHasTestedDogs] = useState(false);
   const [copiedPromo, setCopiedPromo] = useState<string | null>(null);
+  const [dogsCompletion, setDogsCompletion] = useState<DogCompletion[]>([]);
 
   // Check if user is first time logging in as guardian
   useEffect(() => {
@@ -94,16 +101,26 @@ const Home = () => {
       if (error) throw error;
       setDogs(data || []);
       
-      // Check if any dog has completed questionnaires (DNA test)
+      // Check completion status for each dog
       if (data && data.length > 0) {
         const dogIds = data.map(d => d.id);
+        
+        // Fetch all questionnaires for these dogs
         const { data: questionnaires } = await supabase
           .from('dog_questionnaires')
-          .select('id')
-          .in('dog_id', dogIds)
-          .limit(1);
+          .select('dog_id')
+          .in('dog_id', dogIds);
         
         setHasTestedDogs((questionnaires && questionnaires.length > 0) || false);
+        
+        // Build completion data for each dog
+        const completionData: DogCompletion[] = data.map(dog => ({
+          dogId: dog.id,
+          hasDnaTest: questionnaires?.some(q => q.dog_id === dog.id) || false,
+          hasQuestionnaire: questionnaires?.some(q => q.dog_id === dog.id) || false
+        }));
+        
+        setDogsCompletion(completionData);
       }
     } catch (error) {
       console.error('Error fetching dogs:', error);
@@ -157,7 +174,8 @@ const Home = () => {
   };
 
   const calculateProfileCompletion = (dog: Dog): number => {
-    const fields = [
+    // Base profile fields (7 fields = 50% of total)
+    const profileFields = [
       dog.name,
       dog.breed,
       dog.avatar_url,
@@ -166,8 +184,17 @@ const Home = () => {
       dog.gender,
       dog.medical_notes,
     ];
-    const filledFields = fields.filter(field => field !== null && field !== undefined && field !== '').length;
-    return Math.round((filledFields / fields.length) * 100);
+    const filledProfileFields = profileFields.filter(field => field !== null && field !== undefined && field !== '').length;
+    const profileScore = (filledProfileFields / profileFields.length) * 50;
+    
+    // DNA test (25% of total)
+    const completion = dogsCompletion.find(c => c.dogId === dog.id);
+    const dnaScore = completion?.hasDnaTest ? 25 : 0;
+    
+    // Behavioral questionnaire (25% of total)
+    const questionnaireScore = completion?.hasQuestionnaire ? 25 : 0;
+    
+    return Math.round(profileScore + dnaScore + questionnaireScore);
   };
 
   // Professional Dashboard View
