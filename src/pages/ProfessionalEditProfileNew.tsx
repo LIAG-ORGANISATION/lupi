@@ -46,6 +46,8 @@ const ProfessionalEditProfileNew = () => {
     preferences_contact: [] as string[],
     tarifs: "",
     photo_url: "",
+    email: "",
+    phone: "",
   });
 
   useEffect(() => {
@@ -98,6 +100,8 @@ const ProfessionalEditProfileNew = () => {
             preferences_contact: (profileData as any).preferences_contact || [],
             tarifs: (profileData as any).tarifs || "",
             photo_url: (profileData as any).photo_url || "",
+            email: (profileData as any).email || "",
+            phone: (profileData as any).phone || "",
           });
         }
       }
@@ -226,6 +230,8 @@ const ProfessionalEditProfileNew = () => {
           preferences_contact: formData.preferences_contact,
           tarifs: formData.tarifs,
           photo_url: formData.photo_url,
+          email: formData.email,
+          phone: formData.phone,
         })
         .eq("user_id", user.id);
 
@@ -391,6 +397,34 @@ const ProfessionalEditProfileNew = () => {
         <Card className="p-6 rounded-3xl space-y-4 shadow-md">
           <h3 className="font-bold text-title text-lg">Coordonnées & visibilité</h3>
           
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-sm font-medium text-title">
+              Email professionnel
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder="votre.email@exemple.com"
+              className="rounded-2xl border-border"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phone" className="text-sm font-medium text-title">
+              Numéro de téléphone
+            </Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              placeholder="06 12 34 56 78"
+              className="rounded-2xl border-border"
+            />
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="localisation" className="text-sm font-medium text-title">
               Localisation
