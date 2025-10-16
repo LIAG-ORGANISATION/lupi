@@ -240,17 +240,16 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
             <p className="text-xs text-muted-foreground truncate">Concernant: {capitalizeWords(conversationDetails.dogs.name)}</p>
           )}
         </div>
-        {otherPartyPhone && (
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleCall}
-            className="flex-shrink-0 rounded-full"
-            title="Appeler"
-          >
-            <Phone className="h-5 w-5" />
-          </Button>
-        )}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleCall}
+          className="flex-shrink-0 rounded-full gap-2"
+          title="Appeler"
+        >
+          <Phone className="h-4 w-4" />
+          Appeler
+        </Button>
       </div>
 
       {/* Messages */}

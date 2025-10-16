@@ -10,6 +10,16 @@ const GuardianMessages = () => {
   const navigate = useNavigate();
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
 
+  const handleBack = () => {
+    if (selectedConversationId) {
+      // Si une conversation est ouverte, revenir à la liste
+      setSelectedConversationId(null);
+    } else {
+      // Sinon, retourner au dashboard
+      navigate("/guardian/dashboard");
+    }
+  };
+
   return (
     <AuthGuard requiredRole="guardian">
       <div className="min-h-screen bg-background pb-24">
@@ -19,7 +29,7 @@ const GuardianMessages = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate("/guardian/dashboard")}
+              onClick={handleBack}
               className="rounded-full mb-4 text-white hover:bg-white/10"
             >
               <ArrowLeft className="h-5 w-5" />
