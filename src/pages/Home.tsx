@@ -326,16 +326,10 @@ const Home = () => {
                 </button>
               </> : <>
                 {isGuardian && dogs.length > 0 ? <>
-                    {hasTestedDogs ? (
-                      <button onClick={() => navigate("/dogs")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
-                        Voir mes chiens
-                      </button>
-                    ) : (
-                      <button onClick={() => navigate("/dna-kit")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
-                        <TestTube2 className="h-5 w-5 mr-2 inline" />
-                        Commander un test ADN
-                      </button>
-                    )}
+                    <button onClick={() => navigate("/dna-kit")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                      <TestTube2 className="h-5 w-5 mr-2 inline" />
+                      Commander un test ADN
+                    </button>
                   </> : isGuardian ? <>
                     <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
                       <Plus className="h-5 w-5 mr-2 inline" />
