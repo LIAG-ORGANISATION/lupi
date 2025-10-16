@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2 } from "lucide-react";
+import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -339,27 +339,33 @@ const GuardianDocuments = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background pb-24">
-      <div className="flex items-center gap-4 max-w-4xl mx-auto">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate(-1)}
-          className="rounded-full"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <h1 className="text-2xl font-bold text-[#5C0A0A]">Documents</h1>
+    <div className="min-h-screen bg-background pb-24">
+      {/* Hero Section with Gradient */}
+      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 pb-12 rounded-b-[3rem] shadow-card">
+        <div className="max-w-4xl mx-auto">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="rounded-full mb-4 text-white hover:bg-white/10"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-bold text-white">Documents</h1>
+            <p className="text-white/80 text-sm">Gérez les documents de vos chiens</p>
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-4xl mx-auto space-y-4">
+      <div className="max-w-4xl mx-auto px-4 -mt-6 space-y-4 animate-fade-in">
         {/* Dog selector + Add button */}
         {!isProfessional && (
-          <div className="flex gap-3 items-center">
+          <div className="space-y-3">
             <select
               value={selectedDog}
               onChange={(e) => setSelectedDog(e.target.value)}
-              className="flex-1 h-12 px-4 rounded-full border border-input bg-background text-foreground"
+              className="w-full h-12 px-4 rounded-2xl border-2 border-primary/20 bg-white text-foreground shadow-sm"
             >
               <option value="">Sélectionner un chien</option>
               {dogs.map((dog) => (
@@ -372,10 +378,11 @@ const GuardianDocuments = () => {
             <Button
               onClick={handleFileSelect}
               disabled={!selectedDog || uploading}
-              className="rounded-full bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white border border-white/20 shadow-lg"
+              className="w-full rounded-full h-12"
+              size="lg"
             >
               <Plus className="h-5 w-5 mr-2" />
-              Ajouter un document
+              {uploading ? "Upload en cours..." : "Ajouter un document"}
             </Button>
 
             <input
@@ -391,64 +398,71 @@ const GuardianDocuments = () => {
 
         {/* Documents list */}
         {loading ? (
-          <Card className="p-8 rounded-3xl text-center">
+          <Card className="lupi-card p-8 text-center">
             <p className="text-muted-foreground">Chargement...</p>
           </Card>
         ) : documents.length === 0 ? (
-          <Card className="p-8 rounded-3xl text-center">
+          <Card className="lupi-card p-8 text-center">
+            <FileText className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
             <p className="text-muted-foreground">Aucun document</p>
+            <p className="text-sm text-muted-foreground mt-1">Ajoutez vos premiers documents</p>
           </Card>
         ) : (
           <div className="space-y-3">
             {documents.map((doc) => (
-              <Card key={doc.id} className="p-4 rounded-3xl">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 mt-1">
-                    {getFileIcon(doc.file_type)}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-[#5C0A0A] truncate">
-                      {doc.title || doc.file_name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {formatDate(doc.created_at)} • {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
-                    </p>
-                    {doc.dogs?.name && (
-                      <p className="text-sm text-muted-foreground">
-                        Chien: {doc.dogs.name}
-                      </p>
-                    )}
+              <Card key={doc.id} className="lupi-card overflow-hidden">
+                <div className="p-4">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="flex-shrink-0">
+                      {getFileIcon(doc.file_type)}
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-title truncate mb-1">
+                        {doc.title || doc.file_name}
+                      </h3>
+                      <div className="space-y-0.5">
+                        <p className="text-xs text-muted-foreground">
+                          {formatDate(doc.created_at)}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
+                        </p>
+                        {doc.dogs?.name && (
+                          <p className="text-xs text-muted-foreground">
+                            🐕 {doc.dogs.name}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex gap-2 flex-shrink-0">
-                    <Button
-                      onClick={() => handleShare(doc)}
-                      size="sm"
-                      variant="ghost"
-                      className="rounded-full"
-                      title="Partager"
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </Button>
-
+                  <div className="flex gap-2">
                     <Button
                       onClick={() => handleOpenDocument(doc)}
                       size="sm"
-                      variant="ghost"
-                      className="rounded-full"
-                      title="Afficher"
+                      variant="outline"
+                      className="flex-1 rounded-full"
                     >
-                      <ExternalLink className="h-4 w-4" />
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      Ouvrir
+                    </Button>
+
+                    <Button
+                      onClick={() => handleShare(doc)}
+                      size="sm"
+                      variant="outline"
+                      className="rounded-full"
+                    >
+                      <Share2 className="h-4 w-4" />
                     </Button>
 
                     {!isProfessional && doc.owner_id === userId && (
                       <Button
                         onClick={() => setDeleteDialog({ open: true, doc })}
                         size="sm"
-                        variant="ghost"
-                        className="rounded-full text-destructive"
-                        title="Supprimer"
+                        variant="outline"
+                        className="rounded-full text-destructive hover:text-destructive"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -463,18 +477,18 @@ const GuardianDocuments = () => {
 
       {/* Delete confirmation dialog */}
       <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open, doc: null })}>
-        <AlertDialogContent className="rounded-3xl">
+        <AlertDialogContent className="rounded-3xl max-w-[90vw] sm:max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Supprimer ce document ?</AlertDialogTitle>
             <AlertDialogDescription>
               Cette action est irréversible. Le document sera définitivement supprimé.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-full">Annuler</AlertDialogCancel>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+            <AlertDialogCancel className="rounded-full w-full sm:w-auto">Annuler</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="rounded-full bg-destructive hover:bg-destructive/90"
+              className="rounded-full bg-destructive hover:bg-destructive/90 w-full sm:w-auto"
             >
               Supprimer
             </AlertDialogAction>
@@ -484,7 +498,7 @@ const GuardianDocuments = () => {
 
       {/* Share dialog */}
       <AlertDialog open={shareDialog.open} onOpenChange={(open) => setShareDialog({ open, doc: null })}>
-        <AlertDialogContent className="rounded-3xl">
+        <AlertDialogContent className="rounded-3xl max-w-[90vw] sm:max-w-md max-h-[80vh] overflow-y-auto">
           <AlertDialogHeader>
             <AlertDialogTitle>Document partagé avec</AlertDialogTitle>
             <AlertDialogDescription>
@@ -492,14 +506,17 @@ const GuardianDocuments = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           
-          <div className="space-y-3 py-4">
+          <div className="space-y-2 py-4">
             {sharedProfessionals.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Aucun professionnel n'a accès à ce chien pour le moment.
-              </p>
+              <div className="text-center py-8">
+                <Users className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Aucun professionnel n'a accès à ce chien pour le moment.
+                </p>
+              </div>
             ) : (
               sharedProfessionals.map((share) => (
-                <div key={share.id} className="flex items-center gap-3 p-3 rounded-2xl bg-muted/50">
+                <div key={share.id} className="flex items-center gap-3 p-3 rounded-2xl bg-secondary/50">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     {share.professionals?.avatar_url ? (
                       <img 
@@ -523,7 +540,7 @@ const GuardianDocuments = () => {
           </div>
 
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-full">Fermer</AlertDialogCancel>
+            <AlertDialogCancel className="rounded-full w-full">Fermer</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
