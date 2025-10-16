@@ -29,7 +29,6 @@ interface Dog {
   gender: string | null;
   medical_notes: string | null;
 }
-
 interface DogCompletion {
   dogId: string;
   hasDnaTest: boolean;
@@ -37,7 +36,9 @@ interface DogCompletion {
 }
 const Home = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const {
     isAuthenticated,
     isProfessional,
@@ -102,26 +103,23 @@ const Home = () => {
       }).limit(3);
       if (error) throw error;
       setDogs(data || []);
-      
+
       // Check completion status for each dog
       if (data && data.length > 0) {
         const dogIds = data.map(d => d.id);
-        
+
         // Fetch all questionnaires for these dogs
-        const { data: questionnaires } = await supabase
-          .from('dog_questionnaires')
-          .select('dog_id')
-          .in('dog_id', dogIds);
-        
-        setHasTestedDogs((questionnaires && questionnaires.length > 0) || false);
-        
+        const {
+          data: questionnaires
+        } = await supabase.from('dog_questionnaires').select('dog_id').in('dog_id', dogIds);
+        setHasTestedDogs(questionnaires && questionnaires.length > 0 || false);
+
         // Build completion data for each dog
         const completionData: DogCompletion[] = data.map(dog => ({
           dogId: dog.id,
           hasDnaTest: questionnaires?.some(q => q.dog_id === dog.id) || false,
           hasQuestionnaire: questionnaires?.some(q => q.dog_id === dog.id) || false
         }));
-        
         setDogsCompletion(completionData);
       }
     } catch (error) {
@@ -157,48 +155,34 @@ const Home = () => {
     setShowTutorial(false);
     navigate('/dogs/add');
   };
-
   const handleCopyPromo = (code: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
     navigator.clipboard.writeText(code).then(() => {
       setCopiedPromo(code);
       toast({
         title: "Code promo copié !",
-        description: `Le code ${code} a été copié dans le presse-papier.`,
+        description: `Le code ${code} a été copié dans le presse-papier.`
       });
-      
       setTimeout(() => {
         setCopiedPromo(null);
       }, 2000);
     });
   };
-
   const calculateProfileCompletion = (dog: Dog): number => {
     // Base profile fields (7 fields = 50% of total)
-    const profileFields = [
-      dog.name,
-      dog.breed,
-      dog.avatar_url,
-      dog.birth_date,
-      dog.weight,
-      dog.gender,
-      dog.medical_notes,
-    ];
+    const profileFields = [dog.name, dog.breed, dog.avatar_url, dog.birth_date, dog.weight, dog.gender, dog.medical_notes];
     const filledProfileFields = profileFields.filter(field => field !== null && field !== undefined && field !== '').length;
-    const profileScore = (filledProfileFields / profileFields.length) * 50;
-    
+    const profileScore = filledProfileFields / profileFields.length * 50;
+
     // DNA test (25% of total)
     const completion = dogsCompletion.find(c => c.dogId === dog.id);
     const dnaScore = completion?.hasDnaTest ? 25 : 0;
-    
+
     // Behavioral questionnaire (25% of total)
     const questionnaireScore = completion?.hasQuestionnaire ? 25 : 0;
-    
     return Math.round(profileScore + dnaScore + questionnaireScore);
   };
-
   const getProgressColor = (percentage: number): string => {
     if (percentage < 50) return 'text-red-500';
     if (percentage < 80) return 'text-orange-500';
@@ -358,8 +342,8 @@ const Home = () => {
             <h2 className="text-xl font-bold text-title">Mes chiens</h2>
             <div className="space-y-2">
               {dogs.map(dog => {
-                const completion = calculateProfileCompletion(dog);
-                return <div key={dog.id} className="lupi-card">
+            const completion = calculateProfileCompletion(dog);
+            return <div key={dog.id} className="lupi-card">
                   <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
                     {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-20 h-20 rounded-2xl object-cover border-2 border-primary/20" /> : <div className="w-20 h-20 rounded-2xl bg-gradient-card flex items-center justify-center border-2 border-primary/20">
                         <DogIcon className="h-10 w-10 text-primary" />
@@ -371,27 +355,8 @@ const Home = () => {
                     <div className="flex flex-col items-center gap-1 min-w-[80px]">
                       <div className="relative w-12 h-12">
                         <svg className="w-12 h-12 transform -rotate-90">
-                          <circle
-                            cx="24"
-                            cy="24"
-                            r="20"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                            fill="none"
-                            className="text-secondary"
-                          />
-                          <circle
-                            cx="24"
-                            cy="24"
-                            r="20"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                            fill="none"
-                            strokeDasharray={`${2 * Math.PI * 20}`}
-                            strokeDashoffset={`${2 * Math.PI * 20 * (1 - completion / 100)}`}
-                            className={`${getProgressColor(completion)} transition-all duration-300`}
-                            strokeLinecap="round"
-                          />
+                          <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="none" className="text-secondary" />
+                          <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="none" strokeDasharray={`${2 * Math.PI * 20}`} strokeDashoffset={`${2 * Math.PI * 20 * (1 - completion / 100)}`} className={`${getProgressColor(completion)} transition-all duration-300`} strokeLinecap="round" />
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
                           <span className="text-xs font-bold text-foreground">{completion}%</span>
@@ -400,8 +365,8 @@ const Home = () => {
                       <span className="text-xs text-muted-foreground">Profil</span>
                     </div>
                   </div>
-                </div>
-              })}
+                </div>;
+          })}
               
               {/* Raccourci vers Recommandations personnalisées */}
               <div className="lupi-card bg-gradient-card border-2 border-primary/20">
@@ -419,13 +384,7 @@ const Home = () => {
           </div>}
 
         {/* Calendar for all dogs - compact version */}
-        {isGuardian && dogs.length > 0 && user && (
-          <DogCalendar 
-            dogs={dogs} 
-            ownerId={user.id} 
-            compact={true} 
-          />
-        )}
+        {isGuardian && dogs.length > 0 && user && <DogCalendar dogs={dogs} ownerId={user.id} compact={true} />}
       </div>
 
       {/* D'où ils viennent Section */}
@@ -436,7 +395,7 @@ const Home = () => {
         {/* CTA to create dog for authenticated guardians without dogs */}
         {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && <>
             <div className="lupi-card p-4 text-center space-y-3 bg-gradient-card mb-3">
-              <DogIcon className="h-12 w-12 text-primary mx-auto" />
+              
               <h3 className="text-lg font-bold text-title">
                 Créez le profil de votre chien
               </h3>
@@ -552,19 +511,9 @@ const Home = () => {
                   <p className="text-sm text-muted-foreground">Assurance pour chien</p>
                 </div>
               </a>
-              {isGuardian && (
-                <button
-                  onClick={(e) => handleCopyPromo('lupixkozoo', e)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all"
-                  title="Copier le code promo"
-                >
-                  {copiedPromo === 'lupixkozoo' ? (
-                    <Check className="h-5 w-5 text-primary" />
-                  ) : (
-                    <Gift className="h-5 w-5 text-primary" />
-                  )}
-                </button>
-              )}
+              {isGuardian && <button onClick={e => handleCopyPromo('lupixkozoo', e)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all" title="Copier le code promo">
+                  {copiedPromo === 'lupixkozoo' ? <Check className="h-5 w-5 text-primary" /> : <Gift className="h-5 w-5 text-primary" />}
+                </button>}
             </div>
 
             <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4 relative">
@@ -577,19 +526,9 @@ const Home = () => {
                   <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
                 </div>
               </a>
-              {isGuardian && (
-                <button
-                  onClick={(e) => handleCopyPromo('lupixpennypet', e)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all"
-                  title="Copier le code promo"
-                >
-                  {copiedPromo === 'lupixpennypet' ? (
-                    <Check className="h-5 w-5 text-primary" />
-                  ) : (
-                    <Gift className="h-5 w-5 text-primary" />
-                  )}
-                </button>
-              )}
+              {isGuardian && <button onClick={e => handleCopyPromo('lupixpennypet', e)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all" title="Copier le code promo">
+                  {copiedPromo === 'lupixpennypet' ? <Check className="h-5 w-5 text-primary" /> : <Gift className="h-5 w-5 text-primary" />}
+                </button>}
             </div>
           </div>
         </div>
