@@ -42,7 +42,7 @@ const PROFESSIONAL_TYPES = [
   { value: "educateur", label: "Éducateur" },
   { value: "comportementaliste", label: "Comportementaliste" },
   { value: "toiletteur", label: "Toiletteur" },
-  { value: "pet_sitter", label: "Pet-sitter" },
+  { value: "pension", label: "Pension" },
   { value: "autre", label: "Autre" },
 ];
 
@@ -67,9 +67,6 @@ const GuardianDocuments = () => {
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
   const [shareDialog, setShareDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
   const [sharedProfessionals, setSharedProfessionals] = useState<any[]>([]);
-  const [selectedFilter, setSelectedFilter] = useState<string>("all");
-  const [uploadCategory, setUploadCategory] = useState<string>("medical");
-  const [uploadProfessionalType, setUploadProfessionalType] = useState<string>("");
   const [filterProfessional, setFilterProfessional] = useState<string>("all");
 
   useEffect(() => {
@@ -77,7 +74,6 @@ const GuardianDocuments = () => {
       fetchDogs();
       fetchDocuments();
     } else if (!authLoading && !user) {
-      // Si pas d'utilisateur après le chargement, rediriger vers auth
       navigate("/auth");
     }
   }, [authLoading, user, userRole]);
@@ -85,7 +81,6 @@ const GuardianDocuments = () => {
   const fetchDogs = async () => {
     try {
       if (isProfessional) {
-        // Fetch shared dogs for pros
         const { data, error } = await supabase
           .from("patients_for_pro")
           .select("*");
@@ -96,7 +91,6 @@ const GuardianDocuments = () => {
           setSelectedDog(data[0].id);
         }
       } else {
-        // Fetch own dogs for owners
         const { data, error } = await supabase
           .from("dogs")
           .select("*")
@@ -145,7 +139,7 @@ const GuardianDocuments = () => {
     }
   };
 
-  const handleFileSelect = (category: string = "medical") => {
+  const handleFileSelect = (category: "medical" | "invoice" = "medical") => {
     if (!selectedDog) {
       toast({
         title: "Aucun chien sélectionné",
@@ -175,14 +169,13 @@ const GuardianDocuments = () => {
     if (!files || files.length === 0) return;
 
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
-    const maxSize = 10 * 1024 * 1024; // 10 MB
+    const maxSize = 10 * 1024 * 1024;
 
     setUploading(true);
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
-      // Validation
       if (!allowedTypes.includes(file.type)) {
         toast({
           title: "Format non pris en charge",
@@ -202,19 +195,16 @@ const GuardianDocuments = () => {
       }
 
       try {
-        // Generate unique file path
         const fileExt = file.name.split('.').pop();
         const fileName = `${crypto.randomUUID()}.${fileExt}`;
         const storagePath = `${userId}/${selectedDog}/${fileName}`;
 
-        // Upload to Storage
         const { error: uploadError } = await supabase.storage
           .from("dog-documents")
           .upload(storagePath, file);
 
         if (uploadError) throw uploadError;
 
-        // Save metadata to database
         const { error: dbError } = await supabase
           .from("dog_documents")
           .insert({
@@ -248,7 +238,6 @@ const GuardianDocuments = () => {
     setUploading(false);
     fetchDocuments();
     
-    // Reset input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -275,7 +264,6 @@ const GuardianDocuments = () => {
 
   const handleShare = async (doc: Document) => {
     try {
-      // Fetch professionals who have access to this dog
       const { data, error } = await supabase
         .from("dog_shares")
         .select(`
@@ -309,14 +297,12 @@ const GuardianDocuments = () => {
     if (!deleteDialog.doc) return;
 
     try {
-      // Delete from Storage
       const { error: storageError } = await supabase.storage
         .from("dog-documents")
         .remove([deleteDialog.doc.storage_path]);
 
       if (storageError) throw storageError;
 
-      // Delete from database
       const { error: dbError } = await supabase
         .from("dog_documents")
         .delete()
@@ -340,75 +326,6 @@ const GuardianDocuments = () => {
       });
     }
   };
-
-  const formatFileSize = (bytes: number | null) => {
-    if (!bytes) return "N/A";
-    if (bytes < 1024) return bytes + " B";
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-  };
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("fr-FR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
-  const getFileIcon = (fileType: string) => {
-    if (fileType.startsWith("image/")) {
-      return <ImageIcon className="h-8 w-8 text-[#444444]" />;
-    }
-    return <FileText className="h-8 w-8 text-[#444444]" />;
-  };
-
-  const handleExportDocument = async (doc: Document) => {
-    try {
-      const { data } = supabase.storage
-        .from("dog-documents")
-        .getPublicUrl(doc.storage_path);
-
-      if (data?.publicUrl) {
-        const response = await fetch(data.publicUrl);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = doc.file_name;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        
-        toast({
-          title: "Document exporté",
-          description: "Le document a été téléchargé avec succès.",
-        });
-      }
-    } catch (error) {
-      console.error("Error exporting document:", error);
-      toast({
-        title: "Erreur",
-        description: "Impossible d'exporter le document.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const getProfessionalTypeLabel = (type: string | null) => {
-    if (!type) return null;
-    const found = PROFESSIONAL_TYPES.find(pt => pt.value === type);
-    return found?.label || type;
-  };
-
-  const filteredDocuments = documents.filter(doc => {
-    if (selectedFilter === "all") return true;
-    return doc.professional_type === selectedFilter;
-  });
-
-  const medicalDocuments = filteredDocuments.filter(doc => doc.category !== "invoice");
-  const invoiceDocuments = filteredDocuments.filter(doc => doc.category === "invoice");
 
   const handleExport = async (doc: Document) => {
     try {
@@ -443,6 +360,28 @@ const GuardianDocuments = () => {
     }
   };
 
+  const formatFileSize = (bytes: number | null) => {
+    if (!bytes) return "N/A";
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  };
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  const getFileIcon = (fileType: string) => {
+    if (fileType.startsWith("image/")) {
+      return <ImageIcon className="h-8 w-8 text-[#444444]" />;
+    }
+    return <FileText className="h-8 w-8 text-[#444444]" />;
+  };
+
   const filteredDocuments = documents.filter((doc) => {
     if (filterProfessional === "all") return doc.category === "medical";
     return doc.category === "medical" && doc.professional_type === filterProfessional;
@@ -450,7 +389,6 @@ const GuardianDocuments = () => {
 
   const invoiceDocuments = documents.filter((doc) => doc.category === "invoice");
 
-  // Vérifier l'authentification
   if (authLoading || userRole === null) {
     return (
       <div className="min-h-screen p-4 flex items-center justify-center bg-background">
@@ -465,7 +403,6 @@ const GuardianDocuments = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Hero Section with Gradient */}
       <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 pb-12 rounded-b-[3rem] shadow-card">
         <div className="max-w-4xl mx-auto">
           <Button
@@ -484,7 +421,6 @@ const GuardianDocuments = () => {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 -mt-6 space-y-4 animate-fade-in">
-        {/* Dog selector + Add button */}
         {!isProfessional && (
           <div className="space-y-3">
             <select
@@ -549,14 +485,12 @@ const GuardianDocuments = () => {
           </div>
         )}
 
-        {/* Documents list */}
         {loading ? (
           <Card className="lupi-card p-8 text-center">
             <p className="text-muted-foreground">Chargement...</p>
           </Card>
         ) : (
           <div className="space-y-6">
-            {/* Documents Médicaux Section */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-title">Documents Médicaux</h2>
@@ -598,9 +532,9 @@ const GuardianDocuments = () => {
                             </h3>
                             <div className="space-y-0.5">
                               {doc.professional_type && (
-                                <p className="text-xs text-primary font-medium">
+                                <span className="inline-block px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary font-medium mb-1">
                                   {PROFESSIONAL_TYPES.find(t => t.value === doc.professional_type)?.label}
-                                </p>
+                                </span>
                               )}
                               <p className="text-xs text-muted-foreground">
                                 {formatDate(doc.created_at)}
@@ -625,16 +559,16 @@ const GuardianDocuments = () => {
                             className="flex-1 rounded-full"
                           >
                             <ExternalLink className="h-4 w-4 mr-1" />
-                            Ouvrir
+                            Voir
                           </Button>
 
                           <Button
-                            onClick={() => handleShare(doc)}
+                            onClick={() => handleExport(doc)}
                             size="sm"
                             variant="outline"
                             className="rounded-full"
                           >
-                            <Share2 className="h-4 w-4" />
+                            <Download className="h-4 w-4" />
                           </Button>
 
                           {!isProfessional && doc.owner_id === userId && (
@@ -647,91 +581,14 @@ const GuardianDocuments = () => {
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           )}
-                   </div>
-                </div>
-              </Card>
-            ))}
-              </div>
-            )}
-
-            {/* Factures section */}
-            {invoiceDocuments.length > 0 && (
-              <div className="space-y-3 mt-6">
-                <h2 className="text-lg font-semibold text-title px-2">Factures</h2>
-                {invoiceDocuments.map((doc) => (
-              <Card key={doc.id} className="lupi-card overflow-hidden">
-                <div className="p-4">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="flex-shrink-0">
-                      {getFileIcon(doc.file_type)}
-                    </div>
-                    
-                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-title truncate mb-1">
-                        {doc.title || doc.file_name}
-                      </h3>
-                      <div className="space-y-0.5">
-                        {doc.professional_type && (
-                          <span className="inline-block px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary font-medium">
-                            {getProfessionalTypeLabel(doc.professional_type)}
-                          </span>
-                        )}
-                        <p className="text-xs text-muted-foreground">
-                          {formatDate(doc.created_at)}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
-                        </p>
-                        {doc.dogs?.name && (
-                          <p className="text-xs text-muted-foreground">
-                            🐕 {doc.dogs.name}
-                          </p>
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => handleOpenDocument(doc)}
-                      size="sm"
-                      variant="outline"
-                      className="flex-1 rounded-full"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Voir
-                    </Button>
-
-                    <Button
-                      onClick={() => handleExportDocument(doc)}
-                      size="sm"
-                      variant="outline"
-                      className="rounded-full"
-                    >
-                      <Download className="h-4 w-4" />
-                    </Button>
-
-                    {!isProfessional && doc.owner_id === userId && (
-                      <Button
-                        onClick={() => setDeleteDialog({ open: true, doc })}
-                        size="sm"
-                        variant="outline"
-                        className="rounded-full text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
+                    </Card>
+                  ))}
                 </div>
-              </Card>
-            ))}
-              </div>
-            )}
-          </>
-        )}
+              )}
             </div>
 
-            {/* Factures Section */}
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-title flex items-center gap-2">
                 <Receipt className="h-5 w-5" />
@@ -759,9 +616,9 @@ const GuardianDocuments = () => {
                             </h3>
                             <div className="space-y-0.5">
                               {doc.professional_type && (
-                                <p className="text-xs text-primary font-medium">
+                                <span className="inline-block px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary font-medium mb-1">
                                   {PROFESSIONAL_TYPES.find(t => t.value === doc.professional_type)?.label}
-                                </p>
+                                </span>
                               )}
                               <p className="text-xs text-muted-foreground">
                                 {formatDate(doc.created_at)}
@@ -819,11 +676,10 @@ const GuardianDocuments = () => {
         )}
       </div>
 
-      {/* Upload options dialog */}
       <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
         <DialogContent className="rounded-3xl max-w-[90vw] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Ajouter un document</DialogTitle>
+            <DialogTitle>Ajouter {uploadCategory === "invoice" ? "une facture" : "un document"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -902,7 +758,6 @@ const GuardianDocuments = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Delete confirmation dialog */}
       <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open, doc: null })}>
         <AlertDialogContent className="rounded-3xl max-w-[90vw] sm:max-w-md">
           <AlertDialogHeader>
@@ -923,7 +778,6 @@ const GuardianDocuments = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Share dialog */}
       <AlertDialog open={shareDialog.open} onOpenChange={(open) => setShareDialog({ open, doc: null })}>
         <AlertDialogContent className="rounded-3xl max-w-[90vw] sm:max-w-md max-h-[80vh] overflow-y-auto">
           <AlertDialogHeader>
