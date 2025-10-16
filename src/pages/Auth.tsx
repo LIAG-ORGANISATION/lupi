@@ -121,29 +121,35 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
-      <div className="flex items-center gap-4 max-w-md mx-auto">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate(-1)}
-          className="rounded-full"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <h1 className="text-2xl font-bold text-title">Espace Gardien</h1>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section with Gradient */}
+      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 pb-16 rounded-b-[3rem] shadow-card">
+        <div className="max-w-md mx-auto">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="rounded-full mb-4 text-white hover:bg-white/10"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-bold text-white">Espace Gardien</h1>
+            <p className="text-white/80 text-sm">Connectez-vous pour accéder à votre espace</p>
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto px-4 -mt-8 pb-8 animate-fade-in">
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Connexion</TabsTrigger>
-            <TabsTrigger value="signup">Inscription</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-white rounded-full p-1 shadow-sm mb-4">
+            <TabsTrigger value="signin" className="rounded-full">Connexion</TabsTrigger>
+            <TabsTrigger value="signup" className="rounded-full">Inscription</TabsTrigger>
           </TabsList>
 
           <TabsContent value="signin">
             <form onSubmit={handleSignIn} className="space-y-4">
-              <Card className="p-6 rounded-xl space-y-4">
+              <Card className="lupi-card p-6 space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>
                   <Input
@@ -184,7 +190,7 @@ const Auth = () => {
 
           <TabsContent value="signup">
             <form onSubmit={handleSignUp} className="space-y-4">
-              <Card className="p-6 rounded-xl space-y-4">
+              <Card className="lupi-card p-6 space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Nom complet</Label>
                   <Input

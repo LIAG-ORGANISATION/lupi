@@ -7,55 +7,56 @@ const ChooseAccountType = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen p-4 flex items-center justify-center bg-background">
-      <div className="max-w-md w-full space-y-8 animate-fade-in">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-title">Bienvenue sur Lupi</h1>
-          <p className="text-foreground">Choisissez votre type de compte</p>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section with Gradient */}
+      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-8 pb-20 rounded-b-[3rem] shadow-card">
+        <div className="max-w-md mx-auto text-center space-y-3">
+          <h1 className="text-3xl font-bold text-white">Bienvenue sur Lupi</h1>
+          <p className="text-white/80">Choisissez votre type de compte pour commencer</p>
+        </div>
+      </div>
+
+      <div className="max-w-md mx-auto px-4 -mt-12 space-y-4 pb-8 animate-fade-in">
+        <div 
+          className="lupi-card cursor-pointer hover:shadow-xl transition-all p-6"
+          onClick={() => navigate('/auth?type=guardian')}
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-primary/20">
+              <img 
+                src={guardianImage} 
+                alt="Gardien avec son chien" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-title text-xl mb-1">Gardien</h3>
+              <p className="text-sm text-muted-foreground">
+                Je veux suivre la santé de mes chiens ainsi que leurs données génétiques et comportementales
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-4">
-          <Card 
-            className="p-6 rounded-2xl cursor-pointer hover:border-primary transition-all overflow-hidden"
-            onClick={() => navigate('/auth?type=guardian')}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-                <img 
-                  src={guardianImage} 
-                  alt="Gardien avec son chien" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-title text-lg">Gardien</h3>
-                <p className="text-sm text-muted-foreground">
-                  Je veux suivre la santé de mes chiens ainsi que leurs données génétiques et comportementales
-                </p>
-              </div>
+        <div 
+          className="lupi-card cursor-pointer hover:shadow-xl transition-all p-6"
+          onClick={() => navigate('/professional/auth')}
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-primary/20">
+              <img 
+                src={professionalImage} 
+                alt="Vétérinaire professionnel" 
+                className="w-full h-full object-cover"
+              />
             </div>
-          </Card>
-
-          <Card 
-            className="p-6 rounded-2xl cursor-pointer hover:border-primary transition-all overflow-hidden"
-            onClick={() => navigate('/professional/auth')}
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-                <img 
-                  src={professionalImage} 
-                  alt="Vétérinaire professionnel" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-title text-lg">Professionnel</h3>
-                <p className="text-sm text-muted-foreground">
-                  Je suis vétérinaire, éducateur ou autre professionnel canin
-                </p>
-              </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-title text-xl mb-1">Professionnel</h3>
+              <p className="text-sm text-muted-foreground">
+                Je suis vétérinaire, éducateur ou autre professionnel canin
+              </p>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
     </div>
