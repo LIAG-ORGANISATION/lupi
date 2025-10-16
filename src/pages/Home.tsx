@@ -377,7 +377,7 @@ const Home = () => {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-title text-lg">Recommandations personnalisées</h3>
-                    <p className="text-sm text-muted-foreground">Découvrez les conseils lifestyle adaptés</p>
+                    <p className="text-sm text-muted-foreground">Une fois votre test ADN réalisé, Lupi vous propose des recommandations ultra personnalisées pour votre chien</p>
                   </div>
                 </div>
               </div>
