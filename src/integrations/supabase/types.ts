@@ -61,6 +61,7 @@ export type Database = {
       }
       dog_documents: {
         Row: {
+          category: string | null
           created_at: string
           dog_id: string
           file_name: string
@@ -68,10 +69,12 @@ export type Database = {
           file_type: string
           id: string
           owner_id: string
+          professional_type: string | null
           storage_path: string
           title: string | null
         }
         Insert: {
+          category?: string | null
           created_at?: string
           dog_id: string
           file_name: string
@@ -79,10 +82,12 @@ export type Database = {
           file_type: string
           id?: string
           owner_id: string
+          professional_type?: string | null
           storage_path: string
           title?: string | null
         }
         Update: {
+          category?: string | null
           created_at?: string
           dog_id?: string
           file_name?: string
@@ -90,6 +95,7 @@ export type Database = {
           file_type?: string
           id?: string
           owner_id?: string
+          professional_type?: string | null
           storage_path?: string
           title?: string | null
         }

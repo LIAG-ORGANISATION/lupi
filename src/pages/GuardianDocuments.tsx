@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2, Users, Camera, Upload } from "lucide-react";
+import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2, Users, Camera, Upload, Receipt, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Document {
   id: string;
@@ -28,10 +30,21 @@ interface Document {
   file_size: number | null;
   storage_path: string;
   created_at: string;
+  category: string;
+  professional_type: string | null;
   dogs?: {
     name: string;
   };
 }
+
+const PROFESSIONAL_TYPES = [
+  { value: "veterinaire", label: "Vétérinaire" },
+  { value: "educateur", label: "Éducateur" },
+  { value: "comportementaliste", label: "Comportementaliste" },
+  { value: "toiletteur", label: "Toiletteur" },
+  { value: "pet_sitter", label: "Pet-sitter" },
+  { value: "autre", label: "Autre" },
+];
 
 const GuardianDocuments = () => {
   const navigate = useNavigate();
@@ -43,6 +56,8 @@ const GuardianDocuments = () => {
   
   const userId = user?.id;
   const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [uploadCategory, setUploadCategory] = useState<"medical" | "invoice">("medical");
+  const [uploadProfessionalType, setUploadProfessionalType] = useState<string>("");
   
   const [documents, setDocuments] = useState<Document[]>([]);
   const [dogs, setDogs] = useState<any[]>([]);
@@ -52,6 +67,7 @@ const GuardianDocuments = () => {
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
   const [shareDialog, setShareDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
   const [sharedProfessionals, setSharedProfessionals] = useState<any[]>([]);
+  const [filterProfessional, setFilterProfessional] = useState<string>("all");
 
   useEffect(() => {
     if (!authLoading && user && userId && userRole !== null) {
@@ -204,6 +220,8 @@ const GuardianDocuments = () => {
             file_type: file.type,
             file_size: file.size,
             storage_path: storagePath,
+            category: uploadCategory,
+            professional_type: uploadProfessionalType || null,
           });
 
         if (dbError) throw dbError;
@@ -340,6 +358,46 @@ const GuardianDocuments = () => {
     return <FileText className="h-8 w-8 text-[#444444]" />;
   };
 
+  const handleExport = async (doc: Document) => {
+    try {
+      const { data } = supabase.storage
+        .from("dog-documents")
+        .getPublicUrl(doc.storage_path);
+
+      if (data?.publicUrl) {
+        const response = await fetch(data.publicUrl);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.file_name;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        toast({
+          title: "Document exporté",
+          description: "Le téléchargement a commencé.",
+        });
+      }
+    } catch (error) {
+      console.error("Error exporting document:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'exporter le document.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const filteredDocuments = documents.filter((doc) => {
+    if (filterProfessional === "all") return doc.category === "medical";
+    return doc.category === "medical" && doc.professional_type === filterProfessional;
+  });
+
+  const invoiceDocuments = documents.filter((doc) => doc.category === "invoice");
+
   // Vérifier l'authentification
   if (authLoading || userRole === null) {
     return (
@@ -432,76 +490,191 @@ const GuardianDocuments = () => {
           <Card className="lupi-card p-8 text-center">
             <p className="text-muted-foreground">Chargement...</p>
           </Card>
-        ) : documents.length === 0 ? (
-          <Card className="lupi-card p-8 text-center">
-            <FileText className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
-            <p className="text-muted-foreground">Aucun document</p>
-            <p className="text-sm text-muted-foreground mt-1">Ajoutez vos premiers documents</p>
-          </Card>
         ) : (
-          <div className="space-y-3">
-            {documents.map((doc) => (
-              <Card key={doc.id} className="lupi-card overflow-hidden">
-                <div className="p-4">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="flex-shrink-0">
-                      {getFileIcon(doc.file_type)}
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-title truncate mb-1">
-                        {doc.title || doc.file_name}
-                      </h3>
-                      <div className="space-y-0.5">
-                        <p className="text-xs text-muted-foreground">
-                          {formatDate(doc.created_at)}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
-                        </p>
-                        {doc.dogs?.name && (
-                          <p className="text-xs text-muted-foreground">
-                            🐕 {doc.dogs.name}
-                          </p>
-                        )}
+          <div className="space-y-6">
+            {/* Documents Médicaux Section */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-title">Documents Médicaux</h2>
+                {documents.filter((d) => d.category === "medical").length > 0 && (
+                  <Select value={filterProfessional} onValueChange={setFilterProfessional}>
+                    <SelectTrigger className="w-[180px] rounded-full">
+                      <SelectValue placeholder="Filtrer" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-2xl bg-white z-50">
+                      <SelectItem value="all">Tous</SelectItem>
+                      {PROFESSIONAL_TYPES.map((type) => (
+                        <SelectItem key={type.value} value={type.value}>
+                          {type.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+
+              {filteredDocuments.length === 0 ? (
+                <Card className="lupi-card p-8 text-center">
+                  <FileText className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+                  <p className="text-muted-foreground">Aucun document médical</p>
+                </Card>
+              ) : (
+                <div className="space-y-3">
+                  {filteredDocuments.map((doc) => (
+                    <Card key={doc.id} className="lupi-card overflow-hidden">
+                      <div className="p-4">
+                        <div className="flex items-start gap-3 mb-3">
+                          <div className="flex-shrink-0">
+                            {getFileIcon(doc.file_type)}
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-title truncate mb-1">
+                              {doc.title || doc.file_name}
+                            </h3>
+                            <div className="space-y-0.5">
+                              {doc.professional_type && (
+                                <p className="text-xs text-primary font-medium">
+                                  {PROFESSIONAL_TYPES.find(t => t.value === doc.professional_type)?.label}
+                                </p>
+                              )}
+                              <p className="text-xs text-muted-foreground">
+                                {formatDate(doc.created_at)}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
+                              </p>
+                              {doc.dogs?.name && (
+                                <p className="text-xs text-muted-foreground">
+                                  🐕 {doc.dogs.name}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={() => handleOpenDocument(doc)}
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 rounded-full"
+                          >
+                            <ExternalLink className="h-4 w-4 mr-1" />
+                            Ouvrir
+                          </Button>
+
+                          <Button
+                            onClick={() => handleShare(doc)}
+                            size="sm"
+                            variant="outline"
+                            className="rounded-full"
+                          >
+                            <Share2 className="h-4 w-4" />
+                          </Button>
+
+                          {!isProfessional && doc.owner_id === userId && (
+                            <Button
+                              onClick={() => setDeleteDialog({ open: true, doc })}
+                              size="sm"
+                              variant="outline"
+                              className="rounded-full text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => handleOpenDocument(doc)}
-                      size="sm"
-                      variant="outline"
-                      className="flex-1 rounded-full"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Ouvrir
-                    </Button>
-
-                    <Button
-                      onClick={() => handleShare(doc)}
-                      size="sm"
-                      variant="outline"
-                      className="rounded-full"
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </Button>
-
-                    {!isProfessional && doc.owner_id === userId && (
-                      <Button
-                        onClick={() => setDeleteDialog({ open: true, doc })}
-                        size="sm"
-                        variant="outline"
-                        className="rounded-full text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
+                    </Card>
+                  ))}
                 </div>
-              </Card>
-            ))}
+              )}
+            </div>
+
+            {/* Factures Section */}
+            <div className="space-y-3">
+              <h2 className="text-lg font-semibold text-title flex items-center gap-2">
+                <Receipt className="h-5 w-5" />
+                Factures
+              </h2>
+
+              {invoiceDocuments.length === 0 ? (
+                <Card className="lupi-card p-8 text-center">
+                  <Receipt className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+                  <p className="text-muted-foreground">Aucune facture</p>
+                </Card>
+              ) : (
+                <div className="space-y-3">
+                  {invoiceDocuments.map((doc) => (
+                    <Card key={doc.id} className="lupi-card overflow-hidden">
+                      <div className="p-4">
+                        <div className="flex items-start gap-3 mb-3">
+                          <div className="flex-shrink-0">
+                            <Receipt className="h-8 w-8 text-[#444444]" />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-title truncate mb-1">
+                              {doc.title || doc.file_name}
+                            </h3>
+                            <div className="space-y-0.5">
+                              {doc.professional_type && (
+                                <p className="text-xs text-primary font-medium">
+                                  {PROFESSIONAL_TYPES.find(t => t.value === doc.professional_type)?.label}
+                                </p>
+                              )}
+                              <p className="text-xs text-muted-foreground">
+                                {formatDate(doc.created_at)}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
+                              </p>
+                              {doc.dogs?.name && (
+                                <p className="text-xs text-muted-foreground">
+                                  🐕 {doc.dogs.name}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={() => handleOpenDocument(doc)}
+                            size="sm"
+                            variant="outline"
+                            className="flex-1 rounded-full"
+                          >
+                            <ExternalLink className="h-4 w-4 mr-1" />
+                            Voir
+                          </Button>
+
+                          <Button
+                            onClick={() => handleExport(doc)}
+                            size="sm"
+                            variant="outline"
+                            className="rounded-full"
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+
+                          {!isProfessional && doc.owner_id === userId && (
+                            <Button
+                              onClick={() => setDeleteDialog({ open: true, doc })}
+                              size="sm"
+                              variant="outline"
+                              className="rounded-full text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -512,48 +685,79 @@ const GuardianDocuments = () => {
           <DialogHeader>
             <DialogTitle>Ajouter un document</DialogTitle>
           </DialogHeader>
-          <div className="space-y-3 py-4">
-            <Button
-              onClick={() => handleUploadOption('pdf')}
-              variant="outline"
-              className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <FileText className="h-6 w-6 text-primary" />
-              </div>
-              <div className="text-left flex-1">
-                <p className="font-semibold">Importer un PDF</p>
-                <p className="text-xs text-muted-foreground">Ordonnances, analyses...</p>
-              </div>
-            </Button>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Type de document</Label>
+              <Select value={uploadCategory} onValueChange={(v) => setUploadCategory(v as "medical" | "invoice")}>
+                <SelectTrigger className="rounded-2xl">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-2xl bg-white z-50">
+                  <SelectItem value="medical">Document médical</SelectItem>
+                  <SelectItem value="invoice">Facture</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Button
-              onClick={() => handleUploadOption('camera')}
-              variant="outline"
-              className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Camera className="h-6 w-6 text-primary" />
-              </div>
-              <div className="text-left flex-1">
-                <p className="font-semibold">Prendre une photo</p>
-                <p className="text-xs text-muted-foreground">Utiliser l'appareil photo</p>
-              </div>
-            </Button>
+            <div className="space-y-2">
+              <Label>Type de professionnel (optionnel)</Label>
+              <Select value={uploadProfessionalType} onValueChange={setUploadProfessionalType}>
+                <SelectTrigger className="rounded-2xl">
+                  <SelectValue placeholder="Sélectionner..." />
+                </SelectTrigger>
+                <SelectContent className="rounded-2xl bg-white z-50">
+                  {PROFESSIONAL_TYPES.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Button
-              onClick={() => handleUploadOption('photo')}
-              variant="outline"
-              className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Upload className="h-6 w-6 text-primary" />
-              </div>
-              <div className="text-left flex-1">
-                <p className="font-semibold">Importer une photo</p>
-                <p className="text-xs text-muted-foreground">Depuis la galerie</p>
-              </div>
-            </Button>
+            <div className="pt-2 space-y-3">
+              <Button
+                onClick={() => handleUploadOption('pdf')}
+                variant="outline"
+                className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
+              >
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-primary" />
+                </div>
+                <div className="text-left flex-1">
+                  <p className="font-semibold">Importer un PDF</p>
+                  <p className="text-xs text-muted-foreground">Ordonnances, analyses...</p>
+                </div>
+              </Button>
+
+              <Button
+                onClick={() => handleUploadOption('camera')}
+                variant="outline"
+                className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
+              >
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Camera className="h-6 w-6 text-primary" />
+                </div>
+                <div className="text-left flex-1">
+                  <p className="font-semibold">Prendre une photo</p>
+                  <p className="text-xs text-muted-foreground">Utiliser l'appareil photo</p>
+                </div>
+              </Button>
+
+              <Button
+                onClick={() => handleUploadOption('photo')}
+                variant="outline"
+                className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
+              >
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Upload className="h-6 w-6 text-primary" />
+                </div>
+                <div className="text-left flex-1">
+                  <p className="font-semibold">Importer une photo</p>
+                  <p className="text-xs text-muted-foreground">Depuis la galerie</p>
+                </div>
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
