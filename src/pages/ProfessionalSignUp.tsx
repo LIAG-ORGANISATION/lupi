@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Camera } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { supabase } from "@/integrations/supabase/client";
 
 const ProfessionalSignUp = () => {
   const navigate = useNavigate();
@@ -16,7 +18,46 @@ const ProfessionalSignUp = () => {
     email: "",
     profession: "",
     zone: "",
+    photoUrl: "",
   });
+
+  const handlePhotoChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${user.id}/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('dog-documents')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('dog-documents')
+        .getPublicUrl(filePath);
+
+      setFormData(prev => ({ ...prev, photoUrl: publicUrl }));
+
+      toast({
+        title: "Photo ajoutée",
+        description: "Votre photo de profil a été ajoutée.",
+      });
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter la photo.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +91,33 @@ const ProfessionalSignUp = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Card className="p-6 rounded-3xl space-y-4">
+            {/* Photo de profil */}
+            <div className="flex justify-center">
+              <div className="relative">
+                <Avatar className="w-24 h-24">
+                  {formData.photoUrl && (
+                    <AvatarImage src={formData.photoUrl} alt="Photo de profil" />
+                  )}
+                  <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
+                    {formData.fullName ? formData.fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?'}
+                  </AvatarFallback>
+                </Avatar>
+                <label
+                  htmlFor="photo-upload"
+                  className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors"
+                >
+                  <Camera className="h-4 w-4" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handlePhotoChange}
+                    id="photo-upload"
+                  />
+                </label>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
               <Input
