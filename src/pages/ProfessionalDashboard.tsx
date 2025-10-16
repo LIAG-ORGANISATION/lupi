@@ -97,8 +97,8 @@ const ProfessionalDashboard = () => {
               onClick={() => navigate("/professional/clients")}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-secondary" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title">Mes Clients</h3>
@@ -114,8 +114,8 @@ const ProfessionalDashboard = () => {
               onClick={() => navigate("/professional/messages")}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                  <MessageSquare className="h-6 w-6 text-secondary" />
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+                  <MessageSquare className="h-6 w-6 text-accent" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title">Messages</h3>
