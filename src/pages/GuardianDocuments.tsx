@@ -67,6 +67,9 @@ const GuardianDocuments = () => {
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
   const [shareDialog, setShareDialog] = useState<{ open: boolean; doc: Document | null }>({ open: false, doc: null });
   const [sharedProfessionals, setSharedProfessionals] = useState<any[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<string>("all");
+  const [uploadCategory, setUploadCategory] = useState<string>("medical");
+  const [uploadProfessionalType, setUploadProfessionalType] = useState<string>("");
   const [filterProfessional, setFilterProfessional] = useState<string>("all");
 
   useEffect(() => {
@@ -142,7 +145,7 @@ const GuardianDocuments = () => {
     }
   };
 
-  const handleFileSelect = () => {
+  const handleFileSelect = (category: string = "medical") => {
     if (!selectedDog) {
       toast({
         title: "Aucun chien sélectionné",
@@ -151,6 +154,8 @@ const GuardianDocuments = () => {
       });
       return;
     }
+    setUploadCategory(category);
+    setUploadProfessionalType("");
     setShowUploadDialog(true);
   };
 
@@ -358,6 +363,53 @@ const GuardianDocuments = () => {
     return <FileText className="h-8 w-8 text-[#444444]" />;
   };
 
+  const handleExportDocument = async (doc: Document) => {
+    try {
+      const { data } = supabase.storage
+        .from("dog-documents")
+        .getPublicUrl(doc.storage_path);
+
+      if (data?.publicUrl) {
+        const response = await fetch(data.publicUrl);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.file_name;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        toast({
+          title: "Document exporté",
+          description: "Le document a été téléchargé avec succès.",
+        });
+      }
+    } catch (error) {
+      console.error("Error exporting document:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'exporter le document.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getProfessionalTypeLabel = (type: string | null) => {
+    if (!type) return null;
+    const found = PROFESSIONAL_TYPES.find(pt => pt.value === type);
+    return found?.label || type;
+  };
+
+  const filteredDocuments = documents.filter(doc => {
+    if (selectedFilter === "all") return true;
+    return doc.professional_type === selectedFilter;
+  });
+
+  const medicalDocuments = filteredDocuments.filter(doc => doc.category !== "invoice");
+  const invoiceDocuments = filteredDocuments.filter(doc => doc.category === "invoice");
+
   const handleExport = async (doc: Document) => {
     try {
       const { data } = supabase.storage
@@ -448,15 +500,27 @@ const GuardianDocuments = () => {
               ))}
             </select>
 
-            <Button
-              onClick={handleFileSelect}
-              disabled={!selectedDog || uploading}
-              className="w-full rounded-full h-12"
-              size="lg"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              {uploading ? "Upload en cours..." : "Ajouter un document"}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => handleFileSelect("medical")}
+                disabled={!selectedDog || uploading}
+                className="flex-1 rounded-full h-12"
+                size="lg"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                {uploading ? "Upload..." : "Document"}
+              </Button>
+              <Button
+                onClick={() => handleFileSelect("invoice")}
+                disabled={!selectedDog || uploading}
+                variant="outline"
+                className="flex-1 rounded-full h-12"
+                size="lg"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Facture
+              </Button>
+            </div>
 
             <input
               ref={fileInputRef}
@@ -583,12 +647,88 @@ const GuardianDocuments = () => {
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           )}
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
+                   </div>
                 </div>
-              )}
+              </Card>
+            ))}
+              </div>
+            )}
+
+            {/* Factures section */}
+            {invoiceDocuments.length > 0 && (
+              <div className="space-y-3 mt-6">
+                <h2 className="text-lg font-semibold text-title px-2">Factures</h2>
+                {invoiceDocuments.map((doc) => (
+              <Card key={doc.id} className="lupi-card overflow-hidden">
+                <div className="p-4">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="flex-shrink-0">
+                      {getFileIcon(doc.file_type)}
+                    </div>
+                    
+                     <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-title truncate mb-1">
+                        {doc.title || doc.file_name}
+                      </h3>
+                      <div className="space-y-0.5">
+                        {doc.professional_type && (
+                          <span className="inline-block px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary font-medium">
+                            {getProfessionalTypeLabel(doc.professional_type)}
+                          </span>
+                        )}
+                        <p className="text-xs text-muted-foreground">
+                          {formatDate(doc.created_at)}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {doc.file_type.split("/")[1].toUpperCase()} • {formatFileSize(doc.file_size)}
+                        </p>
+                        {doc.dogs?.name && (
+                          <p className="text-xs text-muted-foreground">
+                            🐕 {doc.dogs.name}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => handleOpenDocument(doc)}
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 rounded-full"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      Voir
+                    </Button>
+
+                    <Button
+                      onClick={() => handleExportDocument(doc)}
+                      size="sm"
+                      variant="outline"
+                      className="rounded-full"
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+
+                    {!isProfessional && doc.owner_id === userId && (
+                      <Button
+                        onClick={() => setDeleteDialog({ open: true, doc })}
+                        size="sm"
+                        variant="outline"
+                        className="rounded-full text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            ))}
+              </div>
+            )}
+          </>
+        )}
             </div>
 
             {/* Factures Section */}
