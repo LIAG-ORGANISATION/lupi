@@ -12,6 +12,7 @@ import documentsIcon from "@/assets/documents-icon.jpg";
 import professionalsIcon from "@/assets/professionals-icon.jpg";
 import kozooLogo from "@/assets/kozoo-logo-new.png";
 import pennypetLogo from "@/assets/pennypet-logo-new.png";
+import espritDogLogo from "@/assets/esprit-dog-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
@@ -514,6 +515,27 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          </div>}
+
+        {/* Formation section - only for guardians */}
+        {isGuardian && <div className="space-y-3 mb-3">
+            <h2 className="text-xl font-bold text-title">Formation</h2>
+            <a href="https://www.espritdog.com/esprit-dog-1er-secours/" target="_blank" rel="noopener noreferrer" className="block">
+              <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
+                    <img src={espritDogLogo} alt="Esprit Dog" className="w-full h-full object-contain" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-title text-lg">Formation Premiers Secours</h3>
+                    <p className="text-sm text-muted-foreground">Apprenez les gestes qui sauvent avec Esprit Dog</p>
+                  </div>
+                  <svg className="h-6 w-6 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </a>
           </div>}
 
         {/* Partners section - visible to everyone */}
