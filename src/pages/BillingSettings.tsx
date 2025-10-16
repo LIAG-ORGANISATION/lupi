@@ -123,9 +123,9 @@ const BillingSettings = () => {
               {/* Formule Mensuelle */}
               <Card className="p-6 rounded-2xl border-2 border-primary/20 bg-secondary/50">
                 <div className="space-y-3">
-                  <div className="flex items-baseline justify-between">
+                  <div className="flex items-baseline justify-between gap-2">
                     <h3 className="text-lg font-semibold text-title">Formule Mensuelle</h3>
-                    <div className="text-right">
+                    <div className="text-right whitespace-nowrap flex-shrink-0">
                       <span className="text-3xl font-bold text-primary">4,99 €</span>
                       <span className="text-sm text-muted-foreground">/mois</span>
                     </div>
@@ -167,12 +167,12 @@ const BillingSettings = () => {
               {/* Formule Annuelle */}
               <Card className="p-6 rounded-2xl border-2 border-primary bg-primary/5">
                 <div className="space-y-3">
-                  <div className="flex items-baseline justify-between">
+                  <div className="flex items-baseline justify-between gap-2">
                     <div>
                       <h3 className="text-lg font-semibold text-title">Formule Annuelle</h3>
                       <span className="text-xs text-primary font-medium">Meilleure offre • 2 mois offerts</span>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right whitespace-nowrap flex-shrink-0">
                       <span className="text-3xl font-bold text-primary">45 €</span>
                       <span className="text-sm text-muted-foreground">/an</span>
                     </div>
