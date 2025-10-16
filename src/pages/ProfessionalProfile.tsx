@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Share2, Star, ThumbsUp, MessageCircle, Clock, DollarSign, Award, Globe, Phone } from "lucide-react";
+import { ArrowLeft, Share2, Star, ThumbsUp, MessageCircle, Clock, DollarSign, Award, Globe, Phone, Mail } from "lucide-react";
 
 const ProfessionalProfile = () => {
   const navigate = useNavigate();
@@ -10,39 +10,41 @@ const ProfessionalProfile = () => {
 
   const professional = {
     name: "Olivia Bennett",
-    profession: "Pet Care Specialist",
-    location: "San Francisco, CA",
+    profession: "Spécialiste en soins animaliers",
+    location: "Paris, France",
     phone: "+33 6 12 34 56 78",
+    email: "olivia.bennett@example.com",
     phoneVisible: true,
+    emailVisible: true,
     rating: 4.9,
     clients: "100+",
     years: 5,
-    specializations: ["Behavior Modification", "Puppy Training", "Aggression Management"],
-    bio: "Olivia is a certified canine behaviorist with over 5 years of experience helping dogs and their owners build stronger relationships. Specializing in behavior modification, puppy training, and aggression management, Alex uses positive reinforcement techniques to achieve lasting results.",
+    specializations: ["Modification comportementale", "Dressage de chiots", "Gestion de l'agressivité"],
+    bio: "Olivia est une comportementaliste canine certifiée avec plus de 5 ans d'expérience aidant les chiens et leurs propriétaires à construire des relations plus fortes. Spécialisée dans la modification comportementale, le dressage de chiots et la gestion de l'agressivité, elle utilise des techniques de renforcement positif pour obtenir des résultats durables.",
     certifications: [
-      "Certified Professional Dog Trainer (CPDT-KA)",
-      "Certified Behavior Consultant Canine (CBCC-KA)",
+      "Éducateur canin professionnel certifié (CPDT-KA)",
+      "Consultant en comportement canin certifié (CBCC-KA)",
     ],
-    languages: ["English", "Spanish"],
+    languages: ["Français", "Anglais"],
     services: [
-      { name: "Behavior Consultation", duration: "60 min" },
-      { name: "Puppy Training Program", duration: "4 weeks" },
-      { name: "Aggression Management Program", duration: "8 weeks" },
+      { name: "Consultation comportementale", duration: "60 min" },
+      { name: "Programme de dressage pour chiots", duration: "4 semaines" },
+      { name: "Programme de gestion de l'agressivité", duration: "8 semaines" },
     ],
-    pricing: "$150 / hour",
+    pricing: "60 € / heure",
     reviews: [
       {
-        name: "Sophia Carter",
-        date: "2 months ago",
+        name: "Sophie Martin",
+        date: "Il y a 2 mois",
         rating: 5,
-        text: "Alex is an amazing trainer! Our dog, Max, had some behavioral issues, and Alex helped us address them effectively. We're so grateful for their expertise and patience.",
+        text: "Olivia est une éducatrice extraordinaire ! Notre chien, Max, avait des problèmes comportementaux, et elle nous a aidés à les résoudre efficacement. Nous lui sommes très reconnaissants pour son expertise et sa patience.",
         likes: 2,
       },
       {
-        name: "Ethan Walker",
-        date: "4 months ago",
+        name: "Thomas Dubois",
+        date: "Il y a 4 mois",
         rating: 5,
-        text: "Alex is fantastic! They helped us train our new puppy, Luna, and provided valuable guidance. We highly recommend their services.",
+        text: "Olivia est fantastique ! Elle nous a aidés à dresser notre nouveau chiot, Luna, et nous a fourni des conseils précieux. Nous recommandons vivement ses services.",
         likes: 1,
       },
     ],
@@ -91,7 +93,7 @@ const ProfessionalProfile = () => {
           <div className="grid grid-cols-3 gap-4">
             <Card className="p-4 rounded-2xl text-center">
               <div className="text-2xl font-bold text-title">{professional.rating}</div>
-              <div className="text-xs text-muted-foreground">Rating</div>
+              <div className="text-xs text-muted-foreground">Note</div>
             </Card>
             <Card className="p-4 rounded-2xl text-center">
               <div className="text-2xl font-bold text-title">{professional.clients}</div>
@@ -99,7 +101,7 @@ const ProfessionalProfile = () => {
             </Card>
             <Card className="p-4 rounded-2xl text-center">
               <div className="text-2xl font-bold text-title">{professional.years}</div>
-              <div className="text-xs text-muted-foreground">Years</div>
+              <div className="text-xs text-muted-foreground">Années</div>
             </Card>
           </div>
 
@@ -140,7 +142,7 @@ const ProfessionalProfile = () => {
           <Card className="lupi-card space-y-3">
             <h3 className="font-bold text-title flex items-center gap-2">
               <Globe className="h-5 w-5 text-primary" />
-              Languages
+              Langues
             </h3>
             <div className="space-y-2">
               {professional.languages.map((lang, index) => (
@@ -177,7 +179,7 @@ const ProfessionalProfile = () => {
           <Card className="lupi-card">
             <h3 className="font-bold text-title flex items-center gap-2 mb-3">
               <DollarSign className="h-5 w-5 text-primary" />
-              Pricing
+              Tarifs
             </h3>
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -189,7 +191,7 @@ const ProfessionalProfile = () => {
           <Card className="lupi-card space-y-4">
             <h3 className="font-bold text-title flex items-center gap-2">
               <Star className="h-5 w-5 text-primary" />
-              Reviews
+              Avis
             </h3>
             <div className="space-y-4">
               {professional.reviews.map((review, index) => (
@@ -244,6 +246,17 @@ const ProfessionalProfile = () => {
               >
                 <Phone className="h-5 w-5 mr-2" />
                 Appeler
+              </Button>
+            )}
+            {professional.emailVisible && professional.email && (
+              <Button
+                variant="outline"
+                className="w-full rounded-full"
+                size="lg"
+                onClick={() => window.location.href = `mailto:${professional.email}`}
+              >
+                <Mail className="h-5 w-5 mr-2" />
+                Envoyer un email
               </Button>
             )}
             <Button

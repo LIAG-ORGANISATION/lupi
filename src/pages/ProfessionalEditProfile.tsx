@@ -20,6 +20,7 @@ const ProfessionalEditProfile = () => {
     profession: "Spécialiste en soins animaliers",
     location: "Paris, France",
     bio: "",
+    email: "",
     phone: "",
     photoUrl: "",
     specializations: ["Garde d'animaux", "Promenade de chiens"],
@@ -27,8 +28,8 @@ const ProfessionalEditProfile = () => {
     languages: ["Français"],
     services: [],
     hourlyRate: "",
-    emailContact: true,
-    phoneContact: false,
+    emailVisible: false,
+    phoneVisible: false,
     messagingContact: true,
     profileVisible: false,
   });
@@ -87,12 +88,13 @@ const ProfessionalEditProfile = () => {
           profession: formData.profession,
           localisation: formData.location,
           bio: formData.bio,
-          phone: formData.phoneContact ? formData.phone : null,
+          email: formData.emailVisible ? formData.email : user.email,
+          phone: formData.phoneVisible ? formData.phone : null,
           avatar_url: formData.photoUrl,
           tarifs: formData.hourlyRate,
           preferences_contact: [
-            formData.emailContact ? 'email' : null,
-            formData.phoneContact ? 'phone' : null,
+            formData.emailVisible ? 'email' : null,
+            formData.phoneVisible ? 'phone' : null,
             formData.messagingContact ? 'messaging' : null,
           ].filter(Boolean),
         })
@@ -294,29 +296,41 @@ const ProfessionalEditProfile = () => {
             <div className="space-y-4 border-t border-border pt-4">
               <h4 className="font-semibold text-title text-sm">Préférences de contact</h4>
               
-              <div className="flex items-center justify-between">
-                <Label htmlFor="email">Email</Label>
-                <Switch
-                  id="email"
-                  checked={formData.emailContact}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, emailContact: checked })
-                  }
-                />
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="email">Email visible</Label>
+                  <Switch
+                    id="email"
+                    checked={formData.emailVisible}
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, emailVisible: checked })
+                    }
+                  />
+                </div>
+                {formData.emailVisible && (
+                  <Input
+                    id="emailAddress"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="Ex. nom@example.com"
+                    className="rounded-2xl bg-secondary/50"
+                  />
+                )}
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="phone">Téléphone</Label>
+                  <Label htmlFor="phone">Téléphone visible</Label>
                   <Switch
                     id="phone"
-                    checked={formData.phoneContact}
+                    checked={formData.phoneVisible}
                     onCheckedChange={(checked) =>
-                      setFormData({ ...formData, phoneContact: checked })
+                      setFormData({ ...formData, phoneVisible: checked })
                     }
                   />
                 </div>
-                {formData.phoneContact && (
+                {formData.phoneVisible && (
                   <Input
                     id="phoneNumber"
                     type="tel"
@@ -329,7 +343,7 @@ const ProfessionalEditProfile = () => {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label htmlFor="messaging">Messagerie</Label>
+                <Label htmlFor="messaging">Messagerie Lupi</Label>
                 <Switch
                   id="messaging"
                   checked={formData.messagingContact}
