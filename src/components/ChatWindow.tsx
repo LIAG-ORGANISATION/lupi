@@ -11,7 +11,6 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import { capitalizeWords } from "@/lib/utils";
-import avatarDefault from "@/assets/avatar-default.jpg";
 
 interface Message {
   id: string;
@@ -212,7 +211,7 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
           </Button>
         )}
         <Avatar className="h-10 w-10 flex-shrink-0">
-          <AvatarImage src={otherPartyAvatar || avatarDefault} />
+          <AvatarImage src={otherPartyAvatar || undefined} />
           <AvatarFallback>
             {otherPartyName
               .split(" ")

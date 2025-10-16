@@ -8,11 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { capitalizeWords } from "@/lib/utils";
-import avatarVeterinaire from "@/assets/avatar-veterinaire.jpg";
-import avatarComportementaliste from "@/assets/avatar-comportementaliste.jpg";
-import avatarEducateur from "@/assets/avatar-educateur.jpg";
-import avatarToiletteur from "@/assets/avatar-toiletteur.jpg";
-import avatarDefault from "@/assets/avatar-default.jpg";
 
 const ProfessionalProfile = () => {
   const navigate = useNavigate();
@@ -112,22 +107,13 @@ const ProfessionalProfile = () => {
     );
   }
 
-  const getDefaultAvatar = (profession: string) => {
-    const profLower = profession.toLowerCase();
-    if (profLower.includes("vétérinaire")) return avatarVeterinaire;
-    if (profLower.includes("comportementaliste")) return avatarComportementaliste;
-    if (profLower.includes("éducateur") || profLower.includes("educateur")) return avatarEducateur;
-    if (profLower.includes("toiletteur")) return avatarToiletteur;
-    return avatarDefault;
-  };
-
   const professionalData = {
     name: capitalizeWords(professional.full_name) || "Professionnel",
     profession: capitalizeWords(professional.profession) || "Professionnel de santé animale",
     location: capitalizeWords(professional.localisation || professional.zone) || "France",
     phone: professional.phone,
     email: professional.email,
-    avatar: professional.photo_url || professional.avatar_url || getDefaultAvatar(professional.profession || ""),
+    avatar: professional.photo_url || professional.avatar_url,
     phoneVisible: !!professional.phone,
     emailVisible: !!professional.email,
     rating: 4.9,
