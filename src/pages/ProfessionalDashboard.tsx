@@ -78,14 +78,14 @@ const ProfessionalDashboard = () => {
 
             <Card className="lupi-card">
               <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-secondary">{totalClients}</div>
+                <div className="text-3xl font-bold text-title">{totalClients}</div>
                 <p className="text-sm text-muted-foreground">Clients actifs</p>
               </div>
             </Card>
 
             <Card className="lupi-card">
               <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-accent">0</div>
+                <div className="text-3xl font-bold text-title">0</div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
               </div>
             </Card>
@@ -97,8 +97,8 @@ const ProfessionalDashboard = () => {
               onClick={() => navigate("/professional/clients")}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                  <Users className="h-6 w-6 text-secondary" />
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title">Mes Clients</h3>
@@ -114,8 +114,8 @@ const ProfessionalDashboard = () => {
               onClick={() => navigate("/professional/messages")}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                  <MessageSquare className="h-6 w-6 text-accent" />
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <MessageSquare className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title">Messages</h3>
