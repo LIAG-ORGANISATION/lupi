@@ -201,6 +201,16 @@ All colors MUST be HSL.
   .input-minimal:focus {
     box-shadow: var(--shadow-hover);
   }
+
+  /* Hide scrollbar for horizontal scroll */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Inter font - clean and minimal */

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
+import { useEffect, useRef, useState } from "react";
 import chickenSweetPotato from "@/assets/recipe-chicken-sweet-potato.jpg";
 import applePearOatmeal from "@/assets/recipe-apple-pear-oatmeal.jpg";
 import beefPumpkinLentils from "@/assets/recipe-beef-pumpkin-lentils.jpg";
@@ -116,6 +117,8 @@ const recipes: Recipe[] = [
 
 export const SeasonalRecipes = () => {
   const navigate = useNavigate();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Determine current season (simplified: Oct-Mar = autumn-winter, Apr-Sep = spring-summer)
   const currentMonth = new Date().getMonth();
@@ -124,6 +127,17 @@ export const SeasonalRecipes = () => {
   const currentSeasonRecipes = recipes.filter(recipe => 
     recipe.season === (isAutumnWinter ? "autumn-winter" : "spring-summer")
   );
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -134,37 +148,77 @@ export const SeasonalRecipes = () => {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {currentSeasonRecipes.map((recipe) => (
-          <Card 
-            key={recipe.id} 
-            className="overflow-hidden hover:shadow-lg transition-all cursor-pointer"
-            onClick={() => navigate(`/recipe/${recipe.id}`)}
-          >
-            <div className="aspect-square overflow-hidden">
-              <img 
-                src={recipe.image} 
-                alt={recipe.title}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            <CardContent className="p-4 space-y-3">
-              <div className="space-y-1">
-                <h3 className="font-bold text-title text-base leading-tight">{recipe.title}</h3>
-                <p className="text-xs text-primary font-medium">{recipe.subtitle}</p>
+      {/* Mobile: Horizontal scroll */}
+      {isMobile ? (
+        <div 
+          ref={scrollContainerRef}
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {currentSeasonRecipes.map((recipe) => (
+            <Card 
+              key={recipe.id} 
+              className="flex-shrink-0 w-[280px] snap-start overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+              onClick={() => navigate(`/recipe/${recipe.id}`)}
+            >
+              <div className="aspect-square overflow-hidden">
+                <img 
+                  src={recipe.image} 
+                  alt={recipe.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              
-              <p className="text-xs text-muted-foreground line-clamp-2">
-                {recipe.ingredients.join(", ")}
-              </p>
-              
-              <div className="pt-2 border-t border-border">
-                <p className="text-xs text-foreground font-medium">{recipe.benefits}</p>
+              <CardContent className="p-4 space-y-3">
+                <div className="space-y-1">
+                  <h3 className="font-bold text-title text-base leading-tight">{recipe.title}</h3>
+                  <p className="text-xs text-primary font-medium">{recipe.subtitle}</p>
+                </div>
+                
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {recipe.ingredients.join(", ")}
+                </p>
+                
+                <div className="pt-2 border-t border-border">
+                  <p className="text-xs text-foreground font-medium">{recipe.benefits}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        // Desktop: Grid layout
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {currentSeasonRecipes.map((recipe) => (
+            <Card 
+              key={recipe.id} 
+              className="overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+              onClick={() => navigate(`/recipe/${recipe.id}`)}
+            >
+              <div className="aspect-square overflow-hidden">
+                <img 
+                  src={recipe.image} 
+                  alt={recipe.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              <CardContent className="p-4 space-y-3">
+                <div className="space-y-1">
+                  <h3 className="font-bold text-title text-base leading-tight">{recipe.title}</h3>
+                  <p className="text-xs text-primary font-medium">{recipe.subtitle}</p>
+                </div>
+                
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {recipe.ingredients.join(", ")}
+                </p>
+                
+                <div className="pt-2 border-t border-border">
+                  <p className="text-xs text-foreground font-medium">{recipe.benefits}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
       
       <Card className="bg-muted/50 border-dashed">
         <CardContent className="p-4 text-center">
