@@ -13,6 +13,11 @@ import professionalsIcon from "@/assets/professionals-icon.jpg";
 import kozooLogo from "@/assets/kozoo-logo-new.png";
 import pennypetLogo from "@/assets/pennypet-logo-new.png";
 import espritDogLogo from "@/assets/esprit-dog-logo.png";
+import baladeXoldokogaina from "@/assets/balade-xoldokogaina.jpg";
+import baladeGuethary from "@/assets/balade-guethary.jpg";
+import baladeMondarrain from "@/assets/balade-mondarrain.jpg";
+import baladeOssasSuhare from "@/assets/balade-ossas-suhare.jpg";
+import baladeAdarra from "@/assets/balade-adarra.jpg";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
@@ -509,6 +514,105 @@ const Home = () => {
                 </div>
               </div>
             </a>
+          </div>}
+
+        {/* Balades autour de vous section - visible to guardians */}
+        {isGuardian && <div className="space-y-3">
+            <h2 className="text-xl font-bold text-title">Balades autour de vous</h2>
+            <div className="grid grid-cols-2 gap-3">
+              <div 
+                className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all"
+                onClick={() => window.open('https://www.google.com/maps/search/Lac+de+Xoldokogaina+Urrugne', '_blank')}
+              >
+                <div className="aspect-square relative">
+                  <img 
+                    src={baladeXoldokogaina} 
+                    alt="Lac de Xoldokogaina" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-3 space-y-1">
+                  <h3 className="font-semibold text-title text-sm">Lac de Xoldokogaina</h3>
+                  <p className="text-xs text-muted-foreground">Urrugne • 7.5 km • 3h</p>
+                  <p className="text-xs text-primary">Moyens à grands chiens</p>
+                </div>
+              </div>
+
+              <div 
+                className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all"
+                onClick={() => window.open('https://www.google.com/maps/search/Sentier+littoral+Guethary', '_blank')}
+              >
+                <div className="aspect-square relative">
+                  <img 
+                    src={baladeGuethary} 
+                    alt="Sentier littoral Guéthary" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-3 space-y-1">
+                  <h3 className="font-semibold text-title text-sm">Sentier littoral</h3>
+                  <p className="text-xs text-muted-foreground">Guéthary • 6 km • 2h</p>
+                  <p className="text-xs text-primary">Tous gabarits</p>
+                </div>
+              </div>
+
+              <div 
+                className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all"
+                onClick={() => window.open('https://www.google.com/maps/search/Mondarrain+Itxassou', '_blank')}
+              >
+                <div className="aspect-square relative">
+                  <img 
+                    src={baladeMondarrain} 
+                    alt="Boucle du Mondarrain" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-3 space-y-1">
+                  <h3 className="font-semibold text-title text-sm">Boucle du Mondarrain</h3>
+                  <p className="text-xs text-muted-foreground">Itxassou • 5 km • 2h</p>
+                  <p className="text-xs text-primary">Petits à moyens chiens</p>
+                </div>
+              </div>
+
+              <div 
+                className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all"
+                onClick={() => window.open('https://www.google.com/maps/search/Ossas+Suhare+Foret+Basque', '_blank')}
+              >
+                <div className="aspect-square relative">
+                  <img 
+                    src={baladeOssasSuhare} 
+                    alt="Randonnée Ossas-Suhare" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-3 space-y-1">
+                  <h3 className="font-semibold text-title text-sm">Randonnée Ossas-Suhare</h3>
+                  <p className="text-xs text-muted-foreground">Forêt basque • 8 km • 3h</p>
+                  <p className="text-xs text-primary">Moyens à grands chiens</p>
+                </div>
+              </div>
+
+              <div 
+                className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all col-span-2"
+                onClick={() => window.open('https://www.google.com/maps/search/Mont+Adarra+Pays+Basque', '_blank')}
+              >
+                <div className="flex gap-3">
+                  <div className="w-1/3 aspect-square relative">
+                    <img 
+                      src={baladeAdarra} 
+                      alt="Mont Adarra" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 p-3 space-y-1">
+                    <h3 className="font-semibold text-title">Mont Adarra</h3>
+                    <p className="text-sm text-muted-foreground">Frontière basque • 10 km • 4h</p>
+                    <p className="text-sm text-primary">Moyens à grands chiens</p>
+                    <p className="text-xs text-foreground mt-2">Vue panoramique jusqu au bord de l océan depuis le sommet rocheux</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>}
 
         {/* Partners section - visible to everyone */}
