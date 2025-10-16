@@ -527,7 +527,7 @@ const Home = () => {
                     <img src={espritDogLogo} alt="Esprit Dog" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-title text-lg">Formation Premiers Secours</h3>
+                    <h3 className="font-semibold text-title text-lg leading-tight">Formation Premiers Secours</h3>
                     <p className="text-sm text-muted-foreground">Apprenez les gestes qui sauvent avec Esprit Dog</p>
                   </div>
                   <svg className="h-6 w-6 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
