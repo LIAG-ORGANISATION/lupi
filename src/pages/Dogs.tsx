@@ -2,10 +2,21 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { Plus, TestTube2, FileText, Calendar, Stethoscope, Heart, Dog as DogIcon } from "lucide-react";
+import { Plus, TestTube2, FileText, Calendar, Stethoscope, Heart, Dog as DogIcon, Trash2 } from "lucide-react";
 import QuickActionCard from "@/components/QuickActionCard";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Dog {
   id: string;
@@ -17,8 +28,14 @@ interface Dog {
 const Dogs = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; dogId: string | null; dogName: string | null }>({
+    open: false,
+    dogId: null,
+    dogName: null,
+  });
 
   useEffect(() => {
     console.log('[Dogs] 🔍 Checking user...', user);
@@ -49,6 +66,33 @@ const Dogs = () => {
       console.error('[Dogs] ❌ Error fetching dogs:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (dogId: string) => {
+    try {
+      const { error } = await supabase
+        .from('dogs')
+        .delete()
+        .eq('id', dogId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Chien supprimé",
+        description: "Le profil a été supprimé avec succès.",
+      });
+
+      // Refresh the list
+      setDogs(dogs.filter(d => d.id !== dogId));
+      setDeleteDialog({ open: false, dogId: null, dogName: null });
+    } catch (error) {
+      console.error('Error deleting dog:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer le profil.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -131,6 +175,17 @@ const Dogs = () => {
                         <p className="text-sm text-muted-foreground">{dog.breed}</p>
                       )}
                     </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteDialog({ open: true, dogId: dog.id, dogName: dog.name });
+                      }}
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -156,6 +211,26 @@ const Dogs = () => {
           </div>
         )}
       </div>
+
+      <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer {deleteDialog.dogName} ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Toutes les données associées à ce chien (questionnaires, vaccinations, documents, etc.) seront définitivement supprimées.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteDialog.dogId && handleDelete(deleteDialog.dogId)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
