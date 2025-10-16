@@ -99,13 +99,19 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
 
         setMessages(data || []);
 
-        // Mark messages as read
-        await supabase
+        // Mark messages as read immediately
+        const { error: updateError } = await supabase
           .from("messages")
           .update({ read: true })
           .eq("conversation_id", conversationId)
           .neq("sender_id", user.id)
           .eq("read", false);
+
+        if (updateError) {
+          console.error("Error marking messages as read:", updateError);
+        } else {
+          console.log("Messages marked as read successfully");
+        }
       } catch (error) {
         console.error("Error fetching messages:", error);
       } finally {
@@ -128,15 +134,23 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
           filter: `conversation_id=eq.${conversationId}`,
         },
         (payload) => {
-          setMessages((prev) => [...prev, payload.new as Message]);
+          const newMsg = payload.new as Message;
+          setMessages((prev) => [...prev, newMsg]);
           scrollToBottom();
 
           // Mark as read if not sent by current user
-          if (payload.new.sender_id !== user.id) {
+          if (newMsg.sender_id !== user.id) {
             supabase
               .from("messages")
               .update({ read: true })
-              .eq("id", payload.new.id);
+              .eq("id", newMsg.id)
+              .then(({ error }) => {
+                if (error) {
+                  console.error("Error marking new message as read:", error);
+                } else {
+                  console.log("New message marked as read:", newMsg.id);
+                }
+              });
           }
         }
       )
