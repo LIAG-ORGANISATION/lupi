@@ -11,6 +11,13 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -37,6 +44,8 @@ const ProfessionalEditProfileNew = () => {
   const [allSpecialisations, setAllSpecialisations] = useState<Specialisation[]>([]);
   const [filteredSpecialisations, setFilteredSpecialisations] = useState<Specialisation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [contactModalType, setContactModalType] = useState<"Email" | "Téléphone" | null>(null);
 
   const [formData, setFormData] = useState({
     nom: "",
@@ -153,12 +162,38 @@ const ProfessionalEditProfileNew = () => {
   };
 
   const toggleContactPreference = (pref: string) => {
-    setFormData(prev => ({
-      ...prev,
-      preferences_contact: prev.preferences_contact.includes(pref)
-        ? prev.preferences_contact.filter(p => p !== pref)
-        : [...prev.preferences_contact, pref]
-    }));
+    const isCurrentlySelected = formData.preferences_contact.includes(pref);
+    
+    if (isCurrentlySelected) {
+      // Deselecting - remove preference
+      setFormData(prev => ({
+        ...prev,
+        preferences_contact: prev.preferences_contact.filter(p => p !== pref)
+      }));
+    } else {
+      // Selecting - open modal for Email or Téléphone
+      if (pref === "Email" || pref === "Téléphone") {
+        setContactModalType(pref);
+        setContactModalOpen(true);
+      } else {
+        // For "Messagerie", just add it
+        setFormData(prev => ({
+          ...prev,
+          preferences_contact: [...prev.preferences_contact, pref]
+        }));
+      }
+    }
+  };
+
+  const handleSaveContactInfo = () => {
+    if (contactModalType) {
+      setFormData(prev => ({
+        ...prev,
+        preferences_contact: [...prev.preferences_contact, contactModalType]
+      }));
+    }
+    setContactModalOpen(false);
+    setContactModalType(null);
   };
 
   const handlePhotoChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -398,34 +433,6 @@ const ProfessionalEditProfileNew = () => {
           <h3 className="font-bold text-title text-lg">Coordonnées & visibilité</h3>
           
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium text-title">
-              Email professionnel
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="votre.email@exemple.com"
-              className="rounded-2xl border-border"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="phone" className="text-sm font-medium text-title">
-              Numéro de téléphone
-            </Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              placeholder="06 12 34 56 78"
-              className="rounded-2xl border-border"
-            />
-          </div>
-
-          <div className="space-y-2">
             <Label htmlFor="localisation" className="text-sm font-medium text-title">
               Localisation
             </Label>
@@ -443,19 +450,27 @@ const ProfessionalEditProfileNew = () => {
               Préférences de contact
             </Label>
             {["Email", "Téléphone", "Messagerie"].map((pref) => (
-              <div
-                key={pref}
-                className="flex items-center space-x-2 p-2 hover:bg-secondary/50 rounded-xl cursor-pointer"
-                onClick={() => toggleContactPreference(pref)}
-              >
-                <Checkbox
-                  id={pref}
-                  checked={formData.preferences_contact.includes(pref)}
-                  onCheckedChange={() => toggleContactPreference(pref)}
-                />
-                <label htmlFor={pref} className="text-sm cursor-pointer flex-1">
-                  {pref}
-                </label>
+              <div key={pref}>
+                <div
+                  className="flex items-center space-x-2 p-2 hover:bg-secondary/50 rounded-xl cursor-pointer"
+                  onClick={() => toggleContactPreference(pref)}
+                >
+                  <Checkbox
+                    id={pref}
+                    checked={formData.preferences_contact.includes(pref)}
+                    onCheckedChange={() => toggleContactPreference(pref)}
+                  />
+                  <label htmlFor={pref} className="text-sm cursor-pointer flex-1">
+                    {pref}
+                  </label>
+                </div>
+                {/* Show the entered info below if available */}
+                {pref === "Email" && formData.preferences_contact.includes("Email") && formData.email && (
+                  <p className="text-xs text-muted-foreground ml-8 mt-1">{formData.email}</p>
+                )}
+                {pref === "Téléphone" && formData.preferences_contact.includes("Téléphone") && formData.phone && (
+                  <p className="text-xs text-muted-foreground ml-8 mt-1">{formData.phone}</p>
+                )}
               </div>
             ))}
           </div>
@@ -489,6 +504,69 @@ const ProfessionalEditProfileNew = () => {
       </div>
 
       <BottomNavigation />
+
+      {/* Contact Information Modal */}
+      <Dialog open={contactModalOpen} onOpenChange={setContactModalOpen}>
+        <DialogContent className="sm:max-w-md bg-background">
+          <DialogHeader>
+            <DialogTitle className="text-title">
+              {contactModalType === "Email" ? "Ajouter votre email" : "Ajouter votre téléphone"}
+            </DialogTitle>
+            <DialogDescription>
+              Renseignez vos coordonnées pour que les propriétaires puissent vous contacter.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {contactModalType === "Email" ? (
+              <div className="space-y-2">
+                <Label htmlFor="modal-email" className="text-sm font-medium text-title">
+                  Email professionnel
+                </Label>
+                <Input
+                  id="modal-email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="votre.email@exemple.com"
+                  className="rounded-2xl border-border"
+                />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor="modal-phone" className="text-sm font-medium text-title">
+                  Numéro de téléphone
+                </Label>
+                <Input
+                  id="modal-phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="06 12 34 56 78"
+                  className="rounded-2xl border-border"
+                />
+              </div>
+            )}
+          </div>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setContactModalOpen(false);
+                setContactModalType(null);
+              }}
+              className="flex-1 rounded-full"
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleSaveContactInfo}
+              className="flex-1 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Valider
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
