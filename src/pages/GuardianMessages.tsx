@@ -32,28 +32,24 @@ const GuardianMessages = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 -mt-6 animate-fade-in">
-          <div className="grid md:grid-cols-[350px,1fr] gap-4 h-[calc(100vh-250px)]">
-            {/* Conversations list - hidden on mobile when a conversation is selected */}
-            <div className={`${selectedConversationId ? "hidden md:block" : "block"} md:overflow-y-auto`}>
+          <div className="space-y-4">
+            {/* Conversations list - hidden when a conversation is selected */}
+            <div className={`${selectedConversationId ? "hidden" : "block"}`}>
               <ConversationsList
                 onSelectConversation={setSelectedConversationId}
                 selectedConversationId={selectedConversationId}
               />
             </div>
 
-            {/* Chat window */}
-            <div className={`${selectedConversationId ? "block" : "hidden md:block"}`}>
-              {selectedConversationId ? (
+            {/* Chat window - shown when a conversation is selected */}
+            {selectedConversationId && (
+              <div className="h-[calc(100vh-250px)]">
                 <ChatWindow
                   conversationId={selectedConversationId}
                   onBack={() => setSelectedConversationId(null)}
                 />
-              ) : (
-                <div className="hidden md:flex h-full items-center justify-center bg-muted/30 rounded-3xl">
-                  <p className="text-muted-foreground">Sélectionnez une conversation pour commencer</p>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@ const ProfessionalMessages = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/professional/dashboard")}
             className="rounded-full"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -26,28 +26,24 @@ const ProfessionalMessages = () => {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-[350px,1fr] gap-4">
-            {/* Conversations list - hidden on mobile when a conversation is selected */}
-            <div className={`${selectedConversationId ? "hidden md:block" : "block"}`}>
+          <div className="space-y-4">
+            {/* Conversations list - hidden when a conversation is selected */}
+            <div className={`${selectedConversationId ? "hidden" : "block"}`}>
               <ConversationsList
                 onSelectConversation={setSelectedConversationId}
                 selectedConversationId={selectedConversationId}
               />
             </div>
 
-            {/* Chat window */}
-            <div className={`${selectedConversationId ? "block" : "hidden md:block"}`}>
-              {selectedConversationId ? (
+            {/* Chat window - shown when a conversation is selected */}
+            {selectedConversationId && (
+              <div className="h-[calc(100vh-200px)]">
                 <ChatWindow
                   conversationId={selectedConversationId}
                   onBack={() => setSelectedConversationId(null)}
                 />
-              ) : (
-                <div className="hidden md:flex h-[calc(100vh-200px)] items-center justify-center bg-muted/30 rounded-3xl">
-                  <p className="text-muted-foreground">Sélectionnez une conversation pour commencer</p>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
