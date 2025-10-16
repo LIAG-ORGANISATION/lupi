@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
-import { Send, ArrowLeft } from "lucide-react";
+import { Send, ArrowLeft, Phone } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
@@ -59,13 +59,13 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
       // Fetch related data
       const { data: ownerData } = await supabase
         .from("owners")
-        .select("full_name, avatar_url")
+        .select("full_name, avatar_url, phone")
         .eq("user_id", convData.owner_id)
         .single();
 
       const { data: proData } = await supabase
         .from("professionals")
-        .select("full_name, photo_url")
+        .select("full_name, photo_url, phone")
         .eq("user_id", convData.professional_id)
         .single();
 
@@ -200,6 +200,19 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
     ? conversationDetails.professionals?.photo_url
     : conversationDetails.owners?.avatar_url;
   const otherPartyName = otherParty?.full_name || "Utilisateur";
+  const otherPartyPhone = otherParty?.phone;
+
+  const handleCall = () => {
+    if (otherPartyPhone) {
+      window.location.href = `tel:${otherPartyPhone}`;
+    } else {
+      toast({
+        title: "Numéro non disponible",
+        description: "Ce professionnel n'a pas renseigné de numéro de téléphone",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <Card className="flex flex-col h-full">
@@ -227,6 +240,17 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
             <p className="text-xs text-muted-foreground truncate">Concernant: {capitalizeWords(conversationDetails.dogs.name)}</p>
           )}
         </div>
+        {otherPartyPhone && (
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleCall}
+            className="flex-shrink-0 rounded-full"
+            title="Appeler"
+          >
+            <Phone className="h-5 w-5" />
+          </Button>
+        )}
       </div>
 
       {/* Messages */}

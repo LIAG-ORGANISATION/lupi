@@ -1,13 +1,25 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Trash2 } from "lucide-react";
 import { capitalizeWords } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Conversation {
   id: string;
@@ -32,8 +44,13 @@ interface ConversationsListProps {
 const ConversationsList = ({ onSelectConversation, selectedConversationId }: ConversationsListProps) => {
   const { user } = useAuth();
   const { role } = useUserRole();
+  const { toast } = useToast();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; convId: string | null }>({
+    open: false,
+    convId: null,
+  });
 
   useEffect(() => {
     if (!user) return;
@@ -151,6 +168,42 @@ const ConversationsList = ({ onSelectConversation, selectedConversationId }: Con
     };
   }, [user]);
 
+  const handleDelete = async (conversationId: string) => {
+    try {
+      // Delete all messages in the conversation first
+      const { error: messagesError } = await supabase
+        .from("messages")
+        .delete()
+        .eq("conversation_id", conversationId);
+
+      if (messagesError) throw messagesError;
+
+      // Delete the conversation
+      const { error: conversationError } = await supabase
+        .from("conversations")
+        .delete()
+        .eq("id", conversationId);
+
+      if (conversationError) throw conversationError;
+
+      toast({
+        title: "Conversation supprimée",
+        description: "La conversation a été supprimée avec succès",
+      });
+
+      // Refresh conversations list
+      setConversations(conversations.filter((c) => c.id !== conversationId));
+      setDeleteDialog({ open: false, convId: null });
+    } catch (error) {
+      console.error("Error deleting conversation:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer la conversation",
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-2">
@@ -179,60 +232,98 @@ const ConversationsList = ({ onSelectConversation, selectedConversationId }: Con
   }
 
   return (
-    <div className="space-y-2">
-      {conversations.map((conv) => {
-        const isOwner = role === "owner";
-        const displayName = isOwner ? conv.professional_name : conv.owner_name;
-        const displayAvatar = isOwner ? conv.professional_avatar : conv.owner_avatar;
-        const initials = displayName
-          .split(" ")
-          .map((n) => n[0])
-          .join("")
-          .toUpperCase()
-          .slice(0, 2);
+    <>
+      <div className="space-y-2">
+        {conversations.map((conv) => {
+          const isOwner = role === "owner";
+          const displayName = isOwner ? conv.professional_name : conv.owner_name;
+          const displayAvatar = isOwner ? conv.professional_avatar : conv.owner_avatar;
+          const initials = displayName
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
 
-        return (
-          <Card
-            key={conv.id}
-            className={`p-4 cursor-pointer transition-colors hover:bg-accent ${
-              selectedConversationId === conv.id ? "bg-accent" : ""
-            }`}
-            onClick={() => onSelectConversation(conv.id)}
-          >
-            <div className="flex gap-3">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={displayAvatar || undefined} />
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="font-semibold text-sm truncate">{capitalizeWords(displayName)}</p>
-                  {conv.last_message_at && (
-                    <span className="text-xs text-muted-foreground ml-2 flex-shrink-0">
-                      {formatDistanceToNow(new Date(conv.last_message_at), {
-                        addSuffix: true,
-                        locale: fr,
-                      })}
-                    </span>
+          return (
+            <Card
+              key={conv.id}
+              className={`p-4 transition-colors ${
+                selectedConversationId === conv.id ? "bg-accent" : ""
+              }`}
+            >
+              <div className="flex gap-3">
+                <Avatar 
+                  className="h-12 w-12 cursor-pointer" 
+                  onClick={() => onSelectConversation(conv.id)}
+                >
+                  <AvatarImage src={displayAvatar || undefined} />
+                  <AvatarFallback>{initials}</AvatarFallback>
+                </Avatar>
+                <div 
+                  className="flex-1 min-w-0 cursor-pointer" 
+                  onClick={() => onSelectConversation(conv.id)}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="font-semibold text-sm truncate">{capitalizeWords(displayName)}</p>
+                    {conv.last_message_at && (
+                      <span className="text-xs text-muted-foreground ml-2 flex-shrink-0">
+                        {formatDistanceToNow(new Date(conv.last_message_at), {
+                          addSuffix: true,
+                          locale: fr,
+                        })}
+                      </span>
+                    )}
+                  </div>
+                  {conv.dog_name && (
+                    <p className="text-xs text-muted-foreground mb-1">Concernant: {capitalizeWords(conv.dog_name)}</p>
+                  )}
+                  {conv.last_message && (
+                    <p className="text-sm text-muted-foreground truncate">{conv.last_message}</p>
+                  )}
+                  {conv.unread_count > 0 && (
+                    <div className="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary rounded-full mt-1">
+                      {conv.unread_count}
+                    </div>
                   )}
                 </div>
-                {conv.dog_name && (
-                  <p className="text-xs text-muted-foreground mb-1">Concernant: {capitalizeWords(conv.dog_name)}</p>
-                )}
-                {conv.last_message && (
-                  <p className="text-sm text-muted-foreground truncate">{conv.last_message}</p>
-                )}
-                {conv.unread_count > 0 && (
-                  <div className="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary rounded-full mt-1">
-                    {conv.unread_count}
-                  </div>
-                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDeleteDialog({ open: true, convId: conv.id });
+                  }}
+                  className="flex-shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
-            </div>
-          </Card>
-        );
-      })}
-    </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer cette conversation ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Tous les messages de cette conversation seront définitivement supprimés.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteDialog.convId && handleDelete(deleteDialog.convId)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
