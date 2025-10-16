@@ -8,6 +8,7 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { MessageCircle } from "lucide-react";
 import { capitalizeWords } from "@/lib/utils";
+import avatarDefault from "@/assets/avatar-default.jpg";
 
 interface Conversation {
   id: string;
@@ -201,7 +202,7 @@ const ConversationsList = ({ onSelectConversation, selectedConversationId }: Con
           >
             <div className="flex gap-3">
               <Avatar className="h-12 w-12">
-                <AvatarImage src={displayAvatar || undefined} />
+                <AvatarImage src={displayAvatar || avatarDefault} />
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">

@@ -10,6 +10,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { capitalizeWords } from "@/lib/utils";
+import avatarVeterinaire from "@/assets/avatar-veterinaire.jpg";
+import avatarComportementaliste from "@/assets/avatar-comportementaliste.jpg";
+import avatarEducateur from "@/assets/avatar-educateur.jpg";
+import avatarToiletteur from "@/assets/avatar-toiletteur.jpg";
+import avatarDefault from "@/assets/avatar-default.jpg";
 import {
   Select,
   SelectContent,
@@ -108,6 +113,15 @@ const Professionals = () => {
       .map((n) => n[0])
       .join("")
       .toUpperCase();
+  };
+
+  const getDefaultAvatar = (profession: string) => {
+    const profLower = profession.toLowerCase();
+    if (profLower.includes("vétérinaire")) return avatarVeterinaire;
+    if (profLower.includes("comportementaliste")) return avatarComportementaliste;
+    if (profLower.includes("éducateur") || profLower.includes("educateur")) return avatarEducateur;
+    if (profLower.includes("toiletteur")) return avatarToiletteur;
+    return avatarDefault;
   };
 
   const filteredProfessionals = professionals.filter((pro) => {
@@ -332,7 +346,7 @@ const Professionals = () => {
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <Avatar className="w-12 h-12 flex-shrink-0">
-                    <AvatarImage src={pro.photo_url || undefined} alt={pro.full_name} />
+                    <AvatarImage src={pro.photo_url || getDefaultAvatar(pro.professions?.label || "")} alt={pro.full_name} />
                     <AvatarFallback className="bg-secondary text-title font-semibold">
                       {getInitials(pro.full_name)}
                     </AvatarFallback>

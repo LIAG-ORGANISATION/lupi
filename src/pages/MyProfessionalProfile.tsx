@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { Edit, Globe, Award, DollarSign, MapPin, Mail, Phone, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,6 +9,11 @@ import { useToast } from "@/hooks/use-toast";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { Badge } from "@/components/ui/badge";
 import { capitalizeWords } from "@/lib/utils";
+import avatarVeterinaire from "@/assets/avatar-veterinaire.jpg";
+import avatarComportementaliste from "@/assets/avatar-comportementaliste.jpg";
+import avatarEducateur from "@/assets/avatar-educateur.jpg";
+import avatarToiletteur from "@/assets/avatar-toiletteur.jpg";
+import avatarDefault from "@/assets/avatar-default.jpg";
 
 interface Profession {
   id: string;
@@ -142,6 +147,15 @@ const MyProfessionalProfile = () => {
     return name.split(" ").map(n => n[0]).join("").toUpperCase() || "?";
   };
 
+  const getDefaultAvatar = (professionLabel: string) => {
+    const profLower = professionLabel.toLowerCase();
+    if (profLower.includes("vétérinaire")) return avatarVeterinaire;
+    if (profLower.includes("comportementaliste")) return avatarComportementaliste;
+    if (profLower.includes("éducateur") || profLower.includes("educateur")) return avatarEducateur;
+    if (profLower.includes("toiletteur")) return avatarToiletteur;
+    return avatarDefault;
+  };
+
   return (
     <div className="min-h-screen bg-background pb-24">
       <div className="max-w-md mx-auto">
@@ -162,6 +176,7 @@ const MyProfessionalProfile = () => {
           {/* Profile Header */}
           <Card className="p-6 rounded-3xl text-center space-y-4 shadow-md">
             <Avatar className="w-24 h-24 mx-auto">
+              <AvatarImage src={profileData.photo_url || (profileData.profession ? getDefaultAvatar(profileData.profession.label) : avatarDefault)} />
               <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
                 {getInitials(profileData.full_name)}
               </AvatarFallback>
