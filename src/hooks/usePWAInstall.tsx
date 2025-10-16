@@ -17,10 +17,29 @@ export const usePWAInstall = () => {
       return;
     }
 
-    // Enregistrer le service worker
+    // Enregistrer le service worker avec mise à jour automatique
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
+        .then((registration) => {
+          // Vérifier les mises à jour toutes les 60 secondes
+          setInterval(() => {
+            registration.update();
+          }, 60000);
+          
+          // Écouter les mises à jour du service worker
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // Nouvelle version disponible, recharger automatiquement
+                  window.location.reload();
+                }
+              });
+            }
+          });
+        })
         .catch((error) => console.error('Service Worker registration failed:', error));
     }
 
