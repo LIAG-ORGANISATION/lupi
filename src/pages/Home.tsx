@@ -247,7 +247,7 @@ const Home = () => {
 
             <Card className="p-4 rounded-xl">
               <div className="text-center space-y-1">
-                <div className="text-3xl font-bold text-accent">0</div>
+                <div className="text-3xl font-bold text-accent">{unreadCount}</div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
               </div>
             </Card>

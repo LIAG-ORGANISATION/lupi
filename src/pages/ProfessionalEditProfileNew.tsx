@@ -206,16 +206,16 @@ const ProfessionalEditProfileNew = () => {
 
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `avatars/${user.id}/${fileName}`;
+      const filePath = `${user.id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('dog-documents')
+        .from('professional-avatars')
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('dog-documents')
+        .from('professional-avatars')
         .getPublicUrl(filePath);
 
       setFormData(prev => ({ ...prev, photo_url: publicUrl }));
