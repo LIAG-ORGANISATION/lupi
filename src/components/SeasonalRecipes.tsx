@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import chickenSweetPotato from "@/assets/recipe-chicken-sweet-potato.jpg";
 import applePearOatmeal from "@/assets/recipe-apple-pear-oatmeal.jpg";
@@ -114,6 +115,8 @@ const recipes: Recipe[] = [
 ];
 
 export const SeasonalRecipes = () => {
+  const navigate = useNavigate();
+  
   // Determine current season (simplified: Oct-Mar = autumn-winter, Apr-Sep = spring-summer)
   const currentMonth = new Date().getMonth();
   const isAutumnWinter = currentMonth >= 9 || currentMonth <= 2; // Oct, Nov, Dec, Jan, Feb, Mar
@@ -123,17 +126,21 @@ export const SeasonalRecipes = () => {
   );
 
   return (
-    <div className="space-y-3">
-      <div>
+    <div className="space-y-4">
+      <div className="space-y-1">
         <h2 className="text-xl font-bold text-title">Recettes du moment</h2>
         <p className="text-sm text-muted-foreground">
           Selection de saison : {isAutumnWinter ? "automne-hiver" : "printemps-ete"}
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {currentSeasonRecipes.map((recipe) => (
-          <Card key={recipe.id} className="overflow-hidden hover:shadow-lg transition-all cursor-pointer">
+          <Card 
+            key={recipe.id} 
+            className="overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+            onClick={() => navigate(`/recipe/${recipe.id}`)}
+          >
             <div className="aspect-square overflow-hidden">
               <img 
                 src={recipe.image} 
@@ -141,8 +148,8 @@ export const SeasonalRecipes = () => {
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <CardContent className="p-4 space-y-2">
-              <div>
+            <CardContent className="p-4 space-y-3">
+              <div className="space-y-1">
                 <h3 className="font-bold text-title text-base leading-tight">{recipe.title}</h3>
                 <p className="text-xs text-primary font-medium">{recipe.subtitle}</p>
               </div>
@@ -151,7 +158,7 @@ export const SeasonalRecipes = () => {
                 {recipe.ingredients.join(", ")}
               </p>
               
-              <div className="pt-1 border-t border-border">
+              <div className="pt-2 border-t border-border">
                 <p className="text-xs text-foreground font-medium">{recipe.benefits}</p>
               </div>
             </CardContent>

@@ -477,11 +477,6 @@ const Home = () => {
             </div>
           </div>}
 
-        {/* Seasonal Recipes section - only for guardians */}
-        {isGuardian && <div className="mb-3">
-            <SeasonalRecipes />
-          </div>}
-
         {/* Formation section - only for guardians */}
         {isGuardian && <div className="space-y-3 mb-3">
             <h2 className="text-xl font-bold text-title">Formation coup de cœur</h2>
@@ -594,6 +589,11 @@ const Home = () => {
               <Plus className="h-5 w-5 mr-2" />
               Télécharger l'app et s'inscrire
             </Button>
+          </div>}
+
+        {/* Seasonal Recipes section - only for guardians - at the bottom */}
+        {isGuardian && <div className="mt-6">
+            <SeasonalRecipes />
           </div>}
 
       </div>
