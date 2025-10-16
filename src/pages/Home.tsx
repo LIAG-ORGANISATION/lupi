@@ -20,6 +20,8 @@ import { DogCalendar } from "@/components/DogCalendar";
 import { SeasonalAllergies } from "@/components/SeasonalAllergies";
 import { SeasonalRecipes } from "@/components/SeasonalRecipes";
 import { useToast } from "@/hooks/use-toast";
+import { useUnreadMessages } from "@/hooks/useUnreadMessages";
+import { Badge } from "@/components/ui/badge";
 interface Dog {
   id: string;
   name: string;
@@ -54,6 +56,7 @@ const Home = () => {
   const [hasTestedDogs, setHasTestedDogs] = useState(false);
   const [copiedPromo, setCopiedPromo] = useState<string | null>(null);
   const [dogsCompletion, setDogsCompletion] = useState<DogCompletion[]>([]);
+  const unreadCount = useUnreadMessages();
 
   // Check if user is first time logging in as guardian
   useEffect(() => {
@@ -442,8 +445,16 @@ const Home = () => {
         {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-3">
             <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/messages")}>
               <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
+                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm relative">
                   <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
+                  {unreadCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                    >
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </Badge>
+                  )}
                 </div>
                 <div>
                   <h3 className="font-semibold text-title text-sm">Messages</h3>
