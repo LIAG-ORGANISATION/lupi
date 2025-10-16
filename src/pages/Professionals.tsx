@@ -3,33 +3,93 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { Search, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+interface ProfessionalData {
+  user_id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  profession_id: string | null;
+  specialisations_ids: string[] | null;
+  localisation: string | null;
+  tarifs: string | null;
+  photo_url: string | null;
+  professions?: {
+    label: string;
+  };
+}
 
 const Professionals = () => {
   const navigate = useNavigate();
+  const [professionals, setProfessionals] = useState<ProfessionalData[]>([]);
+  const [specialisations, setSpecialisations] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const professionals = [
-    {
-      id: 1,
-      name: "Dr. Emily Carter",
-      profession: "Vétérinaire",
-      specialties: ["Médecine générale", "Chirurgie"],
-      rate: "60€/consultation",
-    },
-    {
-      id: 2,
-      name: "Liam Bennett",
-      profession: "Éducateur canin",
-      specialties: ["Dressage chiots", "Comportement"],
-      rate: "50€/séance",
-    },
-    {
-      id: 3,
-      name: "Sophia Clark",
-      profession: "Pet sitter",
-      specialties: ["Garde à domicile", "Promenades"],
-      rate: "25€/jour",
-    },
-  ];
+  useEffect(() => {
+    loadProfessionals();
+  }, []);
+
+  const loadProfessionals = async () => {
+    try {
+      // Load all specialisations first
+      const { data: specsData } = await supabase
+        .from("specialisations")
+        .select("id, label");
+      
+      const specsMap: Record<string, string> = {};
+      specsData?.forEach(spec => {
+        specsMap[spec.id] = spec.label;
+      });
+      setSpecialisations(specsMap);
+
+      // Load professionals with their profession
+      const { data, error } = await supabase
+        .from("professionals")
+        .select(`
+          user_id,
+          full_name,
+          email,
+          phone,
+          profession_id,
+          specialisations_ids,
+          localisation,
+          tarifs,
+          photo_url,
+          professions (
+            label
+          )
+        `)
+        .order("full_name");
+
+      if (error) throw error;
+      setProfessionals(data || []);
+    } catch (error) {
+      console.error("Error loading professionals:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
+
+  const filteredProfessionals = professionals.filter((pro) => {
+    const searchLower = searchQuery.toLowerCase();
+    const nameMatch = pro.full_name.toLowerCase().includes(searchLower);
+    const professionMatch = pro.professions?.label.toLowerCase().includes(searchLower);
+    const locationMatch = pro.localisation?.toLowerCase().includes(searchLower);
+    return nameMatch || professionMatch || locationMatch;
+  });
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
@@ -45,50 +105,86 @@ const Professionals = () => {
         <Input
           placeholder="Rechercher un professionnel..."
           className="pl-10 rounded-2xl"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
-      <div className="space-y-4">
-        {professionals.map((pro) => (
-          <Card
-            key={pro.id}
-            className="lupi-card"
-          >
-            <div className="space-y-3">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-semibold text-title">{pro.name}</h3>
-                  <p className="text-sm text-primary">{pro.profession}</p>
+      {loading ? (
+        <div className="text-center py-8 text-muted-foreground">
+          Chargement des professionnels...
+        </div>
+      ) : filteredProfessionals.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          {searchQuery ? "Aucun professionnel trouvé pour votre recherche" : "Aucun professionnel disponible"}
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredProfessionals.map((pro) => (
+            <Card
+              key={pro.user_id}
+              className="lupi-card cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={() => navigate(`/professional/${pro.user_id}`)}
+            >
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <Avatar className="w-12 h-12">
+                    {pro.photo_url && <AvatarImage src={pro.photo_url} alt={pro.full_name} />}
+                    <AvatarFallback className="bg-secondary text-title font-semibold">
+                      {getInitials(pro.full_name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-title truncate">{pro.full_name}</h3>
+                    <p className="text-sm text-primary">{pro.professions?.label || "Professionnel"}</p>
+                    {pro.localisation && (
+                      <div className="flex items-center gap-1 mt-1">
+                        <MapPin className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs text-muted-foreground">{pro.localisation}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
-                  <MapPin className="h-5 w-5 text-primary" />
-                </div>
-              </div>
 
-              <div className="flex flex-wrap gap-2">
-                {pro.specialties.map((specialty, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-secondary text-xs rounded-full text-foreground"
-                  >
-                    {specialty}
+                {pro.specialisations_ids && pro.specialisations_ids.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {pro.specialisations_ids.slice(0, 3).map((specId) => (
+                      <Badge
+                        key={specId}
+                        variant="secondary"
+                        className="bg-secondary text-xs"
+                      >
+                        {specialisations[specId] || specId}
+                      </Badge>
+                    ))}
+                    {pro.specialisations_ids.length > 3 && (
+                      <Badge variant="secondary" className="bg-secondary text-xs">
+                        +{pro.specialisations_ids.length - 3}
+                      </Badge>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between pt-2">
+                  <span className="text-sm font-medium text-title">
+                    {pro.tarifs || "Tarifs sur demande"}
                   </span>
-                ))}
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/professional/${pro.user_id}`);
+                    }}
+                    className="rounded-full bg-primary hover:bg-primary/90"
+                    size="sm"
+                  >
+                    Voir profil
+                  </Button>
+                </div>
               </div>
-
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-sm font-medium text-title">{pro.rate}</span>
-                <Button
-                  onClick={() => navigate(`/professional/${pro.id}`)}
-                  className="rounded-full bg-primary hover:bg-primary/90"
-                >
-                  Voir profil
-                </Button>
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
