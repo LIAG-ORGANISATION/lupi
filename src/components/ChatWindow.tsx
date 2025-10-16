@@ -44,22 +44,9 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
     if (!user || !conversationId) return;
 
     const fetchConversation = async () => {
-      const { data, error } = await supabase
+      const { data: convData, error } = await supabase
         .from("conversations")
-        .select(`
-          *,
-          owners!conversations_owner_id_fkey (
-            full_name,
-            avatar_url
-          ),
-          professionals!conversations_professional_id_fkey (
-            full_name,
-            photo_url
-          ),
-          dogs (
-            name
-          )
-        `)
+        .select("*")
         .eq("id", conversationId)
         .single();
 
@@ -68,7 +55,35 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
         return;
       }
 
-      setConversationDetails(data);
+      // Fetch related data
+      const { data: ownerData } = await supabase
+        .from("owners")
+        .select("full_name, avatar_url")
+        .eq("user_id", convData.owner_id)
+        .single();
+
+      const { data: proData } = await supabase
+        .from("professionals")
+        .select("full_name, photo_url")
+        .eq("user_id", convData.professional_id)
+        .single();
+
+      let dogData = null;
+      if (convData.dog_id) {
+        const { data } = await supabase
+          .from("dogs")
+          .select("name")
+          .eq("id", convData.dog_id)
+          .single();
+        dogData = data;
+      }
+
+      setConversationDetails({
+        ...convData,
+        owners: ownerData,
+        professionals: proData,
+        dogs: dogData,
+      });
     };
 
     const fetchMessages = async () => {

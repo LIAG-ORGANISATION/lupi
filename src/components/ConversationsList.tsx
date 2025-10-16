@@ -39,41 +39,51 @@ const ConversationsList = ({ onSelectConversation, selectedConversationId }: Con
 
     const fetchConversations = async () => {
       try {
-        const { data, error } = await supabase
+        const { data: convData, error } = await supabase
           .from("conversations")
-          .select(`
-            id,
-            owner_id,
-            professional_id,
-            dog_id,
-            last_message_at,
-            owners!conversations_owner_id_fkey (
-              full_name,
-              avatar_url
-            ),
-            professionals!conversations_professional_id_fkey (
-              full_name,
-              photo_url
-            ),
-            dogs (
-              name
-            )
-          `)
+          .select("*")
           .order("last_message_at", { ascending: false, nullsFirst: false });
 
         if (error) throw error;
 
-        // Fetch last message and unread count for each conversation
+        // Fetch details for each conversation
         const conversationsWithDetails = await Promise.all(
-          data.map(async (conv: any) => {
+          (convData || []).map(async (conv: any) => {
+            // Fetch owner details
+            const { data: ownerData } = await supabase
+              .from("owners")
+              .select("full_name, avatar_url")
+              .eq("user_id", conv.owner_id)
+              .single();
+
+            // Fetch professional details
+            const { data: proData } = await supabase
+              .from("professionals")
+              .select("full_name, photo_url")
+              .eq("user_id", conv.professional_id)
+              .single();
+
+            // Fetch dog details if dog_id exists
+            let dogData = null;
+            if (conv.dog_id) {
+              const { data } = await supabase
+                .from("dogs")
+                .select("name")
+                .eq("id", conv.dog_id)
+                .single();
+              dogData = data;
+            }
+
+            // Fetch last message
             const { data: lastMessage } = await supabase
               .from("messages")
               .select("content")
               .eq("conversation_id", conv.id)
               .order("created_at", { ascending: false })
               .limit(1)
-              .single();
+              .maybeSingle();
 
+            // Count unread messages
             const { count: unreadCount } = await supabase
               .from("messages")
               .select("*", { count: "exact", head: true })
@@ -87,11 +97,11 @@ const ConversationsList = ({ onSelectConversation, selectedConversationId }: Con
               professional_id: conv.professional_id,
               dog_id: conv.dog_id,
               last_message_at: conv.last_message_at,
-              owner_name: conv.owners?.full_name || "Propriétaire",
-              owner_avatar: conv.owners?.avatar_url,
-              professional_name: conv.professionals?.full_name || "Professionnel",
-              professional_avatar: conv.professionals?.photo_url,
-              dog_name: conv.dogs?.name,
+              owner_name: ownerData?.full_name || "Propriétaire",
+              owner_avatar: ownerData?.avatar_url,
+              professional_name: proData?.full_name || "Professionnel",
+              professional_avatar: proData?.photo_url,
+              dog_name: dogData?.name,
               last_message: lastMessage?.content || null,
               unread_count: unreadCount || 0,
             };
