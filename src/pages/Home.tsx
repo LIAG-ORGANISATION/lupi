@@ -18,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import WelcomeTutorial from "@/components/WelcomeTutorial";
 import { DogCalendar } from "@/components/DogCalendar";
 import { SeasonalAllergies } from "@/components/SeasonalAllergies";
+import { SeasonalRecipes } from "@/components/SeasonalRecipes";
 import { useToast } from "@/hooks/use-toast";
 interface Dog {
   id: string;
@@ -474,6 +475,11 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          </div>}
+
+        {/* Seasonal Recipes section - only for guardians */}
+        {isGuardian && <div className="mb-3">
+            <SeasonalRecipes />
           </div>}
 
         {/* Formation section - only for guardians */}
