@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { capitalizeWords } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -337,12 +338,12 @@ const Professionals = () => {
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-title truncate">{pro.full_name}</h3>
-                    <p className="text-sm text-primary">{pro.professions?.label || "Professionnel"}</p>
+                    <h3 className="font-semibold text-title truncate">{capitalizeWords(pro.full_name)}</h3>
+                    <p className="text-sm text-primary">{capitalizeWords(pro.professions?.label) || "Professionnel"}</p>
                     {pro.localisation && (
                       <div className="flex items-center gap-1 mt-1">
                         <MapPin className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">{pro.localisation}</span>
+                        <span className="text-xs text-muted-foreground">{capitalizeWords(pro.localisation)}</span>
                       </div>
                     )}
                   </div>
@@ -358,7 +359,7 @@ const Professionals = () => {
                           variant="secondary"
                           className="bg-secondary text-xs"
                         >
-                          {specialisations[specId] || specId}
+                          {capitalizeWords(specialisations[specId]) || specId}
                         </Badge>
                       ))}
                       {pro.specialisations_ids.length > 3 && (

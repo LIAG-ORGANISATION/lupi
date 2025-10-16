@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { Badge } from "@/components/ui/badge";
+import { capitalizeWords } from "@/lib/utils";
 
 interface Profession {
   id: string;
@@ -166,16 +167,16 @@ const MyProfessionalProfile = () => {
               </AvatarFallback>
             </Avatar>
             <div>
-              <h2 className="text-2xl font-bold text-title">{profileData.full_name}</h2>
+              <h2 className="text-2xl font-bold text-title">{capitalizeWords(profileData.full_name)}</h2>
               {profileData.profession && (
                 <p className="text-sm text-primary font-medium mt-1">
-                  {profileData.profession.label}
+                  {capitalizeWords(profileData.profession.label)}
                 </p>
               )}
               {profileData.localisation && (
                 <p className="text-sm text-muted-foreground flex items-center justify-center gap-1 mt-1">
                   <MapPin className="h-4 w-4" />
-                  {profileData.localisation}
+                  {capitalizeWords(profileData.localisation)}
                 </p>
               )}
             </div>

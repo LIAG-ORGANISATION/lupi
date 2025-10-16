@@ -10,6 +10,7 @@ import { Send, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
+import { capitalizeWords } from "@/lib/utils";
 
 interface Message {
   id: string;
@@ -221,9 +222,9 @@ const ChatWindow = ({ conversationId, onBack }: ChatWindowProps) => {
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm truncate">{otherPartyName}</p>
+          <p className="font-semibold text-sm truncate">{capitalizeWords(otherPartyName)}</p>
           {conversationDetails.dogs?.name && (
-            <p className="text-xs text-muted-foreground truncate">Concernant: {conversationDetails.dogs.name}</p>
+            <p className="text-xs text-muted-foreground truncate">Concernant: {capitalizeWords(conversationDetails.dogs.name)}</p>
           )}
         </div>
       </div>

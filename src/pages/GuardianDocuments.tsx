@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Plus, FileText, Image as ImageIcon, Trash2, ExternalLink, Share2, Users, Camera, Upload, Receipt, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { capitalizeWords } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -831,8 +832,8 @@ const GuardianDocuments = () => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{share.professionals?.full_name}</p>
-                    <p className="text-xs text-muted-foreground">{share.professionals?.profession}</p>
+                    <p className="font-medium text-sm truncate">{capitalizeWords(share.professionals?.full_name)}</p>
+                    <p className="text-xs text-muted-foreground">{capitalizeWords(share.professionals?.profession)}</p>
                   </div>
                 </div>
               ))

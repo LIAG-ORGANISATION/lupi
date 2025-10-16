@@ -7,6 +7,7 @@ import { useUserRole } from "@/hooks/useUserRole";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { MessageCircle } from "lucide-react";
+import { capitalizeWords } from "@/lib/utils";
 
 interface Conversation {
   id: string;
@@ -205,7 +206,7 @@ const ConversationsList = ({ onSelectConversation, selectedConversationId }: Con
               </Avatar>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="font-semibold text-sm truncate">{displayName}</p>
+                  <p className="font-semibold text-sm truncate">{capitalizeWords(displayName)}</p>
                   {conv.last_message_at && (
                     <span className="text-xs text-muted-foreground ml-2 flex-shrink-0">
                       {formatDistanceToNow(new Date(conv.last_message_at), {
@@ -216,7 +217,7 @@ const ConversationsList = ({ onSelectConversation, selectedConversationId }: Con
                   )}
                 </div>
                 {conv.dog_name && (
-                  <p className="text-xs text-muted-foreground mb-1">Concernant: {conv.dog_name}</p>
+                  <p className="text-xs text-muted-foreground mb-1">Concernant: {capitalizeWords(conv.dog_name)}</p>
                 )}
                 {conv.last_message && (
                   <p className="text-sm text-muted-foreground truncate">{conv.last_message}</p>

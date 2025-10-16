@@ -7,6 +7,7 @@ import { ArrowLeft, Share2, Star, ThumbsUp, MessageCircle, Clock, DollarSign, Aw
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { capitalizeWords } from "@/lib/utils";
 
 const ProfessionalProfile = () => {
   const navigate = useNavigate();
@@ -107,9 +108,9 @@ const ProfessionalProfile = () => {
   }
 
   const professionalData = {
-    name: professional.full_name || "Professionnel",
-    profession: professional.profession || "Professionnel de santé animale",
-    location: professional.localisation || professional.zone || "France",
+    name: capitalizeWords(professional.full_name) || "Professionnel",
+    profession: capitalizeWords(professional.profession) || "Professionnel de santé animale",
+    location: capitalizeWords(professional.localisation || professional.zone) || "France",
     phone: professional.phone,
     email: professional.email,
     avatar: professional.photo_url || professional.avatar_url,
