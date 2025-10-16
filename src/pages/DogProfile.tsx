@@ -43,6 +43,14 @@ const DogProfile = () => {
   const [healthAlertsCount, setHealthAlertsCount] = useState(0);
   const [vaccinationDocsCount, setVaccinationDocsCount] = useState(0);
   const [showAddEventDialog, setShowAddEventDialog] = useState(false);
+  const [showEditInfoDialog, setShowEditInfoDialog] = useState(false);
+  const [editInfo, setEditInfo] = useState({
+    breed: "",
+    weight: "",
+    birth_date: "",
+    gender: "",
+    medical_notes: "",
+  });
   const [newEvent, setNewEvent] = useState({
     title: "",
     description: "",
@@ -69,6 +77,13 @@ const DogProfile = () => {
       if (error) throw error;
       console.log('[DogProfile] Dog data:', data);
       setDog(data);
+      setEditInfo({
+        breed: data.breed || "",
+        weight: data.weight?.toString() || "",
+        birth_date: data.birth_date || "",
+        gender: data.gender || "",
+        medical_notes: data.medical_notes || "",
+      });
     } catch (error) {
       console.error('[DogProfile] Error:', error);
     } finally {
@@ -298,6 +313,52 @@ const DogProfile = () => {
     }
   };
   
+  const handleUpdateInfo = async () => {
+    try {
+      const { error } = await supabase
+        .from("dogs")
+        .update({
+          breed: editInfo.breed || null,
+          weight: editInfo.weight ? parseFloat(editInfo.weight) : null,
+          birth_date: editInfo.birth_date || null,
+          gender: editInfo.gender || null,
+          medical_notes: editInfo.medical_notes || null,
+        })
+        .eq("id", id)
+        .eq("owner_id", user?.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setDog((prev) =>
+        prev
+          ? {
+              ...prev,
+              breed: editInfo.breed || null,
+              weight: editInfo.weight ? parseFloat(editInfo.weight) : null,
+              birth_date: editInfo.birth_date || null,
+              gender: editInfo.gender || null,
+              medical_notes: editInfo.medical_notes || null,
+            }
+          : null
+      );
+
+      toast({
+        title: "Informations mises à jour",
+        description: "Les informations ont été modifiées avec succès",
+      });
+
+      setShowEditInfoDialog(false);
+    } catch (error) {
+      console.error("Error updating info:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de mettre à jour les informations",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleAddEvent = async () => {
     if (!newEvent.title || !newEvent.event_date) {
       toast({
@@ -463,7 +524,19 @@ const DogProfile = () => {
               <FileText className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Informations</h4>
+              <div className="flex items-center justify-between mb-1">
+                <h4 className="font-semibold text-title">Informations</h4>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="rounded-full"
+                  onClick={() => setShowEditInfoDialog(true)}
+                >
+                  Modifier
+                </Button>
+              </div>
+              {dog.breed && <p className="text-sm text-foreground">Race: {dog.breed}</p>}
+              {dog.gender && <p className="text-sm text-foreground">Sexe: {dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
               {dog.birth_date && <p className="text-sm text-foreground">Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>}
               {dog.weight && <p className="text-sm text-foreground">Poids: {dog.weight} kg</p>}
               {dog.medical_notes && <p className="text-sm text-foreground mt-2">{dog.medical_notes}</p>}
@@ -540,6 +613,84 @@ const DogProfile = () => {
           </div>
         </Card>
       </div>
+
+      {/* Dialog pour modifier les informations */}
+      <Dialog open={showEditInfoDialog} onOpenChange={setShowEditInfoDialog}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifier les informations</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-1 block">Race</label>
+              <Input
+                value={editInfo.breed}
+                onChange={(e) => setEditInfo({ ...editInfo, breed: e.target.value })}
+                placeholder="Ex: Labrador"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Sexe</label>
+              <Select
+                value={editInfo.gender}
+                onValueChange={(value) => setEditInfo({ ...editInfo, gender: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Choisir le sexe" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Mâle</SelectItem>
+                  <SelectItem value="female">Femelle</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Date de naissance</label>
+              <Input
+                type="date"
+                value={editInfo.birth_date}
+                onChange={(e) => setEditInfo({ ...editInfo, birth_date: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Poids (kg)</label>
+              <Input
+                type="number"
+                step="0.1"
+                value={editInfo.weight}
+                onChange={(e) => setEditInfo({ ...editInfo, weight: e.target.value })}
+                placeholder="Ex: 25.5"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Notes médicales</label>
+              <Textarea
+                value={editInfo.medical_notes}
+                onChange={(e) => setEditInfo({ ...editInfo, medical_notes: e.target.value })}
+                placeholder="Informations médicales importantes..."
+                rows={4}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <Button onClick={handleUpdateInfo} className="flex-1 rounded-full">
+                Enregistrer
+              </Button>
+              <Button
+                onClick={() => setShowEditInfoDialog(false)}
+                variant="outline"
+                className="flex-1 rounded-full"
+              >
+                Annuler
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Dialog pour ajouter un événement */}
       <Dialog open={showAddEventDialog} onOpenChange={setShowAddEventDialog}>
