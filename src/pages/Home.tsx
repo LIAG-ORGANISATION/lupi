@@ -243,7 +243,7 @@ const Home = () => {
             </Button>
           </div>
 
-          <Card className="bg-secondary p-4 rounded-xl shadow-lg overflow-hidden relative">
+          <Card className="cta-container">
             <div className="relative z-10 space-y-3">
               <h2 className="text-2xl font-bold text-title">
                 Commander un test ADN pour un patient
@@ -251,7 +251,7 @@ const Home = () => {
               <p className="text-sm text-foreground/80">
                 Analyse complète des races, prédispositions santé et profil comportemental
               </p>
-              <Button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
+              <Button onClick={() => navigate("/dna-kit")} className="w-full rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold" size="lg">
                 <TestTube2 className="h-5 w-5 mr-2" />
                 Commander un kit ADN
               </Button>
@@ -284,8 +284,8 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Card className="p-4 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/clients")}>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
+                <div className="icon-container">
+                  <Users className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title">Mes Clients</h3>
@@ -298,8 +298,8 @@ const Home = () => {
 
             <Card className="p-4 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                  <MessageSquare className="h-6 w-6 text-secondary" />
+                <div className="icon-container">
+                  <MessageSquare className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-title">Messages</h3>

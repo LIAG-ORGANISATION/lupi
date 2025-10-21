@@ -740,8 +740,8 @@ const GuardianDocuments = () => {
                 variant="outline"
                 className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
               >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-primary" />
+                <div className="icon-container">
+                  <FileText className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <div className="text-left flex-1">
                   <p className="font-semibold">Importer un PDF</p>
@@ -754,8 +754,8 @@ const GuardianDocuments = () => {
                 variant="outline"
                 className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
               >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Camera className="h-6 w-6 text-primary" />
+                <div className="icon-container">
+                  <Camera className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <div className="text-left flex-1">
                   <p className="font-semibold">Prendre une photo</p>
@@ -768,8 +768,8 @@ const GuardianDocuments = () => {
                 variant="outline"
                 className="w-full h-16 rounded-2xl flex items-center justify-start gap-4"
               >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Upload className="h-6 w-6 text-primary" />
+                <div className="icon-container">
+                  <Upload className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <div className="text-left flex-1">
                   <p className="font-semibold">Importer une photo</p>

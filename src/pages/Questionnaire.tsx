@@ -972,8 +972,8 @@ const Questionnaire = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Clock className="h-6 w-6 text-primary" />
+              <div className="icon-container">
+                <Clock className="h-6 w-6" strokeWidth={1.5} />
               </div>
               <AlertDialogTitle className="text-xl">Questionnaire comportemental</AlertDialogTitle>
             </div>

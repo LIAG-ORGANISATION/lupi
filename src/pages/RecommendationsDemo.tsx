@@ -42,8 +42,8 @@ const RecommendationsDemo = () => {
         {/* 1. Alimentation & Nutrition */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Utensils className="h-6 w-6 text-primary" />
+            <div className="icon-container flex-shrink-0">
+              <Utensils className="h-6 w-6" strokeWidth={1.5} />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold">Alimentation</h2>
           </div>
@@ -86,8 +86,8 @@ const RecommendationsDemo = () => {
         {/* 2. Promenades & Activités */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Footprints className="h-6 w-6 text-primary" />
+            <div className="icon-container flex-shrink-0">
+              <Footprints className="h-6 w-6" strokeWidth={1.5} />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold">Activités</h2>
           </div>
@@ -131,8 +131,8 @@ const RecommendationsDemo = () => {
         {/* 3. Jeux & Stimulation mentale */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Puzzle className="h-6 w-6 text-primary" />
+            <div className="icon-container flex-shrink-0">
+              <Puzzle className="h-6 w-6" strokeWidth={1.5} />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold">Jeux</h2>
           </div>
@@ -169,8 +169,8 @@ const RecommendationsDemo = () => {
         {/* 4. Santé & Prévention */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Stethoscope className="h-6 w-6 text-primary" />
+            <div className="icon-container flex-shrink-0">
+              <Stethoscope className="h-6 w-6" strokeWidth={1.5} />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold">Santé</h2>
           </div>
@@ -215,8 +215,8 @@ const RecommendationsDemo = () => {
         {/* 5. Personnalité & Lien */}
         <section className="space-y-3 sm:space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Heart className="h-6 w-6 text-primary" />
+            <div className="icon-container flex-shrink-0">
+              <Heart className="h-6 w-6" strokeWidth={1.5} />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold">Comportement</h2>
           </div>

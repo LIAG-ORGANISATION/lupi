@@ -145,7 +145,7 @@ const DNAResults = () => {
         <div className="space-y-3">
           {breedComposition.map((breed, index) => (
             <div key={index} className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-card flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
                 <div className={`w-8 h-8 rounded-full ${breed.color}`} />
               </div>
               <div className="flex-1 space-y-1">

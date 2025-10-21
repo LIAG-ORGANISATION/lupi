@@ -73,8 +73,8 @@ const BillingSettings = () => {
 
             <Card className="p-6 rounded-3xl space-y-4 border-2 border-accent/20">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                  <Wallet className="h-6 w-6 text-accent" />
+                <div className="icon-container">
+                  <Wallet className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-title">Cagnotte commission test ADN</h2>

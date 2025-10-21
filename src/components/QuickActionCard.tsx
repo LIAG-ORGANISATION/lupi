@@ -23,9 +23,9 @@ const QuickActionCard = ({
     >
       <div className="flex flex-col items-center gap-2">
         <div className="icon-container">
-          <Icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+          <Icon className="h-6 w-6" strokeWidth={1.5} style={{ color: 'hsl(0 0% 45%)' }} />
         </div>
-        <span className="text-sm font-medium text-foreground text-center" style={{ fontSize: '14px' }}>{label}</span>
+        <span className="font-medium text-foreground text-center" style={{ fontSize: '14px' }}>{label}</span>
       </div>
     </button>
   );

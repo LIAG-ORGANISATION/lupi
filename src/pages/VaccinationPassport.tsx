@@ -428,8 +428,8 @@ const VaccinationPassport = () => {
           documents.map((doc) => (
             <Card key={doc.id} className="p-4 rounded-2xl space-y-3">
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-primary" />
+                <div className="flex-shrink-0 icon-container">
+                  <FileText className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-title truncate">{doc.title}</h3>

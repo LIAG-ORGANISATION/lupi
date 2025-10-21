@@ -9,7 +9,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* N26 Design System - Charte graphique exacte */
-    --background: 0 0% 100%; /* #FFFFFF - Blanc pur */
+    --background: 0 0% 96%; /* #F5F5F5 - Fond gris très clair comme N26 */
     --foreground: 0 0% 13%; /* #212121 - Texte noir comme N26 */
 
     --card: 0 0% 100%; /* #FFFFFF - Cartes blanches */
@@ -21,11 +21,11 @@ All colors MUST be HSL.
     --primary: 166 47% 62%; /* #5FB89B - Vert turquoise N26 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%; /* #F5F5F5 - Gris très clair pour fonds */
+    --secondary: 166 30% 90%; /* #D4E8E3 - Vert très pâle pour CTA containers */
     --secondary-foreground: 0 0% 13%;
 
     --muted: 0 0% 96%; /* #F5F5F5 - Gris très clair */
-    --muted-foreground: 0 0% 45%; /* #737373 - Gris moyen */
+    --muted-foreground: 0 0% 45%; /* #737373 - Gris moyen pour icônes */
 
     --accent: 166 47% 62%; /* #5FB89B - Vert turquoise */
     --accent-foreground: 0 0% 100%;
@@ -44,6 +44,9 @@ All colors MUST be HSL.
     /* CTA important - Terracotta (utilisation minimale) */
     --cta: 9 48% 56%; /* #C26A5A */
     --cta-foreground: 0 0% 100%;
+    
+    /* Fond CTA container - vert très pâle N26 */
+    --cta-bg: 166 30% 90%; /* #D4E8E3 */
     
     /* Gradients subtils N26 */
     --gradient-primary: linear-gradient(135deg, hsl(166 47% 62%), hsl(166 47% 68%));
@@ -121,7 +124,7 @@ All colors MUST be HSL.
     font-size: 16px; /* Texte courant 16px */
     font-weight: 400; /* Regular */
     line-height: 1.5;
-    background: hsl(0 0% 100%);
+    background: hsl(0 0% 96%); /* Gris clair comme N26 */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -238,18 +241,42 @@ All colors MUST be HSL.
     transform: translateY(-1px);
   }
   
-  /* Icon Container - Style N26 avec vert turquoise, icônes minimalistes */
+  /* Icon Container - Style N26 SANS fond, icônes grises */
   .icon-container {
     @apply w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200;
-    background: hsl(166 47% 62% / 0.12);
+    background: transparent; /* PAS de fond coloré comme N26 */
+  }
+  
+  .icon-container svg {
+    color: hsl(0 0% 45%); /* Icônes en gris moyen */
+  }
+  
+  /* Icône d'action primaire - cercle vert plein comme N26 */
+  .icon-primary-action {
+    @apply w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200;
+    background: hsl(166 47% 62%); /* Vert turquoise plein */
+  }
+  
+  .icon-primary-action svg {
+    color: white;
   }
   
   /* Badge with N26 colors */
   .badge-minimal {
     @apply inline-flex items-center gap-1 px-3 py-1 rounded-full font-medium;
     font-size: 12px; /* Légendes 12px */
-    background: hsl(166 47% 62% / 0.12);
+    background: hsl(0 0% 93%); /* Gris clair comme N26 */
     color: hsl(0 0% 13%);
+  }
+  
+  /* CTA Container - Fond vert pâle N26 */
+  .cta-container {
+    @apply bg-[hsl(166,30%,90%)] rounded-xl p-4 transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+  
+  .cta-container:hover {
+    box-shadow: var(--shadow-hover);
   }
   
   /* Input minimal N26 style */
