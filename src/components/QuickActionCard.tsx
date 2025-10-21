@@ -16,14 +16,14 @@ const QuickActionCard = ({
     <button
       onClick={onClick}
       className={cn(
-        "bg-card rounded-2xl p-3 cursor-pointer transition-all duration-200 border-0",
-        "shadow-sm hover:shadow-md",
+        "bg-card rounded-xl p-3 cursor-pointer transition-all duration-300 border-0",
+        "shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95",
         className
       )}
     >
       <div className="flex flex-col items-center gap-2">
         <div className="icon-container">
-          <Icon className="h-5 w-5 text-primary" strokeWidth={2} />
+          <Icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
         </div>
         <span className="text-sm font-medium text-foreground text-center">{label}</span>
       </div>

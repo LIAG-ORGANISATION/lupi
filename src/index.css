@@ -8,98 +8,105 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Ultra-minimal design system - nuances de blanc uniquement */
+    /* N26 Design System - Charte graphique */
     --background: 0 0% 100%; /* #FFFFFF - Blanc pur */
-    --foreground: 0 0% 13%; /* #212121 - Texte très foncé */
+    --foreground: 21 26% 28%; /* #5B4033 - Brun foncé pour textes principaux */
 
     --card: 0 0% 100%; /* #FFFFFF - Cartes blanches */
-    --card-foreground: 0 0% 13%;
+    --card-foreground: 21 26% 28%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover-foreground: 21 26% 28%;
 
-    --primary: 35 40% 55%; /* #B49262 - Gold (utilisé avec parcimonie) */
-    --primary-foreground: 0 0% 100%;
+    --primary: 162 28% 77%; /* #B8D2C9 - Vert d'eau (couleur secondaire N26) */
+    --primary-foreground: 21 26% 28%;
 
-    --secondary: 0 0% 98%; /* #FAFAFA - Blanc cassé */
-    --secondary-foreground: 0 0% 13%;
+    --secondary: 29 31% 88%; /* #E9DED6 - Beige pâle pour fonds doux */
+    --secondary-foreground: 21 26% 28%;
 
-    --muted: 0 0% 96%; /* #F5F5F5 - Gris très pâle */
-    --muted-foreground: 0 0% 45%; /* #737373 - Gris moyen */
+    --muted: 29 31% 88%; /* #E9DED6 - Beige pâle */
+    --muted-foreground: 21 26% 48%; /* #5B4033 plus clair */
 
-    --accent: 0 0% 97%; /* #F8F8F8 - Presque blanc */
-    --accent-foreground: 0 0% 13%;
+    --accent: 162 28% 77%; /* #B8D2C9 - Vert d'eau */
+    --accent-foreground: 21 26% 28%;
 
-    --destructive: 0 70% 50%;
+    --destructive: 9 48% 56%; /* #C26A5A - Terracotta pour actions critiques */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 96%; /* #F5F5F5 - Bordures ultra-subtiles */
-    --input: 0 0% 96%;
-    --ring: 35 40% 55%;
+    --border: 0 0% 95%; /* #F3F3F3 - Séparateurs fins */
+    --input: 0 0% 95%;
+    --ring: 162 28% 77%;
 
-    --radius: 1rem;
+    --radius: 0.75rem; /* 12px - Coins légèrement arrondis */
     
-    --title: 0 0% 13%;
+    --title: 21 26% 28%;
     
-    /* Gradients ultra-subtils */
-    --gradient-primary: linear-gradient(135deg, hsl(35 40% 55%), hsl(35 45% 60%));
-    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 99%));
+    /* CTA important - Terracotta (utilisation minimale) */
+    --cta: 9 48% 56%; /* #C26A5A */
+    --cta-foreground: 0 0% 100%;
+    
+    /* Gradients subtils N26 */
+    --gradient-primary: linear-gradient(135deg, hsl(162 28% 77%), hsl(162 28% 82%));
+    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(29 31% 88%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 99%));
     
-    /* Élévations ultra-subtiles */
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
-    --shadow-elevated: 0 6px 16px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05);
+    /* Ombres très subtiles <20% opacité */
+    --shadow-card: 0 1px 3px rgba(91, 64, 51, 0.08), 0 1px 2px rgba(91, 64, 51, 0.04);
+    --shadow-hover: 0 4px 8px rgba(91, 64, 51, 0.12), 0 2px 4px rgba(91, 64, 51, 0.06);
+    --shadow-elevated: 0 6px 16px rgba(91, 64, 51, 0.15), 0 3px 6px rgba(91, 64, 51, 0.08);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 13%;
-    --sidebar-primary: 35 40% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 98%;
-    --sidebar-accent-foreground: 0 0% 13%;
-    --sidebar-border: 0 0% 93%;
-    --sidebar-ring: 35 40% 55%;
+    --sidebar-foreground: 21 26% 28%;
+    --sidebar-primary: 162 28% 77%;
+    --sidebar-primary-foreground: 21 26% 28%;
+    --sidebar-accent: 29 31% 88%;
+    --sidebar-accent-foreground: 21 26% 28%;
+    --sidebar-border: 0 0% 95%;
+    --sidebar-ring: 162 28% 77%;
   }
 
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    --background: 21 26% 18%;
+    --foreground: 0 0% 98%;
 
-    --card: 222 47% 15%;
-    --card-foreground: 210 40% 98%;
+    --card: 21 26% 22%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222 47% 15%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 21 26% 22%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 35 40% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 162 28% 77%;
+    --primary-foreground: 21 26% 28%;
 
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 21 26% 25%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 21 26% 25%;
+    --muted-foreground: 29 20% 70%;
 
-    --accent: 217 33% 20%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 162 28% 77%;
+    --accent-foreground: 21 26% 28%;
 
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 9 48% 56%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 20%;
-    --input: 217 33% 20%;
-    --ring: 35 40% 55%;
+    --border: 21 26% 30%;
+    --input: 21 26% 30%;
+    --ring: 162 28% 77%;
     
-    --title: 210 40% 98%;
+    --title: 0 0% 98%;
     
-    --sidebar-background: 222 47% 15%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 35 40% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 33% 20%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 20%;
-    --sidebar-ring: 35 40% 55%;
+    --cta: 9 48% 56%;
+    --cta-foreground: 0 0% 100%;
+    
+    --sidebar-background: 21 26% 22%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 162 28% 77%;
+    --sidebar-primary-foreground: 21 26% 28%;
+    --sidebar-accent: 21 26% 25%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 21 26% 30%;
+    --sidebar-ring: 162 28% 77%;
   }
 }
 
@@ -134,26 +141,41 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Minimal elevation cards */
+  /* N26 Style Cards - coins arrondis 12px */
   .lupi-card {
-    @apply bg-card rounded-2xl p-3 transition-all duration-200 border-0;
+    @apply bg-card rounded-xl p-3 transition-all duration-300 border-0;
     box-shadow: var(--shadow-card);
   }
   
   .lupi-card:hover {
     box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
   }
   
-  /* Primary Button - Minimal with gold accent */
+  /* Primary Button - Style N26 avec vert d'eau */
   .btn-lupi {
-    @apply bg-primary text-primary-foreground font-semibold rounded-full px-8 py-3.5 transition-all duration-200;
-    @apply hover:bg-primary/90;
-    box-shadow: 0 2px 8px rgba(180, 146, 98, 0.12);
+    @apply bg-primary text-primary-foreground font-semibold rounded-xl px-8 py-3.5 transition-all duration-300;
+    @apply hover:bg-primary/90 active:scale-95;
+    box-shadow: 0 2px 8px rgba(184, 210, 201, 0.15);
     letter-spacing: -0.01em;
   }
   
   .btn-lupi:hover {
-    box-shadow: 0 4px 12px rgba(180, 146, 98, 0.2);
+    box-shadow: 0 4px 12px rgba(184, 210, 201, 0.25);
+    transform: translateY(-1px);
+  }
+  
+  /* CTA Button - Terracotta pour actions importantes */
+  .btn-cta {
+    @apply bg-[hsl(9,48%,56%)] text-white font-semibold rounded-xl px-8 py-3.5 transition-all duration-300;
+    @apply hover:bg-[hsl(9,48%,50%)] active:scale-95;
+    box-shadow: 0 2px 8px rgba(194, 106, 90, 0.15);
+    letter-spacing: -0.01em;
+  }
+  
+  .btn-cta:hover {
+    box-shadow: 0 4px 12px rgba(194, 106, 90, 0.25);
+    transform: translateY(-1px);
   }
   
   /* Gradient Background - très subtil */
@@ -167,27 +189,28 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-card);
   }
   
-  /* List Item Card - élévation subtile */
+  /* List Item Card - Style N26 */
   .list-item-card {
-    @apply bg-card rounded-2xl p-3 transition-all duration-200 cursor-pointer border-0;
+    @apply bg-card rounded-xl p-3 transition-all duration-300 cursor-pointer border-0;
     box-shadow: var(--shadow-card);
   }
   
   .list-item-card:hover {
     box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
   }
   
-  /* Icon Container - couleur très subtile */
+  /* Icon Container - Style N26 avec vert d'eau */
   .icon-container {
-    @apply w-10 h-10 rounded-xl flex items-center justify-center;
-    background: hsl(35 40% 55% / 0.08);
+    @apply w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200;
+    background: hsl(162 28% 77% / 0.15);
   }
   
-  /* Badge with minimal color */
+  /* Badge with N26 colors */
   .badge-minimal {
     @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium;
-    background: hsl(35 40% 55% / 0.08);
-    color: hsl(35 40% 45%);
+    background: hsl(162 28% 77% / 0.15);
+    color: hsl(21 26% 28%);
   }
   
   /* Input minimal */
