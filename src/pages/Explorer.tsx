@@ -77,10 +77,10 @@ const Explorer = () => {
               align: "start",
               loop: false,
             }}
-            className="w-full"
+            className="w-full -mx-2"
           >
-            <CarouselContent className="-ml-1 md:-ml-4">
-              <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
+            <CarouselContent className="px-2">
+              <CarouselItem className="pl-2 basis-[85%] sm:basis-[70%] md:basis-1/3">
                 <div 
                   className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                   onClick={() => navigate('/balade/xoldokogaina')}
@@ -100,7 +100,7 @@ const Explorer = () => {
                 </div>
               </CarouselItem>
 
-              <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
+              <CarouselItem className="pl-2 basis-[85%] sm:basis-[70%] md:basis-1/3">
                 <div 
                   className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                   onClick={() => navigate('/balade/guethary')}
@@ -120,7 +120,7 @@ const Explorer = () => {
                 </div>
               </CarouselItem>
 
-              <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
+              <CarouselItem className="pl-2 basis-[85%] sm:basis-[70%] md:basis-1/3">
                 <div 
                   className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                   onClick={() => navigate('/balade/mondarrain')}
@@ -140,7 +140,7 @@ const Explorer = () => {
                 </div>
               </CarouselItem>
 
-              <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
+              <CarouselItem className="pl-2 basis-[85%] sm:basis-[70%] md:basis-1/3">
                 <div 
                   className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                   onClick={() => navigate('/balade/ossas-suhare')}
@@ -160,7 +160,7 @@ const Explorer = () => {
                 </div>
               </CarouselItem>
 
-              <CarouselItem className="pl-1 md:pl-4 basis-[65%] md:basis-1/3">
+              <CarouselItem className="pl-2 basis-[85%] sm:basis-[70%] md:basis-1/3">
                 <div 
                   className="lupi-card overflow-hidden cursor-pointer hover:shadow-lg transition-all rounded-xl"
                   onClick={() => navigate('/balade/adarra')}
