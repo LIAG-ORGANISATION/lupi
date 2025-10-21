@@ -191,32 +191,39 @@ const Professionals = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
-      <div>
-        <h1 className="text-2xl font-bold text-title mb-2">Annuaire Pros</h1>
-        <p className="text-sm text-muted-foreground">
-          Trouvez des professionnels vérifiés près de chez vous
-        </p>
+    <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
+      {/* Header N26 style */}
+      <div style={{ background: 'hsl(0 0% 96%)', padding: '20px 16px', marginBottom: '16px' }}>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-foreground text-center" style={{ fontSize: '20px', fontWeight: 600 }}>
+            Annuaire Pros
+          </h1>
+          <p className="text-secondary text-center" style={{ fontSize: '12px', fontWeight: 300, marginTop: '4px' }}>
+            Trouvez des professionnels vérifiés près de chez vous
+          </p>
+        </div>
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input
-          placeholder="Rechercher un professionnel..."
-          className="pl-10 rounded-2xl"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
+      <div className="px-4 max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            placeholder="Rechercher un professionnel..."
+            className="pl-10"
+            style={{ borderRadius: '12px' }}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
 
-      {/* Filters */}
-      <div className="space-y-3">
+        {/* Filters */}
         <Button
           variant="outline"
           onClick={() => setShowFilters(!showFilters)}
-          className="w-full rounded-2xl flex items-center justify-center gap-2"
+          className="w-full flex items-center justify-center gap-2"
+          style={{ borderRadius: '12px' }}
         >
-          <Filter className="h-4 w-4" />
+          <Filter className="h-4 w-4" strokeWidth={1.5} />
           Filtres
           {hasActiveFilters && (
             <Badge variant="default" className="ml-2 h-5 w-5 rounded-full p-0 flex items-center justify-center">
@@ -226,27 +233,27 @@ const Professionals = () => {
         </Button>
 
         {showFilters && (
-          <Card className="lupi-card space-y-3">
+          <div className="n26-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-sm">Filtrer par</h3>
+              <h3 style={{ fontSize: '14px', fontWeight: 500 }}>Filtrer par</h3>
               {hasActiveFilters && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={clearFilters}
-                  className="text-xs"
+                  style={{ fontSize: '12px' }}
                 >
-                  <X className="h-3 w-3 mr-1" />
+                  <X className="h-3 w-3 mr-1" strokeWidth={1.5} />
                   Effacer
                 </Button>
               )}
             </div>
 
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs text-muted-foreground mb-2 block">Profession</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <label style={{ fontSize: '12px', color: 'hsl(240 3% 57%)' }}>Profession</label>
                 <Select value={selectedProfession} onValueChange={setSelectedProfession}>
-                  <SelectTrigger className="rounded-2xl">
+                  <SelectTrigger style={{ borderRadius: '12px' }}>
                     <SelectValue placeholder="Toutes les professions" />
                   </SelectTrigger>
                   <SelectContent>
@@ -260,10 +267,10 @@ const Professionals = () => {
                 </Select>
               </div>
 
-              <div>
-                <label className="text-xs text-muted-foreground mb-2 block">Spécialité</label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <label style={{ fontSize: '12px', color: 'hsl(240 3% 57%)' }}>Spécialité</label>
                 <Select value={selectedSpecialisation} onValueChange={setSelectedSpecialisation}>
-                  <SelectTrigger className="rounded-2xl">
+                  <SelectTrigger style={{ borderRadius: '12px' }}>
                     <SelectValue placeholder="Toutes les spécialités" />
                   </SelectTrigger>
                   <SelectContent>
@@ -277,7 +284,7 @@ const Professionals = () => {
                 </Select>
               </div>
             </div>
-          </Card>
+          </div>
         )}
 
         {hasActiveFilters && !showFilters && (
@@ -311,39 +318,38 @@ const Professionals = () => {
             )}
           </div>
         )}
-      </div>
 
-      {loading ? (
-        <div className="text-center py-8 text-muted-foreground">
-          Chargement des professionnels...
-        </div>
-      ) : filteredProfessionals.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          {searchQuery ? "Aucun professionnel trouvé pour votre recherche" : "Aucun professionnel disponible"}
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {filteredProfessionals.map((pro) => (
-            <Card
-              key={pro.user_id}
-              className="lupi-card cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate(`/professional/${pro.user_id}`)}
-            >
-              <div className="space-y-3">
+        {loading ? (
+          <div className="text-center py-8" style={{ color: 'hsl(240 3% 57%)' }}>
+            Chargement des professionnels...
+          </div>
+        ) : filteredProfessionals.length === 0 ? (
+          <div className="text-center py-8" style={{ color: 'hsl(240 3% 57%)' }}>
+            {searchQuery ? "Aucun professionnel trouvé pour votre recherche" : "Aucun professionnel disponible"}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {filteredProfessionals.map((pro) => (
+              <div
+                key={pro.user_id}
+                className="n26-card cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => navigate(`/professional/${pro.user_id}`)}
+                style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}
+              >
                 <div className="flex items-start gap-3">
-                  <Avatar className="w-12 h-12 flex-shrink-0">
+                  <Avatar style={{ width: '48px', height: '48px', flexShrink: 0, borderRadius: '12px' }}>
                     <AvatarImage src={pro.photo_url || undefined} alt={pro.full_name} />
-                    <AvatarFallback className="bg-secondary text-title font-semibold">
+                    <AvatarFallback className="bg-secondary" style={{ color: 'hsl(240 6% 11%)', fontWeight: 600, borderRadius: '12px' }}>
                       {getInitials(pro.full_name)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-title truncate">{capitalizeWords(pro.full_name)}</h3>
-                    <p className="text-sm text-primary">{capitalizeWords(pro.professions?.label) || "Professionnel"}</p>
+                    <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>{capitalizeWords(pro.full_name)}</h3>
+                    <p style={{ fontSize: '12px', color: '#5B9D8C', fontWeight: 400 }}>{capitalizeWords(pro.professions?.label) || "Professionnel"}</p>
                     {pro.localisation && (
                       <div className="flex items-center gap-1 mt-1">
-                        <MapPin className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">{capitalizeWords(pro.localisation)}</span>
+                        <MapPin className="h-3 w-3" style={{ color: 'hsl(240 3% 57%)' }} strokeWidth={1.5} />
+                        <span style={{ fontSize: '12px', color: 'hsl(240 3% 57%)', fontWeight: 300 }}>{capitalizeWords(pro.localisation)}</span>
                       </div>
                     )}
                   </div>
@@ -351,19 +357,19 @@ const Professionals = () => {
 
                 {pro.specialisations_ids && pro.specialisations_ids.length > 0 && (
                   <div>
-                    <p className="text-xs text-muted-foreground mb-2">Spécialités :</p>
+                    <p style={{ fontSize: '12px', color: 'hsl(240 3% 57%)', marginBottom: '8px' }}>Spécialités :</p>
                     <div className="flex flex-wrap gap-2">
                       {pro.specialisations_ids.slice(0, 3).map((specId) => (
                         <Badge
                           key={specId}
                           variant="secondary"
-                          className="bg-secondary text-xs"
+                          style={{ fontSize: '12px', backgroundColor: 'hsl(0 0% 96%)', borderRadius: '8px' }}
                         >
                           {capitalizeWords(specialisations[specId]) || specId}
                         </Badge>
                       ))}
                       {pro.specialisations_ids.length > 3 && (
-                        <Badge variant="secondary" className="bg-secondary text-xs">
+                        <Badge variant="secondary" style={{ fontSize: '12px', backgroundColor: 'hsl(0 0% 96%)', borderRadius: '8px' }}>
                           +{pro.specialisations_ids.length - 3}
                         </Badge>
                       )}
@@ -373,25 +379,25 @@ const Professionals = () => {
 
                 <div className="flex items-center justify-between pt-2 gap-3">
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-muted-foreground">Tarif horaire :</p>
-                    <span className="text-sm font-medium text-title">
+                    <p style={{ fontSize: '12px', color: 'hsl(240 3% 57%)' }}>Tarif horaire :</p>
+                    <span style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>
                       {pro.tarifs ? `${pro.tarifs} €` : "Sur demande"}
                     </span>
                   </div>
                   <Button
                     onClick={(e) => handleSendMessage(e, pro.user_id)}
-                    className="rounded-full bg-primary hover:bg-primary/90 flex-shrink-0"
+                    className="flex-shrink-0 btn-action"
                     size="sm"
                   >
-                    <MessageCircle className="h-4 w-4 mr-2" />
+                    <MessageCircle className="h-4 w-4 mr-2" strokeWidth={1.5} />
                     Message
                   </Button>
                 </div>
               </div>
-            </Card>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

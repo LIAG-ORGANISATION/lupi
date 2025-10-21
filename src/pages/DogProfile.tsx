@@ -428,7 +428,7 @@ const DogProfile = () => {
         <Button 
           variant="ghost" 
           size="icon" 
-          onClick={() => navigate(-1)} 
+          onClick={() => navigate('/dogs')} 
           style={{ 
             position: 'absolute', 
             top: '16px', 

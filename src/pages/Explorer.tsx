@@ -103,7 +103,7 @@ const Explorer = () => {
         </Carousel>
       </div>
 
-      <div className="max-w-4xl mx-auto" style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="max-w-4xl mx-auto" style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '24px', marginTop: '24px' }}>
         {/* Formation section */}
         <div className="space-y-3">
           <h2 className="text-xl font-bold text-title">Formation coup de cœur</h2>
