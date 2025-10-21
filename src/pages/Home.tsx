@@ -32,6 +32,8 @@ import { SeasonalRecipes } from "@/components/SeasonalRecipes";
 import { useToast } from "@/hooks/use-toast";
 import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 interface Dog {
   id: string;
   name: string;
@@ -66,6 +68,7 @@ const Home = () => {
   const [hasTestedDogs, setHasTestedDogs] = useState(false);
   const [copiedPromo, setCopiedPromo] = useState<string | null>(null);
   const [dogsCompletion, setDogsCompletion] = useState<DogCompletion[]>([]);
+  const [activeMedications, setActiveMedications] = useState<any[]>([]);
   const unreadCount = useUnreadMessages();
 
   // Check if user is first time logging in as guardian
@@ -106,6 +109,12 @@ const Home = () => {
       fetchProStats();
     }
   }, [isGuardian, isProfessional, user, isAuthenticated]);
+
+  useEffect(() => {
+    if (dogs.length > 0) {
+      fetchActiveMedications();
+    }
+  }, [dogs]);
   const fetchDogs = async () => {
     setLoadingDogs(true);
     try {
@@ -140,6 +149,25 @@ const Home = () => {
       console.error('Error fetching dogs:', error);
     } finally {
       setLoadingDogs(false);
+    }
+  };
+
+  const fetchActiveMedications = async () => {
+    if (dogs.length === 0) return;
+    
+    try {
+      const dogIds = dogs.map(d => d.id);
+      const { data, error } = await supabase
+        .from("dog_medications")
+        .select("*")
+        .in("dog_id", dogIds)
+        .eq("active", true)
+        .order("start_date", { ascending: false });
+
+      if (error) throw error;
+      setActiveMedications(data || []);
+    } catch (error) {
+      console.error('Error fetching medications:', error);
     }
   };
   const fetchProStats = async () => {
@@ -396,6 +424,84 @@ const Home = () => {
               </div>
             </div>
           </div>}
+
+        {/* Active Medications Section */}
+        {isGuardian && activeMedications.length > 0 && (
+          <Card className="p-4 rounded-xl shadow-card">
+            <h3 className="text-lg font-bold text-title mb-3 flex items-center gap-2">
+              <Stethoscope className="h-5 w-5 text-primary" />
+              Traitements en cours
+            </h3>
+            <div className="space-y-3">
+              {activeMedications.map((med) => {
+                const dog = dogs.find(d => d.id === med.dog_id);
+                const daysRemaining = med.end_date 
+                  ? Math.ceil((new Date(med.end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+                  : null;
+                
+                return (
+                  <div key={med.id} className="p-3 rounded-lg bg-pink-50 border border-pink-200">
+                    <div className="flex items-start gap-3">
+                      {dog && (
+                        <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                          {dog.avatar_url ? (
+                            <img src={dog.avatar_url} alt={dog.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                              <span className="text-sm font-bold text-primary">{dog.name[0]}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <div className="font-semibold text-pink-900">{med.medication_name}</div>
+                          {dog && (
+                            <Badge variant="secondary" className="flex-shrink-0 text-xs">
+                              {dog.name}
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="text-sm text-pink-800 space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">Posologie:</span>
+                            <span>{med.dosage_detail}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">Fréquence:</span>
+                            <span>{med.frequency}</span>
+                          </div>
+                          {med.start_date && (
+                            <div className="flex items-center gap-2 text-xs">
+                              <span className="font-medium">Début:</span>
+                              <span>{format(new Date(med.start_date), "d MMM yyyy", { locale: fr })}</span>
+                            </div>
+                          )}
+                          {med.end_date && (
+                            <div className="flex items-center gap-2 text-xs">
+                              <span className="font-medium">Fin:</span>
+                              <span>{format(new Date(med.end_date), "d MMM yyyy", { locale: fr })}</span>
+                              {daysRemaining !== null && daysRemaining > 0 && (
+                                <Badge variant="outline" className="text-xs bg-pink-100 border-pink-300">
+                                  {daysRemaining} jour{daysRemaining > 1 ? 's' : ''} restant{daysRemaining > 1 ? 's' : ''}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
+                          {med.notes && (
+                            <div className="text-xs mt-2 pt-2 border-t border-pink-200">
+                              <span className="font-medium">Notes:</span> {med.notes}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </Card>
+        )}
 
         {/* Calendar for all dogs - compact version */}
         {isGuardian && dogs.length > 0 && user && (
