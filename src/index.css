@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 240 6% 11%;
 
-    --primary: 166 30% 77%; /* #B8D2C9 - Vert pastel accent principal */
+    --primary: 154 52% 46%; /* #36B37E - Vert menthe saturé pour CTA */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%; /* #F4F4F4 - Fond composants secondaires */
@@ -27,22 +27,22 @@ All colors MUST be HSL.
     --muted: 0 0% 88%; /* #E0E0E0 - Séparateurs et bordures */
     --muted-foreground: 240 3% 57%; /* #8E8E93 - Texte secondaire */
 
-    --accent: 154 52% 46%; /* #36B37E - Vert menthe pour actions cliquables */
-    --accent-foreground: 0 0% 100%;
+    --accent: 166 30% 77%; /* #B8D2C9 - Vert pastel doux pour accents légers */
+    --accent-foreground: 240 6% 11%;
 
     --destructive: 0 84% 60%; /* Rouge pour alertes absolues uniquement */
     --destructive-foreground: 0 0% 100%;
 
     --border: 0 0% 88%; /* #E0E0E0 - Bordures légères */
     --input: 0 0% 100%;
-    --ring: 166 30% 77%;
+    --ring: 154 52% 46%;
 
     --radius: 0.75rem; /* 12px pour cards */
     
     --title: 240 6% 11%;
     
-    /* Action button - Vert pastel */
-    --action: 166 30% 77%; /* #B8D2C9 */
+    /* Action button - Vert menthe saturé */
+    --action: 154 52% 46%; /* #36B37E */
     --action-foreground: 0 0% 100%;
     
     /* Icônes secondaires */
@@ -55,12 +55,12 @@ All colors MUST be HSL.
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 6% 11%;
-    --sidebar-primary: 166 30% 77%;
+    --sidebar-primary: 154 52% 46%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 96%;
     --sidebar-accent-foreground: 240 6% 11%;
     --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 166 30% 77%;
+    --sidebar-ring: 154 52% 46%;
   }
 
   .dark {

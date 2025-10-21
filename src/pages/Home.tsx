@@ -573,7 +573,7 @@ const Home = () => {
               <div className="cursor-pointer" onClick={() => navigate("/guardian/messages")}>
                 <div className="flex flex-col items-center gap-2 text-center">
                   <div className="relative">
-                    <div className="w-12 h-12 bg-primary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                    <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '12px', background: 'hsl(154 52% 46%)' }}>
                       <MessageSquare className="h-5 w-5 text-white" strokeWidth={1.5} />
                     </div>
                     {unreadCount > 0 && (
@@ -610,7 +610,7 @@ const Home = () => {
 
               <div className="cursor-pointer" onClick={() => navigate("/dogs/add")}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 bg-primary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                  <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '12px', background: 'hsl(154 52% 46%)' }}>
                     <Plus className="h-5 w-5 text-white" strokeWidth={1.5} />
                   </div>
                   <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Ajouter</span>

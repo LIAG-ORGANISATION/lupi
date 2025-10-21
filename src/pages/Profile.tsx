@@ -161,84 +161,84 @@ const Profile = () => {
     label: "Support & FAQ",
     path: "/profile/support"
   }];
-  return <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-white">
-      <h1 className="text-2xl font-bold text-title">Profil</h1>
+  return <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Profil</h1>
 
-      <Card className="lupi-card text-center space-y-4">
-        {loading ? <div className="animate-pulse space-y-4">
-            <div className="w-24 h-24 mx-auto rounded-full bg-secondary" />
+      <Card className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {loading ? <div className="animate-pulse" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="w-24 h-24 mx-auto bg-secondary" style={{ borderRadius: '50%' }} />
             <div className="h-6 bg-secondary rounded w-32 mx-auto" />
             <div className="h-4 bg-secondary rounded w-24 mx-auto" />
           </div> : <>
             <div className="relative inline-block">
               <Avatar className="w-24 h-24 mx-auto cursor-pointer" onClick={() => fileInputRef.current?.click()}>
                 {profileData?.avatar_url && <AvatarImage src={profileData.avatar_url} />}
-                <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
+                <AvatarFallback className="bg-secondary text-2xl" style={{ color: 'hsl(240 6% 11%)', fontWeight: 700 }}>
                   {profileData?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
-              <Button size="icon" variant="secondary" className="absolute bottom-0 right-0 rounded-full shadow-lg h-8 w-8" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}>
-                <Camera className="h-4 w-4" />
+              <Button size="icon" variant="secondary" className="absolute bottom-0 right-0 h-8 w-8" style={{ borderRadius: '50%' }} onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}>
+                <Camera className="h-4 w-4" strokeWidth={1.5} />
               </Button>
             </div>
             <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
             <div>
-              <h2 className="text-xl font-bold text-title">
+              <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>
                 {profileData?.full_name || 'Utilisateur'}
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>
                 {isProfessional ? profileData?.profession || 'Professionnel' : 'Propriétaire de chien'}
               </p>
             </div>
           </>}
       </Card>
 
-      {isGuardian && dogs.length > 0 && <Card className="lupi-card bg-secondary space-y-4">
+      {isGuardian && dogs.length > 0 && <Card className="n26-card" style={{ background: 'hsl(0 0% 96%)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div>
-            <h2 className="text-lg font-semibold text-title">
+            <h2 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>
               Mes compagnons
             </h2>
-            <p className="text-sm text-foreground/70 mt-1">
+            <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)', marginTop: '4px' }}>
               {dogs.length} chien{dogs.length > 1 ? 's' : ''} enregistré{dogs.length > 1 ? 's' : ''}
             </p>
           </div>
-          <Button onClick={() => navigate(dogs.length === 1 ? `/dogs/${dogs[0].id}` : "/dogs")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
-            <DogIcon className="mr-2 h-4 w-4" />
+          <Button onClick={() => navigate(dogs.length === 1 ? `/dogs/${dogs[0].id}` : "/dogs")} className="w-full btn-action">
+            <DogIcon className="mr-2 h-4 w-4" strokeWidth={1.5} />
             {dogs.length === 1 ? 'Voir mon chien' : 'Accéder à mes chiens'}
           </Button>
         </Card>}
 
-      {isGuardian && dogs.length === 0 && <Card className="lupi-card bg-secondary space-y-4">
+      {isGuardian && dogs.length === 0 && <Card className="n26-card" style={{ background: 'hsl(0 0% 96%)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div>
-            <h2 className="text-lg font-semibold text-title">
+            <h2 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>
               Créez un profil pour votre compagnon
             </h2>
-            <p className="text-sm text-foreground/70 mt-1">
+            <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)', marginTop: '4px' }}>
               Suivez sa santé et son comportement
             </p>
           </div>
-          <Button onClick={() => navigate("/dogs/add")} className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
-            <Plus className="mr-2 h-4 w-4" />
+          <Button onClick={() => navigate("/dogs/add")} className="w-full btn-action">
+            <Plus className="mr-2 h-4 w-4" strokeWidth={1.5} />
             Ajouter un chien
           </Button>
         </Card>}
 
-      <div className="space-y-2">
-        {menuItems.map((item, index) => <Card key={index} className="p-4 rounded-2xl cursor-pointer hover:shadow-md transition-all" onClick={() => navigate(item.path)}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {menuItems.map((item, index) => <Card key={index} className="n26-card cursor-pointer hover:shadow-md transition-all" style={{ padding: '12px' }} onClick={() => navigate(item.path)}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                  <item.icon className="h-5 w-5 text-primary" />
+                <div className="icon-container">
+                  <item.icon strokeWidth={1.5} />
                 </div>
-                <span className="font-medium text-foreground">{item.label}</span>
+                <span style={{ fontSize: '14px', fontWeight: 400, color: 'hsl(240 6% 11%)' }}>{item.label}</span>
               </div>
-              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              <ChevronRight className="h-5 w-5" style={{ color: 'hsl(240 3% 57%)' }} strokeWidth={1.5} />
             </div>
           </Card>)}
       </div>
 
-      <Button onClick={handleSignOut} variant="outline" className="w-full rounded-full border-destructive text-destructive hover:bg-destructive/10" size="lg">
-        <LogOut className="mr-2 h-4 w-4" />
+      <Button onClick={handleSignOut} variant="outline" className="w-full border-destructive text-destructive hover:bg-destructive/10" style={{ borderRadius: '12px' }} size="lg">
+        <LogOut className="mr-2 h-4 w-4" strokeWidth={1.5} />
         Se déconnecter
       </Button>
     </div>;
