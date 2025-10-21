@@ -346,10 +346,10 @@ const Home = () => {
       {/* Hero Section N26 Style */}
       <div className="bg-gradient-n26 mb-0" style={{ padding: '20px 16px' }}>
         <div className="max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
-          <h1 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>
+          <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
-          <p className="text-secondary" style={{ fontSize: '14px' }}>Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
+          <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '8px' }}>
             {!isAuthenticated ? <>
@@ -381,18 +381,18 @@ const Home = () => {
       <div className="max-w-4xl mx-auto" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/* My Dogs section - show first when user has dogs */}
         {isGuardian && dogs.length > 0 && <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <h2 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Mes chiens</h2>
+            <h2 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Mes chiens</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {dogs.map(dog => {
             const completion = calculateProfileCompletion(dog);
-            return <div key={dog.id} className="n26-card">
+            return <div key={dog.id} className="n26-card" style={{ padding: '12px' }}>
                   <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
                     {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="avatar-circle" style={{ width: '48px', height: '48px' }} /> : <div className="bg-secondary flex items-center justify-center" style={{ width: '48px', height: '48px', borderRadius: '12px' }}>
                         <DogIcon className="h-6 w-6" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
                       </div>}
                     <div className="flex-1">
-                      <h3 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>{dog.name}</h3>
-                      {dog.breed && <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>{dog.breed}</p>}
+                      <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>{dog.name}</h3>
+                      {dog.breed && <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>{dog.breed}</p>}
                     </div>
                     <div className="flex flex-col items-center gap-1" style={{ minWidth: '60px' }}>
                       <div className="relative" style={{ width: '40px', height: '40px' }}>
@@ -401,24 +401,24 @@ const Home = () => {
                           <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="3" fill="none" strokeDasharray={`${2 * Math.PI * 16}`} strokeDashoffset={`${2 * Math.PI * 16 * (1 - completion / 100)}`} className={`${getProgressColor(completion)} transition-all duration-300`} strokeLinecap="round" />
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-foreground" style={{ fontSize: '10px', fontWeight: 600 }}>{completion}%</span>
+                          <span style={{ fontSize: '10px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>{completion}%</span>
                         </div>
                       </div>
-                      <span className="text-secondary" style={{ fontSize: '10px', fontWeight: 300 }}>Profil</span>
+                      <span style={{ fontSize: '10px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Profil</span>
                     </div>
                   </div>
                 </div>;
           })}
               
               {/* Raccourci vers Recommandations personnalisées */}
-              <div className="n26-card" style={{ background: 'hsl(0 0% 96%)' }}>
+              <div className="n26-card" style={{ background: 'hsl(0 0% 96%)', padding: '12px' }}>
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/recommendations-demo')}>
                   <div className="icon-container flex-shrink-0">
                     <Lightbulb strokeWidth={1.5} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Recommandations personnalisées</h3>
-                    <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>Une fois votre test ADN réalisé, Lupi vous propose des recommandations ultra personnalisées pour votre chien</p>
+                    <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Recommandations personnalisées</h3>
+                    <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Une fois votre test ADN réalisé, Lupi vous propose des recommandations ultra personnalisées pour votre chien</p>
                   </div>
                 </div>
               </div>
@@ -568,7 +568,7 @@ const Home = () => {
 
         {/* Quick actions for authenticated guardians - N26 Style */}
         {isAuthenticated && isGuardian && <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <h2 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Accès rapide</h2>
+            <h2 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Accès rapide</h2>
             <div className="grid grid-cols-4 gap-3">
               <div className="cursor-pointer" onClick={() => navigate("/guardian/messages")}>
                 <div className="flex flex-col items-center gap-2 text-center">
@@ -586,7 +586,7 @@ const Home = () => {
                       </Badge>
                     )}
                   </div>
-                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Messages</span>
+                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Messages</span>
                 </div>
               </div>
 
@@ -595,7 +595,7 @@ const Home = () => {
                   <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
                     <FileText className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
                   </div>
-                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Documents</span>
+                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Documents</span>
                 </div>
               </div>
 
@@ -604,7 +604,7 @@ const Home = () => {
                   <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
                     <Stethoscope className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
                   </div>
-                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Professionnels</span>
+                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Professionnels</span>
                 </div>
               </div>
 
@@ -613,7 +613,7 @@ const Home = () => {
                   <div className="w-12 h-12 bg-primary flex items-center justify-center" style={{ borderRadius: '12px' }}>
                     <Plus className="h-5 w-5 text-white" strokeWidth={1.5} />
                   </div>
-                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Ajouter</span>
+                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Ajouter</span>
                 </div>
               </div>
             </div>

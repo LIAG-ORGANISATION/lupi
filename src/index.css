@@ -179,7 +179,7 @@ All colors MUST be HSL.
   
   /* Action Button - Vert pastel pour action principale */
   .btn-action {
-    @apply bg-primary text-primary-foreground transition-all;
+    @apply bg-primary text-white transition-all;
     border-radius: 12px;
     padding: 12px 24px;
     font-size: 14px;
@@ -309,7 +309,7 @@ All colors MUST be HSL.
     color: hsl(154 52% 46%); /* #36B37E - Vert menthe cliquable */
   }
   
-  .text-secondary {
+  .text-secondary-n26 {
     color: hsl(240 3% 57%); /* #8E8E93 - Texte secondaire */
   }
 
