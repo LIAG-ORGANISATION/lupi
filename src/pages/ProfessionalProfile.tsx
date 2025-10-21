@@ -182,7 +182,7 @@ const ProfessionalProfile = () => {
             </Card>}
 
           {/* Languages */}
-          {professionalData.languages.length > 0 && <Card className="lupi-card space-y-3">
+          {professionalData.languages.length > 0 && <Card className="lupi-card space-y-3 mx-0 px-[6px] py-[9px]">
               <h3 className="font-bold text-title flex items-center gap-2">
                 <Globe className="h-5 w-5 text-primary" />
                 Langues
