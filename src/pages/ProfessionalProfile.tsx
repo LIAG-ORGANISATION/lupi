@@ -215,7 +215,7 @@ const ProfessionalProfile = () => {
             </Card>}
 
           {/* Pricing */}
-          {professionalData.pricing && <Card className="lupi-card">
+          {professionalData.pricing && <Card className="lupi-card mx-0 px-[6px] py-[4px]">
               <h3 className="font-bold text-title flex items-center gap-2 mb-3">
                 <span className="text-primary">€</span>
                 Tarifs
