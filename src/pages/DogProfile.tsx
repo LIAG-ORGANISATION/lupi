@@ -422,30 +422,101 @@ const DogProfile = () => {
         </Card>
       </div>;
   }
-  return <div className="min-h-screen p-4 animate-fade-in" style={{ background: '#FFFFFF', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} style={{ borderRadius: '12px' }}>
+  return <div className="min-h-screen animate-fade-in" style={{ background: '#FFFFFF', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {/* Hero Image with Overlay */}
+      <div style={{ position: 'relative', width: '100%', height: '280px', overflow: 'hidden' }}>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => navigate(-1)} 
+          style={{ 
+            position: 'absolute', 
+            top: '16px', 
+            left: '16px', 
+            zIndex: 10,
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            borderRadius: '12px'
+          }}
+        >
           <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
         </Button>
-        <h1 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>Profil de {dog.name}</h1>
+        
+        {dog.avatar_url ? (
+          <img 
+            src={dog.avatar_url} 
+            alt={dog.name}
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'cover',
+              objectPosition: 'center'
+            }} 
+          />
+        ) : (
+          <div style={{ 
+            width: '100%', 
+            height: '100%', 
+            background: 'hsl(0 0% 96%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <DogIcon className="h-24 w-24" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
+          </div>
+        )}
+        
+        <div style={{ 
+          position: 'absolute', 
+          inset: 0, 
+          background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: '24px'
+        }}>
+          <h1 style={{ 
+            fontSize: '28px', 
+            fontWeight: 700, 
+            color: '#FFFFFF',
+            marginBottom: '8px',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+          }}>
+            {dog.name}
+          </h1>
+          <p style={{ 
+            fontSize: '14px', 
+            fontWeight: 400, 
+            color: '#FFFFFF',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+          }}>
+            {dog.breed || 'Chien'}{dog.gender && ` • ${dog.gender === 'male' ? 'Mâle' : 'Femelle'}`}
+          </p>
+        </div>
+        
+        <label 
+          htmlFor="avatar-upload" 
+          style={{ 
+            position: 'absolute', 
+            bottom: '16px', 
+            right: '16px',
+            width: '48px',
+            height: '48px',
+            backgroundColor: '#5B9D8C',
+            color: '#FFFFFF',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '12px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+          }}
+        >
+          <Camera className="h-5 w-5" strokeWidth={1.5} />
+          <input id="avatar-upload" ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+        </label>
       </div>
 
-      <Card className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div className="relative w-32 h-32 mx-auto">
-          {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-32 h-32 avatar-circle object-cover" /> : <div className="w-32 h-32 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
-              <DogIcon className="h-16 w-16" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
-            </div>}
-          <label htmlFor="avatar-upload" className="absolute bottom-0 right-0 w-10 h-10 bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors" style={{ borderRadius: '12px' }}>
-            <Camera className="h-5 w-5" strokeWidth={1.5} />
-            <input id="avatar-upload" ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
-          </label>
-        </div>
-        <div>
-          <h2 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>{dog.name}</h2>
-          {dog.breed && <p className="text-secondary" style={{ fontSize: '14px' }}>{dog.breed}</p>}
-          {dog.gender && <p className="text-secondary" style={{ fontSize: '12px', textTransform: 'capitalize', fontWeight: 300 }}>{dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
-        </div>
-      </Card>
+      <div style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Résumé des tests</h4>
@@ -610,6 +681,8 @@ const DogProfile = () => {
             </Button>
           </div>
         </Card>
+      </div>
+
       </div>
 
       {/* Medications Manager */}

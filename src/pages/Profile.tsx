@@ -161,37 +161,99 @@ const Profile = () => {
     label: "Support & FAQ",
     path: "/profile/support"
   }];
-  return <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Profil</h1>
+  return <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {/* Hero Image with Overlay */}
+      {!loading && (
+        <div style={{ position: 'relative', width: '100%', height: '280px', overflow: 'hidden' }}>
+          {profileData?.avatar_url ? (
+            <img 
+              src={profileData.avatar_url} 
+              alt={profileData.full_name || 'Profile'}
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                objectPosition: 'center'
+              }} 
+            />
+          ) : (
+            <div style={{ 
+              width: '100%', 
+              height: '100%', 
+              background: 'hsl(0 0% 96%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <User className="h-24 w-24" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
+            </div>
+          )}
+          
+          <div style={{ 
+            position: 'absolute', 
+            inset: 0, 
+            background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            padding: '24px'
+          }}>
+            <h1 style={{ 
+              fontSize: '28px', 
+              fontWeight: 700, 
+              color: '#FFFFFF',
+              marginBottom: '8px',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            }}>
+              {profileData?.full_name || 'Utilisateur'}
+            </h1>
+            <p style={{ 
+              fontSize: '14px', 
+              fontWeight: 400, 
+              color: '#FFFFFF',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            }}>
+              {isProfessional ? profileData?.profession || 'Professionnel' : 'Propriétaire de chien'}
+            </p>
+          </div>
+          
+          <label 
+            htmlFor="photo-upload" 
+            style={{ 
+              position: 'absolute', 
+              bottom: '16px', 
+              right: '16px',
+              width: '48px',
+              height: '48px',
+              backgroundColor: '#5B9D8C',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+            }}
+          >
+            <Camera className="h-5 w-5" strokeWidth={1.5} />
+            <input id="photo-upload" ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
+          </label>
+        </div>
+      )}
 
-      <Card className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {loading ? <div className="animate-pulse" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div className="w-24 h-24 mx-auto bg-secondary" style={{ borderRadius: '50%' }} />
-            <div className="h-6 bg-secondary rounded w-32 mx-auto" />
-            <div className="h-4 bg-secondary rounded w-24 mx-auto" />
-          </div> : <>
-            <div className="relative inline-block">
-              <Avatar className="w-24 h-24 mx-auto cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-                {profileData?.avatar_url && <AvatarImage src={profileData.avatar_url} />}
-                <AvatarFallback className="bg-secondary text-2xl" style={{ color: 'hsl(240 6% 11%)', fontWeight: 700 }}>
-                  {profileData?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <Button size="icon" variant="secondary" className="absolute bottom-0 right-0 h-8 w-8" style={{ borderRadius: '50%' }} onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}>
-                <Camera className="h-4 w-4" strokeWidth={1.5} />
-              </Button>
-            </div>
-            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
-            <div>
-              <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>
-                {profileData?.full_name || 'Utilisateur'}
-              </h2>
-              <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>
-                {isProfessional ? profileData?.profession || 'Professionnel' : 'Propriétaire de chien'}
-              </p>
-            </div>
-          </>}
-      </Card>
+      {loading && (
+        <div style={{ 
+          height: '280px', 
+          background: 'hsl(0 0% 96%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+        </div>
+      )}
+
+      <div style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
       {isGuardian && dogs.length > 0 && <Card className="n26-card" style={{ background: 'hsl(0 0% 96%)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div>
@@ -241,6 +303,8 @@ const Profile = () => {
         <LogOut className="mr-2 h-4 w-4" strokeWidth={1.5} />
         Se déconnecter
       </Button>
+
+      </div>
     </div>;
 };
 export default Profile;

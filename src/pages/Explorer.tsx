@@ -5,6 +5,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
 } from "@/components/ui/carousel";
 import kozooLogo from "@/assets/kozoo-logo-new.png";
 import pennypetLogo from "@/assets/pennypet-logo-new.png";
@@ -14,6 +16,15 @@ import baladeGuethary from "@/assets/balade-guethary.jpg";
 import baladeMondarrain from "@/assets/balade-mondarrain.jpg";
 import baladeOssasSuhare from "@/assets/balade-ossas-suhare.jpg";
 import baladeAdarra from "@/assets/balade-adarra.jpg";
+import heroDog1 from "@/assets/hero-dog-1.jpg";
+import heroDog2 from "@/assets/hero-dog-2.jpg";
+import heroDog3 from "@/assets/hero-dog-3.jpg";
+import heroDog4 from "@/assets/hero-dog-4.webp";
+import heroDog5 from "@/assets/hero-dog-5.jpg";
+import heroDog6 from "@/assets/hero-dog-6.webp";
+import heroDog7 from "@/assets/hero-dog-7.webp";
+import heroDog8 from "@/assets/hero-dog-8.webp";
+import heroDog9 from "@/assets/hero-dog-9.jpg";
 import { SeasonalAllergies } from "@/components/SeasonalAllergies";
 import { SeasonalRecipes } from "@/components/SeasonalRecipes";
 import { useToast } from "@/hooks/use-toast";
@@ -35,16 +46,61 @@ const Explorer = () => {
     setTimeout(() => setCopiedPromo(null), 2000);
   };
 
+  const heroImages = [heroDog1, heroDog2, heroDog3, heroDog4, heroDog5, heroDog6, heroDog7, heroDog8, heroDog9];
+
   return (
     <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
-      {/* Header N26 Simple */}
-      <div className="bg-gradient-n26 p-6 mb-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Explorer</h1>
-          <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)', marginTop: '8px' }}>
-            Découvrez nos recommandations et partenaires
-          </p>
-        </div>
+      {/* Hero Carousel with Overlay Text */}
+      <div style={{ position: 'relative', width: '100%', height: '280px', overflow: 'hidden' }}>
+        <Carousel className="w-full h-full">
+          <CarouselContent>
+            {heroImages.map((img, index) => (
+              <CarouselItem key={index}>
+                <div style={{ position: 'relative', width: '100%', height: '280px' }}>
+                  <img 
+                    src={img} 
+                    alt={`Hero dog ${index + 1}`}
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover',
+                      objectPosition: 'center'
+                    }} 
+                  />
+                  <div style={{ 
+                    position: 'absolute', 
+                    inset: 0, 
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    padding: '24px'
+                  }}>
+                    <h1 style={{ 
+                      fontSize: '28px', 
+                      fontWeight: 700, 
+                      color: '#FFFFFF',
+                      marginBottom: '8px',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                    }}>
+                      Explorer
+                    </h1>
+                    <p style={{ 
+                      fontSize: '14px', 
+                      fontWeight: 400, 
+                      color: '#FFFFFF',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                    }}>
+                      Découvrez nos recommandations et partenaires
+                    </p>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious style={{ left: '8px' }} />
+          <CarouselNext style={{ right: '8px' }} />
+        </Carousel>
       </div>
 
       <div className="max-w-4xl mx-auto" style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
