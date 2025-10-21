@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Pill, Plus, Trash2, Check, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -24,16 +25,18 @@ interface Medication {
 }
 
 interface MedicationsManagerProps {
-  dogId: string;
+  dogId?: string;
+  dogs?: { id: string; name: string; avatar_url: string | null }[];
   ownerId: string;
   initialDialogOpen?: boolean;
   onDialogClose?: () => void;
 }
 
-export const MedicationsManager = ({ dogId, ownerId, initialDialogOpen = false, onDialogClose }: MedicationsManagerProps) => {
+export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = false, onDialogClose }: MedicationsManagerProps) => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(initialDialogOpen);
+  const [selectedDogId, setSelectedDogId] = useState(dogId || (dogs && dogs.length > 0 ? dogs[0].id : ""));
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -46,15 +49,19 @@ export const MedicationsManager = ({ dogId, ownerId, initialDialogOpen = false, 
   });
 
   useEffect(() => {
-    fetchMedications();
-  }, [dogId]);
+    if (selectedDogId) {
+      fetchMedications();
+    }
+  }, [selectedDogId]);
 
   const fetchMedications = async () => {
+    if (!selectedDogId) return;
+    
     try {
       const { data, error } = await supabase
         .from("dog_medications")
         .select("*")
-        .eq("dog_id", dogId)
+        .eq("dog_id", selectedDogId)
         .order("start_date", { ascending: false });
 
       if (error) throw error;
@@ -67,7 +74,7 @@ export const MedicationsManager = ({ dogId, ownerId, initialDialogOpen = false, 
   };
 
   const handleSubmit = async () => {
-    if (!formData.medication_name || !formData.dosage_detail || !formData.frequency || !formData.start_date) {
+    if (!selectedDogId || !formData.medication_name || !formData.dosage_detail || !formData.frequency || !formData.start_date) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs obligatoires",
@@ -83,7 +90,7 @@ export const MedicationsManager = ({ dogId, ownerId, initialDialogOpen = false, 
         : null;
 
       const { error } = await supabase.from("dog_medications").insert({
-        dog_id: dogId,
+        dog_id: selectedDogId,
         owner_id: ownerId,
         medication_name: formData.medication_name,
         dosage_detail: formData.dosage_detail,
@@ -203,6 +210,33 @@ export const MedicationsManager = ({ dogId, ownerId, initialDialogOpen = false, 
               <DialogTitle>Nouveau traitement</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
+              {dogs && dogs.length > 0 && (
+                <div className="space-y-2">
+                  <Label htmlFor="dog_select">Chien *</Label>
+                  <Select value={selectedDogId} onValueChange={setSelectedDogId}>
+                    <SelectTrigger id="dog_select">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="z-[100]">
+                      {dogs.map((dog) => (
+                        <SelectItem key={dog.id} value={dog.id}>
+                          <div className="flex items-center gap-2">
+                            {dog.avatar_url ? (
+                              <img src={dog.avatar_url} alt={dog.name} className="w-5 h-5 rounded-full object-cover" />
+                            ) : (
+                              <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                                <span className="text-[10px] font-bold text-primary">{dog.name[0]}</span>
+                              </div>
+                            )}
+                            <span>{dog.name}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="medication_name">Nom du médicament *</Label>
                 <Input

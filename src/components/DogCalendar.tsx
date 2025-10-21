@@ -788,9 +788,9 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
       </Dialog>
 
       {/* Add Medication Dialog */}
-      {showAddMedicationDialog && dogId && (
+      {showAddMedicationDialog && (
         <MedicationsManager
-          dogId={dogId}
+          dogs={dogs}
           ownerId={ownerId}
           initialDialogOpen={true}
           onDialogClose={() => {

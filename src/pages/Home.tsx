@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText, Heart, Gift, Check } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Carousel,
   CarouselContent,
@@ -33,8 +32,6 @@ import { SeasonalRecipes } from "@/components/SeasonalRecipes";
 import { useToast } from "@/hooks/use-toast";
 import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 interface Dog {
   id: string;
   name: string;
@@ -69,8 +66,6 @@ const Home = () => {
   const [hasTestedDogs, setHasTestedDogs] = useState(false);
   const [copiedPromo, setCopiedPromo] = useState<string | null>(null);
   const [dogsCompletion, setDogsCompletion] = useState<DogCompletion[]>([]);
-  const [selectedDogId, setSelectedDogId] = useState<string | null>(null);
-  const [activeMedications, setActiveMedications] = useState<any[]>([]);
   const unreadCount = useUnreadMessages();
 
   // Check if user is first time logging in as guardian
@@ -111,12 +106,6 @@ const Home = () => {
       fetchProStats();
     }
   }, [isGuardian, isProfessional, user, isAuthenticated]);
-
-  useEffect(() => {
-    if (selectedDogId) {
-      fetchActiveMedications(selectedDogId);
-    }
-  }, [selectedDogId]);
   const fetchDogs = async () => {
     setLoadingDogs(true);
     try {
@@ -147,31 +136,10 @@ const Home = () => {
         }));
       setDogsCompletion(completionData);
       }
-
-      // Set first dog as selected by default
-      if (data && data.length > 0 && !selectedDogId) {
-        setSelectedDogId(data[0].id);
-      }
     } catch (error) {
       console.error('Error fetching dogs:', error);
     } finally {
       setLoadingDogs(false);
-    }
-  };
-
-  const fetchActiveMedications = async (dogId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from("dog_medications")
-        .select("*")
-        .eq("dog_id", dogId)
-        .eq("active", true)
-        .order("start_date", { ascending: false });
-
-      if (error) throw error;
-      setActiveMedications(data || []);
-    } catch (error) {
-      console.error('Error fetching medications:', error);
     }
   };
   const fetchProStats = async () => {
@@ -431,68 +399,11 @@ const Home = () => {
 
         {/* Calendar for all dogs - compact version */}
         {isGuardian && dogs.length > 0 && user && (
-          <div className="space-y-3">
-            {/* Dog selector if multiple dogs */}
-            {dogs.length > 1 && (
-              <Card className="p-3 rounded-xl shadow-card">
-                <label className="text-sm font-medium text-title mb-2 block">Calendrier de :</label>
-                <Select value={selectedDogId || undefined} onValueChange={setSelectedDogId}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Sélectionner un chien" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {dogs.map((dog) => (
-                      <SelectItem key={dog.id} value={dog.id}>
-                        <div className="flex items-center gap-2">
-                          {dog.avatar_url ? (
-                            <img src={dog.avatar_url} alt={dog.name} className="w-6 h-6 rounded-full object-cover" />
-                          ) : (
-                            <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                              <span className="text-xs font-bold text-primary">{dog.name[0]}</span>
-                            </div>
-                          )}
-                          <span>{dog.name}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Card>
-            )}
-
-            {/* Active Medications */}
-            {activeMedications.length > 0 && (
-              <Card className="p-4 rounded-xl shadow-card">
-                <h3 className="text-sm font-bold text-title mb-3 flex items-center gap-2">
-                  <Stethoscope className="h-4 w-4 text-primary" />
-                  Traitements en cours
-                </h3>
-                <div className="space-y-2">
-                  {activeMedications.map((med) => (
-                    <div key={med.id} className="p-3 rounded-lg bg-pink-50 text-pink-900">
-                      <div className="font-semibold text-sm">{med.medication_name}</div>
-                      <div className="text-xs opacity-80 mt-1">
-                        {med.dosage_detail} • {med.frequency}
-                      </div>
-                      {med.end_date && (
-                        <div className="text-xs opacity-70 mt-1">
-                          Jusqu'au {format(new Date(med.end_date), "d MMM yyyy", { locale: fr })}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            )}
-
-            {/* Calendar */}
-            <DogCalendar 
-              dogId={selectedDogId || undefined} 
-              dogs={dogs} 
-              ownerId={user.id} 
-              compact={true} 
-            />
-          </div>
+          <DogCalendar 
+            dogs={dogs} 
+            ownerId={user.id} 
+            compact={true} 
+          />
         )}
       </div>
 
