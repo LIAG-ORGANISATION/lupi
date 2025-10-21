@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 240 6% 11%;
 
-    --primary: 154 52% 46%; /* #36B37E - Vert menthe saturé pour CTA */
+    --primary: 166 44% 48%; /* #5B9D8C - Vert principal pour CTA */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%; /* #F4F4F4 - Fond composants secondaires */
@@ -27,23 +27,27 @@ All colors MUST be HSL.
     --muted: 0 0% 88%; /* #E0E0E0 - Séparateurs et bordures */
     --muted-foreground: 240 3% 57%; /* #8E8E93 - Texte secondaire */
 
-    --accent: 166 30% 77%; /* #B8D2C9 - Vert pastel doux pour accents légers */
-    --accent-foreground: 240 6% 11%;
+    --accent: 166 44% 48%; /* #5B9D8C - Accent vert doux */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%; /* Rouge pour alertes absolues uniquement */
+    --destructive: 9 48% 56%; /* #C26A5A - Corail pour CTA critiques et alertes */
     --destructive-foreground: 0 0% 100%;
 
     --border: 0 0% 88%; /* #E0E0E0 - Bordures légères */
     --input: 0 0% 100%;
-    --ring: 154 52% 46%;
+    --ring: 166 44% 48%;
 
-    --radius: 0.75rem; /* 12px pour cards */
+    --radius: 1rem; /* 16px pour cards et boutons */
     
     --title: 240 6% 11%;
     
-    /* Action button - Vert menthe saturé */
-    --action: 154 52% 46%; /* #36B37E */
-    --action-foreground: 0 0% 100%;
+    /* CTA principal - Vert */
+    --cta-primary: 166 44% 48%; /* #5B9D8C */
+    --cta-primary-foreground: 0 0% 100%;
+    
+    /* CTA critique - Corail (test ADN, déconnexion, alertes) */
+    --cta-critical: 9 48% 56%; /* #C26A5A */
+    --cta-critical-foreground: 0 0% 100%;
     
     /* Icônes secondaires */
     --icon-secondary: 0 0% 76%; /* #C2C2C2 */
@@ -55,12 +59,12 @@ All colors MUST be HSL.
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 6% 11%;
-    --sidebar-primary: 154 52% 46%;
+    --sidebar-primary: 166 44% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 96%;
     --sidebar-accent-foreground: 240 6% 11%;
     --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 154 52% 46%;
+    --sidebar-ring: 166 44% 48%;
   }
 
   .dark {
@@ -164,10 +168,10 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* N26 Cards - coins arrondis 12px, ombres subtiles */
+  /* N26 Cards - coins arrondis 16px, ombres subtiles */
   .n26-card {
     @apply bg-card border-0;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 16px;
     transition: all 200ms ease-in-out;
     box-shadow: var(--shadow-card);
@@ -177,13 +181,14 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-hover);
   }
   
-  /* Action Button - Vert pastel pour action principale */
+  /* Bouton principal - Vert #5B9D8C */
   .btn-action {
     @apply bg-primary text-white transition-all;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 12px 24px;
+    min-height: 44px;
     font-size: 14px;
-    font-weight: 700; /* Bold pour boutons */
+    font-weight: 700;
     letter-spacing: 0;
     transition-duration: 250ms;
     transition-timing-function: ease-in-out;
@@ -191,17 +196,41 @@ All colors MUST be HSL.
   
   .btn-action:hover {
     box-shadow: var(--shadow-hover);
+    opacity: 0.9;
   }
   
   .btn-action:active {
     transform: scale(0.98);
   }
   
-  /* Secondary Button - Fond transparent */
-  .btn-secondary {
-    @apply bg-transparent text-foreground border border-muted transition-all;
-    border-radius: 12px;
+  /* Bouton CTA critique - Corail #C26A5A (test ADN, déconnexion, alertes) */
+  .btn-critical {
+    @apply bg-destructive text-white transition-all;
+    border-radius: 16px;
     padding: 12px 24px;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
+  }
+  
+  .btn-critical:hover {
+    box-shadow: var(--shadow-hover);
+    opacity: 0.9;
+  }
+  
+  .btn-critical:active {
+    transform: scale(0.98);
+  }
+  
+  /* Bouton neutre/secondaire - Contour vert */
+  .btn-secondary {
+    @apply bg-transparent border border-primary text-primary transition-all;
+    border-radius: 16px;
+    padding: 12px 24px;
+    min-height: 44px;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0;
@@ -210,7 +239,7 @@ All colors MUST be HSL.
   }
   
   .btn-secondary:hover {
-    @apply bg-secondary;
+    @apply bg-primary/5;
   }
   
   /* Header gradient subtle */
@@ -220,7 +249,7 @@ All colors MUST be HSL.
   
   /* Avatar Circle */
   .avatar-circle {
-    border-radius: 12px;
+    border-radius: 16px;
     @apply object-cover border border-border;
     box-shadow: none;
   }
@@ -228,11 +257,11 @@ All colors MUST be HSL.
   /* List Item Card - Style N26 minimal */
   .list-item-card {
     @apply bg-card cursor-pointer border-0;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 16px;
     transition: all 200ms ease-in-out;
     box-shadow: var(--shadow-card);
-    margin-bottom: 8px; /* Espacement entre cards 8-12px */
+    margin-bottom: 8px;
   }
   
   .list-item-card:hover {
@@ -280,7 +309,7 @@ All colors MUST be HSL.
   .input-n26 {
     @apply w-full border border-muted bg-background;
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: 16px;
     font-size: 14px;
     transition: all 200ms ease-in-out;
     color: hsl(240 6% 11%);
@@ -292,25 +321,29 @@ All colors MUST be HSL.
   
   .input-n26:focus {
     @apply outline-none;
-    border-color: hsl(166 30% 77%); /* Vert pastel au focus */
+    border-color: hsl(166 44% 48%); /* Vert au focus */
   }
   
   /* Spacing utilities - grille 8px */
   .n26-section-gap {
-    margin-bottom: 16px; /* Espacement entre sections */
+    margin-bottom: 16px;
   }
   
   .n26-item-gap {
-    margin-bottom: 8px; /* Espacement entre items */
+    margin-bottom: 8px;
   }
   
   /* Text colors N26 */
   .text-action {
-    color: hsl(154 52% 46%); /* #36B37E - Vert menthe cliquable */
+    color: hsl(166 44% 48%); /* #5B9D8C - Vert pour liens */
   }
   
   .text-secondary-n26 {
     color: hsl(240 3% 57%); /* #8E8E93 - Texte secondaire */
+  }
+  
+  .text-critical {
+    color: hsl(9 48% 56%); /* #C26A5A - Corail pour alertes */
   }
 
   /* Hide scrollbar for horizontal scroll */

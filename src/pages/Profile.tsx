@@ -237,7 +237,7 @@ const Profile = () => {
           </Card>)}
       </div>
 
-      <Button onClick={handleSignOut} variant="outline" className="w-full border-destructive text-destructive hover:bg-destructive/10" style={{ borderRadius: '12px' }} size="lg">
+      <Button onClick={handleSignOut} variant="outline" className="w-full border-destructive text-destructive hover:bg-destructive/10" style={{ borderRadius: '16px' }} size="lg">
         <LogOut className="mr-2 h-4 w-4" strokeWidth={1.5} />
         Se déconnecter
       </Button>

@@ -137,12 +137,12 @@ const Dogs = () => {
 
         <div className="n26-section-gap">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Mes compagnons</h2>
+            <h2 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Mes compagnons</h2>
             {dogs.length > 0 && (
               <button
                 onClick={() => navigate("/dogs/add")}
                 className="text-action"
-                style={{ fontSize: '14px', fontWeight: 500 }}
+                style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(166 44% 48%)' }}
               >
                 + Ajouter
               </button>

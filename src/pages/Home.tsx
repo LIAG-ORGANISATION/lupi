@@ -359,7 +359,7 @@ const Home = () => {
                 </button>
               </> : <>
                 {isGuardian && dogs.length > 0 ? <>
-                    <button onClick={() => navigate("/dna-kit")} className="btn-action w-full">
+                    <button onClick={() => navigate("/dna-kit")} className="btn-critical w-full">
                       <TestTube2 className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
                       Commander un test ADN
                     </button>
@@ -573,7 +573,7 @@ const Home = () => {
               <div className="cursor-pointer" onClick={() => navigate("/guardian/messages")}>
                 <div className="flex flex-col items-center gap-2 text-center">
                   <div className="relative">
-                    <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '12px', background: 'hsl(154 52% 46%)' }}>
+                    <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '16px', background: 'hsl(166 44% 48%)' }}>
                       <MessageSquare className="h-5 w-5 text-white" strokeWidth={1.5} />
                     </div>
                     {unreadCount > 0 && (
@@ -592,7 +592,7 @@ const Home = () => {
 
               <div className="cursor-pointer" onClick={() => navigate("/guardian/documents")}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '16px' }}>
                     <FileText className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
                   </div>
                   <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Documents</span>
@@ -601,7 +601,7 @@ const Home = () => {
 
               <div className="cursor-pointer" onClick={() => navigate("/professionals")}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '16px' }}>
                     <Stethoscope className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
                   </div>
                   <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Professionnels</span>
@@ -610,7 +610,7 @@ const Home = () => {
 
               <div className="cursor-pointer" onClick={() => navigate("/dogs/add")}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '12px', background: 'hsl(154 52% 46%)' }}>
+                  <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '16px', background: 'hsl(166 44% 48%)' }}>
                     <Plus className="h-5 w-5 text-white" strokeWidth={1.5} />
                   </div>
                   <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Ajouter</span>
