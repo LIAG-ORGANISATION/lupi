@@ -325,16 +325,18 @@ const DNADemo = () => {
         </Card>
 
         {/* CTA vers recommandations */}
-        <Card className="p-6 rounded-xl shadow-lg text-center bg-gradient-card">
-          <Lightbulb className="h-12 w-12 text-primary mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-title mb-2">
+        <Card className="n26-card text-center" style={{ background: 'hsl(0 0% 96%)' }}>
+          <div className="icon-container mx-auto" style={{ width: '48px', height: '48px' }}>
+            <Lightbulb style={{ width: '48px', height: '48px' }} strokeWidth={1.5} />
+          </div>
+          <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)', marginTop: '16px' }}>
             Découvrez les recommandations personnalisées
           </h3>
-          <p className="text-sm text-muted-foreground mb-4">
+          <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)', marginTop: '8px' }}>
             Voyez comment le test ADN vous permet d'obtenir des conseils adaptés au mode de vie de votre chien
           </p>
-          <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full rounded-full" size="lg">
-            <Lightbulb className="h-5 w-5 mr-2" />
+          <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full mt-4" style={{ borderRadius: '16px' }} size="lg">
+            <Lightbulb className="h-5 w-5 mr-2" strokeWidth={1.5} />
             Voir les recommandations
           </Button>
         </Card>

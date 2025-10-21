@@ -410,15 +410,16 @@ const GuardianDocuments = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="bg-primary p-5 pb-12 rounded-b-[3rem] shadow-card">
+      <div className="bg-gradient-n26 p-6 mb-4">
         <div className="max-w-4xl mx-auto">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
-            className="rounded-full mb-4 text-white hover:bg-white/10"
+            style={{ borderRadius: '16px' }}
+            className="mb-4"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
           </Button>
           <div className="text-center space-y-2">
             <h1 className="text-3xl font-bold text-white">Documents</h1>

@@ -36,18 +36,18 @@ const Explorer = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20 animate-fade-in">
-      {/* Header N26 Style */}
-      <div className="bg-primary p-5 rounded-b-[3rem] shadow-card">
+    <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
+      {/* Header N26 Simple */}
+      <div className="bg-gradient-n26 p-6 mb-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-bold text-white">Explorer</h1>
-          <p className="text-sm text-white/90 mt-2">
+          <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Explorer</h1>
+          <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)', marginTop: '8px' }}>
             Découvrez nos recommandations et partenaires
           </p>
         </div>
       </div>
 
-      <div className="p-2 space-y-3 max-w-4xl mx-auto mt-2">
+      <div className="max-w-4xl mx-auto" style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/* Formation section */}
         <div className="space-y-3">
           <h2 className="text-xl font-bold text-title">Formation coup de cœur</h2>

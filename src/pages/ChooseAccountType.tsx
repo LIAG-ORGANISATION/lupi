@@ -8,15 +8,15 @@ const ChooseAccountType = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section N26 Style */}
-      <div className="bg-primary p-8 pb-20 rounded-b-[3rem] shadow-card">
-        <div className="max-w-md mx-auto text-center space-y-3">
-          <h1 className="text-3xl font-bold text-white">Bienvenue sur Lupi</h1>
-          <p className="text-white/90">Choisissez votre type de compte pour commencer</p>
+      {/* Header N26 Simple */}
+      <div className="bg-gradient-n26 p-6 pb-8 mb-4">
+        <div className="max-w-md mx-auto text-center" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Bienvenue sur Lupi</h1>
+          <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Choisissez votre type de compte pour commencer</p>
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-4 -mt-12 space-y-4 pb-8 animate-fade-in">
+      <div className="max-w-md mx-auto px-4 pb-8 animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div 
           className="lupi-card cursor-pointer hover:shadow-xl transition-all p-6"
           onClick={() => navigate('/auth?type=guardian')}

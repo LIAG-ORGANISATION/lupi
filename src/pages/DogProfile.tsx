@@ -448,7 +448,7 @@ const DogProfile = () => {
       </Card>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Résumé des tests</h3>
+        <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Résumé des tests</h4>
         
         {/* Test ADN - à compléter */}
         <Card className="n26-card">
@@ -457,8 +457,8 @@ const DogProfile = () => {
               <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Analyse ADN</h4>
-              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>Non effectué</p>
+              <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Analyse ADN</h4>
+              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Non effectué</p>
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -483,8 +483,8 @@ const DogProfile = () => {
               <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Questionnaire comportemental</h4>
-              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
+              <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Questionnaire comportemental</h4>
+              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
             </div>
             {hasQuestionnaire ? (
               <div className="flex gap-2">
@@ -517,7 +517,7 @@ const DogProfile = () => {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Informations clés</h3>
+        <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Informations clés</h3>
         
         <Card className="n26-card">
           <div className="flex items-start gap-3">
@@ -526,21 +526,21 @@ const DogProfile = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
-                <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Informations</h4>
+                <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Informations</h4>
                 <Button 
                   size="sm" 
                   variant="outline" 
-                  style={{ borderRadius: '12px' }}
+                  style={{ borderRadius: '16px' }}
                   onClick={() => setShowEditInfoDialog(true)}
                 >
                   Modifier
                 </Button>
               </div>
-              {dog.breed && <p className="text-foreground" style={{ fontSize: '14px' }}>Race: {dog.breed}</p>}
-              {dog.gender && <p className="text-foreground" style={{ fontSize: '14px' }}>Sexe: {dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
-              {dog.birth_date && <p className="text-foreground" style={{ fontSize: '14px' }}>Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>}
-              {dog.weight && <p className="text-foreground" style={{ fontSize: '14px' }}>Poids: {dog.weight} kg</p>}
-              {dog.medical_notes && <p className="text-foreground mt-2" style={{ fontSize: '14px' }}>{dog.medical_notes}</p>}
+              {dog.breed && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Race: {dog.breed}</p>}
+              {dog.gender && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Sexe: {dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
+              {dog.birth_date && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>}
+              {dog.weight && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Poids: {dog.weight} kg</p>}
+              {dog.medical_notes && <p className="mt-2" style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>{dog.medical_notes}</p>}
             </div>
           </div>
         </Card>
@@ -551,10 +551,10 @@ const DogProfile = () => {
               <FileText strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Documents</h4>
-              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>Ordonnances, analyses, certificats</p>
+              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Documents</h4>
+              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Ordonnances, analyses, certificats</p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
@@ -566,12 +566,12 @@ const DogProfile = () => {
               <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Alertes santé</h4>
-              <p className={healthAlertsCount === 0 ? 'text-accent' : 'text-destructive'} style={{ fontSize: '12px', fontWeight: 300 }}>
+              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Alertes santé</h4>
+              <p style={{ fontSize: '12px', fontWeight: 300, color: healthAlertsCount === 0 ? 'hsl(166 44% 48%)' : 'hsl(9 48% 56%)' }}>
                 {healthAlertsCount === 0 ? 'Aucune anomalie détectée' : `${healthAlertsCount} ${healthAlertsCount === 1 ? 'alerte' : 'alertes'}`}
               </p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
@@ -583,12 +583,12 @@ const DogProfile = () => {
               <Syringe strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Passeport vaccinal</h4>
-              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>
+              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Passeport vaccinal</h4>
+              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>
                 {vaccinationDocsCount === 0 ? "Aucun document" : `${vaccinationDocsCount} ${vaccinationDocsCount === 1 ? 'document' : 'documents'}`}
               </p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
@@ -602,10 +602,10 @@ const DogProfile = () => {
               <Calendar strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Calendrier</h4>
-              <p className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Rappels, rendez-vous & événements</p>
+              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Calendrier</h4>
+              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Rappels, rendez-vous & événements</p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>

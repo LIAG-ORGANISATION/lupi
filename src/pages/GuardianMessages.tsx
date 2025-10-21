@@ -23,20 +23,21 @@ const GuardianMessages = () => {
   return (
     <AuthGuard requiredRole="guardian">
       <div className="min-h-screen bg-background pb-24">
-        {/* Hero Section N26 Style */}
-        <div className="bg-primary p-5 pb-12 rounded-b-[3rem] shadow-card">
+        {/* Header N26 Simple */}
+        <div className="bg-gradient-n26 p-6 mb-4">
           <div className="max-w-7xl mx-auto">
             <Button
               variant="ghost"
               size="icon"
               onClick={handleBack}
-              className="rounded-full mb-4 text-white hover:bg-white/10"
+              style={{ borderRadius: '16px' }}
+              className="mb-4"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
             </Button>
-            <div className="text-center space-y-2">
-              <h1 className="text-3xl font-bold text-white">Messages</h1>
-              <p className="text-white/80 text-sm">Échangez avec les professionnels</p>
+            <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Messages</h1>
+              <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Échangez avec les professionnels</p>
             </div>
           </div>
         </div>

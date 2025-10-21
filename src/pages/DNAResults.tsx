@@ -214,15 +214,17 @@ const DNAResults = () => {
       </Card>
 
       {/* Rapport PDF */}
-      <Card className="lupi-card space-y-4 bg-gradient-card">
-        <div className="text-center space-y-4">
-          <FileText className="h-16 w-16 mx-auto text-primary" />
+      <Card className="n26-card" style={{ background: 'hsl(0 0% 96%)' }}>
+        <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="icon-container mx-auto" style={{ width: '64px', height: '64px' }}>
+            <FileText style={{ width: '64px', height: '64px' }} strokeWidth={1.5} />
+          </div>
           <div>
-            <h3 className="text-lg font-bold text-title">Rapport complet</h3>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Rapport complet</h3>
+            <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)', marginTop: '4px' }}>
               Téléchargez ou partagez le rapport PDF détaillé
             </p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p style={{ fontSize: '12px', color: 'hsl(240 3% 57%)', marginTop: '4px' }}>
               Fichier volumineux (environ 10 Mo)
             </p>
           </div>

@@ -122,20 +122,21 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section N26 Style */}
-      <div className="bg-primary p-5 pb-16 rounded-b-[3rem] shadow-card">
+      {/* Header N26 Simple */}
+      <div className="bg-gradient-n26 p-6 mb-4">
         <div className="max-w-md mx-auto">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
-            className="rounded-full mb-4 text-white hover:bg-white/10"
+            style={{ borderRadius: '16px' }}
+            className="mb-4"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
           </Button>
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-white">Espace Gardien</h1>
-            <p className="text-white/80 text-sm">Connectez-vous pour accéder à votre espace</p>
+          <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Espace Gardien</h1>
+            <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Connectez-vous pour accéder à votre espace</p>
           </div>
         </div>
       </div>
