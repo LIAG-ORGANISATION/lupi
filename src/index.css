@@ -8,64 +8,67 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* N26 Design System - Charte graphique exacte */
-    --background: 0 0% 96%; /* #F5F5F5 - Fond gris très clair comme N26 */
-    --foreground: 0 0% 13%; /* #212121 - Texte noir comme N26 */
+    /* Lupi Design System - Medical & Minimal */
+    --background: 0 0% 100%; /* #FFFFFF - Blanc pur */
+    --foreground: 20 28% 28%; /* #5B4033 - Brun principal */
 
     --card: 0 0% 100%; /* #FFFFFF - Cartes blanches */
-    --card-foreground: 0 0% 13%;
+    --card-foreground: 20 28% 28%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover-foreground: 20 28% 28%;
 
-    --primary: 166 47% 62%; /* #5FB89B - Vert turquoise N26 */
+    --primary: 20 28% 28%; /* #5B4033 - Brun principal */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 166 30% 90%; /* #D4E8E3 - Vert très pâle pour CTA containers */
-    --secondary-foreground: 0 0% 13%;
+    --secondary: 20 30% 88%; /* #E9DED6 - Fond composants secondaires */
+    --secondary-foreground: 20 28% 28%;
 
-    --muted: 0 0% 96%; /* #F5F5F5 - Gris très clair */
-    --muted-foreground: 0 0% 45%; /* #737373 - Gris moyen pour icônes */
+    --muted: 0 0% 95%; /* #F3F3F3 - Séparateurs */
+    --muted-foreground: 20 12% 43%; /* #766960 - Texte secondaire */
 
-    --accent: 166 47% 62%; /* #5FB89B - Vert turquoise */
-    --accent-foreground: 0 0% 100%;
+    --accent: 166 30% 77%; /* #B8D2C9 - Accent doux */
+    --accent-foreground: 20 28% 28%;
 
-    --destructive: 9 48% 56%; /* #C26A5A - Terracotta pour actions critiques */
+    --destructive: 9 48% 56%; /* #C26A5A - Corail pour CTA et alertes */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 93%; /* #EDEDED - Séparateurs fins */
-    --input: 0 0% 96%;
-    --ring: 166 47% 62%;
+    --border: 0 0% 95%; /* #F3F3F3 - Séparateurs */
+    --input: 0 0% 100%;
+    --ring: 20 28% 28%;
 
-    --radius: 0.75rem; /* 12px - Coins légèrement arrondis */
+    --radius: 1rem; /* 16px pour cards */
     
-    --title: 0 0% 13%;
+    --title: 20 28% 28%;
     
-    /* CTA important - Terracotta (utilisation minimale) */
+    /* CTA important - Corail */
     --cta: 9 48% 56%; /* #C26A5A */
+    --cta-hover: 9 41% 51%; /* #B5594F */
+    --cta-inactive: 9 53% 80%; /* #E8B3AD */
     --cta-foreground: 0 0% 100%;
     
-    /* Fond CTA container - vert très pâle N26 */
-    --cta-bg: 166 30% 90%; /* #D4E8E3 */
+    /* Fond CTA container - Secondaire */
+    --cta-bg: 20 30% 88%; /* #E9DED6 */
     
-    /* Gradients subtils N26 */
-    --gradient-primary: linear-gradient(135deg, hsl(166 47% 62%), hsl(166 47% 68%));
-    --gradient-soft: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 99%));
+    /* Liens et interactions secondaires */
+    --link: 166 7% 46%; /* #6D7B76 */
     
-    /* Ombres très subtiles <20% opacité - sans brun */
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
-    --shadow-elevated: 0 6px 16px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.06);
+    /* Boutons désactivés */
+    --disabled: 20 8% 82%; /* #D6D2CF */
+    
+    /* Ombres subtiles médicales */
+    --shadow-card: 0px 2px 4px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0px 4px 10px rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0px 6px 16px rgba(0, 0, 0, 0.08);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 13%;
-    --sidebar-primary: 166 47% 62%;
+    --sidebar-foreground: 20 28% 28%;
+    --sidebar-primary: 20 28% 28%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 96%;
-    --sidebar-accent-foreground: 0 0% 13%;
-    --sidebar-border: 0 0% 93%;
-    --sidebar-ring: 166 47% 62%;
+    --sidebar-accent: 20 30% 88%;
+    --sidebar-accent-foreground: 20 28% 28%;
+    --sidebar-border: 0 0% 95%;
+    --sidebar-ring: 20 28% 28%;
   }
 
   .dark {
@@ -121,10 +124,11 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
-    font-size: 16px; /* Texte courant 16px */
+    font-size: 14px; /* Texte courant 14px */
     font-weight: 400; /* Regular */
-    line-height: 1.5;
-    background: hsl(0 0% 96%); /* Gris clair comme N26 */
+    line-height: 1.4; /* 140% */
+    letter-spacing: 0;
+    background: hsl(0 0% 100%); /* Blanc pur */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -138,140 +142,155 @@ All colors MUST be HSL.
   }
   
   h1 { 
-    font-size: 20px; /* Titres 18-20px */
-    font-weight: 600;
+    font-size: 20px; /* Titres principaux */
+    font-weight: 600; /* Semi-bold */
   }
   h2 { 
-    font-size: 18px; /* Titres 18-20px */
-    font-weight: 600;
+    font-size: 18px; /* Sous-titres */
+    font-weight: 600; /* Semi-bold */
   }
   h3 { 
-    font-size: 16px; /* Sous-titres */
+    font-size: 16px; /* Sous-titres secondaires */
     font-weight: 500; /* Medium */
   }
   
   p, span, div {
-    font-size: 16px; /* Texte courant 14-16px */
+    font-size: 14px; /* Texte courant */
     font-weight: 400; /* Regular */
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
   
   /* Légendes et petits textes */
-  .text-xs, .text-sm {
-    font-size: 12px; /* Légendes 12px */
+  .text-xs {
+    font-size: 12px; /* Légendes */
     font-weight: 400;
   }
   
   .text-sm {
-    font-size: 14px; /* Petit texte 14px */
+    font-size: 14px; /* Corps de texte */
+    font-weight: 400;
   }
 }
 
 @layer components {
-  /* N26 Style Cards - coins arrondis 12px, ombres subtiles */
+  /* Medical Minimal Cards - coins arrondis 16px, ombres subtiles */
   .lupi-card {
-    @apply bg-card rounded-xl p-4 transition-all duration-300 border-0;
+    @apply bg-card rounded-2xl border-0;
+    padding: 16px;
+    transition: all 250ms ease-in-out;
     box-shadow: var(--shadow-card);
   }
   
   .lupi-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
   }
   
-  /* Primary Button - Style N26 avec vert turquoise */
+  /* Primary Button - Brun principal */
   .btn-lupi {
-    @apply bg-primary text-primary-foreground rounded-xl px-8 py-3.5 transition-all duration-300;
-    @apply hover:bg-primary/90 active:scale-95;
-    font-size: 16px;
+    @apply bg-primary text-primary-foreground transition-all;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
     font-weight: 600; /* Semi-Bold */
-    box-shadow: 0 2px 8px rgba(95, 184, 155, 0.15);
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
   }
   
   .btn-lupi:hover {
-    box-shadow: 0 4px 12px rgba(95, 184, 155, 0.25);
-    transform: translateY(-1px);
+    transform: scale(1.03);
   }
   
-  /* CTA Button - Terracotta pour actions importantes */
+  .btn-lupi:active {
+    transform: scale(1.03);
+  }
+  
+  /* CTA Button - Corail pour actions importantes */
   .btn-cta {
-    @apply bg-[hsl(9,48%,56%)] text-white rounded-xl px-8 py-3.5 transition-all duration-300;
-    @apply hover:bg-[hsl(9,48%,50%)] active:scale-95;
-    font-size: 16px;
+    @apply bg-[hsl(9,48%,56%)] text-white transition-all;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
     font-weight: 600; /* Semi-Bold */
-    box-shadow: 0 2px 8px rgba(194, 106, 90, 0.15);
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
   }
   
   .btn-cta:hover {
-    box-shadow: 0 4px 12px rgba(194, 106, 90, 0.25);
-    transform: translateY(-1px);
+    background: hsl(9 41% 51%); /* #B5594F */
+    transform: scale(1.03);
   }
   
-  /* Gradient Background N26 - très subtil */
+  .btn-cta:disabled {
+    background: hsl(9 53% 80%); /* #E8B3AD */
+  }
+  
+  /* Gradient Background - Brun principal */
   .bg-gradient-lupi {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, hsl(20 28% 28%), hsl(20 28% 35%));
   }
   
-  /* Vert turquoise pour les accents */
-  .text-n26-teal {
-    color: hsl(166 47% 62%);
-  }
-  
-  .bg-n26-teal {
-    background: hsl(166 47% 62%);
-  }
-  
-  /* Avatar Circle - bordure minimale N26 */
+  /* Avatar Circle - bordure minimale */
   .avatar-circle {
-    @apply rounded-xl object-cover border border-border;
+    @apply rounded-2xl object-cover border border-border;
     box-shadow: var(--shadow-card);
   }
   
-  /* List Item Card - Style N26 avec espacement 16px */
+  /* List Item Card - Style médical minimal */
   .list-item-card {
-    @apply bg-card rounded-xl p-4 transition-all duration-300 cursor-pointer border-0;
+    @apply bg-card rounded-2xl cursor-pointer border-0;
+    padding: 16px;
+    transition: all 250ms ease-in-out;
     box-shadow: var(--shadow-card);
-    margin-bottom: 16px; /* Espacement généreux 16px minimum */
+    margin-bottom: 24px; /* Espacement vertical 24px */
   }
   
   .list-item-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-1px);
   }
   
-  /* Icon Container - Style N26 SANS fond, icônes grises */
+  /* Icon Container - SANS fond, icônes brunes */
   .icon-container {
-    @apply w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200;
-    background: transparent; /* PAS de fond coloré comme N26 */
+    @apply w-10 h-10 rounded-2xl flex items-center justify-center;
+    background: transparent; /* PAS de fond coloré */
+    transition: all 250ms ease-in-out;
   }
   
   .icon-container svg {
-    color: hsl(0 0% 45%); /* Icônes en gris moyen */
+    color: hsl(20 28% 28%); /* Icônes en brun principal */
   }
   
-  /* Icône d'action primaire - cercle vert plein comme N26 */
+  /* Icône d'action primaire - cercle corail plein */
   .icon-primary-action {
-    @apply w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200;
-    background: hsl(166 47% 62%); /* Vert turquoise plein */
+    @apply w-12 h-12 rounded-full flex items-center justify-center;
+    background: hsl(9 48% 56%); /* Corail pour actions */
+    transition: all 250ms ease-in-out;
+  }
+  
+  .icon-primary-action:hover {
+    background: hsl(9 41% 51%); /* Hover corail */
+    transform: scale(1.03);
   }
   
   .icon-primary-action svg {
     color: white;
   }
   
-  /* Badge with N26 colors */
+  /* Badge minimal */
   .badge-minimal {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full font-medium;
-    font-size: 12px; /* Légendes 12px */
-    background: hsl(0 0% 93%); /* Gris clair comme N26 */
-    color: hsl(0 0% 13%);
+    @apply inline-flex items-center gap-1 px-3 py-1 font-medium;
+    border-radius: 50%; /* Pill-shaped */
+    font-size: 12px; /* Légendes */
+    background: hsl(20 30% 88%); /* Secondaire */
+    color: hsl(20 28% 28%);
   }
   
-  /* CTA Container - Fond vert pâle N26 */
+  /* CTA Container - Fond secondaire */
   .cta-container {
-    @apply bg-[hsl(166,30%,90%)] rounded-xl p-4 transition-all duration-300;
+    @apply bg-secondary rounded-2xl;
+    padding: 16px;
+    transition: all 250ms ease-in-out;
     box-shadow: var(--shadow-card);
   }
   
@@ -279,12 +298,14 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-hover);
   }
   
-  /* Input minimal N26 style */
+  /* Input minimal */
   .input-minimal {
-    @apply w-full px-4 py-3 rounded-xl border border-border bg-background;
-    @apply focus:outline-none focus:ring-1 focus:ring-primary/20;
-    @apply transition-all duration-300;
-    font-size: 16px; /* Texte courant 16px */
+    @apply w-full border border-border bg-background;
+    padding: 12px 16px;
+    border-radius: 12px;
+    @apply focus:outline-none focus:ring-1 focus:ring-primary;
+    font-size: 14px;
+    transition: all 250ms ease-in-out;
     box-shadow: var(--shadow-card);
   }
   
@@ -292,13 +313,13 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-hover);
   }
   
-  /* Spacing utilities N26 - espacement généreux */
-  .n26-section-gap {
-    margin-bottom: 16px; /* 16px minimum entre blocs */
+  /* Spacing utilities - espacement médical */
+  .lupi-section-gap {
+    margin-bottom: 24px; /* 24px entre sections */
   }
   
-  .n26-item-gap {
-    padding: 8px; /* 8px en interne */
+  .lupi-item-gap {
+    margin-bottom: 16px; /* 16px entre items */
   }
 
   /* Hide scrollbar for horizontal scroll */

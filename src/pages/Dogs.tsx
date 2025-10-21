@@ -98,48 +98,49 @@ const Dogs = () => {
 
   return (
     <div className="min-h-screen pb-20 animate-fade-in">
-      {/* Header avec gradient */}
-      <div className="bg-gradient-lupi p-6 rounded-b-[3rem] shadow-xl mb-6">
+      {/* Header médical */}
+      <div className="bg-gradient-lupi p-6 mb-6">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold text-white text-center">
-            Mes chiens 🐕
+          <h1 className="text-xl font-semibold text-white text-center">
+            Mes chiens
           </h1>
-          <p className="text-white/90 text-center text-sm mt-2">Gérez les profils de vos compagnons</p>
+          <p className="text-white/90 text-center mt-1" style={{ fontSize: '12px' }}>Gérez les profils de vos compagnons</p>
         </div>
       </div>
 
       <div className="px-4 space-y-6 max-w-4xl mx-auto">
 
         {!loading && dogs.length === 0 && (
-          <div className="lupi-card text-center space-y-6">
-            <div className="w-24 h-24 mx-auto rounded-full bg-gradient-card flex items-center justify-center">
-              <DogIcon className="h-12 w-12 text-primary" />
+          <div className="lupi-card text-center">
+            <div className="w-20 h-20 mx-auto rounded-full bg-secondary flex items-center justify-center mb-4">
+              <DogIcon className="h-10 w-10" style={{ color: 'hsl(20 28% 28%)' }} strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-title mb-2">
-                Bienvenue sur LupiApp ! 🐾
+              <h2 className="font-semibold text-title mb-2" style={{ fontSize: '18px' }}>
+                Bienvenue sur Lupi
               </h2>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-muted-foreground mb-6" style={{ fontSize: '14px' }}>
                 Créez un profil pour votre compagnon et suivez sa santé
               </p>
               <button
                 onClick={() => navigate("/dogs/add")}
-                className="btn-lupi"
+                className="btn-cta"
               >
-                <Plus className="h-5 w-5 mr-2 inline" />
+                <Plus className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
                 Ajouter mon premier chien
               </button>
             </div>
           </div>
         )}
 
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-title">Mes compagnons</h2>
+        <div className="lupi-section-gap">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-title" style={{ fontSize: '18px' }}>Mes compagnons</h2>
             {dogs.length > 0 && (
               <button
                 onClick={() => navigate("/dogs/add")}
-                className="text-primary font-semibold text-sm hover:underline"
+                className="font-semibold hover:underline"
+                style={{ color: 'hsl(9 48% 56%)', fontSize: '14px' }}
               >
                 + Ajouter
               </button>
@@ -150,7 +151,7 @@ const Dogs = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
             </div>
           ) : dogs.length === 0 ? null : (
-            <div className="grid gap-4">
+            <div className="space-y-4">
               {dogs.map((dog) => (
                 <div
                   key={dog.id}
@@ -162,17 +163,17 @@ const Dogs = () => {
                       <img
                         src={dog.avatar_url}
                         alt={dog.name}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-primary/20 group-hover:border-primary transition-all"
+                        className="w-16 h-16 rounded-full object-cover border border-border"
                       />
                     ) : (
-                      <div className="w-20 h-20 rounded-full bg-gradient-card flex items-center justify-center border-2 border-primary/20 group-hover:border-primary transition-all">
-                        <DogIcon className="h-10 w-10 text-primary" />
+                      <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center border border-border">
+                        <DogIcon className="h-8 w-8" style={{ color: 'hsl(20 28% 28%)' }} strokeWidth={1.5} />
                       </div>
                     )}
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-title">{dog.name}</h3>
+                      <h3 className="font-semibold text-title" style={{ fontSize: '16px' }}>{dog.name}</h3>
                       {dog.breed && (
-                        <p className="text-sm text-muted-foreground">{dog.breed}</p>
+                        <p className="text-muted-foreground" style={{ fontSize: '12px' }}>{dog.breed}</p>
                       )}
                     </div>
                     <Button
@@ -184,7 +185,7 @@ const Dogs = () => {
                       }}
                       className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
                     >
-                      <Trash2 className="h-5 w-5" />
+                      <Trash2 className="h-4 w-4" strokeWidth={1.5} />
                     </Button>
                   </div>
                 </div>
@@ -194,9 +195,9 @@ const Dogs = () => {
         </div>
 
         {dogs.length > 0 && (
-          <div>
-            <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
-            <div className="grid grid-cols-2 gap-3">
+          <div className="lupi-section-gap">
+            <h2 className="font-semibold text-title mb-4" style={{ fontSize: '18px' }}>Accès rapide</h2>
+            <div className="grid grid-cols-2 gap-4">
               <QuickActionCard
                 icon={Stethoscope}
                 label="RDV"
