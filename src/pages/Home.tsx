@@ -341,35 +341,35 @@ const Home = () => {
   }
 
   // Guardian/Default View
-  return <div className="min-h-screen pb-20 animate-fade-in">
+  return <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section N26 Style */}
-      <div className="bg-primary p-5 rounded-b-[3rem] shadow-card">
-        <div className="max-w-4xl mx-auto space-y-3 text-center">
-          <h1 className="text-3xl font-bold text-white">
+      <div className="bg-gradient-n26 mb-0" style={{ padding: '20px 16px' }}>
+        <div className="max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
+          <h1 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
-          <p className="text-sm text-white/90">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
+          <p className="text-secondary" style={{ fontSize: '14px' }}>Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
-          <div className="space-y-2 pt-1">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '8px' }}>
             {!isAuthenticated ? <>
-                <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-foreground hover:bg-white/90 shadow-lg">
-                  <LogIn className="h-5 w-5 mr-2 inline" />
+                <button onClick={() => navigate("/choose-account-type")} className="btn-action w-full">
+                  <LogIn className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
                   Se connecter / S'inscrire
                 </button>
               </> : <>
                 {isGuardian && dogs.length > 0 ? <>
-                    <button onClick={() => navigate("/dna-kit")} className="w-full btn-lupi bg-white text-foreground hover:bg-white/90 shadow-lg">
-                      <TestTube2 className="h-5 w-5 mr-2 inline" />
+                    <button onClick={() => navigate("/dna-kit")} className="btn-action w-full">
+                      <TestTube2 className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
                       Commander un test ADN
                     </button>
                   </> : isGuardian ? <>
-                    <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-foreground hover:bg-white/90 shadow-lg">
-                      <Plus className="h-5 w-5 mr-2 inline" />
+                    <button onClick={() => navigate("/dogs/add")} className="btn-action w-full">
+                      <Plus className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
                       Ajouter un chien
                     </button>
-                    <button onClick={() => navigate("/dna-kit")} className="w-full rounded-xl bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all duration-300">
-                      <TestTube2 className="h-5 w-5 mr-2 inline" />
+                    <button onClick={() => navigate("/dna-kit")} className="btn-secondary w-full">
+                      <TestTube2 className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
                       Faire le test ADN
                     </button>
                   </> : null}
@@ -378,47 +378,47 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="p-2 space-y-3 max-w-4xl mx-auto mt-2">
+      <div className="max-w-4xl mx-auto" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/* My Dogs section - show first when user has dogs */}
-        {isGuardian && dogs.length > 0 && <div className="space-y-2 mb-3">
-            <h2 className="text-xl font-bold text-title">Mes chiens</h2>
-            <div className="space-y-2">
+        {isGuardian && dogs.length > 0 && <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <h2 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Mes chiens</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {dogs.map(dog => {
             const completion = calculateProfileCompletion(dog);
-            return <div key={dog.id} className="lupi-card">
+            return <div key={dog.id} className="n26-card">
                   <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-20 h-20 rounded-2xl object-cover border-2 border-primary/20" /> : <div className="w-20 h-20 rounded-2xl bg-gradient-card flex items-center justify-center border-2 border-primary/20">
-                        <DogIcon className="h-10 w-10 text-primary" />
+                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="avatar-circle" style={{ width: '48px', height: '48px' }} /> : <div className="bg-secondary flex items-center justify-center" style={{ width: '48px', height: '48px', borderRadius: '12px' }}>
+                        <DogIcon className="h-6 w-6" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
                       </div>}
                     <div className="flex-1">
-                      <h3 className="font-bold text-title text-lg">{dog.name}</h3>
-                      {dog.breed && <p className="text-sm text-muted-foreground">{dog.breed}</p>}
+                      <h3 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>{dog.name}</h3>
+                      {dog.breed && <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>{dog.breed}</p>}
                     </div>
-                    <div className="flex flex-col items-center gap-1 min-w-[80px]">
-                      <div className="relative w-12 h-12">
-                        <svg className="w-12 h-12 transform -rotate-90">
-                          <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="none" className="text-secondary" />
-                          <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="none" strokeDasharray={`${2 * Math.PI * 20}`} strokeDashoffset={`${2 * Math.PI * 20 * (1 - completion / 100)}`} className={`${getProgressColor(completion)} transition-all duration-300`} strokeLinecap="round" />
+                    <div className="flex flex-col items-center gap-1" style={{ minWidth: '60px' }}>
+                      <div className="relative" style={{ width: '40px', height: '40px' }}>
+                        <svg style={{ width: '40px', height: '40px', transform: 'rotate(-90deg)' }}>
+                          <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="3" fill="none" className="text-muted" />
+                          <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="3" fill="none" strokeDasharray={`${2 * Math.PI * 16}`} strokeDashoffset={`${2 * Math.PI * 16 * (1 - completion / 100)}`} className={`${getProgressColor(completion)} transition-all duration-300`} strokeLinecap="round" />
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-xs font-bold text-foreground">{completion}%</span>
+                          <span className="text-foreground" style={{ fontSize: '10px', fontWeight: 600 }}>{completion}%</span>
                         </div>
                       </div>
-                      <span className="text-xs text-muted-foreground">Profil</span>
+                      <span className="text-secondary" style={{ fontSize: '10px', fontWeight: 300 }}>Profil</span>
                     </div>
                   </div>
                 </div>;
           })}
               
               {/* Raccourci vers Recommandations personnalisées */}
-              <div className="lupi-card bg-gradient-card border-2 border-primary/20">
-                <div className="flex items-center gap-3 cursor-pointer p-3" onClick={() => navigate('/recommendations-demo')}>
-                  <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 rounded-md bg-black">
-                    <Lightbulb className="h-6 w-6 text-white" />
+              <div className="n26-card" style={{ background: 'hsl(0 0% 96%)' }}>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/recommendations-demo')}>
+                  <div className="icon-container flex-shrink-0">
+                    <Lightbulb strokeWidth={1.5} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-title text-lg">Recommandations personnalisées</h3>
-                    <p className="text-sm text-muted-foreground">Une fois votre test ADN réalisé, Lupi vous propose des recommandations ultra personnalisées pour votre chien</p>
+                    <h3 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Recommandations personnalisées</h3>
+                    <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>Une fois votre test ADN réalisé, Lupi vous propose des recommandations ultra personnalisées pour votre chien</p>
                   </div>
                 </div>
               </div>
@@ -516,97 +516,104 @@ const Home = () => {
       {/* D'où ils viennent Section */}
         
 
-      <div className="p-2 space-y-3 max-w-4xl mx-auto mt-2">
+      <div className="max-w-4xl mx-auto" style={{ padding: '0 16px 80px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
         {/* CTA to create dog for authenticated guardians without dogs */}
         {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && <>
-            <div className="lupi-card p-4 text-center space-y-3 bg-gradient-card mb-3">
-              
-              <h3 className="text-lg font-bold text-title">
+            <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '12px', background: 'hsl(0 0% 96%)' }}>
+              <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>
                 Créez le profil de votre chien
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-secondary" style={{ fontSize: '14px' }}>
                 Commencez à suivre sa santé et son bien-être
               </p>
-              <Button onClick={() => navigate("/dogs/add")} className="w-full rounded-full" size="lg">
-                <Plus className="h-5 w-5 mr-2" />
+              <Button onClick={() => navigate("/dogs/add")} className="btn-action w-full" size="lg">
+                <Plus className="h-5 w-5 mr-2" strokeWidth={1.5} />
                 Créer mon chien
               </Button>
             </div>
 
-            <div className="lupi-card p-4 text-center space-y-3 mb-3">
-              <TestTube2 className="h-12 w-12 text-primary mx-auto" />
-              <h3 className="text-lg font-bold text-title">
+            <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div className="icon-container mx-auto" style={{ width: '48px', height: '48px' }}>
+                <TestTube2 style={{ width: '48px', height: '48px' }} strokeWidth={1.5} />
+              </div>
+              <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>
                 Découvrez un exemple de résultats ADN
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-secondary" style={{ fontSize: '14px' }}>
                 Visualisez comment fonctionne l'analyse génétique complète
               </p>
-              <Button onClick={() => navigate("/dna-demo")} variant="outline" className="w-full rounded-full" size="lg">
-                <TestTube2 className="h-5 w-5 mr-2" />
+              <Button onClick={() => navigate("/dna-demo")} variant="outline" className="w-full" style={{ borderRadius: '12px' }} size="lg">
+                <TestTube2 className="h-5 w-5 mr-2" strokeWidth={1.5} />
                 Voir la démo
               </Button>
             </div>
 
-            <div className="lupi-card p-4 text-center space-y-3 mb-3">
-              <Lightbulb className="h-12 w-12 text-primary mx-auto" />
-              <h3 className="text-lg font-bold text-title">
+            <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div className="icon-container mx-auto" style={{ width: '48px', height: '48px' }}>
+                <Lightbulb style={{ width: '48px', height: '48px' }} strokeWidth={1.5} />
+              </div>
+              <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>
                 Recommandations personnalisées
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-secondary" style={{ fontSize: '14px' }}>
                 Quand vous réalisez un test, Lupi vous fournit des recommandations lifestyle personnalisées
               </p>
-              <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full rounded-full" size="lg">
-                <Lightbulb className="h-5 w-5 mr-2" />
+              <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full" style={{ borderRadius: '12px' }} size="lg">
+                <Lightbulb className="h-5 w-5 mr-2" strokeWidth={1.5} />
                 Voir les recommandations
               </Button>
             </div>
           </>}
 
-        {/* Quick actions for authenticated guardians */}
-        {isAuthenticated && isGuardian && <div className="grid grid-cols-3 gap-3 mb-3">
-            <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/messages")}>
-              <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="relative">
-                  <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
-                    <img src={messagesIcon} alt="Messages" className="w-full h-full object-cover" />
+        {/* Quick actions for authenticated guardians - N26 Style */}
+        {isAuthenticated && isGuardian && <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <h2 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Accès rapide</h2>
+            <div className="grid grid-cols-4 gap-3">
+              <div className="cursor-pointer" onClick={() => navigate("/guardian/messages")}>
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="relative">
+                    <div className="w-12 h-12 bg-primary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                      <MessageSquare className="h-5 w-5 text-white" strokeWidth={1.5} />
+                    </div>
+                    {unreadCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0"
+                        style={{ fontSize: '9px', fontWeight: 700 }}
+                      >
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </Badge>
+                    )}
                   </div>
-                  {unreadCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs font-bold"
-                    >
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </Badge>
-                  )}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-title text-sm">Messages</h3>
-                  <p className="text-xs text-primary">Avec les pros</p>
+                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Messages</span>
                 </div>
               </div>
-            </div>
 
-            <div className="cursor-pointer transition-all" onClick={() => navigate("/guardian/documents")}>
-              <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
-                  <img src={documentsIcon} alt="Documents" className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-title text-sm">Documents</h3>
-                  <p className="text-xs text-primary">Partagés</p>
+              <div className="cursor-pointer" onClick={() => navigate("/guardian/documents")}>
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                    <FileText className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
+                  </div>
+                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Documents</span>
                 </div>
               </div>
-            </div>
 
-            <div className="cursor-pointer transition-all" onClick={() => navigate("/professionals")}>
-              <div className="flex flex-col items-center gap-1.5 text-center">
-                <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm">
-                  <img src={professionalsIcon} alt="Professionnels" className="w-full h-full object-cover" />
+              <div className="cursor-pointer" onClick={() => navigate("/professionals")}>
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                    <Stethoscope className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
+                  </div>
+                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Professionnels</span>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-title text-sm">Professionnels</h3>
-                  <p className="text-xs text-primary">Trouver</p>
+              </div>
+
+              <div className="cursor-pointer" onClick={() => navigate("/dogs/add")}>
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="w-12 h-12 bg-primary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+                    <Plus className="h-5 w-5 text-white" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Ajouter</span>
                 </div>
               </div>
             </div>
@@ -624,16 +631,18 @@ const Home = () => {
           </div>}
 
         {/* CTA for non-authenticated users */}
-        {!isAuthenticated && <div className="mt-8 lupi-card p-8 text-center space-y-4 bg-gradient-card">
-            <DogIcon className="h-16 w-16 text-primary mx-auto" />
-            <h3 className="text-xl font-bold text-title">
+        {!isAuthenticated && <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: 'hsl(0 0% 96%)' }}>
+            <div className="icon-container mx-auto" style={{ width: '64px', height: '64px' }}>
+              <DogIcon style={{ width: '64px', height: '64px' }} strokeWidth={1.5} />
+            </div>
+            <h3 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>
               Ajoutez votre chien pour démarrer l'expérience Lupi
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-secondary" style={{ fontSize: '14px' }}>
               Commencez à suivre la santé et le bien-être de votre compagnon
             </p>
-            <Button onClick={() => navigate("/choose-account-type")} className="w-full rounded-full" size="lg">
-              <Plus className="h-5 w-5 mr-2" />
+            <Button onClick={() => navigate("/choose-account-type")} className="btn-action w-full" size="lg">
+              <Plus className="h-5 w-5 mr-2" strokeWidth={1.5} />
               Télécharger l'app et s'inscrire
             </Button>
           </div>}
