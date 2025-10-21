@@ -422,83 +422,83 @@ const DogProfile = () => {
         </Card>
       </div>;
   }
-  return <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background">
+  return <div className="min-h-screen p-4 animate-fade-in" style={{ background: '#FFFFFF', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
-          <ArrowLeft className="h-5 w-5" />
+        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} style={{ borderRadius: '12px' }}>
+          <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
         </Button>
-        <h1 className="text-2xl font-bold text-title">Profil de {dog.name}</h1>
+        <h1 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>Profil de {dog.name}</h1>
       </div>
 
-      <Card className="lupi-card text-center space-y-4">
+      <Card className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div className="relative w-32 h-32 mx-auto">
-          {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-32 h-32 rounded-full object-cover shadow-lg" /> : <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
-              <DogIcon className="h-16 w-16 text-primary" />
+          {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-32 h-32 avatar-circle object-cover" /> : <div className="w-32 h-32 bg-secondary flex items-center justify-center" style={{ borderRadius: '12px' }}>
+              <DogIcon className="h-16 w-16" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
             </div>}
-          <label htmlFor="avatar-upload" className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors shadow-lg">
-            <Camera className="h-5 w-5" />
+          <label htmlFor="avatar-upload" className="absolute bottom-0 right-0 w-10 h-10 bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:bg-primary/90 transition-colors" style={{ borderRadius: '12px' }}>
+            <Camera className="h-5 w-5" strokeWidth={1.5} />
             <input id="avatar-upload" ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
           </label>
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-title">{dog.name}</h2>
-          {dog.breed && <p className="text-muted-foreground">{dog.breed}</p>}
-          {dog.gender && <p className="text-sm text-muted-foreground capitalize">{dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
+          <h2 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>{dog.name}</h2>
+          {dog.breed && <p className="text-secondary" style={{ fontSize: '14px' }}>{dog.breed}</p>}
+          {dog.gender && <p className="text-secondary" style={{ fontSize: '12px', textTransform: 'capitalize', fontWeight: 300 }}>{dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
         </div>
       </Card>
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-bold text-title">Résumé des tests</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Résumé des tests</h3>
         
         {/* Test ADN - à compléter */}
-        <Card className="p-4 rounded-2xl">
+        <Card className="n26-card">
           <div className="flex items-center gap-4 mb-3">
-            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="h-6 w-6 text-orange-500" />
+            <div className="icon-container flex-shrink-0">
+              <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title">Analyse ADN</h4>
-              <p className="text-sm text-muted-foreground">Non effectué</p>
+              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Analyse ADN</h4>
+              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>Non effectué</p>
             </div>
           </div>
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div className="grid grid-cols-2 gap-2">
-              <Button onClick={() => navigate("/dna-kit")} className="rounded-full">
+              <Button onClick={() => navigate("/dna-kit")} className="btn-action">
                 Commander
               </Button>
-              <Button onClick={() => navigate("/dna-demo")} variant="outline" className="rounded-full border-primary text-primary hover:bg-primary/10">
+              <Button onClick={() => navigate("/dna-demo")} variant="outline" style={{ borderRadius: '12px' }}>
                 Voir une démo
               </Button>
             </div>
-            <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full rounded-full border-primary text-primary hover:bg-primary/10">
+            <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full" style={{ borderRadius: '12px' }}>
               Voir recommandations personnalisées
             </Button>
           </div>
         </Card>
 
         {/* Questionnaire comportemental */}
-        <Card className="p-4 rounded-2xl">
+        <Card className="n26-card">
           <div className="flex items-center gap-4">
-            <div className={`w-10 h-10 rounded-full ${hasQuestionnaire ? 'bg-green-100' : 'bg-orange-100'} flex items-center justify-center flex-shrink-0`}>
-              <CheckCircle2 className={`h-6 w-6 ${hasQuestionnaire ? 'text-green-500' : 'text-orange-500'}`} />
+            <div className="icon-container flex-shrink-0">
+              <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title">Questionnaire comportemental</h4>
-              <p className="text-sm text-muted-foreground">{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
+              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Questionnaire comportemental</h4>
+              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
             </div>
             {hasQuestionnaire ? (
               <div className="flex gap-2">
                 <Button 
                   onClick={() => navigate(`/questionnaire-results/${id}`)} 
                   variant="outline" 
-                  className="rounded-full"
+                  style={{ borderRadius: '12px' }}
                   size="sm"
                 >
                   Voir
                 </Button>
                 <Button 
                   onClick={() => navigate(`/questionnaire?dogId=${id}`)} 
-                  className="rounded-full"
+                  style={{ borderRadius: '12px' }}
                   size="sm"
                 >
                   Modifier
@@ -507,7 +507,7 @@ const DogProfile = () => {
             ) : (
               <Button 
                 onClick={() => navigate(`/questionnaire?dogId=${id}`)} 
-                className="rounded-full"
+                className="btn-action"
               >
                 Commencer
               </Button>
@@ -516,97 +516,97 @@ const DogProfile = () => {
         </Card>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-bold text-title">Informations clés</h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Informations clés</h3>
         
-        <Card className="p-4 rounded-2xl">
+        <Card className="n26-card">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-full bg-yellow-100">
-              <FileText className="h-5 w-5 text-primary" />
+            <div className="icon-container flex-shrink-0">
+              <FileText strokeWidth={1.5} />
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
-                <h4 className="font-semibold text-title">Informations</h4>
+                <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>Informations</h4>
                 <Button 
                   size="sm" 
                   variant="outline" 
-                  className="rounded-full"
+                  style={{ borderRadius: '12px' }}
                   onClick={() => setShowEditInfoDialog(true)}
                 >
                   Modifier
                 </Button>
               </div>
-              {dog.breed && <p className="text-sm text-foreground">Race: {dog.breed}</p>}
-              {dog.gender && <p className="text-sm text-foreground">Sexe: {dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
-              {dog.birth_date && <p className="text-sm text-foreground">Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>}
-              {dog.weight && <p className="text-sm text-foreground">Poids: {dog.weight} kg</p>}
-              {dog.medical_notes && <p className="text-sm text-foreground mt-2">{dog.medical_notes}</p>}
+              {dog.breed && <p className="text-foreground" style={{ fontSize: '14px' }}>Race: {dog.breed}</p>}
+              {dog.gender && <p className="text-foreground" style={{ fontSize: '14px' }}>Sexe: {dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
+              {dog.birth_date && <p className="text-foreground" style={{ fontSize: '14px' }}>Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>}
+              {dog.weight && <p className="text-foreground" style={{ fontSize: '14px' }}>Poids: {dog.weight} kg</p>}
+              {dog.medical_notes && <p className="text-foreground mt-2" style={{ fontSize: '14px' }}>{dog.medical_notes}</p>}
             </div>
           </div>
         </Card>
 
-        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/guardian/documents")}>
+        <Card className="n26-card cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/guardian/documents")}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-              <FileText className="h-5 w-5 text-blue-500" />
+            <div className="icon-container flex-shrink-0">
+              <FileText strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Documents</h4>
-              <p className="text-sm text-muted-foreground">Ordonnances, analyses, certificats</p>
+              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Documents</h4>
+              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>Ordonnances, analyses, certificats</p>
             </div>
-            <Button size="sm" variant="outline" className="rounded-full">
-              <Plus className="h-4 w-4" />
+            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+              <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
         </Card>
 
-        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/health-alerts/${id}`)}>
+        <Card className="n26-card cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/health-alerts/${id}`)}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="h-5 w-5 text-red-500" />
+            <div className="icon-container flex-shrink-0">
+              <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Alertes santé</h4>
-              <p className={`text-sm ${healthAlertsCount === 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Alertes santé</h4>
+              <p className={healthAlertsCount === 0 ? 'text-accent' : 'text-destructive'} style={{ fontSize: '12px', fontWeight: 300 }}>
                 {healthAlertsCount === 0 ? 'Aucune anomalie détectée' : `${healthAlertsCount} ${healthAlertsCount === 1 ? 'alerte' : 'alertes'}`}
               </p>
             </div>
-            <Button size="sm" variant="outline" className="rounded-full">
-              <Plus className="h-4 w-4" />
+            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+              <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
         </Card>
 
-        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/dogs/${id}/vaccination-passport`)}>
+        <Card className="n26-card cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/dogs/${id}/vaccination-passport`)}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-              <Syringe className="h-5 w-5 text-red-500" />
+            <div className="icon-container flex-shrink-0">
+              <Syringe strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Passeport vaccinal</h4>
-              <p className="text-sm text-muted-foreground">
+              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Passeport vaccinal</h4>
+              <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>
                 {vaccinationDocsCount === 0 ? "Aucun document" : `${vaccinationDocsCount} ${vaccinationDocsCount === 1 ? 'document' : 'documents'}`}
               </p>
             </div>
-            <Button size="sm" variant="outline" className="rounded-full">
-              <Plus className="h-4 w-4" />
+            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+              <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
         </Card>
 
         <input ref={fileInputRef} type="file" accept="application/pdf" onChange={handleFileChange} className="hidden" />
 
-        <Card className="p-4 rounded-2xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/dogs/${id}/calendar`)}>
+        <Card className="n26-card cursor-pointer hover:border-primary transition-all" onClick={() => navigate(`/dogs/${id}/calendar`)}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-orange-100">
-              <Calendar className="h-5 w-5 text-primary" />
+            <div className="icon-container flex-shrink-0">
+              <Calendar strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-title mb-1">Calendrier</h4>
-              <p className="text-sm text-foreground">Rappels, rendez-vous & événements</p>
+              <h4 className="text-title" style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px' }}>Calendrier</h4>
+              <p className="text-foreground" style={{ fontSize: '12px', fontWeight: 300 }}>Rappels, rendez-vous & événements</p>
             </div>
-            <Button size="sm" variant="outline" className="rounded-full">
-              <Plus className="h-4 w-4" />
+            <Button size="sm" variant="outline" style={{ borderRadius: '12px' }}>
+              <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
         </Card>
@@ -678,13 +678,14 @@ const DogProfile = () => {
             </div>
 
             <div className="flex gap-2">
-              <Button onClick={handleUpdateInfo} className="flex-1 rounded-full">
+              <Button onClick={handleUpdateInfo} className="flex-1 btn-action">
                 Enregistrer
               </Button>
               <Button
                 onClick={() => setShowEditInfoDialog(false)}
                 variant="outline"
-                className="flex-1 rounded-full"
+                className="flex-1"
+                style={{ borderRadius: '12px' }}
               >
                 Annuler
               </Button>
