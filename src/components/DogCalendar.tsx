@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, Syringe, Stethoscope, Scissors, GraduationCap, Bell, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, Syringe, Stethoscope, Scissors, GraduationCap, Bell, MoreHorizontal, Pencil, Trash2, Pill } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, startOfDay, addDays, startOfToday } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -18,9 +18,20 @@ interface CalendarEvent {
   description: string | null;
   event_date: string;
   event_time: string | null;
-  event_type: 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other';
+  event_type: 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'medication' | 'other';
   status: 'upcoming' | 'completed' | 'cancelled';
   dog_id?: string;
+}
+
+interface Medication {
+  id: string;
+  dog_id: string;
+  medication_name: string;
+  dosage_detail: string;
+  frequency: string;
+  start_date: string;
+  end_date: string | null;
+  active: boolean;
 }
 
 interface Dog {
@@ -43,6 +54,7 @@ const eventTypeIcons = {
   grooming: Scissors,
   training: GraduationCap,
   reminder: Bell,
+  medication: Pill,
   other: MoreHorizontal,
 };
 
@@ -52,6 +64,7 @@ const eventTypeColors = {
   grooming: "text-purple-600 bg-purple-50",
   training: "text-orange-600 bg-orange-50",
   reminder: "text-yellow-600 bg-yellow-50",
+  medication: "text-pink-600 bg-pink-50",
   other: "text-gray-600 bg-gray-50",
 };
 
@@ -61,12 +74,14 @@ const eventTypeLabels = {
   grooming: "Toilettage",
   training: "Éducation",
   reminder: "Rappel",
+  medication: "Traitement",
   other: "Autre",
 };
 
 export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: DogCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [medications, setMedications] = useState<Medication[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showAddEventDialog, setShowAddEventDialog] = useState(false);
   const [showEditEventDialog, setShowEditEventDialog] = useState(false);
@@ -88,6 +103,7 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
 
   useEffect(() => {
     fetchEvents();
+    fetchMedications();
   }, [currentDate, targetDogIds.join(',')]);
 
   const fetchEvents = async () => {
@@ -109,6 +125,23 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
       setEvents((data as CalendarEvent[]) || []);
     } catch (error) {
       console.error("Error fetching calendar events:", error);
+    }
+  };
+
+  const fetchMedications = async () => {
+    if (targetDogIds.length === 0) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from("dog_medications")
+        .select("id, dog_id, medication_name, dosage_detail, frequency, start_date, end_date, active")
+        .in("dog_id", targetDogIds)
+        .eq("active", true);
+
+      if (error) throw error;
+      setMedications((data as Medication[]) || []);
+    } catch (error) {
+      console.error("Error fetching medications:", error);
     }
   };
 
@@ -236,9 +269,31 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
   const daysToDisplay = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
 
   const getEventsForDate = (date: Date) => {
-    return events.filter((event) =>
+    const regularEvents = events.filter((event) =>
       isSameDay(new Date(event.event_date), date)
     );
+
+    // Add medication events for dates within their active period
+    const medicationEvents: CalendarEvent[] = medications
+      .filter((med) => {
+        const medStart = new Date(med.start_date);
+        const medEnd = med.end_date ? new Date(med.end_date) : null;
+        const isAfterStart = date >= medStart || isSameDay(date, medStart);
+        const isBeforeEnd = !medEnd || date <= medEnd || isSameDay(date, medEnd);
+        return isAfterStart && isBeforeEnd;
+      })
+      .map((med) => ({
+        id: `med-${med.id}`,
+        title: med.medication_name,
+        description: `${med.dosage_detail} • ${med.frequency}`,
+        event_date: format(date, "yyyy-MM-dd"),
+        event_time: null,
+        event_type: 'medication' as const,
+        status: 'upcoming' as const,
+        dog_id: med.dog_id,
+      }));
+
+    return [...regularEvents, ...medicationEvents];
   };
 
   const upcomingEvents = events
@@ -328,6 +383,7 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
                               event.event_type === "grooming" ? "bg-purple-600" :
                               event.event_type === "training" ? "bg-orange-600" :
                               event.event_type === "reminder" ? "bg-yellow-600" :
+                              event.event_type === "medication" ? "bg-pink-600" :
                               "bg-gray-600"
                             }`}
                           />
