@@ -343,32 +343,32 @@ const Home = () => {
   // Guardian/Default View
   return <div className="min-h-screen pb-20 animate-fade-in">
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
-      {/* Hero Section with Gradient */}
-      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 rounded-b-[3rem] shadow-card">
+      {/* Hero Section N26 Style */}
+      <div className="bg-primary p-5 rounded-b-[3rem] shadow-card">
         <div className="max-w-4xl mx-auto space-y-3 text-center">
           <h1 className="text-3xl font-bold text-white">
             {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
           </h1>
-          <p className="text-sm text-white/80">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
+          <p className="text-sm text-white/90">Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
           
           <div className="space-y-2 pt-1">
             {!isAuthenticated ? <>
-                <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                <button onClick={() => navigate("/choose-account-type")} className="w-full btn-lupi bg-white text-foreground hover:bg-white/90 shadow-lg">
                   <LogIn className="h-5 w-5 mr-2 inline" />
                   Se connecter / S'inscrire
                 </button>
               </> : <>
                 {isGuardian && dogs.length > 0 ? <>
-                    <button onClick={() => navigate("/dna-kit")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                    <button onClick={() => navigate("/dna-kit")} className="w-full btn-lupi bg-white text-foreground hover:bg-white/90 shadow-lg">
                       <TestTube2 className="h-5 w-5 mr-2 inline" />
                       Commander un test ADN
                     </button>
                   </> : isGuardian ? <>
-                    <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-primary hover:bg-white/90 shadow-lg">
+                    <button onClick={() => navigate("/dogs/add")} className="w-full btn-lupi bg-white text-foreground hover:bg-white/90 shadow-lg">
                       <Plus className="h-5 w-5 mr-2 inline" />
                       Ajouter un chien
                     </button>
-                    <button onClick={() => navigate("/dna-kit")} className="w-full rounded-full bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all">
+                    <button onClick={() => navigate("/dna-kit")} className="w-full rounded-xl bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 font-semibold hover:bg-white/30 transition-all duration-300">
                       <TestTube2 className="h-5 w-5 mr-2 inline" />
                       Faire le test ADN
                     </button>

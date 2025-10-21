@@ -410,7 +410,7 @@ const GuardianDocuments = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 pb-12 rounded-b-[3rem] shadow-card">
+      <div className="bg-primary p-5 pb-12 rounded-b-[3rem] shadow-card">
         <div className="max-w-4xl mx-auto">
           <Button
             variant="ghost"

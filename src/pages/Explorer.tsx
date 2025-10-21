@@ -37,11 +37,11 @@ const Explorer = () => {
 
   return (
     <div className="min-h-screen pb-20 animate-fade-in">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 rounded-b-[3rem] shadow-card">
+      {/* Header N26 Style */}
+      <div className="bg-primary p-5 rounded-b-[3rem] shadow-card">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl font-bold text-white">Explorer</h1>
-          <p className="text-sm text-white/80 mt-2">
+          <p className="text-sm text-white/90 mt-2">
             Découvrez nos recommandations et partenaires
           </p>
         </div>

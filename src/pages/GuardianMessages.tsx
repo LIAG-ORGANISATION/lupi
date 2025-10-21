@@ -23,8 +23,8 @@ const GuardianMessages = () => {
   return (
     <AuthGuard requiredRole="guardian">
       <div className="min-h-screen bg-background pb-24">
-        {/* Hero Section with Gradient */}
-        <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 pb-12 rounded-b-[3rem] shadow-card">
+        {/* Hero Section N26 Style */}
+        <div className="bg-primary p-5 pb-12 rounded-b-[3rem] shadow-card">
           <div className="max-w-7xl mx-auto">
             <Button
               variant="ghost"

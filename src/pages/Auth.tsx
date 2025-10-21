@@ -122,8 +122,8 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section with Gradient */}
-      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-5 pb-16 rounded-b-[3rem] shadow-card">
+      {/* Hero Section N26 Style */}
+      <div className="bg-primary p-5 pb-16 rounded-b-[3rem] shadow-card">
         <div className="max-w-md mx-auto">
           <Button
             variant="ghost"

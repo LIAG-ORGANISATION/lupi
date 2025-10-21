@@ -8,11 +8,11 @@ const ChooseAccountType = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section with Gradient */}
-      <div className="bg-gradient-to-br from-[#6B1C1C] to-[#4A0F0F] p-8 pb-20 rounded-b-[3rem] shadow-card">
+      {/* Hero Section N26 Style */}
+      <div className="bg-primary p-8 pb-20 rounded-b-[3rem] shadow-card">
         <div className="max-w-md mx-auto text-center space-y-3">
           <h1 className="text-3xl font-bold text-white">Bienvenue sur Lupi</h1>
-          <p className="text-white/80">Choisissez votre type de compte pour commencer</p>
+          <p className="text-white/90">Choisissez votre type de compte pour commencer</p>
         </div>
       </div>
 
