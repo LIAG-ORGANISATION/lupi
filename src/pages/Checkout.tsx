@@ -58,10 +58,10 @@ const Checkout = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-        <Card style={{ padding: '20px', borderRadius: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Card style={{ padding: '16px', borderRadius: '16px', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <h2 className="text-lg font-bold text-title">Shipping Address</h2>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
@@ -73,7 +73,7 @@ const Checkout = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="address">Address</Label>
             <Input
               id="address"
@@ -85,8 +85,8 @@ const Checkout = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="grid grid-cols-2 gap-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               <Label htmlFor="city">City</Label>
               <Input
                 id="city"
@@ -98,7 +98,7 @@ const Checkout = () => {
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               <Label htmlFor="zipCode">ZIP Code</Label>
               <Input
                 id="zipCode"
@@ -111,7 +111,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="state">State</Label>
             <Input
               id="state"

@@ -246,9 +246,10 @@ const Home = () => {
     return Math.round(profileScore + dnaScore + questionnaireScore);
   };
   const getProgressColor = (percentage: number): string => {
-    if (percentage < 50) return 'text-red-500';
-    if (percentage < 80) return 'text-orange-500';
-    return 'text-green-500';
+    // Utilisation du vert primaire de l'identité visuelle (#5B9D8C)
+    if (percentage >= 80) return 'text-[#5B9D8C]'; // Vert complet
+    if (percentage >= 50) return 'text-[#7AB39E]'; // Nuance plus claire  
+    return 'text-[#B8DECB]'; // Nuance très claire pour les faibles pourcentages
   };
 
   // Professional Dashboard View
@@ -380,7 +381,12 @@ const Home = () => {
                   <img
                     src={image}
                     alt={`Chien ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center'
+                    }}
                   />
                   {/* Dark overlay for better text readability */}
                   <div className="absolute inset-0 bg-black/30" />
@@ -489,29 +495,29 @@ const Home = () => {
                   : null;
                 
                 return (
-                  <div key={med.id} className="p-3 rounded-lg bg-pink-50 border border-pink-200">
+                  <div key={med.id} className="p-3 rounded-lg" style={{ backgroundColor: '#F5E8E6', border: '1px solid #E5C8C3' }}>
                     <div className="flex items-start gap-3">
                       {dog && (
                         <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
                           {dog.avatar_url ? (
                             <img src={dog.avatar_url} alt={dog.name} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full bg-primary/10 flex items-center justify-center">
-                              <span className="text-sm font-bold text-primary">{dog.name[0]}</span>
+                            <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: 'rgba(91, 157, 140, 0.1)' }}>
+                              <span className="text-sm font-bold" style={{ color: '#5B9D8C' }}>{dog.name[0]}</span>
                             </div>
                           )}
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <div className="font-semibold text-pink-900">{med.medication_name}</div>
+                          <div className="font-semibold" style={{ color: '#8B4842' }}>{med.medication_name}</div>
                           {dog && (
                             <Badge variant="secondary" className="flex-shrink-0 text-xs">
                               {dog.name}
                             </Badge>
                           )}
                         </div>
-                        <div className="text-sm text-pink-800 space-y-1">
+                        <div className="text-sm space-y-1" style={{ color: '#A55D53' }}>
                           <div className="flex items-center gap-2">
                             <span className="font-medium">Posologie:</span>
                             <span>{med.dosage_detail}</span>

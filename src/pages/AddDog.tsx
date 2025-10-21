@@ -161,13 +161,13 @@ const AddDog = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <Card className="lupi-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Card className="lupi-card" style={{ padding: '16px', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {/* Photo Upload */}
           <div className="flex flex-col items-center" style={{ gap: '12px' }}>
 ...
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="name">Nom du chien *</Label>
             <Input
               id="name"
@@ -179,7 +179,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="breed">Race supposée</Label>
             <Input
               id="breed"
@@ -190,7 +190,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label>Sexe</Label>
             <div className="flex gap-4">
               <Button
@@ -212,7 +212,7 @@ const AddDog = () => {
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="birthDate">Date de naissance</Label>
             <Input
               id="birthDate"
@@ -223,7 +223,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="weight">Poids (kg)</Label>
             <Input
               id="weight"
@@ -235,7 +235,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label>Stérilisé ?</Label>
             <div className="flex gap-4">
               <Button

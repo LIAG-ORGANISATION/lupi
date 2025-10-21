@@ -155,7 +155,7 @@ const EditProfile = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <Card className="lupi-card text-center" style={{ padding: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Card className="lupi-card text-center" style={{ padding: '16px', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div className="relative w-24 h-24 mx-auto">
             <Avatar className="w-24 h-24">
               {avatarUrl && <AvatarImage src={avatarUrl} alt="Avatar" />}
@@ -179,8 +179,8 @@ const EditProfile = () => {
           </div>
         </Card>
 
-        <Card className="lupi-card" style={{ padding: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Card className="lupi-card" style={{ padding: '16px', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="name">Nom complet</Label>
             <Input
               id="name"
@@ -190,7 +190,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -201,7 +201,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="phone">Téléphone</Label>
             <Input
               id="phone"
@@ -212,7 +212,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="address">Adresse</Label>
             <Input
               id="address"
@@ -222,8 +222,8 @@ const EditProfile = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="grid grid-cols-2 gap-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               <Label htmlFor="city">Ville</Label>
               <Input
                 id="city"
@@ -233,7 +233,7 @@ const EditProfile = () => {
               />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               <Label htmlFor="zipCode">Code postal</Label>
               <Input
                 id="zipCode"

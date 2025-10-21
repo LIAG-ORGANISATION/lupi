@@ -192,8 +192,8 @@ const Auth = () => {
 
           <TabsContent value="signup">
             <form onSubmit={handleSignUp}>
-              <Card className="lupi-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <Card className="lupi-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <Label htmlFor="signup-name">Nom complet</Label>
                   <Input
                     id="signup-name"
@@ -205,7 +205,7 @@ const Auth = () => {
                   />
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <Label htmlFor="signup-email">Email</Label>
                   <Input
                     id="signup-email"
@@ -218,7 +218,7 @@ const Auth = () => {
                   />
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <Label htmlFor="signup-password">Mot de passe</Label>
                   <Input
                     id="signup-password"
@@ -235,7 +235,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full rounded-full"
-                style={{ marginTop: '16px', minHeight: '44px' }}
+                style={{ marginTop: '12px', minHeight: '44px' }}
                 size="lg"
                 disabled={loading}
               >
