@@ -10,7 +10,11 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import QuickActionCard from "@/components/QuickActionCard";
-import heroImage from "@/assets/hero-dog-dna.jpg";
+import heroDog1 from "@/assets/hero-dog-1.jpg";
+import heroDog2 from "@/assets/hero-dog-2.jpg";
+import heroDog3 from "@/assets/hero-dog-3.jpg";
+import heroDog4 from "@/assets/hero-dog-4.webp";
+import heroDog5 from "@/assets/hero-dog-5.jpg";
 import dogsOriginSection from "@/assets/dogs-origin-section.png";
 import messagesIcon from "@/assets/messages-icon.jpg";
 import documentsIcon from "@/assets/documents-icon.jpg";
@@ -70,6 +74,18 @@ const Home = () => {
   const [dogsCompletion, setDogsCompletion] = useState<DogCompletion[]>([]);
   const [activeMedications, setActiveMedications] = useState<any[]>([]);
   const unreadCount = useUnreadMessages();
+  const [heroApi, setHeroApi] = useState<any>();
+
+  // Auto-scroll hero carousel
+  useEffect(() => {
+    if (!heroApi) return;
+    
+    const interval = setInterval(() => {
+      heroApi.scrollNext();
+    }, 3000); // Change slide every 3 seconds
+    
+    return () => clearInterval(interval);
+  }, [heroApi]);
 
   // Check if user is first time logging in as guardian
   useEffect(() => {
@@ -343,37 +359,66 @@ const Home = () => {
   // Guardian/Default View
   return <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
-      {/* Hero Section N26 Style */}
-      <div className="bg-gradient-n26 mb-0" style={{ padding: '20px 16px' }}>
-        <div className="max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>
-            {isGuardian && dogs.length > 0 ? "Mieux comprendre pour mieux accompagner" : "Découvrez & accompagnez votre chien"}
-          </h1>
-          <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.</p>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '8px' }}>
-            {!isAuthenticated ? <>
-                <button onClick={() => navigate("/choose-account-type")} className="btn-action w-full">
-                  <LogIn className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
-                  Se connecter / S'inscrire
-                </button>
-              </> : <>
-                {isGuardian && dogs.length > 0 ? <>
-                    <button onClick={() => navigate("/dna-kit")} className="btn-critical w-full">
-                      <TestTube2 className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
-                      Commander un test ADN
-                    </button>
-                  </> : isGuardian ? <>
-                    <button onClick={() => navigate("/dogs/add")} className="btn-action w-full">
-                      <Plus className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
-                      Ajouter un chien
-                    </button>
-                    <button onClick={() => navigate("/dna-kit")} className="btn-secondary w-full">
-                      <TestTube2 className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
-                      Faire le test ADN
-                    </button>
-                  </> : null}
-              </>}
+      {/* Hero Section with Auto-Sliding Images */}
+      <div className="relative mb-0 overflow-hidden" style={{ height: '40vh', minHeight: '300px' }}>
+        <Carousel
+          setApi={setHeroApi}
+          opts={{
+            loop: true,
+            align: 'center',
+          }}
+          className="w-full h-full"
+        >
+          <CarouselContent className="h-full -ml-0">
+            {[heroDog1, heroDog2, heroDog3, heroDog4, heroDog5].map((image, index) => (
+              <CarouselItem key={index} className="pl-0 h-full">
+                <div className="relative w-full h-full">
+                  <img
+                    src={image}
+                    alt={`Chien ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Dark overlay for better text readability */}
+                  <div className="absolute inset-0 bg-black/30" />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+
+        {/* Text and CTA overlay */}
+        <div className="absolute inset-0 flex items-center justify-center px-4">
+          <div className="text-center max-w-2xl" style={{ zIndex: 10 }}>
+            <h1 style={{ 
+              fontSize: '24px', 
+              fontWeight: 600, 
+              color: '#FFFFFF',
+              marginBottom: '12px',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            }}>
+              Mieux comprendre pour mieux accompagner
+            </h1>
+            <p style={{ 
+              fontSize: '14px', 
+              color: '#FFFFFF',
+              marginBottom: '20px',
+              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+              lineHeight: '1.5'
+            }}>
+              Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.
+            </p>
+            
+            <button 
+              onClick={() => navigate("/dna-kit")} 
+              className="btn-critical"
+              style={{
+                minWidth: '200px',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+              }}
+            >
+              <TestTube2 className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
+              Commander
+            </button>
           </div>
         </div>
       </div>
