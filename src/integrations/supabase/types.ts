@@ -68,6 +68,8 @@ export type Database = {
           event_time: string | null
           event_type: string
           id: string
+          medication_dosage: string | null
+          medication_name: string | null
           owner_id: string
           professional_id: string | null
           status: string | null
@@ -82,6 +84,8 @@ export type Database = {
           event_time?: string | null
           event_type: string
           id?: string
+          medication_dosage?: string | null
+          medication_name?: string | null
           owner_id: string
           professional_id?: string | null
           status?: string | null
@@ -96,6 +100,8 @@ export type Database = {
           event_time?: string | null
           event_type?: string
           id?: string
+          medication_dosage?: string | null
+          medication_name?: string | null
           owner_id?: string
           professional_id?: string | null
           status?: string | null
@@ -191,6 +197,7 @@ export type Database = {
           dog_id: string
           id: string
           owner_id: string
+          symptoms: string | null
           updated_at: string
         }
         Insert: {
@@ -200,6 +207,7 @@ export type Database = {
           dog_id: string
           id?: string
           owner_id: string
+          symptoms?: string | null
           updated_at?: string
         }
         Update: {
@@ -209,6 +217,7 @@ export type Database = {
           dog_id?: string
           id?: string
           owner_id?: string
+          symptoms?: string | null
           updated_at?: string
         }
         Relationships: [

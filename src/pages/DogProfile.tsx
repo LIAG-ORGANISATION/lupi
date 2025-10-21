@@ -57,6 +57,8 @@ const DogProfile = () => {
     event_type: "reminder" as 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other',
     event_date: format(new Date(), "yyyy-MM-dd"),
     event_time: "",
+    medication_name: "",
+    medication_dosage: "",
   });
   useEffect(() => {
     if (id && user) {
@@ -379,6 +381,8 @@ const DogProfile = () => {
         event_time: newEvent.event_time || null,
         event_type: newEvent.event_type,
         status: "upcoming",
+        medication_name: newEvent.medication_name || null,
+        medication_dosage: newEvent.medication_dosage || null,
       });
 
       if (error) throw error;
@@ -393,8 +397,10 @@ const DogProfile = () => {
         title: "", 
         description: "", 
         event_type: "reminder", 
-        event_date: format(new Date(), "yyyy-MM-dd"),
-        event_time: "" 
+        event_date: format(new Date(), "yyyy-MM-dd"), 
+        event_time: "",
+        medication_name: "",
+        medication_dosage: "",
       });
     } catch (error) {
       console.error("Error adding event:", error);

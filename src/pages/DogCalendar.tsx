@@ -18,6 +18,8 @@ interface CalendarEvent {
   event_time: string | null;
   event_type: 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other';
   status: 'upcoming' | 'completed' | 'cancelled';
+  medication_name?: string | null;
+  medication_dosage?: string | null;
 }
 
 const eventTypeIcons = {
@@ -73,7 +75,7 @@ const DogCalendarPage = () => {
     try {
       const { data, error } = await supabase
         .from("dog_calendar_events")
-        .select("id, title, description, event_date, event_time, event_type, status")
+        .select("id, title, description, event_date, event_time, event_type, status, medication_name, medication_dosage")
         .eq("dog_id", id)
         .order("event_date", { ascending: true });
 

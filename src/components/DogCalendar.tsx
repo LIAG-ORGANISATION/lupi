@@ -21,6 +21,8 @@ interface CalendarEvent {
   event_type: 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other';
   status: 'upcoming' | 'completed' | 'cancelled';
   dog_id?: string;
+  medication_name?: string | null;
+  medication_dosage?: string | null;
 }
 
 interface Dog {
@@ -80,6 +82,8 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
     event_date: format(new Date(), "yyyy-MM-dd"),
     event_time: "",
     dog_id: dogId || (dogs && dogs.length > 0 ? dogs[0].id : ""),
+    medication_name: "",
+    medication_dosage: "",
   });
   const { toast } = useToast();
 
@@ -99,7 +103,7 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
 
       const { data, error } = await supabase
         .from("dog_calendar_events")
-        .select("id, title, description, event_date, event_time, event_type, status, dog_id")
+        .select("id, title, description, event_date, event_time, event_type, status, dog_id, medication_name, medication_dosage")
         .in("dog_id", targetDogIds)
         .gte("event_date", format(start, "yyyy-MM-dd"))
         .lte("event_date", format(end, "yyyy-MM-dd"))
@@ -132,6 +136,8 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
         event_time: newEvent.event_time || null,
         event_type: newEvent.event_type,
         status: "upcoming",
+        medication_name: newEvent.medication_name || null,
+        medication_dosage: newEvent.medication_dosage || null,
       });
 
       if (error) throw error;
@@ -149,6 +155,8 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
         event_date: format(new Date(), "yyyy-MM-dd"), 
         event_time: "",
         dog_id: dogId || (dogs && dogs.length > 0 ? dogs[0].id : ""),
+        medication_name: "",
+        medication_dosage: "",
       });
       fetchEvents();
     } catch (error) {
@@ -173,6 +181,8 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
           event_date: eventToEdit.event_date,
           event_time: eventToEdit.event_time,
           event_type: eventToEdit.event_type,
+          medication_name: eventToEdit.medication_name || null,
+          medication_dosage: eventToEdit.medication_dosage || null,
         })
         .eq("id", eventToEdit.id);
 
@@ -563,6 +573,24 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
               />
             </div>
 
+            <div>
+              <label className="text-sm font-medium mb-1 block">Nom du médicament (optionnel)</label>
+              <Input
+                value={newEvent.medication_name}
+                onChange={(e) => setNewEvent({ ...newEvent, medication_name: e.target.value })}
+                placeholder="Ex: Antibiotique"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-1 block">Posologie (optionnel)</label>
+              <Input
+                value={newEvent.medication_dosage}
+                onChange={(e) => setNewEvent({ ...newEvent, medication_dosage: e.target.value })}
+                placeholder="Ex: 1 comprimé matin et soir"
+              />
+            </div>
+
             <div className="flex gap-2">
               <Button onClick={handleAddEvent} className="flex-1">
                 Ajouter
@@ -642,6 +670,24 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
                   onChange={(e) => setEventToEdit({ ...eventToEdit, description: e.target.value })}
                   placeholder="Détails supplémentaires..."
                   rows={3}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-1 block">Nom du médicament (optionnel)</label>
+                <Input
+                  value={eventToEdit.medication_name || ""}
+                  onChange={(e) => setEventToEdit({ ...eventToEdit, medication_name: e.target.value })}
+                  placeholder="Ex: Antibiotique"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-1 block">Posologie (optionnel)</label>
+                <Input
+                  value={eventToEdit.medication_dosage || ""}
+                  onChange={(e) => setEventToEdit({ ...eventToEdit, medication_dosage: e.target.value })}
+                  placeholder="Ex: 1 comprimé matin et soir"
                 />
               </div>
 

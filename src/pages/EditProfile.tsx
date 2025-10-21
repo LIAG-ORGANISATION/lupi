@@ -72,13 +72,13 @@ const EditProfile = () => {
       const filePath = `${user.id}/avatar.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('dog-documents')
+        .from('owner-avatars')
         .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('dog-documents')
+        .from('owner-avatars')
         .getPublicUrl(filePath);
 
       const { error: updateError } = await supabase

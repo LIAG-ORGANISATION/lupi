@@ -21,6 +21,7 @@ interface HealthAlert {
   id: string;
   alert_date: string;
   description: string;
+  symptoms: string | null;
 }
 
 const HealthAlerts = () => {
@@ -34,6 +35,7 @@ const HealthAlerts = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [alertDate, setAlertDate] = useState("");
   const [description, setDescription] = useState("");
+  const [symptoms, setSymptoms] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -77,6 +79,7 @@ const HealthAlerts = () => {
           owner_id: user.id,
           alert_date: alertDate,
           description: description,
+          symptoms: symptoms || null,
         });
 
       if (error) throw error;
@@ -88,6 +91,7 @@ const HealthAlerts = () => {
 
       setAlertDate("");
       setDescription("");
+      setSymptoms("");
       setDialogOpen(false);
       fetchAlerts();
     } catch (error) {
@@ -173,12 +177,22 @@ const HealthAlerts = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="symptoms">Symptômes observés</Label>
+                <Textarea
+                  id="symptoms"
+                  value={symptoms}
+                  onChange={(e) => setSymptoms(e.target.value)}
+                  placeholder="Ex: Vomissements, diarrhée, léthargie..."
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="description">Description de l'incident</Label>
                 <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Décrivez l'incident de santé..."
+                  placeholder="Décrivez l'incident de santé et les actions prises..."
                   required
                   rows={4}
                 />
@@ -209,7 +223,7 @@ const HealthAlerts = () => {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-start justify-between">
-                    <div>
+                    <div className="flex-1">
                       <p className="font-semibold text-sm mb-1">
                         {new Date(alert.alert_date).toLocaleDateString('fr-FR', {
                           day: 'numeric',
@@ -217,9 +231,20 @@ const HealthAlerts = () => {
                           year: 'numeric'
                         })}
                       </p>
-                      <p className="text-sm text-foreground whitespace-pre-wrap">
-                        {alert.description}
-                      </p>
+                      {alert.symptoms && (
+                        <div className="mb-2">
+                          <p className="text-xs font-semibold text-muted-foreground mb-1">Symptômes :</p>
+                          <p className="text-sm text-foreground whitespace-pre-wrap">
+                            {alert.symptoms}
+                          </p>
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground mb-1">Description :</p>
+                        <p className="text-sm text-foreground whitespace-pre-wrap">
+                          {alert.description}
+                        </p>
+                      </div>
                     </div>
                     <Button
                       variant="ghost"
