@@ -51,6 +51,7 @@ import RecommendationsDemo from "./pages/RecommendationsDemo";
 import DogCalendarPage from "./pages/DogCalendar";
 import RecipeDetail from "./pages/RecipeDetail";
 import BaladeDetail from "./pages/BaladeDetail";
+import Explorer from "./pages/Explorer";
 import ScrollToTop from "./components/ScrollToTop";
 const queryClient = new QueryClient();
 const App = () => <QueryClientProvider client={queryClient}>
@@ -97,6 +98,7 @@ const App = () => <QueryClientProvider client={queryClient}>
           <Route path="/recommendations/:id" element={<Layout><RecommendationDetail /></Layout>} />
           <Route path="/recipe/:id" element={<Layout><RecipeDetail /></Layout>} />
           <Route path="/balade/:id" element={<Layout><BaladeDetail /></Layout>} />
+          <Route path="/explorer" element={<Layout><Explorer /></Layout>} />
           <Route path="/profile" element={<Layout><Profile /></Layout>} />
           <Route path="/profile/edit" element={<Layout><EditProfile /></Layout>} />
           <Route path="/profile/notifications" element={<Layout><NotificationsSettings /></Layout>} />

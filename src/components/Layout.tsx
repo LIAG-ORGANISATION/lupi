@@ -25,11 +25,11 @@ const Layout = ({
             <span className="text-xs">Accueil</span>
           </NavLink>
           
-          {isAuthenticated && isGuardian && <NavLink to="/guardian/dashboard" className={({
+          {isAuthenticated && isGuardian && <NavLink to="/explorer" className={({
           isActive
         }) => cn("flex flex-col items-center gap-1 px-4 py-2 transition-colors", isActive ? "text-primary" : "text-muted-foreground")}>
               <Dog className="h-6 w-6" />
-              <span className="text-xs">Mes chiens</span>
+              <span className="text-xs">Explorer</span>
             </NavLink>}
 
           {isAuthenticated && isProfessional && <NavLink to="/professional/clients" className={({
