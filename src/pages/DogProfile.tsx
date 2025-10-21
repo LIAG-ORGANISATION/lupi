@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
+import { MedicationsManager } from "@/components/MedicationsManager";
 interface DogData {
   id: string;
   name: string;
@@ -57,8 +58,6 @@ const DogProfile = () => {
     event_type: "reminder" as 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other',
     event_date: format(new Date(), "yyyy-MM-dd"),
     event_time: "",
-    medication_name: "",
-    medication_dosage: "",
   });
   useEffect(() => {
     if (id && user) {
@@ -381,8 +380,6 @@ const DogProfile = () => {
         event_time: newEvent.event_time || null,
         event_type: newEvent.event_type,
         status: "upcoming",
-        medication_name: newEvent.medication_name || null,
-        medication_dosage: newEvent.medication_dosage || null,
       });
 
       if (error) throw error;
@@ -398,9 +395,7 @@ const DogProfile = () => {
         description: "", 
         event_type: "reminder", 
         event_date: format(new Date(), "yyyy-MM-dd"), 
-        event_time: "",
-        medication_name: "",
-        medication_dosage: "",
+        event_time: "" 
       });
     } catch (error) {
       console.error("Error adding event:", error);
@@ -616,6 +611,9 @@ const DogProfile = () => {
           </div>
         </Card>
       </div>
+
+      {/* Medications Manager */}
+      {user && <MedicationsManager dogId={id!} ownerId={user.id} />}
 
       {/* Dialog pour modifier les informations */}
       <Dialog open={showEditInfoDialog} onOpenChange={setShowEditInfoDialog}>

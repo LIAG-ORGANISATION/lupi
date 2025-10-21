@@ -1,0 +1,358 @@
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Pill, Plus, Trash2, Check, X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { format, addDays } from "date-fns";
+import { fr } from "date-fns/locale";
+
+interface Medication {
+  id: string;
+  medication_name: string;
+  dosage_detail: string;
+  frequency: string;
+  duration_days: number | null;
+  start_date: string;
+  end_date: string | null;
+  notes: string | null;
+  active: boolean;
+}
+
+interface MedicationsManagerProps {
+  dogId: string;
+  ownerId: string;
+}
+
+export const MedicationsManager = ({ dogId, ownerId }: MedicationsManagerProps) => {
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const { toast } = useToast();
+
+  const [formData, setFormData] = useState({
+    medication_name: "",
+    dosage_detail: "",
+    frequency: "",
+    duration_days: "",
+    start_date: format(new Date(), "yyyy-MM-dd"),
+    notes: "",
+  });
+
+  useEffect(() => {
+    fetchMedications();
+  }, [dogId]);
+
+  const fetchMedications = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("dog_medications")
+        .select("*")
+        .eq("dog_id", dogId)
+        .order("start_date", { ascending: false });
+
+      if (error) throw error;
+      setMedications(data || []);
+    } catch (error) {
+      console.error("Error fetching medications:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.medication_name || !formData.dosage_detail || !formData.frequency || !formData.start_date) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs obligatoires",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const durationDays = formData.duration_days ? parseInt(formData.duration_days) : null;
+      const endDate = durationDays 
+        ? format(addDays(new Date(formData.start_date), durationDays), "yyyy-MM-dd")
+        : null;
+
+      const { error } = await supabase.from("dog_medications").insert({
+        dog_id: dogId,
+        owner_id: ownerId,
+        medication_name: formData.medication_name,
+        dosage_detail: formData.dosage_detail,
+        frequency: formData.frequency,
+        duration_days: durationDays,
+        start_date: formData.start_date,
+        end_date: endDate,
+        notes: formData.notes || null,
+        active: true,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Traitement ajouté",
+        description: "Le traitement a été enregistré avec succès",
+      });
+
+      setFormData({
+        medication_name: "",
+        dosage_detail: "",
+        frequency: "",
+        duration_days: "",
+        start_date: format(new Date(), "yyyy-MM-dd"),
+        notes: "",
+      });
+      setDialogOpen(false);
+      fetchMedications();
+    } catch (error) {
+      console.error("Error adding medication:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter le traitement",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleToggleActive = async (medicationId: string, currentActive: boolean) => {
+    try {
+      const { error } = await supabase
+        .from("dog_medications")
+        .update({ active: !currentActive })
+        .eq("id", medicationId);
+
+      if (error) throw error;
+
+      toast({
+        title: currentActive ? "Traitement désactivé" : "Traitement réactivé",
+      });
+
+      fetchMedications();
+    } catch (error) {
+      console.error("Error toggling medication:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de modifier le statut",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDelete = async (medicationId: string) => {
+    try {
+      const { error } = await supabase
+        .from("dog_medications")
+        .delete()
+        .eq("id", medicationId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Traitement supprimé",
+      });
+
+      fetchMedications();
+    } catch (error) {
+      console.error("Error deleting medication:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer le traitement",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <Card className="p-4">
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-title flex items-center gap-2">
+          <Pill className="h-5 w-5 text-primary" />
+          Traitements en cours
+        </h3>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm" className="rounded-full">
+              <Plus className="h-4 w-4 mr-2" />
+              Ajouter
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Nouveau traitement</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="medication_name">Nom du médicament *</Label>
+                <Input
+                  id="medication_name"
+                  value={formData.medication_name}
+                  onChange={(e) => setFormData({ ...formData, medication_name: e.target.value })}
+                  placeholder="Ex: Amoxicilline"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="dosage_detail">Posologie détaillée *</Label>
+                <Textarea
+                  id="dosage_detail"
+                  value={formData.dosage_detail}
+                  onChange={(e) => setFormData({ ...formData, dosage_detail: e.target.value })}
+                  placeholder="Ex: 1 comprimé de 500mg"
+                  rows={2}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="frequency">Fréquence de prise *</Label>
+                <Input
+                  id="frequency"
+                  value={formData.frequency}
+                  onChange={(e) => setFormData({ ...formData, frequency: e.target.value })}
+                  placeholder="Ex: 2 fois par jour (matin et soir)"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="start_date">Date de début *</Label>
+                <Input
+                  id="start_date"
+                  type="date"
+                  value={formData.start_date}
+                  onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="duration_days">Durée du traitement (en jours)</Label>
+                <Input
+                  id="duration_days"
+                  type="number"
+                  min="1"
+                  value={formData.duration_days}
+                  onChange={(e) => setFormData({ ...formData, duration_days: e.target.value })}
+                  placeholder="Ex: 7 pour une semaine"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="notes">Notes complémentaires</Label>
+                <Textarea
+                  id="notes"
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Instructions spéciales, précautions..."
+                  rows={3}
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <Button onClick={handleSubmit} className="flex-1">
+                  Enregistrer
+                </Button>
+                <Button
+                  onClick={() => setDialogOpen(false)}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Annuler
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {medications.length === 0 ? (
+        <Card className="p-6 text-center">
+          <Pill className="h-12 w-12 mx-auto mb-3 text-muted-foreground opacity-50" />
+          <p className="text-muted-foreground">Aucun traitement enregistré</p>
+        </Card>
+      ) : (
+        <div className="space-y-2">
+          {medications.map((med) => (
+            <Card
+              key={med.id}
+              className={`p-4 ${!med.active ? 'opacity-60 bg-muted/30' : ''}`}
+            >
+              <div className="space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-semibold text-title">{med.medication_name}</h4>
+                      {med.active ? (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                          Actif
+                        </span>
+                      ) : (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
+                          Terminé
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">{med.dosage_detail}</p>
+                    <p className="text-sm text-foreground mt-1">
+                      <span className="font-medium">Fréquence :</span> {med.frequency}
+                    </p>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleToggleActive(med.id, med.active)}
+                      title={med.active ? "Marquer comme terminé" : "Réactiver"}
+                    >
+                      {med.active ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDelete(med.id)}
+                      title="Supprimer"
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="text-sm space-y-1">
+                  <p>
+                    <span className="font-medium">Début :</span>{" "}
+                    {format(new Date(med.start_date), "d MMMM yyyy", { locale: fr })}
+                  </p>
+                  {med.end_date && (
+                    <p>
+                      <span className="font-medium">Fin :</span>{" "}
+                      {format(new Date(med.end_date), "d MMMM yyyy", { locale: fr })}
+                      {med.duration_days && ` (${med.duration_days} jours)`}
+                    </p>
+                  )}
+                  {med.notes && (
+                    <p className="text-muted-foreground mt-2 pt-2 border-t">
+                      {med.notes}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};

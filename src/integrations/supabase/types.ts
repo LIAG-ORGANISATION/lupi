@@ -68,8 +68,6 @@ export type Database = {
           event_time: string | null
           event_type: string
           id: string
-          medication_dosage: string | null
-          medication_name: string | null
           owner_id: string
           professional_id: string | null
           status: string | null
@@ -84,8 +82,6 @@ export type Database = {
           event_time?: string | null
           event_type: string
           id?: string
-          medication_dosage?: string | null
-          medication_name?: string | null
           owner_id: string
           professional_id?: string | null
           status?: string | null
@@ -100,8 +96,6 @@ export type Database = {
           event_time?: string | null
           event_type?: string
           id?: string
-          medication_dosage?: string | null
-          medication_name?: string | null
           owner_id?: string
           professional_id?: string | null
           status?: string | null
@@ -236,6 +230,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      dog_medications: {
+        Row: {
+          active: boolean
+          created_at: string
+          dog_id: string
+          dosage_detail: string
+          duration_days: number | null
+          end_date: string | null
+          frequency: string
+          id: string
+          medication_name: string
+          notes: string | null
+          owner_id: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          dog_id: string
+          dosage_detail: string
+          duration_days?: number | null
+          end_date?: string | null
+          frequency: string
+          id?: string
+          medication_name: string
+          notes?: string | null
+          owner_id: string
+          start_date: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          dog_id?: string
+          dosage_detail?: string
+          duration_days?: number | null
+          end_date?: string | null
+          frequency?: string
+          id?: string
+          medication_name?: string
+          notes?: string | null
+          owner_id?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       dog_professional_access: {
         Row: {
