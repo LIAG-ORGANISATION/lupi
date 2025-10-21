@@ -97,34 +97,36 @@ const Dogs = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20 animate-fade-in">
-      {/* Header médical */}
-      <div className="bg-gradient-lupi p-6 mb-6">
+    <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
+      {/* Header N26 style */}
+      <div className="bg-gradient-n26 p-6 mb-4">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-xl font-semibold text-white text-center">
+          <h1 className="text-foreground text-center" style={{ fontSize: '20px', fontWeight: 600 }}>
             Mes chiens
           </h1>
-          <p className="text-white/90 text-center mt-1" style={{ fontSize: '12px' }}>Gérez les profils de vos compagnons</p>
+          <p className="text-secondary text-center mt-1" style={{ fontSize: '12px', fontWeight: 300 }}>
+            Gérez les profils de vos compagnons
+          </p>
         </div>
       </div>
 
-      <div className="px-4 space-y-6 max-w-4xl mx-auto">
+      <div className="px-4 max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
         {!loading && dogs.length === 0 && (
-          <div className="lupi-card text-center">
-            <div className="w-20 h-20 mx-auto rounded-full bg-secondary flex items-center justify-center mb-4">
-              <DogIcon className="h-10 w-10" style={{ color: 'hsl(20 28% 28%)' }} strokeWidth={1.5} />
+          <div className="n26-card text-center">
+            <div className="w-20 h-20 mx-auto bg-secondary flex items-center justify-center mb-4" style={{ borderRadius: '12px' }}>
+              <DogIcon className="h-10 w-10" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="font-semibold text-title mb-2" style={{ fontSize: '18px' }}>
+              <h2 className="text-title mb-2" style={{ fontSize: '16px', fontWeight: 500 }}>
                 Bienvenue sur Lupi
               </h2>
-              <p className="text-muted-foreground mb-6" style={{ fontSize: '14px' }}>
+              <p className="text-secondary mb-6" style={{ fontSize: '14px' }}>
                 Créez un profil pour votre compagnon et suivez sa santé
               </p>
               <button
                 onClick={() => navigate("/dogs/add")}
-                className="btn-cta"
+                className="btn-action"
               >
                 <Plus className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
                 Ajouter mon premier chien
@@ -133,14 +135,14 @@ const Dogs = () => {
           </div>
         )}
 
-        <div className="lupi-section-gap">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-title" style={{ fontSize: '18px' }}>Mes compagnons</h2>
+        <div className="n26-section-gap">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>Mes compagnons</h2>
             {dogs.length > 0 && (
               <button
                 onClick={() => navigate("/dogs/add")}
-                className="font-semibold hover:underline"
-                style={{ color: 'hsl(9 48% 56%)', fontSize: '14px' }}
+                className="text-action"
+                style={{ fontSize: '14px', fontWeight: 500 }}
               >
                 + Ajouter
               </button>
@@ -151,11 +153,11 @@ const Dogs = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
             </div>
           ) : dogs.length === 0 ? null : (
-            <div className="space-y-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {dogs.map((dog) => (
                 <div
                   key={dog.id}
-                  className="lupi-card cursor-pointer group"
+                  className="n26-card cursor-pointer"
                   onClick={() => navigate(`/dogs/${dog.id}`)}
                 >
                   <div className="flex items-center gap-4">
@@ -163,17 +165,18 @@ const Dogs = () => {
                       <img
                         src={dog.avatar_url}
                         alt={dog.name}
-                        className="w-16 h-16 rounded-full object-cover border border-border"
+                        className="avatar-circle"
+                        style={{ width: '48px', height: '48px' }}
                       />
                     ) : (
-                      <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center border border-border">
-                        <DogIcon className="h-8 w-8" style={{ color: 'hsl(20 28% 28%)' }} strokeWidth={1.5} />
+                      <div className="bg-secondary flex items-center justify-center" style={{ width: '48px', height: '48px', borderRadius: '12px' }}>
+                        <DogIcon className="h-6 w-6" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
                       </div>
                     )}
                     <div className="flex-1">
-                      <h3 className="font-semibold text-title" style={{ fontSize: '16px' }}>{dog.name}</h3>
+                      <h3 className="text-title" style={{ fontSize: '14px', fontWeight: 500 }}>{dog.name}</h3>
                       {dog.breed && (
-                        <p className="text-muted-foreground" style={{ fontSize: '12px' }}>{dog.breed}</p>
+                        <p className="text-secondary" style={{ fontSize: '12px', fontWeight: 300 }}>{dog.breed}</p>
                       )}
                     </div>
                     <Button
@@ -183,7 +186,8 @@ const Dogs = () => {
                         e.stopPropagation();
                         setDeleteDialog({ open: true, dogId: dog.id, dogName: dog.name });
                       }}
-                      className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      style={{ borderRadius: '12px' }}
                     >
                       <Trash2 className="h-4 w-4" strokeWidth={1.5} />
                     </Button>
@@ -195,9 +199,9 @@ const Dogs = () => {
         </div>
 
         {dogs.length > 0 && (
-          <div className="lupi-section-gap">
-            <h2 className="font-semibold text-title mb-4" style={{ fontSize: '18px' }}>Accès rapide</h2>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="n26-section-gap">
+            <h2 className="text-title mb-3" style={{ fontSize: '16px', fontWeight: 500 }}>Accès rapide</h2>
+            <div className="grid grid-cols-2 gap-3">
               <QuickActionCard
                 icon={Stethoscope}
                 label="RDV"

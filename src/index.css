@@ -8,67 +8,59 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Lupi Design System - Medical & Minimal */
+    /* N26-inspired Design System - Clean & Minimal Banking UI */
     --background: 0 0% 100%; /* #FFFFFF - Blanc pur */
-    --foreground: 20 28% 28%; /* #5B4033 - Brun principal */
+    --foreground: 240 6% 11%; /* #1C1C1E - Texte principal quasi noir */
 
-    --card: 0 0% 100%; /* #FFFFFF - Cartes blanches */
-    --card-foreground: 20 28% 28%;
+    --card: 0 0% 96%; /* #F5F5F5 - Cards containers */
+    --card-foreground: 240 6% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 28% 28%;
+    --popover-foreground: 240 6% 11%;
 
-    --primary: 20 28% 28%; /* #5B4033 - Brun principal */
+    --primary: 166 30% 77%; /* #B8D2C9 - Vert pastel accent principal */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 20 30% 88%; /* #E9DED6 - Fond composants secondaires */
-    --secondary-foreground: 20 28% 28%;
+    --secondary: 0 0% 96%; /* #F4F4F4 - Fond composants secondaires */
+    --secondary-foreground: 240 6% 11%;
 
-    --muted: 0 0% 95%; /* #F3F3F3 - Séparateurs */
-    --muted-foreground: 20 12% 43%; /* #766960 - Texte secondaire */
+    --muted: 0 0% 88%; /* #E0E0E0 - Séparateurs et bordures */
+    --muted-foreground: 240 3% 57%; /* #8E8E93 - Texte secondaire */
 
-    --accent: 166 30% 77%; /* #B8D2C9 - Accent doux */
-    --accent-foreground: 20 28% 28%;
+    --accent: 154 52% 46%; /* #36B37E - Vert menthe pour actions cliquables */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 9 48% 56%; /* #C26A5A - Corail pour CTA et alertes */
+    --destructive: 0 84% 60%; /* Rouge pour alertes absolues uniquement */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 95%; /* #F3F3F3 - Séparateurs */
+    --border: 0 0% 88%; /* #E0E0E0 - Bordures légères */
     --input: 0 0% 100%;
-    --ring: 20 28% 28%;
+    --ring: 166 30% 77%;
 
-    --radius: 1rem; /* 16px pour cards */
+    --radius: 0.75rem; /* 12px pour cards */
     
-    --title: 20 28% 28%;
+    --title: 240 6% 11%;
     
-    /* CTA important - Corail */
-    --cta: 9 48% 56%; /* #C26A5A */
-    --cta-hover: 9 41% 51%; /* #B5594F */
-    --cta-inactive: 9 53% 80%; /* #E8B3AD */
-    --cta-foreground: 0 0% 100%;
+    /* Action button - Vert pastel */
+    --action: 166 30% 77%; /* #B8D2C9 */
+    --action-foreground: 0 0% 100%;
     
-    /* Fond CTA container - Secondaire */
-    --cta-bg: 20 30% 88%; /* #E9DED6 */
+    /* Icônes secondaires */
+    --icon-secondary: 0 0% 76%; /* #C2C2C2 */
     
-    /* Liens et interactions secondaires */
-    --link: 166 7% 46%; /* #6D7B76 */
-    
-    /* Boutons désactivés */
-    --disabled: 20 8% 82%; /* #D6D2CF */
-    
-    /* Ombres subtiles médicales */
-    --shadow-card: 0px 2px 4px rgba(0, 0, 0, 0.04);
-    --shadow-hover: 0px 4px 10px rgba(0, 0, 0, 0.06);
-    --shadow-elevated: 0px 6px 16px rgba(0, 0, 0, 0.08);
+    /* Ombres subtiles N26 */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0 2px 8px rgba(0, 0, 0, 0.08);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 20 28% 28%;
-    --sidebar-primary: 20 28% 28%;
+    --sidebar-foreground: 240 6% 11%;
+    --sidebar-primary: 166 30% 77%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 30% 88%;
-    --sidebar-accent-foreground: 20 28% 28%;
-    --sidebar-border: 0 0% 95%;
-    --sidebar-ring: 20 28% 28%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 240 6% 11%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 166 30% 77%;
   }
 
   .dark {
@@ -123,203 +115,202 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
-    font-size: 14px; /* Texte courant 14px */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 14px; /* Texte courant 14px - body */
     font-weight: 400; /* Regular */
-    line-height: 1.4; /* 140% */
+    line-height: 1.4; /* 140% - interlignage N26 */
     letter-spacing: 0;
-    background: hsl(0 0% 100%); /* Blanc pur */
+    background: hsl(0 0% 100%); /* #FFFFFF - Blanc pur */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply text-title;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
-    font-weight: 600; /* Semi-Bold */
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    letter-spacing: 0;
+    line-height: 1.4;
   }
   
   h1 { 
-    font-size: 20px; /* Titres principaux */
+    font-size: 20px; /* Titres principaux - 20px */
     font-weight: 600; /* Semi-bold */
   }
   h2 { 
-    font-size: 18px; /* Sous-titres */
-    font-weight: 600; /* Semi-bold */
+    font-size: 16px; /* Sous-titres - 16px */
+    font-weight: 500; /* Medium */
   }
   h3 { 
-    font-size: 16px; /* Sous-titres secondaires */
+    font-size: 16px; /* Section - 16px */
     font-weight: 500; /* Medium */
   }
   
   p, span, div {
-    font-size: 14px; /* Texte courant */
+    font-size: 14px; /* Texte courant - 14px */
     font-weight: 400; /* Regular */
     letter-spacing: 0;
   }
   
   /* Légendes et petits textes */
   .text-xs {
-    font-size: 12px; /* Légendes */
-    font-weight: 400;
+    font-size: 12px; /* Légendes - 12px light */
+    font-weight: 300;
   }
   
   .text-sm {
-    font-size: 14px; /* Corps de texte */
+    font-size: 14px; /* Corps de texte - 14px */
     font-weight: 400;
   }
 }
 
 @layer components {
-  /* Medical Minimal Cards - coins arrondis 16px, ombres subtiles */
-  .lupi-card {
-    @apply bg-card rounded-2xl border-0;
+  /* N26 Cards - coins arrondis 12px, ombres subtiles */
+  .n26-card {
+    @apply bg-card border-0;
+    border-radius: 12px;
     padding: 16px;
-    transition: all 250ms ease-in-out;
+    transition: all 200ms ease-in-out;
     box-shadow: var(--shadow-card);
   }
   
-  .lupi-card:hover {
+  .n26-card:hover {
     box-shadow: var(--shadow-hover);
   }
   
-  /* Primary Button - Brun principal */
-  .btn-lupi {
+  /* Action Button - Vert pastel pour action principale */
+  .btn-action {
     @apply bg-primary text-primary-foreground transition-all;
     border-radius: 12px;
     padding: 12px 24px;
     font-size: 14px;
-    font-weight: 600; /* Semi-Bold */
+    font-weight: 700; /* Bold pour boutons */
     letter-spacing: 0;
     transition-duration: 250ms;
     transition-timing-function: ease-in-out;
   }
   
-  .btn-lupi:hover {
-    transform: scale(1.03);
+  .btn-action:hover {
+    box-shadow: var(--shadow-hover);
   }
   
-  .btn-lupi:active {
-    transform: scale(1.03);
+  .btn-action:active {
+    transform: scale(0.98);
   }
   
-  /* CTA Button - Corail pour actions importantes */
-  .btn-cta {
-    @apply bg-[hsl(9,48%,56%)] text-white transition-all;
+  /* Secondary Button - Fond transparent */
+  .btn-secondary {
+    @apply bg-transparent text-foreground border border-muted transition-all;
     border-radius: 12px;
     padding: 12px 24px;
     font-size: 14px;
-    font-weight: 600; /* Semi-Bold */
+    font-weight: 500;
     letter-spacing: 0;
     transition-duration: 250ms;
     transition-timing-function: ease-in-out;
   }
   
-  .btn-cta:hover {
-    background: hsl(9 41% 51%); /* #B5594F */
-    transform: scale(1.03);
+  .btn-secondary:hover {
+    @apply bg-secondary;
   }
   
-  .btn-cta:disabled {
-    background: hsl(9 53% 80%); /* #E8B3AD */
+  /* Header gradient subtle */
+  .bg-gradient-n26 {
+    background: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
   }
   
-  /* Gradient Background - Brun principal */
-  .bg-gradient-lupi {
-    background: linear-gradient(135deg, hsl(20 28% 28%), hsl(20 28% 35%));
-  }
-  
-  /* Avatar Circle - bordure minimale */
+  /* Avatar Circle */
   .avatar-circle {
-    @apply rounded-2xl object-cover border border-border;
-    box-shadow: var(--shadow-card);
+    border-radius: 12px;
+    @apply object-cover border border-border;
+    box-shadow: none;
   }
   
-  /* List Item Card - Style médical minimal */
+  /* List Item Card - Style N26 minimal */
   .list-item-card {
-    @apply bg-card rounded-2xl cursor-pointer border-0;
+    @apply bg-card cursor-pointer border-0;
+    border-radius: 12px;
     padding: 16px;
-    transition: all 250ms ease-in-out;
+    transition: all 200ms ease-in-out;
     box-shadow: var(--shadow-card);
-    margin-bottom: 24px; /* Espacement vertical 24px */
+    margin-bottom: 8px; /* Espacement entre cards 8-12px */
   }
   
   .list-item-card:hover {
     box-shadow: var(--shadow-hover);
   }
   
-  /* Icon Container - SANS fond, icônes brunes */
+  /* Icon Container - Icônes linéaires sans fond */
   .icon-container {
-    @apply w-10 h-10 rounded-2xl flex items-center justify-center;
-    background: transparent; /* PAS de fond coloré */
-    transition: all 250ms ease-in-out;
+    @apply flex items-center justify-center;
+    width: 20px;
+    height: 20px;
+    background: transparent;
   }
   
   .icon-container svg {
-    color: hsl(20 28% 28%); /* Icônes en brun principal */
+    color: hsl(240 6% 11%); /* #1C1C1E - Icônes principales */
+    width: 20px;
+    height: 20px;
   }
   
-  /* Icône d'action primaire - cercle corail plein */
-  .icon-primary-action {
-    @apply w-12 h-12 rounded-full flex items-center justify-center;
-    background: hsl(9 48% 56%); /* Corail pour actions */
-    transition: all 250ms ease-in-out;
+  /* Icon Secondary - Icônes discrètes */
+  .icon-secondary {
+    @apply flex items-center justify-center;
+    width: 18px;
+    height: 18px;
   }
   
-  .icon-primary-action:hover {
-    background: hsl(9 41% 51%); /* Hover corail */
-    transform: scale(1.03);
+  .icon-secondary svg {
+    color: hsl(0 0% 76%); /* #C2C2C2 - Icônes secondaires */
+    width: 18px;
+    height: 18px;
   }
   
-  .icon-primary-action svg {
-    color: white;
-  }
-  
-  /* Badge minimal */
-  .badge-minimal {
-    @apply inline-flex items-center gap-1 px-3 py-1 font-medium;
+  /* Badge minimal pill */
+  .badge-n26 {
+    @apply inline-flex items-center gap-1 px-3 py-1;
     border-radius: 50%; /* Pill-shaped */
-    font-size: 12px; /* Légendes */
-    background: hsl(20 30% 88%); /* Secondaire */
-    color: hsl(20 28% 28%);
+    font-size: 12px;
+    font-weight: 300;
+    background: hsl(0 0% 96%);
+    color: hsl(240 3% 57%);
   }
   
-  /* CTA Container - Fond secondaire */
-  .cta-container {
-    @apply bg-secondary rounded-2xl;
-    padding: 16px;
-    transition: all 250ms ease-in-out;
-    box-shadow: var(--shadow-card);
-  }
-  
-  .cta-container:hover {
-    box-shadow: var(--shadow-hover);
-  }
-  
-  /* Input minimal */
-  .input-minimal {
-    @apply w-full border border-border bg-background;
+  /* Input N26 style */
+  .input-n26 {
+    @apply w-full border border-muted bg-background;
     padding: 12px 16px;
-    border-radius: 12px;
-    @apply focus:outline-none focus:ring-1 focus:ring-primary;
+    border-radius: 8px;
     font-size: 14px;
-    transition: all 250ms ease-in-out;
-    box-shadow: var(--shadow-card);
+    transition: all 200ms ease-in-out;
+    color: hsl(240 6% 11%);
   }
   
-  .input-minimal:focus {
-    box-shadow: var(--shadow-hover);
+  .input-n26::placeholder {
+    color: hsl(240 3% 57%); /* #8E8E93 */
   }
   
-  /* Spacing utilities - espacement médical */
-  .lupi-section-gap {
-    margin-bottom: 24px; /* 24px entre sections */
+  .input-n26:focus {
+    @apply outline-none;
+    border-color: hsl(166 30% 77%); /* Vert pastel au focus */
   }
   
-  .lupi-item-gap {
-    margin-bottom: 16px; /* 16px entre items */
+  /* Spacing utilities - grille 8px */
+  .n26-section-gap {
+    margin-bottom: 16px; /* Espacement entre sections */
+  }
+  
+  .n26-item-gap {
+    margin-bottom: 8px; /* Espacement entre items */
+  }
+  
+  /* Text colors N26 */
+  .text-action {
+    color: hsl(154 52% 46%); /* #36B37E - Vert menthe cliquable */
+  }
+  
+  .text-secondary {
+    color: hsl(240 3% 57%); /* #8E8E93 - Texte secondaire */
   }
 
   /* Hide scrollbar for horizontal scroll */
