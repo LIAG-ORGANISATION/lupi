@@ -117,7 +117,10 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px; /* Texte courant 16px */
+    font-weight: 400; /* Regular */
+    line-height: 1.5;
     background: hsl(0 0% 100%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -125,25 +128,46 @@ All colors MUST be HSL.
   
   h1, h2, h3, h4, h5, h6 {
     @apply text-title;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-weight: 600;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+    font-weight: 600; /* Semi-Bold */
     letter-spacing: -0.02em;
+    line-height: 1.2;
   }
   
-  h1 { @apply text-2xl; font-weight: 700; }
-  h2 { @apply text-xl; font-weight: 600; }
-  h3 { @apply text-lg; font-weight: 600; }
+  h1 { 
+    font-size: 20px; /* Titres 18-20px */
+    font-weight: 600;
+  }
+  h2 { 
+    font-size: 18px; /* Titres 18-20px */
+    font-weight: 600;
+  }
+  h3 { 
+    font-size: 16px; /* Sous-titres */
+    font-weight: 500; /* Medium */
+  }
   
   p, span, div {
-    font-weight: 400;
+    font-size: 16px; /* Texte courant 14-16px */
+    font-weight: 400; /* Regular */
     letter-spacing: -0.01em;
+  }
+  
+  /* Légendes et petits textes */
+  .text-xs, .text-sm {
+    font-size: 12px; /* Légendes 12px */
+    font-weight: 400;
+  }
+  
+  .text-sm {
+    font-size: 14px; /* Petit texte 14px */
   }
 }
 
 @layer components {
-  /* N26 Style Cards - coins arrondis 12px */
+  /* N26 Style Cards - coins arrondis 12px, ombres subtiles */
   .lupi-card {
-    @apply bg-card rounded-xl p-3 transition-all duration-300 border-0;
+    @apply bg-card rounded-xl p-4 transition-all duration-300 border-0;
     box-shadow: var(--shadow-card);
   }
   
@@ -154,8 +178,10 @@ All colors MUST be HSL.
   
   /* Primary Button - Style N26 avec vert turquoise */
   .btn-lupi {
-    @apply bg-primary text-primary-foreground font-semibold rounded-xl px-8 py-3.5 transition-all duration-300;
+    @apply bg-primary text-primary-foreground rounded-xl px-8 py-3.5 transition-all duration-300;
     @apply hover:bg-primary/90 active:scale-95;
+    font-size: 16px;
+    font-weight: 600; /* Semi-Bold */
     box-shadow: 0 2px 8px rgba(95, 184, 155, 0.15);
     letter-spacing: -0.01em;
   }
@@ -167,8 +193,10 @@ All colors MUST be HSL.
   
   /* CTA Button - Terracotta pour actions importantes */
   .btn-cta {
-    @apply bg-[hsl(9,48%,56%)] text-white font-semibold rounded-xl px-8 py-3.5 transition-all duration-300;
+    @apply bg-[hsl(9,48%,56%)] text-white rounded-xl px-8 py-3.5 transition-all duration-300;
     @apply hover:bg-[hsl(9,48%,50%)] active:scale-95;
+    font-size: 16px;
+    font-weight: 600; /* Semi-Bold */
     box-shadow: 0 2px 8px rgba(194, 106, 90, 0.15);
     letter-spacing: -0.01em;
   }
@@ -192,16 +220,17 @@ All colors MUST be HSL.
     background: hsl(166 47% 62%);
   }
   
-  /* Avatar Circle - bordure minimale */
+  /* Avatar Circle - bordure minimale N26 */
   .avatar-circle {
-    @apply rounded-full object-cover border-2 border-white;
+    @apply rounded-xl object-cover border border-border;
     box-shadow: var(--shadow-card);
   }
   
-  /* List Item Card - Style N26 */
+  /* List Item Card - Style N26 avec espacement 16px */
   .list-item-card {
-    @apply bg-card rounded-xl p-3 transition-all duration-300 cursor-pointer border-0;
+    @apply bg-card rounded-xl p-4 transition-all duration-300 cursor-pointer border-0;
     box-shadow: var(--shadow-card);
+    margin-bottom: 16px; /* Espacement généreux 16px minimum */
   }
   
   .list-item-card:hover {
@@ -209,7 +238,7 @@ All colors MUST be HSL.
     transform: translateY(-1px);
   }
   
-  /* Icon Container - Style N26 avec vert turquoise */
+  /* Icon Container - Style N26 avec vert turquoise, icônes minimalistes */
   .icon-container {
     @apply w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200;
     background: hsl(166 47% 62% / 0.12);
@@ -217,21 +246,32 @@ All colors MUST be HSL.
   
   /* Badge with N26 colors */
   .badge-minimal {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium;
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full font-medium;
+    font-size: 12px; /* Légendes 12px */
     background: hsl(166 47% 62% / 0.12);
     color: hsl(0 0% 13%);
   }
   
-  /* Input minimal */
+  /* Input minimal N26 style */
   .input-minimal {
-    @apply w-full px-4 py-3 rounded-xl border-0 bg-background;
-    @apply focus:outline-none focus:ring-1 focus:ring-primary/10;
-    @apply transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-xl border border-border bg-background;
+    @apply focus:outline-none focus:ring-1 focus:ring-primary/20;
+    @apply transition-all duration-300;
+    font-size: 16px; /* Texte courant 16px */
     box-shadow: var(--shadow-card);
   }
   
   .input-minimal:focus {
     box-shadow: var(--shadow-hover);
+  }
+  
+  /* Spacing utilities N26 - espacement généreux */
+  .n26-section-gap {
+    margin-bottom: 16px; /* 16px minimum entre blocs */
+  }
+  
+  .n26-item-gap {
+    padding: 8px; /* 8px en interne */
   }
 
   /* Hide scrollbar for horizontal scroll */

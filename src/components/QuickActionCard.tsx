@@ -16,7 +16,7 @@ const QuickActionCard = ({
     <button
       onClick={onClick}
       className={cn(
-        "bg-card rounded-xl p-3 cursor-pointer transition-all duration-300 border-0",
+        "bg-card rounded-xl p-4 cursor-pointer transition-all duration-300 border-0",
         "shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-95",
         className
       )}
@@ -25,7 +25,7 @@ const QuickActionCard = ({
         <div className="icon-container">
           <Icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
         </div>
-        <span className="text-sm font-medium text-foreground text-center">{label}</span>
+        <span className="text-sm font-medium text-foreground text-center" style={{ fontSize: '14px' }}>{label}</span>
       </div>
     </button>
   );
