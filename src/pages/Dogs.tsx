@@ -99,18 +99,18 @@ const Dogs = () => {
   return (
     <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
       {/* Header N26 style */}
-      <div className="bg-gradient-n26 p-6 mb-4">
+      <div style={{ background: 'hsl(0 0% 96%)', padding: '20px 16px', marginBottom: '16px' }}>
         <div className="max-w-4xl mx-auto">
           <h1 className="text-foreground text-center" style={{ fontSize: '20px', fontWeight: 600 }}>
             Mes chiens
           </h1>
-          <p className="text-secondary text-center mt-1" style={{ fontSize: '12px', fontWeight: 300 }}>
+          <p className="text-secondary text-center" style={{ fontSize: '12px', fontWeight: 300, marginTop: '4px' }}>
             Gérez les profils de vos compagnons
           </p>
         </div>
       </div>
 
-      <div className="px-4 max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="px-4 max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
         {!loading && dogs.length === 0 && (
           <div className="n26-card text-center">

@@ -369,7 +369,7 @@ const VaccinationPassport = () => {
       </div>
 
       {/* Dog Info Header */}
-      <Card className="lupi-card text-center space-y-4">
+      <Card className="lupi-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
         <Avatar className="w-24 h-24 mx-auto">
           {dogData.avatar_url && <AvatarImage src={dogData.avatar_url} />}
           <AvatarFallback className="bg-secondary text-title text-2xl font-bold">
@@ -379,12 +379,12 @@ const VaccinationPassport = () => {
         <div>
           <h2 className="text-xl font-bold text-title">{dogData.name}</h2>
           {dogData.breed && (
-            <p className="text-sm text-muted-foreground">{dogData.breed}</p>
+            <p className="text-sm text-muted-foreground" style={{ marginTop: '4px' }}>{dogData.breed}</p>
           )}
-        </div>
-            <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground" style={{ marginTop: '8px' }}>
             Ajoutez vos certificats et vaccins
           </p>
+        </div>
       </Card>
 
       {/* Professional Read-Only Banner */}

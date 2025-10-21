@@ -19,8 +19,8 @@ const DNAKit = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="p-4 space-y-6 max-w-md mx-auto">
+    <div className="min-h-screen bg-background pb-24">
+      <div className="max-w-md mx-auto" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <Button
           variant="ghost"
           size="icon"
@@ -30,15 +30,15 @@ const DNAKit = () => {
           <ArrowLeft className="h-5 w-5" />
         </Button>
 
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <h2 className="text-2xl font-bold text-title">Kit Test ADN Canin</h2>
           <p className="text-sm text-foreground leading-relaxed">
             Apprenez à mieux connaître votre chien ! Notre test ADN analyse plus de 350 races, types et variétés, identifie les risques de santé génétiques et révèle des traits de personnalité uniques pour vous aider à fournir les meilleurs soins possibles.
           </p>
 
-          <Card className="lupi-card space-y-4 bg-secondary/50">
+          <Card className="lupi-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'hsl(0 0% 96%)' }}>
             <h3 className="text-lg font-bold text-title">Contenu du Kit</h3>
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {included.map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0">
@@ -50,9 +50,9 @@ const DNAKit = () => {
             </div>
           </Card>
 
-          <Card className="lupi-card space-y-4">
+          <Card className="lupi-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <h3 className="text-lg font-bold text-title">Avantages Clés</h3>
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
@@ -64,11 +64,12 @@ const DNAKit = () => {
             </div>
           </Card>
 
-          <div className="space-y-3 pt-4 pb-20">
+          <div style={{ paddingTop: '8px' }}>
             <Button
               onClick={() => window.open('https://buy.stripe.com/4gM7sLgN23eHh055pX33W03', '_blank')}
               className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
               size="lg"
+              style={{ minHeight: '44px' }}
             >
               Commander maintenant - 187,70€
             </Button>

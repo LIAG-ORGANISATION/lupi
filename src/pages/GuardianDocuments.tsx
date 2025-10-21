@@ -410,25 +410,24 @@ const GuardianDocuments = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="bg-gradient-n26 p-6 mb-4">
+      <div className="p-4 mb-4" style={{ background: 'hsl(0 0% 96%)' }}>
         <div className="max-w-4xl mx-auto">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
-            style={{ borderRadius: '16px' }}
-            className="mb-4"
+            style={{ borderRadius: '16px', marginBottom: '12px' }}
           >
             <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
           </Button>
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-white">Documents</h1>
-            <p className="text-white/80 text-sm">Gérez les documents de vos chiens</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'center' }}>
+            <h1 className="text-3xl font-bold" style={{ color: 'hsl(240 6% 11%)' }}>Documents</h1>
+            <p style={{ fontSize: '14px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Gérez les documents de vos chiens</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 -mt-6 space-y-4 animate-fade-in">
+      <div className="max-w-4xl mx-auto px-4" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {!isProfessional && (
           <div className="space-y-3">
             <select
