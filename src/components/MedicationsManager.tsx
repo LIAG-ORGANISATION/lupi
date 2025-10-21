@@ -26,12 +26,14 @@ interface Medication {
 interface MedicationsManagerProps {
   dogId: string;
   ownerId: string;
+  initialDialogOpen?: boolean;
+  onDialogClose?: () => void;
 }
 
-export const MedicationsManager = ({ dogId, ownerId }: MedicationsManagerProps) => {
+export const MedicationsManager = ({ dogId, ownerId, initialDialogOpen = false, onDialogClose }: MedicationsManagerProps) => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(initialDialogOpen);
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -109,6 +111,7 @@ export const MedicationsManager = ({ dogId, ownerId }: MedicationsManagerProps) 
         notes: "",
       });
       setDialogOpen(false);
+      if (onDialogClose) onDialogClose();
       fetchMedications();
     } catch (error) {
       console.error("Error adding medication:", error);
@@ -185,7 +188,10 @@ export const MedicationsManager = ({ dogId, ownerId }: MedicationsManagerProps) 
           <Pill className="h-5 w-5 text-primary" />
           Traitements en cours
         </h3>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog open={dialogOpen} onOpenChange={(open) => {
+          setDialogOpen(open);
+          if (!open && onDialogClose) onDialogClose();
+        }}>
           <DialogTrigger asChild>
             <Button size="sm" className="rounded-full">
               <Plus className="h-4 w-4 mr-2" />

@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { MedicationsManager } from "@/components/MedicationsManager";
 
 interface CalendarEvent {
   id: string;
@@ -83,7 +84,9 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showChoiceDialog, setShowChoiceDialog] = useState(false);
   const [showAddEventDialog, setShowAddEventDialog] = useState(false);
+  const [showAddMedicationDialog, setShowAddMedicationDialog] = useState(false);
   const [showEditEventDialog, setShowEditEventDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [eventToEdit, setEventToEdit] = useState<CalendarEvent | null>(null);
@@ -337,7 +340,7 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
               size="sm"
               onClick={() => {
                 setSelectedDate(new Date());
-                setShowAddEventDialog(true);
+                setShowChoiceDialog(true);
               }}
             >
               <Plus className="h-4 w-4 mr-1" />
@@ -447,13 +450,13 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
                     )}
                     <Button
                       onClick={() => {
-                        setShowAddEventDialog(true);
+                        setShowChoiceDialog(true);
                       }}
                       className="w-full"
                       size="sm"
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Ajouter un événement
+                      Ajouter
                     </Button>
                   </div>
                 </DialogContent>
@@ -743,6 +746,59 @@ export const DogCalendar = ({ dogId, dogIds, dogs, ownerId, compact = false }: D
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Choice Dialog - Event or Medication */}
+      <Dialog open={showChoiceDialog} onOpenChange={setShowChoiceDialog}>
+        <DialogContent className="rounded-3xl max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Que souhaitez-vous ajouter ?</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2 pt-2">
+            <Button
+              onClick={() => {
+                setShowChoiceDialog(false);
+                setShowAddMedicationDialog(true);
+              }}
+              className="w-full h-auto py-4 flex flex-col items-center gap-2 bg-pink-100 hover:bg-pink-200 text-pink-900 border-2 border-pink-300"
+              variant="outline"
+            >
+              <Pill className="h-6 w-6" />
+              <div>
+                <div className="font-semibold">Traitement</div>
+                <div className="text-xs opacity-80">Médicament avec posologie et récurrence</div>
+              </div>
+            </Button>
+            
+            <Button
+              onClick={() => {
+                setShowChoiceDialog(false);
+                setShowAddEventDialog(true);
+              }}
+              className="w-full h-auto py-4 flex flex-col items-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-900 border-2 border-blue-300"
+              variant="outline"
+            >
+              <CalendarIcon className="h-6 w-6" />
+              <div>
+                <div className="font-semibold">Événement</div>
+                <div className="text-xs opacity-80">RDV vétérinaire, toilettage, etc.</div>
+              </div>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Medication Dialog */}
+      {showAddMedicationDialog && dogId && (
+        <MedicationsManager
+          dogId={dogId}
+          ownerId={ownerId}
+          initialDialogOpen={true}
+          onDialogClose={() => {
+            setShowAddMedicationDialog(false);
+            fetchMedications();
+          }}
+        />
+      )}
     </div>
   );
 };
