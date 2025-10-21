@@ -149,9 +149,9 @@ const Auth = () => {
           </TabsList>
 
           <TabsContent value="signin">
-            <form onSubmit={handleSignIn} className="space-y-4">
-              <Card className="lupi-card p-6 space-y-4">
-                <div className="space-y-2">
+            <form onSubmit={handleSignIn}>
+              <Card className="lupi-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <Label htmlFor="signin-email">Email</Label>
                   <Input
                     id="signin-email"
@@ -164,7 +164,7 @@ const Auth = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <Label htmlFor="signin-password">Mot de passe</Label>
                   <Input
                     id="signin-password"
@@ -181,6 +181,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full rounded-full"
+                style={{ marginTop: '16px', minHeight: '44px' }}
                 size="lg"
                 disabled={loading}
               >
@@ -190,9 +191,9 @@ const Auth = () => {
           </TabsContent>
 
           <TabsContent value="signup">
-            <form onSubmit={handleSignUp} className="space-y-4">
-              <Card className="lupi-card p-6 space-y-4">
-                <div className="space-y-2">
+            <form onSubmit={handleSignUp}>
+              <Card className="lupi-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <Label htmlFor="signup-name">Nom complet</Label>
                   <Input
                     id="signup-name"
@@ -204,7 +205,7 @@ const Auth = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <Label htmlFor="signup-email">Email</Label>
                   <Input
                     id="signup-email"
@@ -217,7 +218,7 @@ const Auth = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <Label htmlFor="signup-password">Mot de passe</Label>
                   <Input
                     id="signup-password"
@@ -234,6 +235,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full rounded-full"
+                style={{ marginTop: '16px', minHeight: '44px' }}
                 size="lg"
                 disabled={loading}
               >

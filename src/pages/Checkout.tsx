@@ -57,11 +57,11 @@ const Checkout = () => {
         <h1 className="text-2xl font-bold text-title">Checkout</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6">
-        <Card className="p-6 rounded-3xl space-y-4">
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+        <Card style={{ padding: '20px', borderRadius: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <h2 className="text-lg font-bold text-title">Shipping Address</h2>
           
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
@@ -73,7 +73,7 @@ const Checkout = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="address">Address</Label>
             <Input
               id="address"
@@ -86,7 +86,7 @@ const Checkout = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <Label htmlFor="city">City</Label>
               <Input
                 id="city"
@@ -98,7 +98,7 @@ const Checkout = () => {
               />
             </div>
 
-            <div className="space-y-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <Label htmlFor="zipCode">ZIP Code</Label>
               <Input
                 id="zipCode"
@@ -111,7 +111,7 @@ const Checkout = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="state">State</Label>
             <Input
               id="state"

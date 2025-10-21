@@ -15,6 +15,10 @@ import heroDog2 from "@/assets/hero-dog-2.jpg";
 import heroDog3 from "@/assets/hero-dog-3.jpg";
 import heroDog4 from "@/assets/hero-dog-4.webp";
 import heroDog5 from "@/assets/hero-dog-5.jpg";
+import heroDog6 from "@/assets/hero-dog-6.webp";
+import heroDog7 from "@/assets/hero-dog-7.webp";
+import heroDog8 from "@/assets/hero-dog-8.webp";
+import heroDog9 from "@/assets/hero-dog-9.jpg";
 import dogsOriginSection from "@/assets/dogs-origin-section.png";
 import messagesIcon from "@/assets/messages-icon.jpg";
 import documentsIcon from "@/assets/documents-icon.jpg";
@@ -370,7 +374,7 @@ const Home = () => {
           className="w-full h-full"
         >
           <CarouselContent className="h-full -ml-0">
-            {[heroDog1, heroDog2, heroDog3, heroDog4, heroDog5].map((image, index) => (
+            {[heroDog1, heroDog2, heroDog3, heroDog4, heroDog5, heroDog6, heroDog7, heroDog8, heroDog9].map((image, index) => (
               <CarouselItem key={index} className="pl-0 h-full">
                 <div className="relative w-full h-full">
                   <img

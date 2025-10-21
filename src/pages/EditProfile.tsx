@@ -154,8 +154,8 @@ const EditProfile = () => {
         <h1 className="text-2xl font-bold text-title">Modifier mon profil</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Card className="lupi-card text-center space-y-4">
+      <form onSubmit={handleSubmit}>
+        <Card className="lupi-card text-center" style={{ padding: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div className="relative w-24 h-24 mx-auto">
             <Avatar className="w-24 h-24">
               {avatarUrl && <AvatarImage src={avatarUrl} alt="Avatar" />}
@@ -179,8 +179,8 @@ const EditProfile = () => {
           </div>
         </Card>
 
-        <Card className="lupi-card space-y-4">
-          <div className="space-y-2">
+        <Card className="lupi-card" style={{ padding: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="name">Nom complet</Label>
             <Input
               id="name"
@@ -190,7 +190,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -201,7 +201,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="phone">Téléphone</Label>
             <Input
               id="phone"
@@ -212,7 +212,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="address">Adresse</Label>
             <Input
               id="address"
@@ -223,7 +223,7 @@ const EditProfile = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <Label htmlFor="city">Ville</Label>
               <Input
                 id="city"
@@ -233,7 +233,7 @@ const EditProfile = () => {
               />
             </div>
 
-            <div className="space-y-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <Label htmlFor="zipCode">Code postal</Label>
               <Input
                 id="zipCode"
@@ -248,6 +248,7 @@ const EditProfile = () => {
         <Button
           type="submit"
           className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+          style={{ minHeight: '44px' }}
           size="lg"
         >
           Enregistrer

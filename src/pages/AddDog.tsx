@@ -160,43 +160,14 @@ const AddDog = () => {
         <h1 className="text-2xl font-bold text-title">Ajouter un chien</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Card className="lupi-card space-y-6">
+      <form onSubmit={handleSubmit}>
+        <Card className="lupi-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Photo Upload */}
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative">
-              <Avatar className="w-32 h-32 cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-                {photoPreview ? (
-                  <AvatarImage src={photoPreview} className="object-cover" />
-                ) : (
-                  <AvatarFallback className="bg-secondary">
-                    <DogIcon className="h-16 w-16 text-muted-foreground" />
-                  </AvatarFallback>
-                )}
-              </Avatar>
-              <Button
-                type="button"
-                size="icon"
-                variant="secondary"
-                className="absolute bottom-0 right-0 rounded-full shadow-lg"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Camera className="h-4 w-4" />
-              </Button>
-            </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handlePhotoChange}
-            />
-            <p className="text-sm text-muted-foreground text-center">
-              Ajoutez une photo de votre chien
-            </p>
+          <div className="flex flex-col items-center" style={{ gap: '12px' }}>
+...
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="name">Nom du chien *</Label>
             <Input
               id="name"
@@ -208,7 +179,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="breed">Race supposée</Label>
             <Input
               id="breed"
@@ -219,7 +190,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label>Sexe</Label>
             <div className="flex gap-4">
               <Button
@@ -241,7 +212,7 @@ const AddDog = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="birthDate">Date de naissance</Label>
             <Input
               id="birthDate"
@@ -252,7 +223,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label htmlFor="weight">Poids (kg)</Label>
             <Input
               id="weight"
@@ -264,7 +235,7 @@ const AddDog = () => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Label>Stérilisé ?</Label>
             <div className="flex gap-4">
               <Button
