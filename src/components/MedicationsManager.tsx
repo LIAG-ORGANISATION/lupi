@@ -11,7 +11,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { format, addDays } from "date-fns";
 import { fr } from "date-fns/locale";
-
 interface Medication {
   id: string;
   medication_name: string;
@@ -23,47 +22,53 @@ interface Medication {
   notes: string | null;
   active: boolean;
 }
-
 interface MedicationsManagerProps {
   dogId?: string;
-  dogs?: { id: string; name: string; avatar_url: string | null }[];
+  dogs?: {
+    id: string;
+    name: string;
+    avatar_url: string | null;
+  }[];
   ownerId: string;
   initialDialogOpen?: boolean;
   onDialogClose?: () => void;
 }
-
-export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = false, onDialogClose }: MedicationsManagerProps) => {
+export const MedicationsManager = ({
+  dogId,
+  dogs,
+  ownerId,
+  initialDialogOpen = false,
+  onDialogClose
+}: MedicationsManagerProps) => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(initialDialogOpen);
   const [selectedDogId, setSelectedDogId] = useState(dogId || (dogs && dogs.length > 0 ? dogs[0].id : ""));
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const [formData, setFormData] = useState({
     medication_name: "",
     dosage_detail: "",
     frequency: "",
     duration_days: "",
     start_date: format(new Date(), "yyyy-MM-dd"),
-    notes: "",
+    notes: ""
   });
-
   useEffect(() => {
     if (selectedDogId) {
       fetchMedications();
     }
   }, [selectedDogId]);
-
   const fetchMedications = async () => {
     if (!selectedDogId) return;
-    
     try {
-      const { data, error } = await supabase
-        .from("dog_medications")
-        .select("*")
-        .eq("dog_id", selectedDogId)
-        .order("start_date", { ascending: false });
-
+      const {
+        data,
+        error
+      } = await supabase.from("dog_medications").select("*").eq("dog_id", selectedDogId).order("start_date", {
+        ascending: false
+      });
       if (error) throw error;
       setMedications(data || []);
     } catch (error) {
@@ -72,24 +77,21 @@ export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = f
       setLoading(false);
     }
   };
-
   const handleSubmit = async () => {
     if (!selectedDogId || !formData.medication_name || !formData.dosage_detail || !formData.frequency || !formData.start_date) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs obligatoires",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-
     try {
       const durationDays = formData.duration_days ? parseInt(formData.duration_days) : null;
-      const endDate = durationDays 
-        ? format(addDays(new Date(formData.start_date), durationDays), "yyyy-MM-dd")
-        : null;
-
-      const { error } = await supabase.from("dog_medications").insert({
+      const endDate = durationDays ? format(addDays(new Date(formData.start_date), durationDays), "yyyy-MM-dd") : null;
+      const {
+        error
+      } = await supabase.from("dog_medications").insert({
         dog_id: selectedDogId,
         owner_id: ownerId,
         medication_name: formData.medication_name,
@@ -99,23 +101,20 @@ export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = f
         start_date: formData.start_date,
         end_date: endDate,
         notes: formData.notes || null,
-        active: true,
+        active: true
       });
-
       if (error) throw error;
-
       toast({
         title: "Traitement ajouté",
-        description: "Le traitement a été enregistré avec succès",
+        description: "Le traitement a été enregistré avec succès"
       });
-
       setFormData({
         medication_name: "",
         dosage_detail: "",
         frequency: "",
         duration_days: "",
         start_date: format(new Date(), "yyyy-MM-dd"),
-        notes: "",
+        notes: ""
       });
       setDialogOpen(false);
       if (onDialogClose) onDialogClose();
@@ -125,80 +124,67 @@ export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = f
       toast({
         title: "Erreur",
         description: "Impossible d'ajouter le traitement",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   const handleToggleActive = async (medicationId: string, currentActive: boolean) => {
     try {
-      const { error } = await supabase
-        .from("dog_medications")
-        .update({ active: !currentActive })
-        .eq("id", medicationId);
-
+      const {
+        error
+      } = await supabase.from("dog_medications").update({
+        active: !currentActive
+      }).eq("id", medicationId);
       if (error) throw error;
-
       toast({
-        title: currentActive ? "Traitement désactivé" : "Traitement réactivé",
+        title: currentActive ? "Traitement désactivé" : "Traitement réactivé"
       });
-
       fetchMedications();
     } catch (error) {
       console.error("Error toggling medication:", error);
       toast({
         title: "Erreur",
         description: "Impossible de modifier le statut",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   const handleDelete = async (medicationId: string) => {
     try {
-      const { error } = await supabase
-        .from("dog_medications")
-        .delete()
-        .eq("id", medicationId);
-
+      const {
+        error
+      } = await supabase.from("dog_medications").delete().eq("id", medicationId);
       if (error) throw error;
-
       toast({
-        title: "Traitement supprimé",
+        title: "Traitement supprimé"
       });
-
       fetchMedications();
     } catch (error) {
       console.error("Error deleting medication:", error);
       toast({
         title: "Erreur",
         description: "Impossible de supprimer le traitement",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   if (loading) {
-    return (
-      <Card className="p-4">
+    return <Card className="p-4">
         <div className="flex items-center justify-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
-      </Card>
-    );
+      </Card>;
   }
-
-  return (
-    <div className="space-y-3">
+  return <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-title flex items-center gap-2">
           <Pill className="h-5 w-5 text-primary" />
           Traitements en cours
         </h3>
-        <Dialog open={dialogOpen} onOpenChange={(open) => {
-          setDialogOpen(open);
-          if (!open && onDialogClose) onDialogClose();
-        }}>
+        <Dialog open={dialogOpen} onOpenChange={open => {
+        setDialogOpen(open);
+        if (!open && onDialogClose) onDialogClose();
+      }}>
           <DialogTrigger asChild>
             <Button size="sm" className="rounded-full">
               <Plus className="h-4 w-4 mr-2" />
@@ -210,106 +196,78 @@ export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = f
               <DialogTitle>Nouveau traitement</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {dogs && dogs.length > 0 && (
-                <div className="space-y-2">
+              {dogs && dogs.length > 0 && <div className="space-y-2">
                   <Label htmlFor="dog_select">Chien *</Label>
                   <Select value={selectedDogId} onValueChange={setSelectedDogId}>
                     <SelectTrigger id="dog_select">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="z-[100]">
-                      {dogs.map((dog) => (
-                        <SelectItem key={dog.id} value={dog.id}>
+                      {dogs.map(dog => <SelectItem key={dog.id} value={dog.id}>
                           <div className="flex items-center gap-2">
-                            {dog.avatar_url ? (
-                              <img src={dog.avatar_url} alt={dog.name} className="w-5 h-5 rounded-full object-cover" />
-                            ) : (
-                              <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                            {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-5 h-5 rounded-full object-cover" /> : <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
                                 <span className="text-[10px] font-bold text-primary">{dog.name[0]}</span>
-                              </div>
-                            )}
+                              </div>}
                             <span>{dog.name}</span>
                           </div>
-                        </SelectItem>
-                      ))}
+                        </SelectItem>)}
                     </SelectContent>
                   </Select>
-                </div>
-              )}
+                </div>}
 
               <div className="space-y-2">
                 <Label htmlFor="medication_name">Nom du médicament *</Label>
-                <Input
-                  id="medication_name"
-                  value={formData.medication_name}
-                  onChange={(e) => setFormData({ ...formData, medication_name: e.target.value })}
-                  placeholder="Ex: Amoxicilline"
-                />
+                <Input id="medication_name" value={formData.medication_name} onChange={e => setFormData({
+                ...formData,
+                medication_name: e.target.value
+              })} placeholder="Ex: Amoxicilline" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="dosage_detail">Posologie détaillée *</Label>
-                <Textarea
-                  id="dosage_detail"
-                  value={formData.dosage_detail}
-                  onChange={(e) => setFormData({ ...formData, dosage_detail: e.target.value })}
-                  placeholder="Ex: 1 comprimé de 500mg"
-                  rows={2}
-                />
+                <Textarea id="dosage_detail" value={formData.dosage_detail} onChange={e => setFormData({
+                ...formData,
+                dosage_detail: e.target.value
+              })} placeholder="Ex: 1 comprimé de 500mg" rows={2} />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="frequency">Fréquence de prise *</Label>
-                <Input
-                  id="frequency"
-                  value={formData.frequency}
-                  onChange={(e) => setFormData({ ...formData, frequency: e.target.value })}
-                  placeholder="Ex: 2 fois par jour (matin et soir)"
-                />
+                <Input id="frequency" value={formData.frequency} onChange={e => setFormData({
+                ...formData,
+                frequency: e.target.value
+              })} placeholder="Ex: 2 fois par jour (matin et soir)" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="start_date">Date de début *</Label>
-                <Input
-                  id="start_date"
-                  type="date"
-                  value={formData.start_date}
-                  onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-                />
+                <Input id="start_date" type="date" value={formData.start_date} onChange={e => setFormData({
+                ...formData,
+                start_date: e.target.value
+              })} />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="duration_days">Durée du traitement (en jours)</Label>
-                <Input
-                  id="duration_days"
-                  type="number"
-                  min="1"
-                  value={formData.duration_days}
-                  onChange={(e) => setFormData({ ...formData, duration_days: e.target.value })}
-                  placeholder="Ex: 7 pour une semaine"
-                />
+                <Input id="duration_days" type="number" min="1" value={formData.duration_days} onChange={e => setFormData({
+                ...formData,
+                duration_days: e.target.value
+              })} placeholder="Ex: 7 pour une semaine" />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="notes">Notes complémentaires</Label>
-                <Textarea
-                  id="notes"
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Instructions spéciales, précautions..."
-                  rows={3}
-                />
+                <Textarea id="notes" value={formData.notes} onChange={e => setFormData({
+                ...formData,
+                notes: e.target.value
+              })} placeholder="Instructions spéciales, précautions..." rows={3} />
               </div>
 
               <div className="flex gap-2">
                 <Button onClick={handleSubmit} className="flex-1">
                   Enregistrer
                 </Button>
-                <Button
-                  onClick={() => setDialogOpen(false)}
-                  variant="outline"
-                  className="flex-1"
-                >
+                <Button onClick={() => setDialogOpen(false)} variant="outline" className="flex-1">
                   Annuler
                 </Button>
               </div>
@@ -318,32 +276,21 @@ export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = f
         </Dialog>
       </div>
 
-      {medications.length === 0 ? (
-        <Card className="p-6 text-center">
+      {medications.length === 0 ? <Card className="p-6 text-center px-[23px] mx-[10px]">
           <Pill className="h-12 w-12 mx-auto mb-3 text-muted-foreground opacity-50" />
           <p className="text-muted-foreground">Aucun traitement enregistré</p>
-        </Card>
-      ) : (
-        <div className="space-y-2">
-          {medications.map((med) => (
-            <Card
-              key={med.id}
-              className={`p-4 ${!med.active ? 'opacity-60 bg-muted/30' : ''}`}
-            >
+        </Card> : <div className="space-y-2">
+          {medications.map(med => <Card key={med.id} className={`p-4 ${!med.active ? 'opacity-60 bg-muted/30' : ''}`}>
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h4 className="font-semibold text-title">{med.medication_name}</h4>
-                      {med.active ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                      {med.active ? <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                           Actif
-                        </span>
-                      ) : (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
+                        </span> : <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
                           Terminé
-                        </span>
-                      )}
+                        </span>}
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">{med.dosage_detail}</p>
                     <p className="text-sm text-foreground mt-1">
@@ -351,20 +298,10 @@ export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = f
                     </p>
                   </div>
                   <div className="flex gap-1">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleToggleActive(med.id, med.active)}
-                      title={med.active ? "Marquer comme terminé" : "Réactiver"}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => handleToggleActive(med.id, med.active)} title={med.active ? "Marquer comme terminé" : "Réactiver"}>
                       {med.active ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(med.id)}
-                      title="Supprimer"
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => handleDelete(med.id)} title="Supprimer">
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
                   </div>
@@ -373,26 +310,23 @@ export const MedicationsManager = ({ dogId, dogs, ownerId, initialDialogOpen = f
                 <div className="text-sm space-y-1">
                   <p>
                     <span className="font-medium">Début :</span>{" "}
-                    {format(new Date(med.start_date), "d MMMM yyyy", { locale: fr })}
+                    {format(new Date(med.start_date), "d MMMM yyyy", {
+                locale: fr
+              })}
                   </p>
-                  {med.end_date && (
-                    <p>
+                  {med.end_date && <p>
                       <span className="font-medium">Fin :</span>{" "}
-                      {format(new Date(med.end_date), "d MMMM yyyy", { locale: fr })}
+                      {format(new Date(med.end_date), "d MMMM yyyy", {
+                locale: fr
+              })}
                       {med.duration_days && ` (${med.duration_days} jours)`}
-                    </p>
-                  )}
-                  {med.notes && (
-                    <p className="text-muted-foreground mt-2 pt-2 border-t">
+                    </p>}
+                  {med.notes && <p className="text-muted-foreground mt-2 pt-2 border-t">
                       {med.notes}
-                    </p>
-                  )}
+                    </p>}
                 </div>
               </div>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+            </Card>)}
+        </div>}
+    </div>;
 };
