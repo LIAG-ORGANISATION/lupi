@@ -321,30 +321,7 @@ const Home = () => {
           </div>
 
           {/* Partners section for professionals */}
-          <div className="space-y-3 mt-4">
-            <h2 className="text-xl font-bold text-title">Nos partenaires</h2>
-            <div className="space-y-2">
-              <a href="https://www.kozoo.eu" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
-                <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                  <img src={kozooLogo} alt="KOZOO" className="w-full h-full object-contain" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title text-lg">KOZOO</h3>
-                  <p className="text-sm text-muted-foreground">Assurance pour chien</p>
-                </div>
-              </a>
-
-              <a href="https://pennypet.io/" target="_blank" rel="noopener noreferrer" className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4">
-                <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                  <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
-                  <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
-                </div>
-              </a>
-            </div>
-          </div>
+          
         </div>
       </div>;
   }
