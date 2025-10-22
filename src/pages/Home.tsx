@@ -4,11 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { TestTube2, ClipboardList, Stethoscope, Lightbulb, LogIn, Plus, Dog as DogIcon, Users, MessageSquare, Settings, FileText, Heart, Gift, Check } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import QuickActionCard from "@/components/QuickActionCard";
 import heroDog1 from "@/assets/hero-dog-new-1.jpg";
 import heroDog2 from "@/assets/hero-dog-new-2.jpg";
@@ -80,11 +76,10 @@ const Home = () => {
   // Auto-scroll hero carousel
   useEffect(() => {
     if (!heroApi) return;
-    
     const interval = setInterval(() => {
       heroApi.scrollNext();
     }, 3000); // Change slide every 3 seconds
-    
+
     return () => clearInterval(interval);
   }, [heroApi]);
 
@@ -126,7 +121,6 @@ const Home = () => {
       fetchProStats();
     }
   }, [isGuardian, isProfessional, user, isAuthenticated]);
-
   useEffect(() => {
     if (dogs.length > 0) {
       fetchActiveMedications();
@@ -160,7 +154,7 @@ const Home = () => {
           hasDnaTest: questionnaires?.some(q => q.dog_id === dog.id) || false,
           hasQuestionnaire: questionnaires?.some(q => q.dog_id === dog.id) || false
         }));
-      setDogsCompletion(completionData);
+        setDogsCompletion(completionData);
       }
     } catch (error) {
       console.error('Error fetching dogs:', error);
@@ -168,19 +162,16 @@ const Home = () => {
       setLoadingDogs(false);
     }
   };
-
   const fetchActiveMedications = async () => {
     if (dogs.length === 0) return;
-    
     try {
       const dogIds = dogs.map(d => d.id);
-      const { data, error } = await supabase
-        .from("dog_medications")
-        .select("*")
-        .in("dog_id", dogIds)
-        .eq("active", true)
-        .order("start_date", { ascending: false });
-
+      const {
+        data,
+        error
+      } = await supabase.from("dog_medications").select("*").in("dog_id", dogIds).eq("active", true).order("start_date", {
+        ascending: false
+      });
       if (error) throw error;
       setActiveMedications(data || []);
     } catch (error) {
@@ -261,7 +252,7 @@ const Home = () => {
             </Button>
           </div>
 
-          <Card className="cta-container">
+          <Card className="cta-container px-[14px] py-[9px]">
             <div className="relative z-10 space-y-3">
               <h2 className="text-2xl font-bold text-title">
                 Commander un test ADN pour un patient
@@ -359,70 +350,63 @@ const Home = () => {
   }
 
   // Guardian/Default View
-  return <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
+  return <div className="min-h-screen pb-20 animate-fade-in" style={{
+    background: '#FFFFFF'
+  }}>
       {showTutorial && <WelcomeTutorial onComplete={handleTutorialComplete} />}
       {/* Hero Section with Auto-Sliding Images */}
-      <div className="relative mb-0 overflow-hidden" style={{ height: '40vh', minHeight: '300px' }}>
-        <Carousel
-          setApi={setHeroApi}
-          opts={{
-            loop: true,
-            align: 'center',
-          }}
-          className="w-full h-full"
-        >
+      <div className="relative mb-0 overflow-hidden" style={{
+      height: '40vh',
+      minHeight: '300px'
+    }}>
+        <Carousel setApi={setHeroApi} opts={{
+        loop: true,
+        align: 'center'
+      }} className="w-full h-full">
           <CarouselContent className="h-full -ml-0">
-            {[heroDog1, heroDog2, heroDog3, heroDog4, heroDog5, heroDog6].map((image, index) => (
-              <CarouselItem key={index} className="pl-0 h-full">
+            {[heroDog1, heroDog2, heroDog3, heroDog4, heroDog5, heroDog6].map((image, index) => <CarouselItem key={index} className="pl-0 h-full">
                 <div className="relative w-full h-full">
-                  <img
-                    src={image}
-                    alt={`Chien ${index + 1}`}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: 'center'
-                    }}
-                  />
+                  <img src={image} alt={`Chien ${index + 1}`} style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center'
+              }} />
                   {/* Dark overlay for better text readability */}
                   <div className="absolute inset-0 bg-black/30" />
                 </div>
-              </CarouselItem>
-            ))}
+              </CarouselItem>)}
           </CarouselContent>
         </Carousel>
 
         {/* Text and CTA overlay */}
         <div className="absolute inset-0 flex items-center justify-center px-4">
-          <div className="text-center max-w-2xl" style={{ zIndex: 10 }}>
-            <h1 style={{ 
-              fontSize: '24px', 
-              fontWeight: 600, 
-              color: '#FFFFFF',
-              marginBottom: '12px',
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-            }}>
+          <div className="text-center max-w-2xl" style={{
+          zIndex: 10
+        }}>
+            <h1 style={{
+            fontSize: '24px',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            marginBottom: '12px',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+          }}>
               Mieux comprendre pour mieux accompagner
             </h1>
-            <p style={{ 
-              fontSize: '14px', 
-              color: '#FFFFFF',
-              marginBottom: '20px',
-              textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-              lineHeight: '1.5'
-            }}>
+            <p style={{
+            fontSize: '14px',
+            color: '#FFFFFF',
+            marginBottom: '20px',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+            lineHeight: '1.5'
+          }}>
               Lupi, votre carnet de santé connecté aux données génétiques de votre chien, à ses alertes et à son profil comportemental.
             </p>
             
-            <button 
-              onClick={() => navigate("/dna-kit")} 
-              className="btn-critical"
-              style={{
-                minWidth: '200px',
-                boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
-              }}
-            >
+            <button onClick={() => navigate("/dna-kit")} className="btn-critical" style={{
+            minWidth: '200px',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+          }}>
               <TestTube2 className="h-5 w-5 mr-2 inline" strokeWidth={1.5} />
               Commander
             </button>
@@ -430,47 +414,111 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="max-w-4xl mx-auto" style={{
+      padding: '16px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px'
+    }}>
         {/* My Dogs section - show first when user has dogs */}
-        {isGuardian && dogs.length > 0 && <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Mes chiens</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {isGuardian && dogs.length > 0 && <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px'
+      }}>
+            <h2 style={{
+          fontSize: '16px',
+          fontWeight: 500,
+          color: 'hsl(240 6% 11%)'
+        }}>Mes chiens</h2>
+            <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px'
+        }}>
               {dogs.map(dog => {
             const completion = calculateProfileCompletion(dog);
-            return <div key={dog.id} className="n26-card" style={{ padding: '12px' }}>
+            return <div key={dog.id} className="n26-card" style={{
+              padding: '12px'
+            }}>
                   <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`/dogs/${dog.id}`)}>
-                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="avatar-circle" style={{ width: '48px', height: '48px' }} /> : <div className="bg-secondary flex items-center justify-center" style={{ width: '48px', height: '48px', borderRadius: '12px' }}>
-                        <DogIcon className="h-6 w-6" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
+                    {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="avatar-circle" style={{
+                  width: '48px',
+                  height: '48px'
+                }} /> : <div className="bg-secondary flex items-center justify-center" style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px'
+                }}>
+                        <DogIcon className="h-6 w-6" style={{
+                    color: 'hsl(240 6% 11%)'
+                  }} strokeWidth={1.5} />
                       </div>}
                     <div className="flex-1">
-                      <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>{dog.name}</h3>
-                      {dog.breed && <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>{dog.breed}</p>}
+                      <h3 style={{
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: 'hsl(240 6% 11%)'
+                  }}>{dog.name}</h3>
+                      {dog.breed && <p style={{
+                    fontSize: '12px',
+                    fontWeight: 300,
+                    color: 'hsl(240 3% 57%)'
+                  }}>{dog.breed}</p>}
                     </div>
-                    <div className="flex flex-col items-center gap-1" style={{ minWidth: '60px' }}>
-                      <div className="relative" style={{ width: '40px', height: '40px' }}>
-                        <svg style={{ width: '40px', height: '40px', transform: 'rotate(-90deg)' }}>
+                    <div className="flex flex-col items-center gap-1" style={{
+                  minWidth: '60px'
+                }}>
+                      <div className="relative" style={{
+                    width: '40px',
+                    height: '40px'
+                  }}>
+                        <svg style={{
+                      width: '40px',
+                      height: '40px',
+                      transform: 'rotate(-90deg)'
+                    }}>
                           <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="3" fill="none" className="text-muted" />
                           <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="3" fill="none" strokeDasharray={`${2 * Math.PI * 16}`} strokeDashoffset={`${2 * Math.PI * 16 * (1 - completion / 100)}`} className={`${getProgressColor(completion)} transition-all duration-300`} strokeLinecap="round" />
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span style={{ fontSize: '10px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>{completion}%</span>
+                          <span style={{
+                        fontSize: '10px',
+                        fontWeight: 600,
+                        color: 'hsl(240 6% 11%)'
+                      }}>{completion}%</span>
                         </div>
                       </div>
-                      <span style={{ fontSize: '10px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Profil</span>
+                      <span style={{
+                    fontSize: '10px',
+                    fontWeight: 300,
+                    color: 'hsl(240 3% 57%)'
+                  }}>Profil</span>
                     </div>
                   </div>
                 </div>;
           })}
               
               {/* Raccourci vers Recommandations personnalisées */}
-              <div className="n26-card" style={{ background: 'hsl(0 0% 96%)', padding: '12px' }}>
+              <div className="n26-card" style={{
+            background: 'hsl(0 0% 96%)',
+            padding: '12px'
+          }}>
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/recommendations-demo')}>
                   <div className="icon-container flex-shrink-0">
                     <Lightbulb strokeWidth={1.5} />
                   </div>
                   <div className="flex-1">
-                    <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Recommandations personnalisées</h3>
-                    <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Une fois votre test ADN réalisé, Lupi vous propose des recommandations ultra personnalisées pour votre chien</p>
+                    <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: 'hsl(240 6% 11%)'
+                }}>Recommandations personnalisées</h3>
+                    <p style={{
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  color: 'hsl(240 3% 57%)'
+                }}>Une fois votre test ADN réalisé, Lupi vous propose des recommandations ultra personnalisées pour votre chien</p>
                   </div>
                 </div>
               </div>
@@ -478,43 +526,41 @@ const Home = () => {
           </div>}
 
         {/* Active Medications Section */}
-        {isGuardian && activeMedications.length > 0 && (
-          <Card className="p-4 rounded-xl shadow-card">
+        {isGuardian && activeMedications.length > 0 && <Card className="p-4 rounded-xl shadow-card">
             <h3 className="text-lg font-bold text-title mb-3 flex items-center gap-2">
               <Stethoscope className="h-5 w-5 text-primary" />
               Traitements en cours
             </h3>
             <div className="space-y-3">
-              {activeMedications.map((med) => {
-                const dog = dogs.find(d => d.id === med.dog_id);
-                const daysRemaining = med.end_date 
-                  ? Math.ceil((new Date(med.end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
-                  : null;
-                
-                return (
-                  <div key={med.id} className="p-3 rounded-lg" style={{ backgroundColor: '#F5E8E6', border: '1px solid #E5C8C3' }}>
+              {activeMedications.map(med => {
+            const dog = dogs.find(d => d.id === med.dog_id);
+            const daysRemaining = med.end_date ? Math.ceil((new Date(med.end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : null;
+            return <div key={med.id} className="p-3 rounded-lg" style={{
+              backgroundColor: '#F5E8E6',
+              border: '1px solid #E5C8C3'
+            }}>
                     <div className="flex items-start gap-3">
-                      {dog && (
-                        <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                          {dog.avatar_url ? (
-                            <img src={dog.avatar_url} alt={dog.name} className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: 'rgba(91, 157, 140, 0.1)' }}>
-                              <span className="text-sm font-bold" style={{ color: '#5B9D8C' }}>{dog.name[0]}</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                      {dog && <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                          {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center" style={{
+                    backgroundColor: 'rgba(91, 157, 140, 0.1)'
+                  }}>
+                              <span className="text-sm font-bold" style={{
+                      color: '#5B9D8C'
+                    }}>{dog.name[0]}</span>
+                            </div>}
+                        </div>}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <div className="font-semibold" style={{ color: '#8B4842' }}>{med.medication_name}</div>
-                          {dog && (
-                            <Badge variant="secondary" className="flex-shrink-0 text-xs">
+                          <div className="font-semibold" style={{
+                      color: '#8B4842'
+                    }}>{med.medication_name}</div>
+                          {dog && <Badge variant="secondary" className="flex-shrink-0 text-xs">
                               {dog.name}
-                            </Badge>
-                          )}
+                            </Badge>}
                         </div>
-                        <div className="text-sm space-y-1" style={{ color: '#A55D53' }}>
+                        <div className="text-sm space-y-1" style={{
+                    color: '#A55D53'
+                  }}>
                           <div className="flex items-center gap-2">
                             <span className="font-medium">Posologie:</span>
                             <span>{med.dosage_detail}</span>
@@ -523,60 +569,63 @@ const Home = () => {
                             <span className="font-medium">Fréquence:</span>
                             <span>{med.frequency}</span>
                           </div>
-                          {med.start_date && (
-                            <div className="flex items-center gap-2 text-xs">
+                          {med.start_date && <div className="flex items-center gap-2 text-xs">
                               <span className="font-medium">Début:</span>
-                              <span>{format(new Date(med.start_date), "d MMM yyyy", { locale: fr })}</span>
-                            </div>
-                          )}
-                          {med.end_date && (
-                            <div className="flex items-center gap-2 text-xs">
+                              <span>{format(new Date(med.start_date), "d MMM yyyy", {
+                          locale: fr
+                        })}</span>
+                            </div>}
+                          {med.end_date && <div className="flex items-center gap-2 text-xs">
                               <span className="font-medium">Fin:</span>
-                              <span>{format(new Date(med.end_date), "d MMM yyyy", { locale: fr })}</span>
-                              {daysRemaining !== null && daysRemaining > 0 && (
-                                <Badge variant="outline" className="text-xs bg-pink-100 border-pink-300">
+                              <span>{format(new Date(med.end_date), "d MMM yyyy", {
+                          locale: fr
+                        })}</span>
+                              {daysRemaining !== null && daysRemaining > 0 && <Badge variant="outline" className="text-xs bg-pink-100 border-pink-300">
                                   {daysRemaining} jour{daysRemaining > 1 ? 's' : ''} restant{daysRemaining > 1 ? 's' : ''}
-                                </Badge>
-                              )}
-                            </div>
-                          )}
-                          {med.notes && (
-                            <div className="text-xs mt-2 pt-2 border-t border-pink-200">
+                                </Badge>}
+                            </div>}
+                          {med.notes && <div className="text-xs mt-2 pt-2 border-t border-pink-200">
                               <span className="font-medium">Notes:</span> {med.notes}
-                            </div>
-                          )}
+                            </div>}
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  </div>;
+          })}
             </div>
-          </Card>
-        )}
+          </Card>}
 
         {/* Calendar for all dogs - compact version */}
-        {isGuardian && dogs.length > 0 && user && (
-          <DogCalendar 
-            dogs={dogs} 
-            ownerId={user.id} 
-            compact={true} 
-          />
-        )}
+        {isGuardian && dogs.length > 0 && user && <DogCalendar dogs={dogs} ownerId={user.id} compact={true} />}
       </div>
 
       {/* D'où ils viennent Section */}
         
 
-      <div className="max-w-4xl mx-auto" style={{ padding: '0 16px 80px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="max-w-4xl mx-auto" style={{
+      padding: '0 16px 80px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px'
+    }}>
 
         {/* CTA to create dog for authenticated guardians without dogs */}
         {isAuthenticated && isGuardian && dogs.length === 0 && !loadingDogs && <>
-            <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '12px', background: 'hsl(0 0% 96%)' }}>
-              <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>
+            <div className="n26-card text-center" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          background: 'hsl(0 0% 96%)'
+        }}>
+              <h3 className="text-title" style={{
+            fontSize: '16px',
+            fontWeight: 500
+          }}>
                 Créez le profil de votre chien
               </h3>
-              <p className="text-secondary" style={{ fontSize: '14px' }}>
+              <p className="text-secondary" style={{
+            fontSize: '14px'
+          }}>
                 Commencez à suivre sa santé et son bien-être
               </p>
               <Button onClick={() => navigate("/dogs/add")} className="btn-action w-full" size="lg">
@@ -585,33 +634,67 @@ const Home = () => {
               </Button>
             </div>
 
-            <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div className="icon-container mx-auto" style={{ width: '48px', height: '48px' }}>
-                <TestTube2 style={{ width: '48px', height: '48px' }} strokeWidth={1.5} />
+            <div className="n26-card text-center" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px'
+        }}>
+              <div className="icon-container mx-auto" style={{
+            width: '48px',
+            height: '48px'
+          }}>
+                <TestTube2 style={{
+              width: '48px',
+              height: '48px'
+            }} strokeWidth={1.5} />
               </div>
-              <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>
+              <h3 className="text-title" style={{
+            fontSize: '16px',
+            fontWeight: 500
+          }}>
                 Découvrez un exemple de résultats ADN
               </h3>
-              <p className="text-secondary" style={{ fontSize: '14px' }}>
+              <p className="text-secondary" style={{
+            fontSize: '14px'
+          }}>
                 Visualisez comment fonctionne l'analyse génétique complète
               </p>
-              <Button onClick={() => navigate("/dna-demo")} variant="outline" className="w-full" style={{ borderRadius: '12px' }} size="lg">
+              <Button onClick={() => navigate("/dna-demo")} variant="outline" className="w-full" style={{
+            borderRadius: '12px'
+          }} size="lg">
                 <TestTube2 className="h-5 w-5 mr-2" strokeWidth={1.5} />
                 Voir la démo
               </Button>
             </div>
 
-            <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div className="icon-container mx-auto" style={{ width: '48px', height: '48px' }}>
-                <Lightbulb style={{ width: '48px', height: '48px' }} strokeWidth={1.5} />
+            <div className="n26-card text-center" style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px'
+        }}>
+              <div className="icon-container mx-auto" style={{
+            width: '48px',
+            height: '48px'
+          }}>
+                <Lightbulb style={{
+              width: '48px',
+              height: '48px'
+            }} strokeWidth={1.5} />
               </div>
-              <h3 className="text-title" style={{ fontSize: '16px', fontWeight: 500 }}>
+              <h3 className="text-title" style={{
+            fontSize: '16px',
+            fontWeight: 500
+          }}>
                 Recommandations personnalisées
               </h3>
-              <p className="text-secondary" style={{ fontSize: '14px' }}>
+              <p className="text-secondary" style={{
+            fontSize: '14px'
+          }}>
                 Quand vous réalisez un test, Lupi vous fournit des recommandations lifestyle personnalisées
               </p>
-              <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full" style={{ borderRadius: '12px' }} size="lg">
+              <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full" style={{
+            borderRadius: '12px'
+          }} size="lg">
                 <Lightbulb className="h-5 w-5 mr-2" strokeWidth={1.5} />
                 Voir les recommandations
               </Button>
@@ -619,53 +702,88 @@ const Home = () => {
           </>}
 
         {/* Quick actions for authenticated guardians - N26 Style */}
-        {isAuthenticated && isGuardian && <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Accès rapide</h2>
+        {isAuthenticated && isGuardian && <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px'
+      }}>
+            <h2 style={{
+          fontSize: '16px',
+          fontWeight: 500,
+          color: 'hsl(240 6% 11%)'
+        }}>Accès rapide</h2>
             <div className="grid grid-cols-4 gap-3">
               <div className="cursor-pointer" onClick={() => navigate("/guardian/messages")}>
                 <div className="flex flex-col items-center gap-2 text-center">
                   <div className="relative">
-                    <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '16px', background: 'hsl(166 44% 48%)' }}>
+                    <div className="w-12 h-12 flex items-center justify-center" style={{
+                  borderRadius: '16px',
+                  background: 'hsl(166 44% 48%)'
+                }}>
                       <MessageSquare className="h-5 w-5 text-white" strokeWidth={1.5} />
                     </div>
-                    {unreadCount > 0 && (
-                      <Badge 
-                        variant="destructive" 
-                        className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0"
-                        style={{ fontSize: '9px', fontWeight: 700 }}
-                      >
+                    {unreadCount > 0 && <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0" style={{
+                  fontSize: '9px',
+                  fontWeight: 700
+                }}>
                         {unreadCount > 9 ? '9+' : unreadCount}
-                      </Badge>
-                    )}
+                      </Badge>}
                   </div>
-                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Messages</span>
+                  <span style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 6% 11%)'
+              }}>Messages</span>
                 </div>
               </div>
 
               <div className="cursor-pointer" onClick={() => navigate("/guardian/documents")}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '16px' }}>
-                    <FileText className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
+                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{
+                borderRadius: '16px'
+              }}>
+                    <FileText className="h-5 w-5" style={{
+                  color: 'hsl(240 6% 11%)'
+                }} strokeWidth={1.5} />
                   </div>
-                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Documents</span>
+                  <span style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 6% 11%)'
+              }}>Documents</span>
                 </div>
               </div>
 
               <div className="cursor-pointer" onClick={() => navigate("/professionals")}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{ borderRadius: '16px' }}>
-                    <Stethoscope className="h-5 w-5" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
+                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{
+                borderRadius: '16px'
+              }}>
+                    <Stethoscope className="h-5 w-5" style={{
+                  color: 'hsl(240 6% 11%)'
+                }} strokeWidth={1.5} />
                   </div>
-                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Professionnels</span>
+                  <span style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 6% 11%)'
+              }}>Professionnels</span>
                 </div>
               </div>
 
               <div className="cursor-pointer" onClick={() => navigate("/dogs/add")}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '16px', background: 'hsl(166 44% 48%)' }}>
+                  <div className="w-12 h-12 flex items-center justify-center" style={{
+                borderRadius: '16px',
+                background: 'hsl(166 44% 48%)'
+              }}>
                     <Plus className="h-5 w-5 text-white" strokeWidth={1.5} />
                   </div>
-                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Ajouter chien</span>
+                  <span style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 6% 11%)'
+              }}>Ajouter chien</span>
                 </div>
               </div>
             </div>
@@ -683,14 +801,30 @@ const Home = () => {
           </div>}
 
         {/* CTA for non-authenticated users */}
-        {!isAuthenticated && <div className="n26-card text-center" style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: 'hsl(0 0% 96%)' }}>
-            <div className="icon-container mx-auto" style={{ width: '64px', height: '64px' }}>
-              <DogIcon style={{ width: '64px', height: '64px' }} strokeWidth={1.5} />
+        {!isAuthenticated && <div className="n26-card text-center" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        background: 'hsl(0 0% 96%)'
+      }}>
+            <div className="icon-container mx-auto" style={{
+          width: '64px',
+          height: '64px'
+        }}>
+              <DogIcon style={{
+            width: '64px',
+            height: '64px'
+          }} strokeWidth={1.5} />
             </div>
-            <h3 className="text-title" style={{ fontSize: '20px', fontWeight: 600 }}>
+            <h3 className="text-title" style={{
+          fontSize: '20px',
+          fontWeight: 600
+        }}>
               Ajoutez votre chien pour démarrer l'expérience Lupi
             </h3>
-            <p className="text-secondary" style={{ fontSize: '14px' }}>
+            <p className="text-secondary" style={{
+          fontSize: '14px'
+        }}>
               Commencez à suivre la santé et le bien-être de votre compagnon
             </p>
             <Button onClick={() => navigate("/choose-account-type")} className="btn-action w-full" size="lg">
