@@ -95,8 +95,6 @@ const Explorer = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious style={{ left: '8px' }} />
-          <CarouselNext style={{ right: '8px' }} />
         </Carousel>
       </div>
 

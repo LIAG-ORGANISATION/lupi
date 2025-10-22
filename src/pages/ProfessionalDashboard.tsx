@@ -44,67 +44,67 @@ const ProfessionalDashboard = () => {
 
   return (
     <AuthGuard requiredRole="professional">
-      <div className="min-h-screen p-4 space-y-6 animate-fade-in bg-background pb-24">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+      <div className="min-h-screen animate-fade-in bg-background pb-24" style={{ padding: '16px' }}>
+        <div className="max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Button
                 onClick={() => navigate(-1)}
                 variant="ghost"
                 size="sm"
-                className="rounded-full"
+                style={{ borderRadius: '12px' }}
               >
                 <Home className="h-4 w-4 mr-2" />
                 Accueil
               </Button>
-              <h1 className="text-2xl font-bold text-title">Tableau de bord</h1>
+              <h1 style={{ fontSize: '24px', fontWeight: 700, color: 'hsl(240 6% 11%)' }}>Tableau de bord</h1>
             </div>
             <Button
               onClick={() => navigate("/professional/edit-profile")}
               variant="outline"
               size="sm"
-              className="rounded-full"
+              style={{ borderRadius: '12px' }}
             >
               <Settings className="h-4 w-4 mr-2" />
               Profil
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="lupi-card">
-              <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-primary">{pendingRequests}</div>
-                <p className="text-sm text-muted-foreground">Demandes en attente</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
+            <Card style={{ padding: '16px' }}>
+              <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ fontSize: '30px', fontWeight: 700, color: '#5B9D8C' }}>{pendingRequests}</div>
+                <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Demandes en attente</p>
               </div>
             </Card>
 
-            <Card className="lupi-card">
-              <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-title">{totalClients}</div>
-                <p className="text-sm text-muted-foreground">Clients actifs</p>
+            <Card style={{ padding: '16px' }}>
+              <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ fontSize: '30px', fontWeight: 700, color: 'hsl(240 6% 11%)' }}>{totalClients}</div>
+                <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Clients actifs</p>
               </div>
             </Card>
 
-            <Card className="lupi-card">
-              <div className="text-center space-y-2">
-                <div className="text-3xl font-bold text-title">{unreadCount}</div>
-                <p className="text-sm text-muted-foreground">Messages non lus</p>
+            <Card style={{ padding: '16px' }}>
+              <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ fontSize: '30px', fontWeight: 700, color: 'hsl(240 6% 11%)' }}>{unreadCount}</div>
+                <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>Messages non lus</p>
               </div>
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
             <Card
-              className="lupi-card cursor-pointer"
+              style={{ padding: '16px', cursor: 'pointer' }}
               onClick={() => navigate("/professional/clients")}
             >
-              <div className="flex items-center gap-4">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div className="icon-container">
                   <Users className="h-6 w-6" strokeWidth={1.5} />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title">Mes Clients</h3>
-                  <p className="text-sm text-muted-foreground">
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Mes Clients</h3>
+                  <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>
                     Gérer les accès et demandes
                   </p>
                 </div>
@@ -112,10 +112,10 @@ const ProfessionalDashboard = () => {
             </Card>
 
             <Card
-              className="lupi-card cursor-pointer"
+              style={{ padding: '16px', cursor: 'pointer' }}
               onClick={() => navigate("/professional/messages")}
             >
-              <div className="flex items-center gap-4">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div className="icon-container relative">
                   <MessageSquare className="h-6 w-6" strokeWidth={1.5} />
                   {unreadCount > 0 && (
@@ -124,14 +124,14 @@ const ProfessionalDashboard = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title">Messages</h3>
-                  <p className="text-sm text-muted-foreground">
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Messages</h3>
+                  <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>
                     {unreadCount > 0 ? `${unreadCount} nouveau${unreadCount > 1 ? 'x' : ''} message${unreadCount > 1 ? 's' : ''}` : 'Communiquer avec les gardiens'}
                   </p>
                 </div>
                 {unreadCount > 0 && (
-                  <Button variant="outline" size="sm" className="rounded-full">
+                  <Button variant="outline" size="sm" style={{ borderRadius: '12px' }}>
                     Consulter
                   </Button>
                 )}

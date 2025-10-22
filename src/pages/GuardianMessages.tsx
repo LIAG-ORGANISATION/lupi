@@ -15,8 +15,8 @@ const GuardianMessages = () => {
       // Si une conversation est ouverte, revenir à la liste
       setSelectedConversationId(null);
     } else {
-      // Sinon, retourner au dashboard
-      navigate("/guardian/dashboard");
+      // Sinon, retourner à l'accueil
+      navigate("/");
     }
   };
 
