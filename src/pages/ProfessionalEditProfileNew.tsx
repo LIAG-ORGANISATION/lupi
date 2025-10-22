@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { Camera, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -57,6 +58,7 @@ const ProfessionalEditProfileNew = () => {
     photo_url: "",
     email: "",
     phone: "",
+    bio: "",
   });
 
   useEffect(() => {
@@ -111,6 +113,7 @@ const ProfessionalEditProfileNew = () => {
             photo_url: (profileData as any).photo_url || "",
             email: (profileData as any).email || "",
             phone: (profileData as any).phone || "",
+            bio: (profileData as any).bio || "",
           });
         }
       }
@@ -267,6 +270,7 @@ const ProfessionalEditProfileNew = () => {
           photo_url: formData.photo_url,
           email: formData.email,
           phone: formData.phone,
+          bio: formData.bio,
         })
         .eq("user_id", user.id);
 
@@ -425,6 +429,27 @@ const ProfessionalEditProfileNew = () => {
                 </p>
               </>
             )}
+          </div>
+        </Card>
+
+        {/* Biography Section */}
+        <Card className="p-6 rounded-3xl space-y-4 shadow-md">
+          <h3 className="font-bold text-title text-lg">Biographie</h3>
+          
+          <div className="space-y-2">
+            <Label htmlFor="bio" className="text-sm font-medium text-title">
+              Présentez-vous
+            </Label>
+            <Textarea
+              id="bio"
+              value={formData.bio}
+              onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+              placeholder="Parlez de votre parcours, votre expérience, votre approche..."
+              className="rounded-2xl border-border min-h-[120px]"
+            />
+            <p className="text-xs text-muted-foreground italic">
+              💡 Une bonne biographie aide les gardiens à mieux vous connaître
+            </p>
           </div>
         </Card>
 

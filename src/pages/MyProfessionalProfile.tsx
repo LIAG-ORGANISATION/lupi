@@ -29,6 +29,7 @@ interface ProfileData {
   preferences_contact: string[];
   tarifs: string;
   photo_url: string;
+  bio: string;
 }
 
 const MyProfessionalProfile = () => {
@@ -60,7 +61,8 @@ const MyProfessionalProfile = () => {
           localisation,
           preferences_contact,
           tarifs,
-          photo_url
+          photo_url,
+          bio
         `)
         .eq("user_id", user.id)
         .maybeSingle();
@@ -102,6 +104,7 @@ const MyProfessionalProfile = () => {
         preferences_contact: (profile as any).preferences_contact || [],
         tarifs: (profile as any).tarifs || "",
         photo_url: (profile as any).photo_url || "",
+        bio: (profile as any).bio || "",
       });
     } catch (error) {
       console.error("Error loading profile:", error);
@@ -182,6 +185,16 @@ const MyProfessionalProfile = () => {
               )}
             </div>
           </Card>
+
+          {/* Biography */}
+          {profileData.bio && (
+            <Card className="p-6 rounded-3xl space-y-3 shadow-md">
+              <h3 className="font-bold text-title text-lg">Biographie</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                {profileData.bio}
+              </p>
+            </Card>
+          )}
 
           {/* Specializations */}
           {profileData.specialisations.length > 0 && (
