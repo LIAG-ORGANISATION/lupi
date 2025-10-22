@@ -50,14 +50,14 @@ const DogProfile = () => {
     weight: "",
     birth_date: "",
     gender: "",
-    medical_notes: "",
+    medical_notes: ""
   });
   const [newEvent, setNewEvent] = useState({
     title: "",
     description: "",
     event_type: "reminder" as 'vaccination' | 'veterinary' | 'grooming' | 'training' | 'reminder' | 'other',
     event_date: format(new Date(), "yyyy-MM-dd"),
-    event_time: "",
+    event_time: ""
   });
   useEffect(() => {
     if (id && user) {
@@ -83,7 +83,7 @@ const DogProfile = () => {
         weight: data.weight?.toString() || "",
         birth_date: data.birth_date || "",
         gender: data.gender || "",
-        medical_notes: data.medical_notes || "",
+        medical_notes: data.medical_notes || ""
       });
     } catch (error) {
       console.error('[DogProfile] Error:', error);
@@ -313,65 +313,55 @@ const DogProfile = () => {
       }
     }
   };
-  
   const handleUpdateInfo = async () => {
     try {
-      const { error } = await supabase
-        .from("dogs")
-        .update({
-          breed: editInfo.breed || null,
-          weight: editInfo.weight ? parseFloat(editInfo.weight) : null,
-          birth_date: editInfo.birth_date || null,
-          gender: editInfo.gender || null,
-          medical_notes: editInfo.medical_notes || null,
-        })
-        .eq("id", id)
-        .eq("owner_id", user?.id);
-
+      const {
+        error
+      } = await supabase.from("dogs").update({
+        breed: editInfo.breed || null,
+        weight: editInfo.weight ? parseFloat(editInfo.weight) : null,
+        birth_date: editInfo.birth_date || null,
+        gender: editInfo.gender || null,
+        medical_notes: editInfo.medical_notes || null
+      }).eq("id", id).eq("owner_id", user?.id);
       if (error) throw error;
 
       // Update local state
-      setDog((prev) =>
-        prev
-          ? {
-              ...prev,
-              breed: editInfo.breed || null,
-              weight: editInfo.weight ? parseFloat(editInfo.weight) : null,
-              birth_date: editInfo.birth_date || null,
-              gender: editInfo.gender || null,
-              medical_notes: editInfo.medical_notes || null,
-            }
-          : null
-      );
-
+      setDog(prev => prev ? {
+        ...prev,
+        breed: editInfo.breed || null,
+        weight: editInfo.weight ? parseFloat(editInfo.weight) : null,
+        birth_date: editInfo.birth_date || null,
+        gender: editInfo.gender || null,
+        medical_notes: editInfo.medical_notes || null
+      } : null);
       toast({
         title: "Informations mises à jour",
-        description: "Les informations ont été modifiées avec succès",
+        description: "Les informations ont été modifiées avec succès"
       });
-
       setShowEditInfoDialog(false);
     } catch (error) {
       console.error("Error updating info:", error);
       toast({
         title: "Erreur",
         description: "Impossible de mettre à jour les informations",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
   const handleAddEvent = async () => {
     if (!newEvent.title || !newEvent.event_date) {
       toast({
         title: "Erreur",
         description: "Veuillez remplir tous les champs obligatoires",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-
     try {
-      const { error } = await supabase.from("dog_calendar_events").insert({
+      const {
+        error
+      } = await supabase.from("dog_calendar_events").insert({
         dog_id: id,
         owner_id: user?.id,
         title: newEvent.title,
@@ -379,34 +369,30 @@ const DogProfile = () => {
         event_date: newEvent.event_date,
         event_time: newEvent.event_time || null,
         event_type: newEvent.event_type,
-        status: "upcoming",
+        status: "upcoming"
       });
-
       if (error) throw error;
-
       toast({
         title: "Événement ajouté",
-        description: "L'événement a été ajouté au calendrier",
+        description: "L'événement a été ajouté au calendrier"
       });
-
       setShowAddEventDialog(false);
-      setNewEvent({ 
-        title: "", 
-        description: "", 
-        event_type: "reminder", 
-        event_date: format(new Date(), "yyyy-MM-dd"), 
-        event_time: "" 
+      setNewEvent({
+        title: "",
+        description: "",
+        event_type: "reminder",
+        event_date: format(new Date(), "yyyy-MM-dd"),
+        event_time: ""
       });
     } catch (error) {
       console.error("Error adding event:", error);
       toast({
         title: "Erreur",
         description: "Impossible d'ajouter l'événement",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-  
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -422,104 +408,113 @@ const DogProfile = () => {
         </Card>
       </div>;
   }
-  return <div className="min-h-screen animate-fade-in" style={{ background: '#FFFFFF', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+  return <div className="min-h-screen animate-fade-in" style={{
+    background: '#FFFFFF',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px'
+  }}>
       {/* Hero Image with Overlay */}
-      <div style={{ position: 'relative', width: '100%', height: '280px', overflow: 'hidden' }}>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={() => navigate('/dogs')} 
-          style={{ 
-            position: 'absolute', 
-            top: '16px', 
-            left: '16px', 
-            zIndex: 10,
-            backgroundColor: 'rgba(255,255,255,0.9)',
-            borderRadius: '12px'
-          }}
-        >
+      <div style={{
+      position: 'relative',
+      width: '100%',
+      height: '280px',
+      overflow: 'hidden'
+    }}>
+        <Button variant="ghost" size="icon" onClick={() => navigate('/dogs')} style={{
+        position: 'absolute',
+        top: '16px',
+        left: '16px',
+        zIndex: 10,
+        backgroundColor: 'rgba(255,255,255,0.9)',
+        borderRadius: '12px'
+      }}>
           <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
         </Button>
         
-        {dog.avatar_url ? (
-          <img 
-            src={dog.avatar_url} 
-            alt={dog.name}
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              objectFit: 'cover',
-              objectPosition: 'center'
-            }} 
-          />
-        ) : (
-          <div style={{ 
-            width: '100%', 
-            height: '100%', 
-            background: 'hsl(0 0% 96%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <DogIcon className="h-24 w-24" style={{ color: 'hsl(240 6% 11%)' }} strokeWidth={1.5} />
-          </div>
-        )}
+        {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} style={{
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'center'
+      }} /> : <div style={{
+        width: '100%',
+        height: '100%',
+        background: 'hsl(0 0% 96%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+            <DogIcon className="h-24 w-24" style={{
+          color: 'hsl(240 6% 11%)'
+        }} strokeWidth={1.5} />
+          </div>}
         
-        <div style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '24px'
+        <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        padding: '24px'
+      }}>
+          <h1 style={{
+          fontSize: '28px',
+          fontWeight: 700,
+          color: '#FFFFFF',
+          marginBottom: '8px',
+          textShadow: '0 2px 4px rgba(0,0,0,0.3)'
         }}>
-          <h1 style={{ 
-            fontSize: '28px', 
-            fontWeight: 700, 
-            color: '#FFFFFF',
-            marginBottom: '8px',
-            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-          }}>
             {dog.name}
           </h1>
-          <p style={{ 
-            fontSize: '14px', 
-            fontWeight: 400, 
-            color: '#FFFFFF',
-            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-          }}>
+          <p style={{
+          fontSize: '14px',
+          fontWeight: 400,
+          color: '#FFFFFF',
+          textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+        }}>
             {dog.breed || 'Chien'}{dog.gender && ` • ${dog.gender === 'male' ? 'Mâle' : 'Femelle'}`}
           </p>
         </div>
         
-        <label 
-          htmlFor="avatar-upload" 
-          style={{ 
-            position: 'absolute', 
-            bottom: '16px', 
-            right: '16px',
-            width: '48px',
-            height: '48px',
-            backgroundColor: '#5B9D8C',
-            color: '#FFFFFF',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
-          }}
-        >
+        <label htmlFor="avatar-upload" style={{
+        position: 'absolute',
+        bottom: '16px',
+        right: '16px',
+        width: '48px',
+        height: '48px',
+        backgroundColor: '#5B9D8C',
+        color: '#FFFFFF',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '12px',
+        cursor: 'pointer',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+      }}>
           <Camera className="h-5 w-5" strokeWidth={1.5} />
           <input id="avatar-upload" ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
         </label>
       </div>
 
-      <div style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{
+      padding: '0 16px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px'
+    }}>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Résumé des tests</h4>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px'
+      }}>
+        <h4 style={{
+          fontSize: '14px',
+          fontWeight: 500,
+          color: 'hsl(240 6% 11%)'
+        }}>Résumé des tests</h4>
         
         {/* Test ADN - à compléter */}
         <Card className="n26-card">
@@ -528,20 +523,36 @@ const DogProfile = () => {
               <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Analyse ADN</h4>
-              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Non effectué</p>
+              <h4 style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                color: 'hsl(240 6% 11%)'
+              }}>Analyse ADN</h4>
+              <p style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 3% 57%)'
+              }}>Non effectué</p>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px'
+          }}>
             <div className="grid grid-cols-2 gap-2">
               <Button onClick={() => navigate("/dna-kit")} className="btn-action">
                 Commander
               </Button>
-              <Button onClick={() => navigate("/dna-demo")} variant="outline" style={{ borderRadius: '12px' }}>
+              <Button onClick={() => navigate("/dna-demo")} variant="outline" style={{
+                borderRadius: '12px'
+              }}>
                 Voir une démo
               </Button>
             </div>
-            <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full" style={{ borderRadius: '12px' }}>
+            <Button onClick={() => navigate("/recommendations-demo")} variant="outline" className="w-full" style={{
+              borderRadius: '12px'
+            }}>
               Voir recommandations personnalisées
             </Button>
           </div>
@@ -554,41 +565,45 @@ const DogProfile = () => {
               <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Questionnaire comportemental</h4>
-              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
+              <h4 style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                color: 'hsl(240 6% 11%)'
+              }}>Questionnaire comportemental</h4>
+              <p style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 3% 57%)'
+              }}>{hasQuestionnaire ? 'Effectué' : 'Non effectué'}</p>
             </div>
-            {hasQuestionnaire ? (
-              <div className="flex gap-2">
-                <Button 
-                  onClick={() => navigate(`/questionnaire-results/${id}`)} 
-                  variant="outline" 
-                  style={{ borderRadius: '12px' }}
-                  size="sm"
-                >
+            {hasQuestionnaire ? <div className="flex gap-2">
+                <Button onClick={() => navigate(`/questionnaire-results/${id}`)} variant="outline" style={{
+                borderRadius: '12px'
+              }} size="sm">
                   Voir
                 </Button>
-                <Button 
-                  onClick={() => navigate(`/questionnaire?dogId=${id}`)} 
-                  style={{ borderRadius: '12px' }}
-                  size="sm"
-                >
+                <Button onClick={() => navigate(`/questionnaire?dogId=${id}`)} style={{
+                borderRadius: '12px'
+              }} size="sm">
                   Modifier
                 </Button>
-              </div>
-            ) : (
-              <Button 
-                onClick={() => navigate(`/questionnaire?dogId=${id}`)} 
-                className="btn-action"
-              >
+              </div> : <Button onClick={() => navigate(`/questionnaire?dogId=${id}`)} className="btn-action">
                 Commencer
-              </Button>
-            )}
+              </Button>}
           </div>
         </Card>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>Informations clés</h3>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px'
+      }}>
+        <h3 style={{
+          fontSize: '16px',
+          fontWeight: 500,
+          color: 'hsl(240 6% 11%)'
+        }}>Informations clés</h3>
         
         <Card className="n26-card">
           <div className="flex items-start gap-3">
@@ -597,21 +612,38 @@ const DogProfile = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
-                <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Informations</h4>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  style={{ borderRadius: '16px' }}
-                  onClick={() => setShowEditInfoDialog(true)}
-                >
+                <h4 style={{
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  marginBottom: '4px',
+                  color: 'hsl(240 6% 11%)'
+                }}>Informations</h4>
+                <Button size="sm" variant="outline" style={{
+                  borderRadius: '16px'
+                }} onClick={() => setShowEditInfoDialog(true)}>
                   Modifier
                 </Button>
               </div>
-              {dog.breed && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Race: {dog.breed}</p>}
-              {dog.gender && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Sexe: {dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
-              {dog.birth_date && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>}
-              {dog.weight && <p style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>Poids: {dog.weight} kg</p>}
-              {dog.medical_notes && <p className="mt-2" style={{ fontSize: '14px', color: 'hsl(240 6% 11%)' }}>{dog.medical_notes}</p>}
+              {dog.breed && <p style={{
+                fontSize: '14px',
+                color: 'hsl(240 6% 11%)'
+              }}>Race: {dog.breed}</p>}
+              {dog.gender && <p style={{
+                fontSize: '14px',
+                color: 'hsl(240 6% 11%)'
+              }}>Sexe: {dog.gender === 'male' ? 'Mâle' : 'Femelle'}</p>}
+              {dog.birth_date && <p style={{
+                fontSize: '14px',
+                color: 'hsl(240 6% 11%)'
+              }}>Né le {new Date(dog.birth_date).toLocaleDateString('fr-FR')}</p>}
+              {dog.weight && <p style={{
+                fontSize: '14px',
+                color: 'hsl(240 6% 11%)'
+              }}>Poids: {dog.weight} kg</p>}
+              {dog.medical_notes && <p className="mt-2" style={{
+                fontSize: '14px',
+                color: 'hsl(240 6% 11%)'
+              }}>{dog.medical_notes}</p>}
             </div>
           </div>
         </Card>
@@ -622,10 +654,21 @@ const DogProfile = () => {
               <FileText strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Documents</h4>
-              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Ordonnances, analyses, certificats</p>
+              <h4 style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                marginBottom: '4px',
+                color: 'hsl(240 6% 11%)'
+              }}>Documents</h4>
+              <p style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 3% 57%)'
+              }}>Ordonnances, analyses, certificats</p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
+            <Button size="sm" variant="outline" style={{
+              borderRadius: '16px'
+            }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
@@ -637,12 +680,23 @@ const DogProfile = () => {
               <CheckCircle2 strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Alertes santé</h4>
-              <p style={{ fontSize: '12px', fontWeight: 300, color: healthAlertsCount === 0 ? 'hsl(166 44% 48%)' : 'hsl(9 48% 56%)' }}>
+              <h4 style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                marginBottom: '4px',
+                color: 'hsl(240 6% 11%)'
+              }}>Alertes santé</h4>
+              <p style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: healthAlertsCount === 0 ? 'hsl(166 44% 48%)' : 'hsl(9 48% 56%)'
+              }}>
                 {healthAlertsCount === 0 ? 'Aucune anomalie détectée' : `${healthAlertsCount} ${healthAlertsCount === 1 ? 'alerte' : 'alertes'}`}
               </p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
+            <Button size="sm" variant="outline" style={{
+              borderRadius: '16px'
+            }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
@@ -654,12 +708,23 @@ const DogProfile = () => {
               <Syringe strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Passeport vaccinal</h4>
-              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>
+              <h4 style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                marginBottom: '4px',
+                color: 'hsl(240 6% 11%)'
+              }}>Passeport vaccinal</h4>
+              <p style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 3% 57%)'
+              }}>
                 {vaccinationDocsCount === 0 ? "Aucun document" : `${vaccinationDocsCount} ${vaccinationDocsCount === 1 ? 'document' : 'documents'}`}
               </p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
+            <Button size="sm" variant="outline" style={{
+              borderRadius: '16px'
+            }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
@@ -673,10 +738,21 @@ const DogProfile = () => {
               <Calendar strokeWidth={1.5} />
             </div>
             <div className="flex-1">
-              <h4 style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: 'hsl(240 6% 11%)' }}>Calendrier</h4>
-              <p style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 3% 57%)' }}>Rappels, rendez-vous & événements</p>
+              <h4 style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                marginBottom: '4px',
+                color: 'hsl(240 6% 11%)'
+              }}>Calendrier</h4>
+              <p style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: 'hsl(240 3% 57%)'
+              }}>Rappels, rendez-vous & événements</p>
             </div>
-            <Button size="sm" variant="outline" style={{ borderRadius: '16px' }}>
+            <Button size="sm" variant="outline" style={{
+              borderRadius: '16px'
+            }}>
               <Plus className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
@@ -686,7 +762,7 @@ const DogProfile = () => {
       </div>
 
       {/* Medications Manager */}
-      {user && <MedicationsManager dogId={id!} ownerId={user.id} />}
+      {user && <MedicationsManager dogId={id!} ownerId={user.id} className="mx-[21px]" />}
 
       {/* Dialog pour modifier les informations */}
       <Dialog open={showEditInfoDialog} onOpenChange={setShowEditInfoDialog}>
@@ -697,19 +773,18 @@ const DogProfile = () => {
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium mb-1 block">Race</label>
-              <Input
-                value={editInfo.breed}
-                onChange={(e) => setEditInfo({ ...editInfo, breed: e.target.value })}
-                placeholder="Ex: Labrador"
-              />
+              <Input value={editInfo.breed} onChange={e => setEditInfo({
+              ...editInfo,
+              breed: e.target.value
+            })} placeholder="Ex: Labrador" />
             </div>
 
             <div>
               <label className="text-sm font-medium mb-1 block">Sexe</label>
-              <Select
-                value={editInfo.gender}
-                onValueChange={(value) => setEditInfo({ ...editInfo, gender: value })}
-              >
+              <Select value={editInfo.gender} onValueChange={value => setEditInfo({
+              ...editInfo,
+              gender: value
+            })}>
                 <SelectTrigger>
                   <SelectValue placeholder="Choisir le sexe" />
                 </SelectTrigger>
@@ -722,44 +797,35 @@ const DogProfile = () => {
 
             <div>
               <label className="text-sm font-medium mb-1 block">Date de naissance</label>
-              <Input
-                type="date"
-                value={editInfo.birth_date}
-                onChange={(e) => setEditInfo({ ...editInfo, birth_date: e.target.value })}
-              />
+              <Input type="date" value={editInfo.birth_date} onChange={e => setEditInfo({
+              ...editInfo,
+              birth_date: e.target.value
+            })} />
             </div>
 
             <div>
               <label className="text-sm font-medium mb-1 block">Poids (kg)</label>
-              <Input
-                type="number"
-                step="0.1"
-                value={editInfo.weight}
-                onChange={(e) => setEditInfo({ ...editInfo, weight: e.target.value })}
-                placeholder="Ex: 25.5"
-              />
+              <Input type="number" step="0.1" value={editInfo.weight} onChange={e => setEditInfo({
+              ...editInfo,
+              weight: e.target.value
+            })} placeholder="Ex: 25.5" />
             </div>
 
             <div>
               <label className="text-sm font-medium mb-1 block">Notes médicales</label>
-              <Textarea
-                value={editInfo.medical_notes}
-                onChange={(e) => setEditInfo({ ...editInfo, medical_notes: e.target.value })}
-                placeholder="Informations médicales importantes..."
-                rows={4}
-              />
+              <Textarea value={editInfo.medical_notes} onChange={e => setEditInfo({
+              ...editInfo,
+              medical_notes: e.target.value
+            })} placeholder="Informations médicales importantes..." rows={4} />
             </div>
 
             <div className="flex gap-2">
               <Button onClick={handleUpdateInfo} className="flex-1 btn-action">
                 Enregistrer
               </Button>
-              <Button
-                onClick={() => setShowEditInfoDialog(false)}
-                variant="outline"
-                className="flex-1"
-                style={{ borderRadius: '12px' }}
-              >
+              <Button onClick={() => setShowEditInfoDialog(false)} variant="outline" className="flex-1" style={{
+              borderRadius: '12px'
+            }}>
                 Annuler
               </Button>
             </div>
@@ -776,12 +842,10 @@ const DogProfile = () => {
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium mb-1 block">Type d'événement *</label>
-              <Select
-                value={newEvent.event_type}
-                onValueChange={(value: typeof newEvent.event_type) =>
-                  setNewEvent({ ...newEvent, event_type: value })
-                }
-              >
+              <Select value={newEvent.event_type} onValueChange={(value: typeof newEvent.event_type) => setNewEvent({
+              ...newEvent,
+              event_type: value
+            })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -798,50 +862,41 @@ const DogProfile = () => {
 
             <div>
               <label className="text-sm font-medium mb-1 block">Titre *</label>
-              <Input
-                value={newEvent.title}
-                onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-                placeholder="Ex: Rappel vaccin"
-              />
+              <Input value={newEvent.title} onChange={e => setNewEvent({
+              ...newEvent,
+              title: e.target.value
+            })} placeholder="Ex: Rappel vaccin" />
             </div>
 
             <div>
               <label className="text-sm font-medium mb-1 block">Date *</label>
-              <Input
-                type="date"
-                value={newEvent.event_date}
-                onChange={(e) => setNewEvent({ ...newEvent, event_date: e.target.value })}
-              />
+              <Input type="date" value={newEvent.event_date} onChange={e => setNewEvent({
+              ...newEvent,
+              event_date: e.target.value
+            })} />
             </div>
 
             <div>
               <label className="text-sm font-medium mb-1 block">Heure (optionnel)</label>
-              <Input
-                type="time"
-                value={newEvent.event_time}
-                onChange={(e) => setNewEvent({ ...newEvent, event_time: e.target.value })}
-              />
+              <Input type="time" value={newEvent.event_time} onChange={e => setNewEvent({
+              ...newEvent,
+              event_time: e.target.value
+            })} />
             </div>
 
             <div>
               <label className="text-sm font-medium mb-1 block">Description (optionnel)</label>
-              <Textarea
-                value={newEvent.description}
-                onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
-                placeholder="Détails supplémentaires..."
-                rows={3}
-              />
+              <Textarea value={newEvent.description} onChange={e => setNewEvent({
+              ...newEvent,
+              description: e.target.value
+            })} placeholder="Détails supplémentaires..." rows={3} />
             </div>
 
             <div className="flex gap-2">
               <Button onClick={handleAddEvent} className="flex-1">
                 Ajouter
               </Button>
-              <Button
-                onClick={() => setShowAddEventDialog(false)}
-                variant="outline"
-                className="flex-1"
-              >
+              <Button onClick={() => setShowAddEventDialog(false)} variant="outline" className="flex-1">
                 Annuler
               </Button>
             </div>
