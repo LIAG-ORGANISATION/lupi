@@ -665,7 +665,7 @@ const Home = () => {
                   <div className="w-12 h-12 flex items-center justify-center" style={{ borderRadius: '16px', background: 'hsl(166 44% 48%)' }}>
                     <Plus className="h-5 w-5 text-white" strokeWidth={1.5} />
                   </div>
-                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Ajouter</span>
+                  <span style={{ fontSize: '12px', fontWeight: 300, color: 'hsl(240 6% 11%)' }}>Ajouter chien</span>
                 </div>
               </div>
             </div>
