@@ -16,15 +16,12 @@ import baladeGuethary from "@/assets/balade-guethary.jpg";
 import baladeMondarrain from "@/assets/balade-mondarrain.jpg";
 import baladeOssasSuhare from "@/assets/balade-ossas-suhare.jpg";
 import baladeAdarra from "@/assets/balade-adarra.jpg";
-import heroDog1 from "@/assets/hero-dog-1.jpg";
-import heroDog2 from "@/assets/hero-dog-2.jpg";
-import heroDog3 from "@/assets/hero-dog-3.jpg";
-import heroDog4 from "@/assets/hero-dog-4.webp";
-import heroDog5 from "@/assets/hero-dog-5.jpg";
-import heroDog6 from "@/assets/hero-dog-6.webp";
-import heroDog7 from "@/assets/hero-dog-7.webp";
-import heroDog8 from "@/assets/hero-dog-8.webp";
-import heroDog9 from "@/assets/hero-dog-9.jpg";
+import heroDog1 from "@/assets/hero-dog-new-1.jpg";
+import heroDog2 from "@/assets/hero-dog-new-2.jpg";
+import heroDog3 from "@/assets/hero-dog-new-3.jpg";
+import heroDog4 from "@/assets/hero-dog-new-4.jpg";
+import heroDog5 from "@/assets/hero-dog-new-5.jpg";
+import heroDog6 from "@/assets/hero-dog-new-6.jpg";
 import { SeasonalAllergies } from "@/components/SeasonalAllergies";
 import { SeasonalRecipes } from "@/components/SeasonalRecipes";
 import { useToast } from "@/hooks/use-toast";
@@ -46,7 +43,7 @@ const Explorer = () => {
     setTimeout(() => setCopiedPromo(null), 2000);
   };
 
-  const heroImages = [heroDog1, heroDog2, heroDog3, heroDog4, heroDog5, heroDog6, heroDog7, heroDog8, heroDog9];
+  const heroImages = [heroDog1, heroDog2, heroDog3, heroDog4, heroDog5, heroDog6];
 
   return (
     <div className="min-h-screen pb-20 animate-fade-in" style={{ background: '#FFFFFF' }}>
