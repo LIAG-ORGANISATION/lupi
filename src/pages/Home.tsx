@@ -242,10 +242,63 @@ const Home = () => {
 
   // Professional Dashboard View
   if (isProfessional) {
-    return <div className="min-h-screen p-3 space-y-4 animate-fade-in bg-background">
-        <div className="max-w-4xl mx-auto space-y-4">
+    return <div className="min-h-screen pb-20 animate-fade-in" style={{
+      background: '#FFFFFF'
+    }}>
+        {/* Hero Section with Auto-Sliding Images */}
+        <div className="relative mb-0 overflow-hidden" style={{
+          height: '40vh',
+          minHeight: '300px'
+        }}>
+          <Carousel setApi={setHeroApi} opts={{
+            loop: true,
+            align: 'center'
+          }} className="w-full h-full">
+            <CarouselContent className="h-full -ml-0">
+              {[heroDog1, heroDog2, heroDog3, heroDog4, heroDog5, heroDog6].map((image, index) => (
+                <CarouselItem key={index} className="pl-0 h-full">
+                  <div className="relative w-full h-full">
+                    <img 
+                      src={image} 
+                      alt={`Chien ${index + 1}`}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center'
+                      }}
+                    />
+                    {/* Dark overlay for better text readability */}
+                    <div className="absolute inset-0 bg-black/30" />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+
+          {/* Text overlay */}
+          <div className="absolute inset-0 flex items-center justify-center px-4">
+            <div className="text-center max-w-2xl" style={{ zIndex: 10 }}>
+              <h1 style={{
+                fontSize: '24px',
+                fontWeight: 600,
+                color: '#FFFFFF',
+                textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+              }}>
+                Espace professionnel
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto" style={{
+          padding: '16px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px'
+        }}>
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-bold text-title">Tableau de bord</h1>
+            <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Tableau de bord</h2>
             <Button onClick={() => navigate("/professional/edit-profile")} variant="outline" size="sm" className="rounded-full">
               <Settings className="h-4 w-4 mr-2" />
               Profil
@@ -270,21 +323,21 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <Card className="p-4 rounded-xl">
               <div className="text-center space-y-1">
-                <div className="text-3xl font-bold text-primary">{pendingRequests}</div>
+                <div className="text-3xl font-bold" style={{ color: '#5B9D8C' }}>{pendingRequests}</div>
                 <p className="text-sm text-muted-foreground">Demandes en attente</p>
               </div>
             </Card>
 
             <Card className="p-4 rounded-xl">
               <div className="text-center space-y-1">
-                <div className="text-3xl font-bold text-secondary">{totalClients}</div>
+                <div className="text-3xl font-bold" style={{ color: '#5B9D8C' }}>{totalClients}</div>
                 <p className="text-sm text-muted-foreground">Clients actifs</p>
               </div>
             </Card>
 
             <Card className="p-4 rounded-xl">
               <div className="text-center space-y-1">
-                <div className="text-3xl font-bold text-accent">{unreadCount}</div>
+                <div className="text-3xl font-bold" style={{ color: '#5B9D8C' }}>{unreadCount}</div>
                 <p className="text-sm text-muted-foreground">Messages non lus</p>
               </div>
             </Card>
