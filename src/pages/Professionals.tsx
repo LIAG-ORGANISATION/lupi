@@ -337,9 +337,9 @@ const Professionals = () => {
                 style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}
               >
                 <div className="flex items-start gap-3">
-                  <Avatar style={{ width: '48px', height: '48px', flexShrink: 0, borderRadius: '12px' }}>
+                  <Avatar style={{ width: '48px', height: '48px', flexShrink: 0, borderRadius: '12px', border: '1.5px solid hsl(0 0% 90%)' }}>
                     <AvatarImage src={pro.photo_url || undefined} alt={pro.full_name} />
-                    <AvatarFallback className="bg-secondary" style={{ color: 'hsl(240 6% 11%)', fontWeight: 600, borderRadius: '12px' }}>
+                    <AvatarFallback className="bg-secondary" style={{ color: 'hsl(240 6% 11%)', fontWeight: 600, borderRadius: '12px', border: '1.5px solid hsl(0 0% 90%)' }}>
                       {getInitials(pro.full_name)}
                     </AvatarFallback>
                   </Avatar>
@@ -363,13 +363,13 @@ const Professionals = () => {
                         <Badge
                           key={specId}
                           variant="secondary"
-                          style={{ fontSize: '12px', backgroundColor: 'hsl(0 0% 96%)', borderRadius: '8px' }}
+                          style={{ fontSize: '12px', backgroundColor: 'hsl(0 0% 96%)', borderRadius: '8px', border: '1px solid hsl(0 0% 85%)' }}
                         >
                           {capitalizeWords(specialisations[specId]) || specId}
                         </Badge>
                       ))}
                       {pro.specialisations_ids.length > 3 && (
-                        <Badge variant="secondary" style={{ fontSize: '12px', backgroundColor: 'hsl(0 0% 96%)', borderRadius: '8px' }}>
+                        <Badge variant="secondary" style={{ fontSize: '12px', backgroundColor: 'hsl(0 0% 96%)', borderRadius: '8px', border: '1px solid hsl(0 0% 85%)' }}>
                           +{pro.specialisations_ids.length - 3}
                         </Badge>
                       )}
@@ -378,7 +378,7 @@ const Professionals = () => {
                 )}
 
                 <div className="flex items-center justify-between pt-2 gap-3">
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0" style={{ padding: '8px 12px', backgroundColor: 'hsl(0 0% 98%)', borderRadius: '8px', border: '1px solid hsl(0 0% 90%)' }}>
                     <p style={{ fontSize: '12px', color: 'hsl(240 3% 57%)' }}>Tarif horaire :</p>
                     <span style={{ fontSize: '14px', fontWeight: 500, color: 'hsl(240 6% 11%)' }}>
                       {pro.tarifs ? `${pro.tarifs} €` : "Sur demande"}
