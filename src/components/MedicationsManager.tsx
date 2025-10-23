@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { format, addDays } from "date-fns";
 import { fr } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 interface Medication {
   id: string;
   medication_name: string;
@@ -32,13 +33,15 @@ interface MedicationsManagerProps {
   ownerId: string;
   initialDialogOpen?: boolean;
   onDialogClose?: () => void;
+  className?: string;
 }
 export const MedicationsManager = ({
   dogId,
   dogs,
   ownerId,
   initialDialogOpen = false,
-  onDialogClose
+  onDialogClose,
+  className
 }: MedicationsManagerProps) => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loading, setLoading] = useState(true);
@@ -175,7 +178,7 @@ export const MedicationsManager = ({
         </div>
       </Card>;
   }
-  return <div className="space-y-3">
+  return <div className={cn("space-y-3", className)}>
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-title flex items-center gap-2">
           <Pill className="h-5 w-5 text-primary" />
