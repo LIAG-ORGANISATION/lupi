@@ -451,8 +451,6 @@ const Home = () => {
       flexDirection: 'column',
       gap: '16px'
     }}>
-        <SeasonalAlertsDisplay />
-
         {/* My Dogs section - show first when user has dogs */}
         {isGuardian && dogs.length > 0 && <div style={{
         display: 'flex',
@@ -822,6 +820,7 @@ const Home = () => {
             </div>
           </div>}
 
+        <SeasonalAlertsDisplay />
 
         {isAuthenticated && !isGuardian && <div>
             <h2 className="text-xl font-bold text-title mb-4">Accès rapide</h2>
