@@ -30,6 +30,7 @@ import WelcomeTutorial from "@/components/WelcomeTutorial";
 import { DogCalendar } from "@/components/DogCalendar";
 import { SeasonalAllergies } from "@/components/SeasonalAllergies";
 import { SeasonalRecipes } from "@/components/SeasonalRecipes";
+import SeasonalAlertsDisplay from "@/components/SeasonalAlertsDisplay";
 import { useToast } from "@/hooks/use-toast";
 import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 import { Badge } from "@/components/ui/badge";
@@ -450,6 +451,8 @@ const Home = () => {
       flexDirection: 'column',
       gap: '16px'
     }}>
+        <SeasonalAlertsDisplay />
+
         {/* My Dogs section - show first when user has dogs */}
         {isGuardian && dogs.length > 0 && <div style={{
         display: 'flex',
