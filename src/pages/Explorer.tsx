@@ -9,7 +9,6 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import kozooLogo from "@/assets/kozoo-logo-new.png";
-import pennypetLogo from "@/assets/pennypet-logo-new.png";
 import espritDogLogo from "@/assets/esprit-dog-logo.png";
 import baladeXoldokogaina from "@/assets/balade-xoldokogaina.jpg";
 import baladeGuethary from "@/assets/balade-guethary.jpg";
@@ -250,21 +249,6 @@ const Explorer = () => {
               </a>
               <button onClick={e => handleCopyPromo('lupixkozoo', e)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all" title="Copier le code promo">
                 {copiedPromo === 'lupixkozoo' ? <Check className="h-5 w-5 text-primary" /> : <Gift className="h-5 w-5 text-primary" />}
-              </button>
-            </div>
-
-            <div className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4 flex items-center gap-4 relative">
-              <a href="https://pennypet.io/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 flex-1">
-                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center p-3 flex-shrink-0">
-                  <img src={pennypetLogo} alt="PENNYPET" className="w-full h-full object-contain" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title text-lg">PENNYPET</h3>
-                  <p className="text-sm text-muted-foreground">Cashback frais animaux</p>
-                </div>
-              </a>
-              <button onClick={e => handleCopyPromo('lupixpennypet', e)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-all" title="Copier le code promo">
-                {copiedPromo === 'lupixpennypet' ? <Check className="h-5 w-5 text-primary" /> : <Gift className="h-5 w-5 text-primary" />}
               </button>
             </div>
           </div>
