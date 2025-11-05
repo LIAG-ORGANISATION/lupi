@@ -2,11 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon, Plus, ExternalLink, Share2, Camera } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Calendar, FileText, Syringe, Dog as DogIcon, Plus, ExternalLink, Share2, Camera, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -45,6 +46,7 @@ const DogProfile = () => {
   const [vaccinationDocsCount, setVaccinationDocsCount] = useState(0);
   const [showAddEventDialog, setShowAddEventDialog] = useState(false);
   const [showEditInfoDialog, setShowEditInfoDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [editInfo, setEditInfo] = useState({
     breed: "",
     weight: "",
@@ -393,6 +395,34 @@ const DogProfile = () => {
       });
     }
   };
+
+  const handleDeleteDog = async () => {
+    if (!user || !id) return;
+
+    try {
+      const { error } = await supabase
+        .from("dogs")
+        .delete()
+        .eq("id", id)
+        .eq("owner_id", user.id);
+
+      if (error) throw error;
+      
+      toast({
+        title: "Profil supprimé",
+        description: "Le profil de votre chien a été supprimé avec succès"
+      });
+      
+      navigate("/guardian-dashboard");
+    } catch (error) {
+      console.error("Error deleting dog:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer le profil",
+        variant: "destructive"
+      });
+    }
+  };
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -430,6 +460,23 @@ const DogProfile = () => {
         borderRadius: '12px'
       }}>
           <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
+        </Button>
+
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => setShowDeleteDialog(true)}
+          style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            zIndex: 10,
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            borderRadius: '12px'
+          }}
+          className="text-destructive hover:text-destructive"
+        >
+          <Trash2 className="h-5 w-5" strokeWidth={1.5} />
         </Button>
         
         {dog.avatar_url ? <img src={dog.avatar_url} alt={dog.name} style={{
@@ -903,6 +950,27 @@ const DogProfile = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Dialog de confirmation de suppression */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer le profil de {dog?.name} ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Toutes les données associées à ce chien (documents, rendez-vous, historique médical) seront définitivement supprimées.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteDog}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Supprimer définitivement
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>;
 };
 export default DogProfile;
