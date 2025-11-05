@@ -722,6 +722,48 @@ export type Database = {
         }
         Relationships: []
       }
+      seasonal_alerts: {
+        Row: {
+          active: boolean
+          alert_type: string
+          content: string
+          created_at: string
+          end_month: number | null
+          icon: string
+          id: string
+          severity: string
+          start_month: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          alert_type: string
+          content: string
+          created_at?: string
+          end_month?: number | null
+          icon?: string
+          id?: string
+          severity?: string
+          start_month?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          alert_type?: string
+          content?: string
+          created_at?: string
+          end_month?: number | null
+          icon?: string
+          id?: string
+          severity?: string
+          start_month?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       specialisations: {
         Row: {
           created_at: string | null

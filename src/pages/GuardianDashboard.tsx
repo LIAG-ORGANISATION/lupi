@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { Plus, MessageSquare, FileText, Dog as DogIcon, ArrowLeft, AlertTriangle } from "lucide-react";
+import { Plus, MessageSquare, FileText, Dog as DogIcon, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import AuthGuard from "@/components/AuthGuard";
@@ -11,7 +11,7 @@ import documentsIcon from "@/assets/documents-icon.jpg";
 import professionalsIcon from "@/assets/professionals-icon.jpg";
 import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import SeasonalAlertsDisplay from "@/components/SeasonalAlertsDisplay";
 
 interface DogData {
   id: string;
@@ -63,25 +63,7 @@ const GuardianDashboard = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
-          <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20">
-            <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500" />
-            <AlertTitle className="text-amber-900 dark:text-amber-100 font-semibold">
-              Alerte aux chenilles processionnaires !
-            </AlertTitle>
-            <AlertDescription className="text-amber-800 dark:text-amber-200 space-y-2 text-sm mt-2">
-              <p>
-                Leur retour marque un vrai danger pour nos chiens : les poils urticants de ces chenilles peuvent provoquer de graves brûlures sur la langue, la gueule ou les pattes, voire des complications vitales.
-              </p>
-              <p className="font-medium">Les bons réflexes :</p>
-              <ul className="list-disc list-inside space-y-1 ml-2">
-                <li>Ne laissez pas votre chien renifler ou toucher les zones où elles passent (pins, chênes, sols forestiers).</li>
-                <li>Si vous voyez des chenilles alignées ou des cocons blancs dans les arbres, évitez le secteur.</li>
-              </ul>
-              <p className="font-medium">En cas de contact :</p>
-              <p>Rincez immédiatement à l'eau claire sans frotter et filez chez le vétérinaire en urgence.</p>
-              <p className="font-semibold mt-2">🪶 Mieux vaut une balade ailleurs qu'une visite aux urgences vétérinaires !</p>
-            </AlertDescription>
-          </Alert>
+          <SeasonalAlertsDisplay />
           
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-title">Mes Chiens</h1>
