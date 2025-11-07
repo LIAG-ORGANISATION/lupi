@@ -56,7 +56,7 @@ const DNADemo = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-lg font-bold text-title">Résultats ADN - Exemple</h1>
+          <h1 className="text-lg font-bold text-title">Résultats ADN</h1>
         </div>
       </div>
 
@@ -66,9 +66,6 @@ const DNADemo = () => {
           <div className="flex flex-col items-center text-center space-y-4">
             <div className="relative">
               <img src={noumeaImage} alt="Nouméa" className="w-32 h-32 rounded-full object-cover border-4 border-primary/30" />
-              <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-semibold">
-                Démo
-              </div>
             </div>
             <div>
               <h2 className="text-3xl font-bold text-title">Nouméa</h2>
