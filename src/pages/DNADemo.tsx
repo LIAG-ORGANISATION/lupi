@@ -2,52 +2,52 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, TestTube2, Heart, Activity, Sparkles, Globe, TrendingUp, Lightbulb } from "lucide-react";
-import oonaImage from "@/assets/oona-demo.jpg";
+import noumeaImage from "@/assets/noumea-demo.jpg";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 const DNADemo = () => {
   const navigate = useNavigate();
   const breedData = [{
-    breed: "Border Collie",
-    percentage: 45.2,
+    breed: "Berger Australien Miniature",
+    percentage: 75.5,
     color: "#10b981"
   }, {
-    breed: "Labrador Retriever",
-    percentage: 25.8,
+    breed: "Berger Australien",
+    percentage: 17.9,
     color: "#3b82f6"
   }, {
-    breed: "Australian Shepherd",
-    percentage: 11.3,
+    breed: "Chien-loup tchécoslovaque",
+    percentage: 5.0,
     color: "#8b5cf6"
   }, {
-    breed: "German Shepherd",
-    percentage: 9.7,
+    breed: "Terrier Lakeland",
+    percentage: 1.3,
     color: "#f59e0b"
   }, {
-    breed: "Collie",
-    percentage: 8.0,
+    breed: "Terrier Sealyham",
+    percentage: 0.3,
     color: "#ec4899"
   }];
   const appearanceTraits = [{
     label: "Type de pelage",
-    value: "Long et lisse"
+    value: "Court, non frisé"
   }, {
     label: "Couleur principale",
-    value: "Noire et blanche"
+    value: "Fauve / Chocolat, points feu"
   }, {
     label: "Motifs",
-    value: "Zones blanches sur poitrail et pattes"
+    value: "Motif merle, masque sombre"
   }, {
-    label: "Mue",
-    value: "Saisonnière et abondante"
+    label: "Oreilles",
+    value: "Tombantes, repliées"
   }, {
     label: "Museau",
-    value: "Moyenne à longue"
+    value: "Moyen à long"
   }, {
     label: "Queue",
-    value: "Longue"
+    value: "Courte"
   }, {
     label: "Taille",
-    value: "Moyenne à grande (22 kg)"
+    value: "Moyenne"
   }];
   return <div className="min-h-screen pb-20 bg-background">
       {/* Header */}
@@ -65,27 +65,27 @@ const DNADemo = () => {
         <Card className="p-6 rounded-xl shadow-lg border-2 border-primary/20">
           <div className="flex flex-col items-center text-center space-y-4">
             <div className="relative">
-              <img src={oonaImage} alt="Oona" className="w-32 h-32 rounded-full object-cover border-4 border-primary/30" />
+              <img src={noumeaImage} alt="Nouméa" className="w-32 h-32 rounded-full object-cover border-4 border-primary/30" />
               <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-semibold">
                 Démo
               </div>
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-title">Oona</h2>
-              <p className="text-sm text-muted-foreground mt-1">Test ADN effectué le 4 juin 2024</p>
+              <h2 className="text-3xl font-bold text-title">Nouméa</h2>
+              <p className="text-sm text-muted-foreground mt-1">Test ADN effectué le 6 novembre 2025</p>
             </div>
             <div className="grid grid-cols-3 gap-4 w-full mt-4">
               <div className="bg-secondary/50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-primary">22 kg</div>
-                <div className="text-xs text-muted-foreground">Poids adulte idéal</div>
+                <div className="text-2xl font-bold text-primary">Moyenne</div>
+                <div className="text-xs text-muted-foreground">Taille</div>
               </div>
               <div className="bg-secondary/50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-primary">0,9%</div>
-                <div className="text-xs text-muted-foreground">Niveau de loup</div>
+                <div className="text-2xl font-bold text-primary">5,0%</div>
+                <div className="text-xs text-muted-foreground">Chien-loup</div>
               </div>
               <div className="bg-secondary/50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-primary">Jeune</div>
-                <div className="text-xs text-muted-foreground">Adulte</div>
+                <div className="text-2xl font-bold text-primary">93%</div>
+                <div className="text-xs text-muted-foreground">Berger Australien</div>
               </div>
             </div>
           </div>
@@ -117,9 +117,12 @@ const DNADemo = () => {
               </div>)}
           </div>
 
-          <p className="text-sm text-muted-foreground mt-4 p-4 bg-secondary/30 rounded-lg">
-            Grâce à l'analyse de ses chromosomes, on sait exactement de quelles races Oona tient ses traits physiques et comportementaux.
-          </p>
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800 mt-4">
+            <p className="text-sm text-foreground font-medium mb-2">Petit rappel</p>
+            <p className="text-xs text-muted-foreground">
+              Parfois, un trait bien visible chez votre chien n'apparaît pas dans le test. Pourquoi ? Parce que l'ordinateur calcule les probabilités les plus élevées à partir de l'ADN analysé, mais certains traits dépendent de plusieurs gènes, ou de variantes encore peu documentées. Bref, la connaissance de la génétique canine progresse tous les jours. Et entre nous… votre chien est canon dans tous les cas.
+            </p>
+          </div>
         </Card>
 
         {/* 3. Arbre généalogique */}
@@ -132,23 +135,23 @@ const DNADemo = () => {
           <div className="space-y-4">
             <div className="text-center">
               <div className="inline-block bg-primary/10 px-6 py-3 rounded-lg">
-                <div className="font-bold text-title">Oona</div>
+                <div className="font-bold text-title">Nouméa</div>
               </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-secondary/30 p-4 rounded-lg text-center">
-                <div className="font-semibold text-sm text-title">Mère</div>
-                <div className="text-xs text-muted-foreground mt-1">Labrador mix</div>
+                <div className="font-semibold text-sm text-title">Parent 1</div>
+                <div className="text-xs text-muted-foreground mt-1">Berger Australien Miniature</div>
               </div>
               <div className="bg-secondary/30 p-4 rounded-lg text-center">
-                <div className="font-semibold text-sm text-title">Père</div>
-                <div className="text-xs text-muted-foreground mt-1">Border Collie mix</div>
+                <div className="font-semibold text-sm text-title">Parent 2</div>
+                <div className="text-xs text-muted-foreground mt-1">Berger Australien Standard</div>
               </div>
             </div>
 
             <div className="grid grid-cols-4 gap-2 text-center">
-              {["Collie", "Berger Allemand", "Australian Shepherd", "Labrador"].map(ancestor => <div key={ancestor} className="bg-muted/50 p-2 rounded text-xs">
+              {["Berger Australien Miniature", "Berger Australien Miniature", "Berger Australien Miniature", "Berger Australien"].map((ancestor, idx) => <div key={`${ancestor}-${idx}`} className="bg-muted/50 p-2 rounded text-xs">
                   {ancestor}
                 </div>)}
             </div>
@@ -163,53 +166,19 @@ const DNADemo = () => {
           </div>
 
           <div className="space-y-3">
-            <div className="bg-secondary/30 border-2 border-primary/20 p-4 rounded-lg">
+            <div className="bg-secondary/30 border-2 border-green-500/20 p-4 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-3 h-3 bg-primary rounded-full"></div>
-                <span className="font-semibold text-primary">Bonne santé globale</span>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="font-semibold text-green-600 dark:text-green-400">Excellente santé génétique</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Sur +150 gènes testés, Oona n'en présente aucune à risque élevé.
+                Sur +150 gènes testés, Nouméa ne présente aucune variante à risque détectée.
               </p>
             </div>
 
-            <Accordion type="single" collapsible className="space-y-2">
-              <AccordionItem value="item-1" className="border rounded-lg px-4 bg-accent/10">
-                <AccordionTrigger className="hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-700"></div>
-                    <span className="font-semibold text-accent-foreground">Facteurs à surveiller (2)</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="space-y-3 pt-3">
-                  <div className="p-3 bg-background rounded-lg">
-                    <div className="font-semibold text-sm text-foreground">ALT Activity</div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Taux d'enzymes hépatiques naturellement plus bas. À surveiller par le vétérinaire lors des bilans sanguins.
-                    </p>
-                  </div>
-                  <div className="p-3 bg-background rounded-lg">
-                    <div className="font-semibold text-sm text-foreground">Dégénérescence Myélinique (DM)</div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Porteuse saine, sans risque de développement de la maladie.
-                    </p>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-            <div className="bg-secondary/30 p-4 rounded-lg">
-              <div className="font-semibold text-sm text-primary mb-1">Diversité génétique</div>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 bg-muted rounded-full h-2">
-                  <div className="bg-primary h-2 rounded-full" style={{
-                  width: "98%"
-                }}></div>
-                </div>
-                <span className="text-sm font-bold text-primary">98%</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Très bonne diversité génétique, faible consanguinité (2% seulement).
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-4 rounded-lg">
+              <p className="text-sm text-foreground">
+                <span className="font-semibold">Aucune anomalie détectée :</span> pas de myélopathie dégénérative, de maladie de von Willebrand, ni de déficiences enzymatiques. Pas de sensibilité connue aux médicaments (ABCB1/MDR1 négatif).
               </p>
             </div>
           </div>
@@ -239,13 +208,13 @@ const DNADemo = () => {
 
           <div className="space-y-4">
             <p className="text-sm text-foreground leading-relaxed">
-              Oona est issue de races très vives et intelligentes (Border Collie, Berger Australien) associées à des lignées calmes et loyales (Labrador, Collie).
-              Elle a besoin d'activité physique et mentale quotidienne. Très attachée à ses humains, elle peut se montrer sensible à la solitude et adore avoir une mission à accomplir.
+              Nouméa est issue à plus de 90% de Berger Australien (miniature et standard) — une race reconnue pour son intelligence, sa vivacité et son besoin de lien avec ses humains.
+              Elle a probablement un tempérament curieux, sensible et actif, avec une forte capacité d'apprentissage et un besoin de stimulation mentale quotidienne.
             </p>
 
             <div className="bg-secondary/30 p-4 rounded-lg border-l-4 border-primary">
               <p className="text-sm font-medium text-title">
-                Curieuse, énergique et fidèle - un combo parfait pour les randonnées et les jeux d'intelligence
+                Un environnement structurant, du jeu, et de l'exercice régulier lui conviendront parfaitement.
               </p>
             </div>
           </div>
@@ -260,19 +229,19 @@ const DNADemo = () => {
 
           <div className="space-y-4">
             <div className="bg-secondary/30 p-4 rounded-lg border-l-4 border-primary">
-              <div className="font-semibold text-sm text-title mb-2">Lignée A1a</div>
+              <div className="font-semibold text-sm text-title mb-2">Lignée de berger</div>
               <p className="text-sm text-muted-foreground">
-                Issue des premières lignées de chiens domestiqués d'Asie centrale. Très présente chez les Labradors et Golden Retrievers.
+                Son ADN mitochondrial, transmis uniquement par la lignée maternelle, est typique des races de berger. Cela signifie que sa lignée maternelle appartient à un groupe génétique ancien souvent retrouvé chez des races élevées pour le travail et la coopération avec l'humain.
               </p>
             </div>
 
             <div className="bg-muted/50 p-6 rounded-lg text-center">
               <div className="flex items-center justify-center gap-4 text-sm font-medium text-foreground">
-                <span>Asie centrale</span>
+                <span>Lignée ancienne</span>
                 <span className="text-2xl">→</span>
-                <span>Europe</span>
+                <span>Races de travail</span>
                 <span className="text-2xl">→</span>
-                <span className="text-primary font-bold">Oona</span>
+                <span className="text-primary font-bold">Nouméa</span>
               </div>
             </div>
           </div>

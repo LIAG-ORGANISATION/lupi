@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ShoppingCart, Utensils, Footprints, Puzzle, Stethoscope, Heart } from "lucide-react";
-import oonaDemoImg from "@/assets/oona-demo.jpg";
+import noumeaDemoImg from "@/assets/noumea-demo.jpg";
 const RecommendationsDemo = () => {
   const navigate = useNavigate();
   return <div className="min-h-screen pb-24 bg-background">
@@ -15,10 +15,10 @@ const RecommendationsDemo = () => {
           </button>
           
           <div className="flex flex-col items-center text-center gap-6">
-            <img src={oonaDemoImg} alt="Oona" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-primary/20 shadow-lg" />
+            <img src={noumeaDemoImg} alt="Nouméa" className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-primary/20 shadow-lg" />
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-title">Recommandations personnalisées</h1>
-              <p className="text-sm sm:text-base text-muted-foreground mt-2">Basées sur l'ADN d'Oona</p>
+              <p className="text-sm sm:text-base text-muted-foreground mt-2">Basées sur l'ADN de Nouméa</p>
             </div>
           </div>
         </div>
@@ -53,28 +53,28 @@ const RecommendationsDemo = () => {
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Repas riches en protéines</span> - Races actives.
+                  <span className="font-semibold">Repas riches en protéines</span> - Nouméa est issue de races actives et endurantes, qui brûlent beaucoup d'énergie mentale et physique.
                 </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Ajout d'antioxydants</span> - Sensibilité oculaire.
+                  <span className="font-semibold">Ajout d'antioxydants naturels</span> - Les bergers peuvent présenter une sensibilité oculaire (notamment chez les merles) : les antioxydants soutiennent la santé visuelle.
                 </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Éviter le blé</span> - Intolérances fréquentes.
+                  <span className="font-semibold">Éviter le blé</span> - Certaines lignées de Bergers présentent des intolérances digestives modérées aux céréales raffinées.
                 </p>
               </div>
             </div>
 
             <div className="bg-primary/5 p-4 rounded-lg mt-4 border border-primary/10">
               <p className="text-sm font-semibold text-foreground mb-1">Régime recommandé :</p>
-              <p className="text-sm text-muted-foreground">Croquettes hyperprotéinées + huile de poisson</p>
+              <p className="text-sm text-muted-foreground">Croquettes hyperprotéinées (≥ 28% protéines animales) + huile de poisson (oméga 3) pour le poil et la vision.</p>
             </div>
 
             <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
@@ -97,28 +97,28 @@ const RecommendationsDemo = () => {
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Jeu extérieur ou agility</span> - Min. 1h/jour.
+                  <span className="font-semibold">Jeu extérieur ou agility</span> - Besoin minimum de 1h/jour d'exercice dynamique pour combler son drive naturel.
                 </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Pistage et recherche</span> - Instincts naturels.
+                  <span className="font-semibold">Pistage & recherche</span> - Son bagage de travail l'oriente vers des activités qui sollicitent son flair et sa capacité d'analyse.
                 </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Jeux cérébraux</span> - Éviter l'ennui.
+                  <span className="font-semibold">Jeux cérébraux</span> - Sa lignée adore résoudre des problèmes et réfléchir en interaction avec son humain.
                 </p>
               </div>
             </div>
 
             <div className="bg-primary/5 border-l-4 border-primary p-4 rounded-r-lg mt-4">
               <p className="text-sm text-foreground italic">
-                Les bergers adorent résoudre des problèmes et travailler en équipe.
+                Les Bergers adorent résoudre des problèmes et travailler en équipe.
               </p>
             </div>
 
@@ -141,23 +141,29 @@ const RecommendationsDemo = () => {
             <div className="space-y-3">
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
-                <p className="text-sm sm:text-base text-foreground">Gamelles interactives ou tapis de fouille</p>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Gamelles interactives ou tapis de fouille</span> - Pour canaliser sa vivacité mentale pendant les temps calmes.
+                </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
-                <p className="text-sm sm:text-base text-foreground">Jouets de cache-cache</p>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Jouets de cache-cache</span> - Idéal pour combiner flair et autonomie.
+                </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
-                <p className="text-sm sm:text-base text-foreground">Exercices d'obéissance avec friandises</p>
+                <p className="text-sm sm:text-base text-foreground">
+                  <span className="font-semibold">Exercices d'obéissance avec friandises</span> - Son intelligence + son besoin de stimulation font de l'apprentissage un jeu puissant.
+                </p>
               </div>
             </div>
 
             <div className="bg-primary/5 p-4 rounded-lg mt-4 border border-primary/10">
               <p className="text-sm font-semibold text-foreground mb-1">Rotation suggérée :</p>
-              <p className="text-sm text-muted-foreground">Alterner jeux cérébraux et jeux d'énergie</p>
+              <p className="text-sm text-muted-foreground">Alterner jeux d'intelligence et jeux moteurs pour éviter l'hyperstimulation.</p>
             </div>
 
             <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
@@ -180,28 +186,28 @@ const RecommendationsDemo = () => {
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500 mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Excellente santé génétique</span>
+                  <span className="font-semibold">Excellente santé génétique</span> - Aucun marqueur pathogène détecté dans le test ADN.
                 </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-yellow-500 mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Enzymes hépatiques</span> - 1x/an.
+                  <span className="font-semibold">Enzymes hépatiques</span> - Contrôle recommandé 1x/an, certains bergers étant sujets à des variations.
                 </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Suppléments articulaires</span> - Recommandés.
+                  <span className="font-semibold">Suppléments articulaires</span> - À envisager à partir de 6-7 ans pour soutenir l'activité physique prolongée.
                 </p>
               </div>
               
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Exercice équilibré</span> - Éviter le surentraînement.
+                  <span className="font-semibold">Exercice équilibré</span> - Très active, Nouméa a besoin de repos mental et physique. Trop d'agitation = contre-productif.
                 </p>
               </div>
             </div>
@@ -237,9 +243,15 @@ const RecommendationsDemo = () => {
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-shrink-0 w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                 <p className="text-sm sm:text-base text-foreground">
-                  <span className="font-semibold">Tempérament :</span> Intelligent + affectueux + protecteur.
+                  <span className="font-semibold">Tempérament :</span> Intelligent + affectueux + protecteur — typique des lignées de Berger Australien bien socialisées.
                 </p>
               </div>
+            </div>
+
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800 mt-4">
+              <p className="text-xs text-muted-foreground italic">
+                Ces conseils sont basés sur l'ADN de votre chien — une super base de départ ! Mais rien ne remplace l'avis d'un pro qui le connaît dans la vraie vie.
+              </p>
             </div>
 
             <Button className="w-full mt-4 text-sm sm:text-base" onClick={() => navigate('/dna-kit')}>
