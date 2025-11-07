@@ -280,13 +280,6 @@ const DNADemo = () => {
                 <div className="text-xs text-muted-foreground">Intelligente, active, affectueuse</div>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <Globe className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
-              <div>
-                <div className="font-semibold text-sm text-title">Diversité génétique</div>
-                <div className="text-xs text-muted-foreground">Très élevée</div>
-              </div>
-            </div>
           </div>
         </Card>
 
