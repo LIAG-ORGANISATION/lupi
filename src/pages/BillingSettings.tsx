@@ -1,15 +1,125 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, CreditCard, Calendar, Wallet, TrendingUp } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowLeft, CreditCard, Calendar, Wallet, TrendingUp, Loader2 } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useToast } from "@/hooks/use-toast";
+import { useSubscription } from "@/hooks/useSubscription";
+import { redirectToCheckout, redirectToCustomerPortal } from "@/lib/stripe-checkout";
+import { PLAN_CONFIG, PlanType } from "@/lib/stripe";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { useState, useEffect } from "react";
 
 const BillingSettings = () => {
   const navigate = useNavigate();
-  const { role } = useUserRole();
+  const [searchParams] = useSearchParams();
+  const { role, userId } = useUserRole();
   const { toast } = useToast();
+  const { subscription, loading: subscriptionLoading, refetch } = useSubscription();
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
   const isProfessional = role === "professional";
+
+  // Handle checkout success/cancel redirects
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const canceled = searchParams.get('canceled');
+
+    if (success === 'true') {
+      toast({
+        title: "Abonnement activé !",
+        description: "Votre abonnement a été configuré avec succès.",
+      });
+      refetch();
+      // Clean URL
+      navigate('/profile/billing', { replace: true });
+    } else if (canceled === 'true') {
+      toast({
+        title: "Paiement annulé",
+        description: "Vous pouvez réessayer à tout moment.",
+        variant: "destructive",
+      });
+      // Clean URL
+      navigate('/profile/billing', { replace: true });
+    }
+  }, [searchParams, toast, navigate, refetch]);
+
+  const handleSubscribe = async (planType: PlanType) => {
+    if (!userId) {
+      toast({
+        title: "Erreur",
+        description: "Vous devez être connecté pour souscrire.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setCheckoutLoading(planType);
+    try {
+      await redirectToCheckout(planType, userId);
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast({
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Impossible de créer la session de paiement.",
+        variant: "destructive",
+      });
+      setCheckoutLoading(null);
+    }
+  };
+
+  const handleManagePayment = async () => {
+    if (!subscription) {
+      toast({
+        title: "Erreur",
+        description: "Aucun abonnement trouvé.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await redirectToCustomerPortal();
+    } catch (error) {
+      console.error('Customer portal error:', error);
+      toast({
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Impossible d'accéder au portail client.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getSubscriptionStatusText = () => {
+    if (!subscription) return null;
+
+    const planConfig = PLAN_CONFIG[subscription.plan_type];
+    
+    if (subscription.status === 'trial' && subscription.trial_end) {
+      const trialEndDate = format(new Date(subscription.trial_end), "d MMMM yyyy", { locale: fr });
+      return `Essai en cours – se termine le ${trialEndDate}`;
+    }
+    
+    if (subscription.status === 'active' && subscription.current_period_end) {
+      const periodEndDate = format(new Date(subscription.current_period_end), "d MMMM yyyy", { locale: fr });
+      return `Abonnement actif jusqu'au ${periodEndDate}`;
+    }
+    
+    if (subscription.status === 'canceled' && subscription.current_period_end) {
+      const periodEndDate = format(new Date(subscription.current_period_end), "d MMMM yyyy", { locale: fr });
+      return `Abonnement annulé – accès jusqu'au ${periodEndDate}`;
+    }
+    
+    if (subscription.status === 'past_due') {
+      return "Paiement en attente – veuillez mettre à jour votre moyen de paiement";
+    }
+    
+    if (subscription.status === 'expired') {
+      return "Abonnement expiré";
+    }
+
+    return `Statut: ${subscription.status}`;
+  };
 
   return (
     <div className="min-h-screen p-4 space-y-6 animate-fade-in">
@@ -28,47 +138,151 @@ const BillingSettings = () => {
       <div className="space-y-4">
         <Card className="p-6 rounded-3xl space-y-4">
           <h2 className="text-lg font-bold text-title">Abonnement actuel</h2>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-semibold">Gratuit</p>
-              <p className="text-sm text-muted-foreground">Accès limité aux fonctionnalités de base</p>
+          {subscriptionLoading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-sm text-muted-foreground">Chargement...</span>
             </div>
-          </div>
+          ) : subscription ? (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold">{PLAN_CONFIG[subscription.plan_type]?.name || subscription.plan_type}</p>
+                  <p className="text-sm text-muted-foreground">{getSubscriptionStatusText()}</p>
+                </div>
+              </div>
+              {(subscription.status === 'active' || subscription.status === 'trial') && (
+                <Button
+                  variant="outline"
+                  className="w-full rounded-full"
+                  onClick={handleManagePayment}
+                >
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Gérer l'abonnement et le paiement
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-semibold">Gratuit</p>
+                <p className="text-sm text-muted-foreground">Accès limité aux fonctionnalités de base</p>
+              </div>
+            </div>
+          )}
         </Card>
 
         {isProfessional ? (
           <>
-            <Card className="p-6 rounded-3xl space-y-4 bg-gradient-to-br from-primary/10 to-secondary">
-              <h2 className="text-lg font-bold text-title">Abonnement Professionnel</h2>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span>Référencement du profil professionnel</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span>Accès à la messagerie clients</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span>Être contacté par les propriétaires</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span>Consulter et envoyer des documents</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span>Recevoir des commissions sur les tests ADN</span>
-                </li>
-              </ul>
-              <div className="flex items-baseline gap-2 pt-2">
-                <span className="text-3xl font-bold text-title">14,99€</span>
-                <span className="text-muted-foreground">/mois</span>
+            <Card className="p-6 rounded-3xl space-y-4">
+              <h2 className="text-xl font-bold text-title">Abonnement Professionnel</h2>
+              
+              <div className="space-y-4">
+                {/* Formule Mensuelle */}
+                <Card className="p-6 rounded-2xl border-2 border-primary/20 bg-secondary/50">
+                  <div className="space-y-3">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h3 className="text-lg font-semibold text-title">Formule Mensuelle</h3>
+                      <div className="text-right whitespace-nowrap flex-shrink-0">
+                        <span className="text-3xl font-bold text-primary">14,90 €</span>
+                        <span className="text-sm text-muted-foreground">/mois</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-2 text-sm text-foreground/80">
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>Référencement du profil professionnel</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>Accès à la messagerie clients</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>Être contacté par les propriétaires</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>Consulter et envoyer des documents</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>Recevoir des commissions sur les tests ADN</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>1 mois d'essai gratuit</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>Sans engagement</span>
+                      </li>
+                    </ul>
+                    <Button 
+                      className="w-full rounded-full bg-primary hover:bg-primary/90"
+                      onClick={() => handleSubscribe('pro_mensuel_14_90')}
+                      disabled={checkoutLoading === 'pro_mensuel_14_90' || !!subscription}
+                    >
+                      {checkoutLoading === 'pro_mensuel_14_90' ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Redirection...
+                        </>
+                      ) : subscription ? (
+                        'Abonnement actif'
+                      ) : (
+                        'Souscrire maintenant'
+                      )}
+                    </Button>
+                  </div>
+                </Card>
+
+                {/* Formule Annuelle avec engagement */}
+                <Card className="p-6 rounded-2xl border-2 border-primary bg-primary/5">
+                  <div className="space-y-3">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <div>
+                        <h3 className="text-lg font-semibold text-title">Formule Annuelle</h3>
+                        <span className="text-xs text-primary font-medium">Meilleure offre • 3 mois d'essai gratuit</span>
+                      </div>
+                      <div className="text-right whitespace-nowrap flex-shrink-0">
+                        <span className="text-3xl font-bold text-primary">14,90 €</span>
+                        <span className="text-sm text-muted-foreground">/mois</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-2 text-sm text-foreground/80">
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>Tous les avantages de la formule mensuelle</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span>3 mois d'essai gratuit (au lieu de 1)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">✓</span>
+                        <span className="font-semibold">Engagement annuel (12 mois)</span>
+                      </li>
+                    </ul>
+                    <Button 
+                      className="w-full rounded-full bg-primary hover:bg-primary/90"
+                      onClick={() => handleSubscribe('pro_annuel_14_90')}
+                      disabled={checkoutLoading === 'pro_annuel_14_90' || !!subscription}
+                    >
+                      {checkoutLoading === 'pro_annuel_14_90' ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Redirection...
+                        </>
+                      ) : subscription ? (
+                        'Abonnement actif'
+                      ) : (
+                        'Souscrire maintenant'
+                      )}
+                    </Button>
+                  </div>
+                </Card>
               </div>
-              <Button className="w-full rounded-full bg-primary hover:bg-primary/90">
-                Souscrire maintenant
-              </Button>
             </Card>
 
             <Card className="p-6 rounded-3xl space-y-4 border-2 border-accent/20">
@@ -154,12 +368,19 @@ const BillingSettings = () => {
                   </ul>
                   <Button 
                     className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                    onClick={() => toast({
-                      title: "Bientôt disponible",
-                      description: "L'abonnement mensuel sera disponible prochainement.",
-                    })}
+                    onClick={() => handleSubscribe('gardien_mensuel_4_90')}
+                    disabled={checkoutLoading === 'gardien_mensuel_4_90' || !!subscription}
                   >
-                    Souscrire maintenant
+                    {checkoutLoading === 'gardien_mensuel_4_90' ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Redirection...
+                      </>
+                    ) : subscription ? (
+                      'Abonnement actif'
+                    ) : (
+                      'Souscrire maintenant'
+                    )}
                   </Button>
                 </div>
               </Card>
@@ -193,12 +414,19 @@ const BillingSettings = () => {
                   </ul>
                   <Button 
                     className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                    onClick={() => toast({
-                      title: "Bientôt disponible",
-                      description: "L'abonnement annuel sera disponible prochainement.",
-                    })}
+                    onClick={() => handleSubscribe('gardien_annuel_45')}
+                    disabled={checkoutLoading === 'gardien_annuel_45' || !!subscription}
                   >
-                    Souscrire maintenant
+                    {checkoutLoading === 'gardien_annuel_45' ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Redirection...
+                      </>
+                    ) : subscription ? (
+                      'Abonnement actif'
+                    ) : (
+                      'Souscrire maintenant'
+                    )}
                   </Button>
                 </div>
               </Card>
@@ -206,16 +434,22 @@ const BillingSettings = () => {
           </Card>
         )}
 
-        <Card className="p-6 rounded-3xl space-y-4">
-          <h2 className="text-lg font-bold text-title">Moyens de paiement</h2>
-          <p className="text-sm text-muted-foreground">
-            Aucun moyen de paiement enregistré
-          </p>
-          <Button variant="outline" className="w-full rounded-full">
-            <CreditCard className="mr-2 h-4 w-4" />
-            Ajouter une carte
-          </Button>
-        </Card>
+        {subscription && (
+          <Card className="p-6 rounded-3xl space-y-4">
+            <h2 className="text-lg font-bold text-title">Moyens de paiement</h2>
+            <p className="text-sm text-muted-foreground">
+              Gérez votre moyen de paiement et votre abonnement via le portail Stripe
+            </p>
+            <Button 
+              variant="outline" 
+              className="w-full rounded-full"
+              onClick={handleManagePayment}
+            >
+              <CreditCard className="mr-2 h-4 w-4" />
+              Gérer le paiement
+            </Button>
+          </Card>
+        )}
 
         <Card className="p-6 rounded-3xl space-y-4">
           <h2 className="text-lg font-bold text-title">Historique des paiements</h2>
