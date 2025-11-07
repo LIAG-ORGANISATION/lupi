@@ -25,13 +25,6 @@ const RecommendationsDemo = () => {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-        {/* Badge Exemple */}
-        <div className="text-center">
-          <span className="inline-block bg-secondary text-secondary-foreground px-4 py-2 rounded-full text-sm font-medium">
-            Données d'exemple uniquement
-          </span>
-        </div>
-
         {/* Intro */}
         <Card className="p-4 sm:p-6">
           <p className="text-foreground text-sm sm:text-lg leading-relaxed">
