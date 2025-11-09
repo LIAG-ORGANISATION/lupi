@@ -135,18 +135,12 @@ const DNADemo = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-secondary/30 p-4 rounded-lg text-center">
                 <div className="font-semibold text-sm text-title">Père</div>
-                <div className="text-xs text-muted-foreground mt-1">Berger Australien Miniature</div>
+                <div className="text-xs text-muted-foreground mt-1">Berger Américain Miniature</div>
               </div>
               <div className="bg-secondary/30 p-4 rounded-lg text-center">
                 <div className="font-semibold text-sm text-title">Mère</div>
-                <div className="text-xs text-muted-foreground mt-1">Berger Australien Standard</div>
+                <div className="text-xs text-muted-foreground mt-1">Berger Américain Miniature</div>
               </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-2 text-center">
-              {["Berger Australien Miniature", "Berger Australien Miniature", "Berger Australien Miniature", "Berger Australien"].map((ancestor, idx) => <div key={`${ancestor}-${idx}`} className="bg-muted/50 p-2 rounded text-xs">
-                  {ancestor}
-                </div>)}
             </div>
           </div>
         </Card>
