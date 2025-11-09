@@ -7,13 +7,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const DNADemo = () => {
   const navigate = useNavigate();
   const breedData = [{
-    breed: "Berger Australien Miniature",
-    percentage: 75.5,
+    breed: "Berger Américain Miniature",
+    percentage: 93.4,
     color: "#10b981"
-  }, {
-    breed: "Berger Australien",
-    percentage: 17.9,
-    color: "#3b82f6"
   }, {
     breed: "Chien-loup tchécoslovaque",
     percentage: 5.0,
@@ -29,7 +25,7 @@ const DNADemo = () => {
   }];
   const appearanceTraits = [{
     label: "Type de pelage",
-    value: "Court, non frisé"
+    value: "Non frisé"
   }, {
     label: "Couleur principale",
     value: "Fauve / Chocolat, points feu"
@@ -77,12 +73,12 @@ const DNADemo = () => {
                 <div className="text-xs text-muted-foreground">Taille</div>
               </div>
               <div className="bg-secondary/50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-primary">5,0%</div>
-                <div className="text-xs text-muted-foreground">Chien-loup</div>
+                <div className="text-2xl font-bold text-primary">9-18 kg</div>
+                <div className="text-xs text-muted-foreground">Poids idéal adulte</div>
               </div>
               <div className="bg-secondary/50 rounded-lg p-3">
                 <div className="text-2xl font-bold text-primary">93%</div>
-                <div className="text-xs text-muted-foreground">Berger Australien</div>
+                <div className="text-xs text-muted-foreground">Berger Américain</div>
               </div>
             </div>
           </div>
@@ -138,11 +134,11 @@ const DNADemo = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-secondary/30 p-4 rounded-lg text-center">
-                <div className="font-semibold text-sm text-title">Parent 1</div>
+                <div className="font-semibold text-sm text-title">Père</div>
                 <div className="text-xs text-muted-foreground mt-1">Berger Australien Miniature</div>
               </div>
               <div className="bg-secondary/30 p-4 rounded-lg text-center">
-                <div className="font-semibold text-sm text-title">Parent 2</div>
+                <div className="font-semibold text-sm text-title">Mère</div>
                 <div className="text-xs text-muted-foreground mt-1">Berger Australien Standard</div>
               </div>
             </div>
