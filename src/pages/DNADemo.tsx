@@ -126,12 +126,6 @@ const DNADemo = () => {
           </div>
           
           <div className="space-y-4">
-            <div className="text-center">
-              <div className="inline-block bg-primary/10 px-6 py-3 rounded-lg">
-                <div className="font-bold text-title">Nouméa</div>
-              </div>
-            </div>
-            
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2">
@@ -165,6 +159,12 @@ const DNADemo = () => {
                   <div className="font-semibold text-sm text-title">Mère</div>
                   <div className="text-xs text-muted-foreground mt-1">Berger Américain Miniature</div>
                 </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="inline-block bg-primary/10 px-6 py-3 rounded-lg">
+                <div className="font-bold text-title">Nouméa</div>
               </div>
             </div>
           </div>
