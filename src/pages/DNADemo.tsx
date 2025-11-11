@@ -67,18 +67,18 @@ const DNADemo = () => {
               <h2 className="text-3xl font-bold text-title">Nouméa</h2>
               <p className="text-sm text-muted-foreground mt-1">Test ADN effectué le 6 novembre 2025</p>
             </div>
-            <div className="grid grid-cols-3 gap-4 w-full mt-4">
-              <div className="bg-secondary/50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-primary">Moyenne</div>
-                <div className="text-xs text-muted-foreground">Taille</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mt-4">
+              <div className="bg-secondary/50 rounded-lg p-3 text-center">
+                <div className="text-xl sm:text-2xl font-bold text-primary">Moyenne</div>
+                <div className="text-xs text-muted-foreground mt-1">Taille</div>
               </div>
-              <div className="bg-secondary/50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-primary">9-18 kg</div>
-                <div className="text-xs text-muted-foreground">Poids idéal adulte</div>
+              <div className="bg-secondary/50 rounded-lg p-3 text-center">
+                <div className="text-xl sm:text-2xl font-bold text-primary">9-18 kg</div>
+                <div className="text-xs text-muted-foreground mt-1">Poids idéal adulte</div>
               </div>
-              <div className="bg-secondary/50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-primary">93%</div>
-                <div className="text-xs text-muted-foreground">Berger Américain</div>
+              <div className="bg-secondary/50 rounded-lg p-3 text-center">
+                <div className="text-xl sm:text-2xl font-bold text-primary">93%</div>
+                <div className="text-xs text-muted-foreground mt-1">Berger Américain</div>
               </div>
             </div>
           </div>
