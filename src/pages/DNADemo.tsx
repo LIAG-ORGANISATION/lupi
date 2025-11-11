@@ -133,13 +133,38 @@ const DNADemo = () => {
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-secondary/30 p-4 rounded-lg text-center">
-                <div className="font-semibold text-sm text-title">Père</div>
-                <div className="text-xs text-muted-foreground mt-1">Berger Américain Miniature</div>
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-muted/50 p-2 rounded-lg text-center">
+                    <div className="text-xs font-medium text-title">Grand-père</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">Berger Américain Miniature</div>
+                  </div>
+                  <div className="bg-muted/50 p-2 rounded-lg text-center">
+                    <div className="text-xs font-medium text-title">Grand-mère</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">Berger Américain Miniature</div>
+                  </div>
+                </div>
+                <div className="bg-secondary/30 p-4 rounded-lg text-center">
+                  <div className="font-semibold text-sm text-title">Père</div>
+                  <div className="text-xs text-muted-foreground mt-1">Berger Américain Miniature</div>
+                </div>
               </div>
-              <div className="bg-secondary/30 p-4 rounded-lg text-center">
-                <div className="font-semibold text-sm text-title">Mère</div>
-                <div className="text-xs text-muted-foreground mt-1">Berger Américain Miniature</div>
+              
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-muted/50 p-2 rounded-lg text-center">
+                    <div className="text-xs font-medium text-title">Grand-père</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">Berger Américain Miniature</div>
+                  </div>
+                  <div className="bg-muted/50 p-2 rounded-lg text-center">
+                    <div className="text-xs font-medium text-title">Grand-mère</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">Berger Américain Miniature</div>
+                  </div>
+                </div>
+                <div className="bg-secondary/30 p-4 rounded-lg text-center">
+                  <div className="font-semibold text-sm text-title">Mère</div>
+                  <div className="text-xs text-muted-foreground mt-1">Berger Américain Miniature</div>
+                </div>
               </div>
             </div>
           </div>
