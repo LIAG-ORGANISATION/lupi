@@ -58,27 +58,27 @@ const DNADemo = () => {
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         {/* 1. Identification */}
-        <Card className="p-6 rounded-xl shadow-lg border-2 border-primary/20">
-          <div className="flex flex-col items-center text-center space-y-4">
+        <Card className="p-4 rounded-xl shadow-lg border-2 border-primary/20">
+          <div className="flex flex-col items-center text-center space-y-3">
             <div className="relative">
-              <img src={noumeaImage} alt="Nouméa" className="w-32 h-32 rounded-full object-cover border-4 border-primary/30" />
+              <img src={noumeaImage} alt="Nouméa" className="w-28 h-28 rounded-full object-cover border-4 border-primary/30" />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-title">Nouméa</h2>
-              <p className="text-sm text-muted-foreground mt-1">Test ADN effectué le 6 novembre 2025</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-title">Nouméa</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">Test ADN effectué le 6 novembre 2025</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mt-4">
-              <div className="bg-secondary/50 rounded-lg p-3 text-center">
-                <div className="text-xl sm:text-2xl font-bold text-primary">Moyenne</div>
-                <div className="text-xs text-muted-foreground mt-1">Taille</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+              <div className="bg-secondary/50 rounded-lg p-2.5 text-center">
+                <div className="text-lg sm:text-xl font-bold text-primary">Moyenne</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">Taille</div>
               </div>
-              <div className="bg-secondary/50 rounded-lg p-3 text-center">
-                <div className="text-xl sm:text-2xl font-bold text-primary">9-18 kg</div>
-                <div className="text-xs text-muted-foreground mt-1">Poids idéal adulte</div>
+              <div className="bg-secondary/50 rounded-lg p-2.5 text-center">
+                <div className="text-lg sm:text-xl font-bold text-primary">9-18 kg</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">Poids idéal adulte</div>
               </div>
-              <div className="bg-secondary/50 rounded-lg p-3 text-center">
-                <div className="text-xl sm:text-2xl font-bold text-primary">93%</div>
-                <div className="text-xs text-muted-foreground mt-1">Berger Américain</div>
+              <div className="bg-secondary/50 rounded-lg p-2.5 text-center">
+                <div className="text-lg sm:text-xl font-bold text-primary">93%</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">Berger Américain</div>
               </div>
             </div>
           </div>
