@@ -66,10 +66,19 @@ Deno.serve(async (req) => {
     const finalReturnUrl = return_url || `${req.headers.get('origin') || 'http://localhost:5173'}/profile/billing`;
 
     // Create customer portal session
-    const session = await stripe.billingPortal.sessions.create({
+    // Optionally use a specific configuration ID from environment variable
+    const portalConfig: Stripe.BillingPortal.SessionCreateParams = {
       customer: subscription.stripe_customer_id,
       return_url: finalReturnUrl,
-    });
+    };
+
+    // Add configuration if provided via environment variable
+    const portalConfigurationId = Deno.env.get('STRIPE_PORTAL_CONFIGURATION_ID');
+    if (portalConfigurationId) {
+      portalConfig.configuration = portalConfigurationId;
+    }
+
+    const session = await stripe.billingPortal.sessions.create(portalConfig);
 
     return new Response(
       JSON.stringify({
@@ -79,6 +88,18 @@ Deno.serve(async (req) => {
     );
   } catch (error) {
     console.error('Error creating customer portal session:', error);
+    
+    // Provide helpful error message for Stripe Customer Portal configuration issues
+    if (error.message && error.message.includes('No configuration provided')) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Stripe Customer Portal is not configured. Please configure it in your Stripe Dashboard at https://dashboard.stripe.com/settings/billing/portal',
+          details: error.message
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
