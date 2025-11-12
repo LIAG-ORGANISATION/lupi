@@ -36,11 +36,11 @@ const ProfessionalClients = () => {
   const fetchRequests = async () => {
     try {
       const { data, error } = await supabase
-        .from('dog_professional_access')
+        .from('dog_shares')
         .select(`
           id,
           status,
-          dog:dogs(name, breed, owner:dog_owner_profiles(full_name))
+          dog:dogs(name, breed, owner:owners(full_name))
         `)
         .eq('professional_id', user?.id)
         .order('created_at', { ascending: false });
@@ -57,8 +57,8 @@ const ProfessionalClients = () => {
   const handleApprove = async (requestId: string) => {
     try {
       const { error } = await supabase
-        .from('dog_professional_access')
-        .update({ status: 'approved', granted_at: new Date().toISOString() })
+        .from('dog_shares')
+        .update({ status: 'accepted' })
         .eq('id', requestId);
 
       if (error) throw error;

@@ -90,9 +90,9 @@ STRIPE_PRICE_ID_GARDIEN_ANNUEL_45=price_...
 ```bash
 # Deploy all functions
 supabase functions deploy stripe-webhook
-supabase functions deploy create-checkout-session
-supabase functions deploy create-customer-portal-session
-supabase functions deploy send-subscription-reminders
+npx supabase functions deploy create-checkout-session
+npx supabase functions deploy create-customer-portal-session
+npx supabase functions deploy send-subscription-reminders
 ```
 
 ### 4. Configure Stripe Webhook
