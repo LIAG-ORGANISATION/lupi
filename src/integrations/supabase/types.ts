@@ -7,13 +7,60 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
+      breeds: {
+        Row: {
+          created_at: string | null
+          en_name: string
+          fci_number: string | null
+          fr_name: string
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          en_name: string
+          fci_number?: string | null
+          fr_name: string
+          id?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          en_name?: string
+          fci_number?: string | null
+          fr_name?: string
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           created_at: string
@@ -56,6 +103,34 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "patients_for_pro"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_conversations_dog"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_conversations_dog"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_conversations_owner"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "owners"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "fk_conversations_professional"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -116,6 +191,34 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "patients_for_pro"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_calendar_events_dog"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "dogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_calendar_events_dog"
+            columns: ["dog_id"]
+            isOneToOne: false
+            referencedRelation: "patients_for_pro"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_calendar_events_owner"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "owners"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "fk_calendar_events_professional"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -377,6 +480,13 @@ export type Database = {
             referencedRelation: "patients_for_pro"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_questionnaires_owner"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "owners"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       dog_shares: {
@@ -479,6 +589,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "patients_for_pro"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_vaccinations_owner"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "owners"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -782,6 +899,54 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          plan_type: Database["public"]["Enums"]["subscription_plan_type"]
+          status: Database["public"]["Enums"]["subscription_status"]
+          stripe_customer_id: string
+          stripe_subscription_id: string | null
+          trial_end: string | null
+          trial_start: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_type: Database["public"]["Enums"]["subscription_plan_type"]
+          status?: Database["public"]["Enums"]["subscription_status"]
+          stripe_customer_id: string
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          trial_start?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_type?: Database["public"]["Enums"]["subscription_plan_type"]
+          status?: Database["public"]["Enums"]["subscription_status"]
+          stripe_customer_id?: string
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          trial_start?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       patients_for_pro: {
@@ -818,6 +983,17 @@ export type Database = {
     Enums: {
       share_permission: "read" | "write_notes"
       share_status: "pending" | "accepted" | "revoked" | "expired"
+      subscription_plan_type:
+        | "pro_annuel_14_90"
+        | "pro_mensuel_14_90"
+        | "gardien_mensuel_4_90"
+        | "gardien_annuel_45"
+      subscription_status:
+        | "trial"
+        | "active"
+        | "canceled"
+        | "past_due"
+        | "expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -943,10 +1119,27 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       share_permission: ["read", "write_notes"],
       share_status: ["pending", "accepted", "revoked", "expired"],
+      subscription_plan_type: [
+        "pro_annuel_14_90",
+        "pro_mensuel_14_90",
+        "gardien_mensuel_4_90",
+        "gardien_annuel_45",
+      ],
+      subscription_status: [
+        "trial",
+        "active",
+        "canceled",
+        "past_due",
+        "expired",
+      ],
     },
   },
 } as const
+

@@ -1,8 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Camera, Dog as DogIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +19,8 @@ const AddDog = () => {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [breeds, setBreeds] = useState<{ id: string; fr_name: string }[]>([]);
+  const [loadingBreeds, setLoadingBreeds] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     breed: "",
@@ -27,6 +30,33 @@ const AddDog = () => {
     neutered: "",
     photoFile: null as File | null,
   });
+
+  useEffect(() => {
+    const fetchBreeds = async () => {
+      setLoadingBreeds(true);
+      try {
+        const { data, error } = await supabase
+          .from('breeds')
+          .select('id, fr_name')
+          .order('fr_name');
+
+        if (error) throw error;
+
+        setBreeds(data || []);
+      } catch (error) {
+        console.error('[AddDog] Error fetching breeds:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger la liste des races.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoadingBreeds(false);
+      }
+    };
+
+    fetchBreeds();
+  }, [toast]);
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -181,13 +211,22 @@ const AddDog = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="breed">Race supposée</Label>
-            <Input
-              id="breed"
-              placeholder="Ex: Golden Retriever"
-              value={formData.breed}
-              onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
-              className="rounded-2xl"
-            />
+            <Select
+              value={formData.breed || ""}
+              onValueChange={(value) => setFormData({ ...formData, breed: value })}
+              disabled={loadingBreeds}
+            >
+              <SelectTrigger id="breed" className="rounded-2xl">
+                <SelectValue placeholder="Ex: Golden Retriever" />
+              </SelectTrigger>
+              <SelectContent>
+                {breeds.map((breed) => (
+                  <SelectItem key={breed.id} value={breed.fr_name}>
+                    {breed.fr_name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
