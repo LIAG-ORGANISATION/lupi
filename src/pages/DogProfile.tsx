@@ -47,6 +47,8 @@ const DogProfile = () => {
   const [showAddEventDialog, setShowAddEventDialog] = useState(false);
   const [showEditInfoDialog, setShowEditInfoDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [breeds, setBreeds] = useState<{ id: string; fr_name: string }[]>([]);
+  const [loadingBreeds, setLoadingBreeds] = useState(false);
   const [editInfo, setEditInfo] = useState({
     breed: "",
     weight: "",
@@ -70,6 +72,33 @@ const DogProfile = () => {
       fetchVaccinationDocsCount();
     }
   }, [id, user]);
+
+  useEffect(() => {
+    const fetchBreeds = async () => {
+      setLoadingBreeds(true);
+      try {
+        const { data, error } = await supabase
+          .from('breeds')
+          .select('id, fr_name')
+          .order('fr_name');
+
+        if (error) throw error;
+
+        setBreeds(data || []);
+      } catch (error) {
+        console.error('[DogProfile] Error fetching breeds:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger la liste des races.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoadingBreeds(false);
+      }
+    };
+
+    fetchBreeds();
+  }, [toast]);
   const fetchDog = async () => {
     try {
       console.log('[DogProfile] Fetching dog:', id);
@@ -820,10 +849,22 @@ const DogProfile = () => {
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium mb-1 block">Race</label>
-              <Input value={editInfo.breed} onChange={e => setEditInfo({
-              ...editInfo,
-              breed: e.target.value
-            })} placeholder="Ex: Labrador" />
+              <Select
+                value={editInfo.breed || ""}
+                onValueChange={(value) => setEditInfo({ ...editInfo, breed: value })}
+                disabled={loadingBreeds}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Ex: Labrador" />
+                </SelectTrigger>
+                <SelectContent>
+                  {breeds.map((breed) => (
+                    <SelectItem key={breed.id} value={breed.fr_name}>
+                      {breed.fr_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
