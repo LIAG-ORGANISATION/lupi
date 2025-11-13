@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, CreditCard, Calendar, Wallet, TrendingUp, Loader2 } from "lucide-react";
-import { useUserRole } from "@/hooks/useUserRole";
 import { useToast } from "@/hooks/use-toast";
 import { useSubscription } from "@/hooks/useSubscription";
 import { redirectToCheckout, redirectToCustomerPortal } from "@/lib/stripe-checkout";
@@ -10,15 +9,22 @@ import { PLAN_CONFIG, PlanType } from "@/lib/stripe";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const BillingSettings = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { role, userId } = useUserRole();
   const { toast } = useToast();
   const { subscription, loading: subscriptionLoading, refetch } = useSubscription();
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
-  const isProfessional = role === "professional";
+  
+  // Get user ID from auth
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUserId(user?.id || null);
+    });
+  }, []);
 
   // Handle checkout success/cancel redirects
   useEffect(() => {
@@ -172,173 +178,15 @@ const BillingSettings = () => {
           )}
         </Card>
 
-        {isProfessional ? (
-          <>
-            <Card className="p-6 rounded-3xl space-y-4">
-              <h2 className="text-xl font-bold text-title">Abonnement Professionnel</h2>
-              
-              <div className="space-y-4">
-                {/* Formule Mensuelle */}
-                <Card className="p-6 rounded-2xl border-2 border-primary/20 bg-secondary/50">
-                  <div className="space-y-3">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <h3 className="text-lg font-semibold text-title">Formule Mensuelle</h3>
-                      <div className="text-right whitespace-nowrap flex-shrink-0">
-                        <span className="text-3xl font-bold text-primary">14,90 €</span>
-                        <span className="text-sm text-muted-foreground">/mois</span>
-                      </div>
-                    </div>
-                    <ul className="space-y-2 text-sm text-foreground/80">
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Référencement du profil professionnel</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Accès à la messagerie clients</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Être contacté par les propriétaires</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Consulter et envoyer des documents</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Recevoir des commissions sur les tests ADN</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>1 mois d'essai gratuit</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Sans engagement</span>
-                      </li>
-                    </ul>
-                    <Button 
-                      className="w-full rounded-full bg-primary hover:bg-primary/90"
-                      onClick={() => handleSubscribe('pro_mensuel_14_90')}
-                      disabled={checkoutLoading === 'pro_mensuel_14_90' || !!subscription}
-                    >
-                      {checkoutLoading === 'pro_mensuel_14_90' ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Redirection...
-                        </>
-                      ) : subscription ? (
-                        'Abonnement actif'
-                      ) : (
-                        'Souscrire maintenant'
-                      )}
-                    </Button>
-                  </div>
-                </Card>
-
-                {/* Formule Annuelle avec engagement */}
-                <Card className="p-6 rounded-2xl border-2 border-primary bg-primary/5">
-                  <div className="space-y-3">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <div>
-                        <h3 className="text-lg font-semibold text-title">Formule Annuelle</h3>
-                        <span className="text-xs text-primary font-medium">Meilleure offre • 3 mois d'essai gratuit</span>
-                      </div>
-                      <div className="text-right whitespace-nowrap flex-shrink-0">
-                        <span className="text-3xl font-bold text-primary">14,90 €</span>
-                        <span className="text-sm text-muted-foreground">/mois</span>
-                      </div>
-                    </div>
-                    <ul className="space-y-2 text-sm text-foreground/80">
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>Tous les avantages de la formule mensuelle</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span>3 mois d'essai gratuit (au lieu de 1)</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">✓</span>
-                        <span className="font-semibold">Engagement annuel (12 mois)</span>
-                      </li>
-                    </ul>
-                    <Button 
-                      className="w-full rounded-full bg-primary hover:bg-primary/90"
-                      onClick={() => handleSubscribe('pro_annuel_14_90')}
-                      disabled={checkoutLoading === 'pro_annuel_14_90' || !!subscription}
-                    >
-                      {checkoutLoading === 'pro_annuel_14_90' ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Redirection...
-                        </>
-                      ) : subscription ? (
-                        'Abonnement actif'
-                      ) : (
-                        'Souscrire maintenant'
-                      )}
-                    </Button>
-                  </div>
-                </Card>
-              </div>
-            </Card>
-
-            <Card className="p-6 rounded-3xl space-y-4 border-2 border-accent/20">
-              <div className="flex items-center gap-3">
-                <div className="icon-container">
-                  <Wallet className="h-6 w-6" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-title">Cagnotte commission test ADN</h2>
-                  <p className="text-sm text-muted-foreground">Commissions accumulées</p>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-2xl p-4">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold text-title">0,00 €</span>
-                  <TrendingUp className="h-5 w-5 text-accent" />
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Commission : 10% par test ADN vendu
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <Button 
-                  variant="outline" 
-                  className="rounded-full"
-                  onClick={() => toast({
-                    title: "Décaissement demandé",
-                    description: "Votre demande sera traitée sous 48h.",
-                  })}
-                >
-                  Décaisser
-                </Button>
-                <Button 
-                  className="rounded-full bg-accent hover:bg-accent/90"
-                  onClick={() => toast({
-                    title: "Merci pour votre générosité",
-                    description: "Choisissez une association bénéficiaire.",
-                  })}
-                >
-                  Reverser à une asso
-                </Button>
-              </div>
-            </Card>
-          </>
-        ) : (
-          <Card className="p-6 rounded-3xl space-y-4">
-            <h2 className="text-xl font-bold text-title">Abonnement Guardian</h2>
+        <Card className="p-6 rounded-3xl space-y-4">
+            <h2 className="text-xl font-bold text-title">Carnet de Santé Premium</h2>
             
             <div className="space-y-4">
               {/* Formule Mensuelle */}
               <Card className="p-6 rounded-2xl border-2 border-primary/20 bg-secondary/50">
                 <div className="space-y-3">
                   <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="text-lg font-semibold text-title">Formule Mensuelle</h3>
+                    <h3 className="text-lg font-semibold text-title">Abonnement Mensuel</h3>
                     <div className="text-right whitespace-nowrap flex-shrink-0">
                       <span className="text-3xl font-bold text-primary">4,99 €</span>
                       <span className="text-sm text-muted-foreground">/mois</span>
@@ -365,13 +213,17 @@ const BillingSettings = () => {
                       <span className="text-primary mt-0.5">✓</span>
                       <span>Partage de documents</span>
                     </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-primary mt-0.5">✓</span>
+                      <span className="font-semibold">90 jours d'essai gratuit</span>
+                    </li>
                   </ul>
                   <Button 
                     className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                    onClick={() => handleSubscribe('gardien_mensuel_4_90')}
-                    disabled={checkoutLoading === 'gardien_mensuel_4_90' || !!subscription}
+                    onClick={() => handleSubscribe('premium_mensuel_4_99')}
+                    disabled={checkoutLoading === 'premium_mensuel_4_99' || !!subscription}
                   >
-                    {checkoutLoading === 'gardien_mensuel_4_90' ? (
+                    {checkoutLoading === 'premium_mensuel_4_99' ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Redirection...
@@ -390,11 +242,11 @@ const BillingSettings = () => {
                 <div className="space-y-3">
                   <div className="flex items-baseline justify-between gap-2">
                     <div>
-                      <h3 className="text-lg font-semibold text-title">Formule Annuelle</h3>
-                      <span className="text-xs text-primary font-medium">Meilleure offre • 2 mois offerts</span>
+                      <h3 className="text-lg font-semibold text-title">Abonnement Annuel</h3>
+                      <span className="text-xs text-primary font-medium">Meilleure offre • 90 jours d'essai gratuit</span>
                     </div>
                     <div className="text-right whitespace-nowrap flex-shrink-0">
-                      <span className="text-3xl font-bold text-primary">45 €</span>
+                      <span className="text-3xl font-bold text-primary">50 €</span>
                       <span className="text-sm text-muted-foreground">/an</span>
                     </div>
                   </div>
@@ -405,7 +257,7 @@ const BillingSettings = () => {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary mt-0.5">✓</span>
-                      <span>2 mois offerts (équivalent à 3,75€/mois)</span>
+                      <span>Économisez 9,88€ par an</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary mt-0.5">✓</span>
@@ -414,10 +266,10 @@ const BillingSettings = () => {
                   </ul>
                   <Button 
                     className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                    onClick={() => handleSubscribe('gardien_annuel_45')}
-                    disabled={checkoutLoading === 'gardien_annuel_45' || !!subscription}
+                    onClick={() => handleSubscribe('premium_annuel_50')}
+                    disabled={checkoutLoading === 'premium_annuel_50' || !!subscription}
                   >
-                    {checkoutLoading === 'gardien_annuel_45' ? (
+                    {checkoutLoading === 'premium_annuel_50' ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Redirection...
@@ -432,7 +284,6 @@ const BillingSettings = () => {
               </Card>
             </div>
           </Card>
-        )}
 
         {subscription && (
           <Card className="p-6 rounded-3xl space-y-4">
