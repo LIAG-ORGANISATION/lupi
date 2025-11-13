@@ -111,9 +111,8 @@ const DNADemo = () => {
           </div>
 
           <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800 mt-4">
-            <p className="text-sm text-foreground font-medium mb-2">Petit rappel</p>
             <p className="text-xs text-muted-foreground">
-              Parfois, un trait bien visible chez votre chien n'apparaît pas dans le test. Pourquoi ? Parce que l'ordinateur calcule les probabilités les plus élevées à partir de l'ADN analysé, mais certains traits dépendent de plusieurs gènes, ou de variantes encore peu documentées. Bref, la connaissance de la génétique canine progresse tous les jours. Et entre nous… votre chien est canon dans tous les cas.
+              Un résultat à 5 % ou moins? Pas de quoi tout remettre en question : ça reflète parfois un ancêtre très lointain (10 générations ou plus). Votre chien peut être LOF ou d'une lignée suivie, ça ne change rien. L'ADN zoome juste très loin dans l'arbre généalogique
             </p>
           </div>
         </Card>
@@ -209,6 +208,13 @@ const DNADemo = () => {
                 <div className="text-sm font-semibold text-title">{trait.value}</div>
               </div>)}
           </div>
+
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-4">
+            <p className="text-sm text-foreground font-medium mb-2">Info</p>
+            <p className="text-xs text-muted-foreground">
+              Parfois, un trait bien visible chez votre chien n'apparaît dans le test. Pourquoi ? Parce que l'ordinateur calcule les probabilités les plus élevées à partir de l'ADN analysé, mais certains traits dépendent de plusieurs gènes, ou de variantes encore peu documentées. Bref, la connaissance la génétique canine progresse chaque jour. Et entre nous, votre chien est canon dans tous les cas. ;)
+            </p>
+          </div>
         </Card>
 
         {/* 6. Tempérament & comportement */}
@@ -220,7 +226,7 @@ const DNADemo = () => {
 
           <div className="space-y-4">
             <p className="text-sm text-foreground leading-relaxed">
-              Nouméa est issue à plus de 90% de Berger Australien (miniature et standard) — une race reconnue pour son intelligence, sa vivacité et son besoin de lien avec ses humains.
+              Nouméa est issue à plus de 90% de Berger Américain (miniature et standard) — une race reconnue pour son intelligence, sa vivacité et son besoin de lien avec ses humains.
               Elle a probablement un tempérament curieux, sensible et actif, avec une forte capacité d'apprentissage et un besoin de stimulation mentale quotidienne.
             </p>
 
@@ -285,7 +291,7 @@ const DNADemo = () => {
               <Sparkles className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
               <div>
                 <div className="font-semibold text-sm text-title">Traits dominants</div>
-                <div className="text-xs text-muted-foreground">Fauve/Chocolat, points feu, motif merle</div>
+                <div className="text-xs text-muted-foreground">Fauve/Chocolat, points feu, merle</div>
               </div>
             </div>
             <div className="flex items-start gap-3">
