@@ -11,6 +11,10 @@ export const getStripe = (): Promise<Stripe | null> => {
 
 // Plan type definitions matching database enum
 export type PlanType = 
+  | 'premium_mensuel_4_99'
+  | 'premium_annuel_50'
+  | 'test_adn'
+  // Legacy plan types (kept for backward compatibility)
   | 'pro_annuel_14_90'
   | 'pro_mensuel_14_90'
   | 'gardien_mensuel_4_90'
@@ -23,7 +27,31 @@ export const PLAN_CONFIG: Record<PlanType, {
   trialDays: number;
   isAnnual: boolean;
   hasCommitment: boolean;
+  isOneTime?: boolean;
 }> = {
+  premium_mensuel_4_99: {
+    name: 'Carnet de Santé Premium - Mensuel',
+    price: '4,99€',
+    trialDays: 90,
+    isAnnual: false,
+    hasCommitment: false,
+  },
+  premium_annuel_50: {
+    name: 'Carnet de Santé Premium - Annuel',
+    price: '50€',
+    trialDays: 90,
+    isAnnual: true,
+    hasCommitment: false,
+  },
+  test_adn: {
+    name: 'Test ADN',
+    price: '187,70€',
+    trialDays: 0,
+    isAnnual: false,
+    hasCommitment: false,
+    isOneTime: true,
+  },
+  // Legacy plans (kept for backward compatibility)
   pro_annuel_14_90: {
     name: 'Abonnement Professionnel Annuel',
     price: '14,90€',

@@ -905,10 +905,13 @@ export type Database = {
           created_at: string | null
           current_period_end: string | null
           current_period_start: string | null
+          discount_expiry: string | null
+          has_premium_discount: boolean | null
           id: string
           plan_type: Database["public"]["Enums"]["subscription_plan_type"]
           status: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id: string
+          stripe_promotion_code_id: string | null
           stripe_subscription_id: string | null
           trial_end: string | null
           trial_start: string | null
@@ -920,10 +923,13 @@ export type Database = {
           created_at?: string | null
           current_period_end?: string | null
           current_period_start?: string | null
+          discount_expiry?: string | null
+          has_premium_discount?: boolean | null
           id?: string
           plan_type: Database["public"]["Enums"]["subscription_plan_type"]
           status?: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id: string
+          stripe_promotion_code_id?: string | null
           stripe_subscription_id?: string | null
           trial_end?: string | null
           trial_start?: string | null
@@ -935,10 +941,13 @@ export type Database = {
           created_at?: string | null
           current_period_end?: string | null
           current_period_start?: string | null
+          discount_expiry?: string | null
+          has_premium_discount?: boolean | null
           id?: string
           plan_type?: Database["public"]["Enums"]["subscription_plan_type"]
           status?: Database["public"]["Enums"]["subscription_status"]
           stripe_customer_id?: string
+          stripe_promotion_code_id?: string | null
           stripe_subscription_id?: string | null
           trial_end?: string | null
           trial_start?: string | null
@@ -984,6 +993,9 @@ export type Database = {
       share_permission: "read" | "write_notes"
       share_status: "pending" | "accepted" | "revoked" | "expired"
       subscription_plan_type:
+        | "premium_mensuel_4_99"
+        | "premium_annuel_50"
+        | "test_adn"
         | "pro_annuel_14_90"
         | "pro_mensuel_14_90"
         | "gardien_mensuel_4_90"
@@ -1127,6 +1139,9 @@ export const Constants = {
       share_permission: ["read", "write_notes"],
       share_status: ["pending", "accepted", "revoked", "expired"],
       subscription_plan_type: [
+        "premium_mensuel_4_99",
+        "premium_annuel_50",
+        "test_adn",
         "pro_annuel_14_90",
         "pro_mensuel_14_90",
         "gardien_mensuel_4_90",

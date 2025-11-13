@@ -3,6 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 
 export type SubscriptionStatus = 'trial' | 'active' | 'canceled' | 'past_due' | 'expired';
 export type PlanType = 
+  | 'premium_mensuel_4_99'
+  | 'premium_annuel_50'
+  | 'test_adn'
+  // Legacy plan types (kept for backward compatibility)
   | 'pro_annuel_14_90'
   | 'pro_mensuel_14_90'
   | 'gardien_mensuel_4_90'
@@ -20,6 +24,9 @@ export interface Subscription {
   current_period_start: string | null;
   current_period_end: string | null;
   cancel_at_period_end: boolean;
+  has_premium_discount: boolean | null;
+  discount_expiry: string | null;
+  stripe_promotion_code_id: string | null;
   created_at: string;
   updated_at: string;
 }
