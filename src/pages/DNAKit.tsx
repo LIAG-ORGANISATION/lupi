@@ -2,9 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, TestTube2, Heart, Eye, Dna } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { redirectToCheckout } from "@/lib/stripe-checkout";
+import { useToast } from "@/hooks/use-toast";
 
 const DNAKit = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const included = [
     { icon: TestTube2, text: "1 Écouvillon (Stérile & Hygiénique)" },
@@ -66,7 +70,23 @@ const DNAKit = () => {
 
           <div style={{ paddingTop: '8px' }}>
             <Button
-              onClick={() => window.open('https://buy.stripe.com/4gM7sLgN23eHh055pX33W03', '_blank')}
+              onClick={async () => {
+                try {
+                  const { data: { user } } = await supabase.auth.getUser();
+                  if (!user) {
+                    navigate('/auth');
+                    return;
+                  }
+                  await redirectToCheckout('test_adn', user.id);
+                } catch (error) {
+                  console.error('Error initiating checkout:', error);
+                  toast({
+                    title: "Erreur",
+                    description: "Impossible de créer la session de paiement.",
+                    variant: "destructive",
+                  });
+                }
+              }}
               className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
               size="lg"
               style={{ minHeight: '44px' }}
