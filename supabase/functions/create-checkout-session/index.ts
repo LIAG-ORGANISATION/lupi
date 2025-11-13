@@ -54,8 +54,10 @@ serve(async (req) => {
     // Check if customer already exists in database
     const { data: existingSubscription } = await supabase
       .from('subscriptions')
-      .select('stripe_customer_id')
+      .select('stripe_customer_id, has_premium_discount, discount_expiry')
       .eq('user_id', user_id)
+      .order('created_at', { ascending: false })
+      .limit(1)
       .single();
 
     if (existingSubscription?.stripe_customer_id) {
@@ -80,29 +82,60 @@ serve(async (req) => {
       );
     }
 
-    // Get trial period days
-    const trialDays = getTrialDaysForPlanType(plan_type);
+    // Determine if this is a one-time payment (DNA test) or subscription
+    const isOneTime = plan_type === 'test_adn' || plan_type === 'gardien_annuel_45' || plan_type === 'premium_annuel_50';
+    
+    // Get trial period days (only for subscription plans)
+    const trialDays = isOneTime ? 0 : getTrialDaysForPlanType(plan_type);
+
+    // Check for existing discount eligibility (for Premium subscriptions only)
+    let promotionCode: string | undefined;
+    if (!isOneTime && (plan_type === 'premium_mensuel_4_99' || plan_type === 'premium_annuel_50')) {
+      const hasDiscount = existingSubscription?.has_premium_discount === true;
+      const discountNotExpired = existingSubscription?.discount_expiry 
+        ? new Date(existingSubscription.discount_expiry) > new Date()
+        : false;
+      
+      if (hasDiscount && discountNotExpired) {
+        // Get promotion code from environment or retrieve from Stripe
+        const promoCodeId = Deno.env.get('STRIPE_PROMOTION_CODE_ID_PREMIUM_DISCOUNT');
+        if (promoCodeId) {
+          promotionCode = promoCodeId;
+        }
+      }
+    }
+
+    // Determine success URL based on plan type
+    const baseUrl = req.headers.get('origin') || 'http://localhost:5173';
+    const successUrl = plan_type === 'test_adn'
+      ? `${baseUrl}/dna-kit?success=true`
+      : `${baseUrl}/profile/billing?success=true`;
 
     // Create checkout session
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       customer: customerId,
-      mode: plan_type === 'gardien_annuel_45' ? 'payment' : 'subscription',
+      mode: isOneTime ? 'payment' : 'subscription',
       line_items: [
         {
           price: priceId,
           quantity: 1,
         },
       ],
-      success_url: `${req.headers.get('origin') || 'http://localhost:5173'}/profile/billing?success=true`,
-      cancel_url: `${req.headers.get('origin') || 'http://localhost:5173'}/profile/billing?canceled=true`,
+      success_url: successUrl,
+      cancel_url: `${baseUrl}/profile/billing?canceled=true`,
       metadata: {
         user_id: user_id,
         plan_type: plan_type,
       },
     };
 
+    // Add promotion code if applicable
+    if (promotionCode) {
+      sessionParams.discounts = [{ promotion_code: promotionCode }];
+    }
+
     // Add trial period for subscription plans
-    if (trialDays > 0 && plan_type !== 'gardien_annuel_45') {
+    if (trialDays > 0 && !isOneTime) {
       sessionParams.subscription_data = {
         trial_period_days: trialDays,
         metadata: {
@@ -132,6 +165,11 @@ serve(async (req) => {
 
 function getPriceIdForPlanType(planType: string): string | null {
   const priceIdMap: Record<string, string> = {
+    // New Premium plans
+    premium_mensuel_4_99: Deno.env.get('STRIPE_PRICE_ID_PREMIUM_MENSUEL_4_99') || '',
+    premium_annuel_50: Deno.env.get('STRIPE_PRICE_ID_PREMIUM_ANNUEL_50') || '',
+    test_adn: Deno.env.get('STRIPE_PRICE_ID_TEST_ADN') || '',
+    // Legacy plans (kept for backward compatibility)
     pro_annuel_14_90: Deno.env.get('STRIPE_PRICE_ID_PRO_ANNUEL_14_90') || '',
     pro_mensuel_14_90: Deno.env.get('STRIPE_PRICE_ID_PRO_MENSUEL_14_90') || '',
     gardien_mensuel_4_90: Deno.env.get('STRIPE_PRICE_ID_GARDIEN_MENSUEL_4_90') || '',
@@ -143,6 +181,11 @@ function getPriceIdForPlanType(planType: string): string | null {
 
 function getTrialDaysForPlanType(planType: string): number {
   const trialDaysMap: Record<string, number> = {
+    // New Premium plans - 90 days trial for all new guardians
+    premium_mensuel_4_99: 90,
+    premium_annuel_50: 90,
+    test_adn: 0,
+    // Legacy plans (kept for backward compatibility)
     pro_annuel_14_90: 90,
     pro_mensuel_14_90: 30,
     gardien_mensuel_4_90: 30,
