@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, CreditCard, Calendar, Wallet, TrendingUp, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSubscription } from "@/hooks/useSubscription";
+import { usePaymentHistory } from "@/hooks/usePaymentHistory";
 import { redirectToCheckout, redirectToCustomerPortal } from "@/lib/stripe-checkout";
 import { PLAN_CONFIG, PlanType } from "@/lib/stripe";
 import { format } from "date-fns";
@@ -16,6 +17,7 @@ const BillingSettings = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const { subscription, loading: subscriptionLoading, refetch } = useSubscription();
+  const { payments, loading: paymentsLoading, error: paymentsError } = usePaymentHistory();
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
   
   // Get user ID from auth
@@ -304,18 +306,39 @@ const BillingSettings = () => {
 
         <Card className="p-6 rounded-3xl space-y-4">
           <h2 className="text-lg font-bold text-title">Historique des paiements</h2>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-3">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <p className="font-medium">Kit ADN</p>
-                  <p className="text-xs text-muted-foreground">15 mars 2025</p>
-                </div>
-              </div>
-              <span className="font-semibold">149€</span>
+          {paymentsLoading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-sm text-muted-foreground">Chargement...</span>
             </div>
-          </div>
+          ) : paymentsError ? (
+            <div className="text-sm text-destructive">
+              Erreur lors du chargement de l'historique: {paymentsError}
+            </div>
+          ) : payments.length === 0 ? (
+            <div className="text-sm text-muted-foreground">
+              Aucun paiement pour le moment
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {payments.map((payment) => (
+                <div key={payment.id} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="font-medium">{payment.description}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {format(new Date(payment.date), "d MMMM yyyy", { locale: fr })}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="font-semibold">
+                    {payment.amount.toFixed(2).replace('.', ',')} {payment.currency === 'EUR' ? '€' : payment.currency}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
       </div>
     </div>
