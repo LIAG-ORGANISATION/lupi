@@ -389,21 +389,19 @@ export const MedicationsManager = ({
         </Dialog>
       </div>
 
-      {medications.length === 0 ? <Card className="p-6 text-center px-[23px] mx-[10px]">
+      {activeMedications.length === 0 ? <Card className="p-6 text-center px-[23px] mx-[10px]">
           <Pill className="h-12 w-12 mx-auto mb-3 text-muted-foreground opacity-50" />
-          <p className="text-muted-foreground">Aucun traitement enregistré</p>
+          <p className="text-muted-foreground">Aucun traitement en cours</p>
         </Card> : <div className="space-y-2">
-          {medications.map(med => <Card key={med.id} className={`p-4 ${!med.active ? 'opacity-60 bg-muted/30' : ''}`}>
+          {activeMedications.map(med => <Card key={med.id} className="p-4">
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h4 className="font-semibold text-title">{med.medication_name}</h4>
-                      {med.active ? <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                           Actif
-                        </span> : <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
-                          Terminé
-                        </span>}
+                        </span>
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">{med.dosage_detail}</p>
                     <p className="text-sm text-foreground mt-1">
@@ -411,8 +409,8 @@ export const MedicationsManager = ({
                     </p>
                   </div>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" onClick={() => handleToggleActive(med.id, med.active)} title={med.active ? "Marquer comme terminé" : "Réactiver"}>
-                      {med.active ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
+                    <Button variant="ghost" size="icon" onClick={() => handleToggleActive(med.id, med.active)} title="Marquer comme terminé">
+                      <X className="h-4 w-4" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(med.id)} title="Supprimer">
                       <Trash2 className="h-4 w-4 text-destructive" />
