@@ -247,6 +247,40 @@ export const MedicationsManager = ({
       });
     }
   };
+
+  // Helper function to check if a treatment is in history
+  // A treatment is in history if it's marked as inactive (active = false) OR if the end date has passed
+  const isTreatmentInHistory = (med: Medication): boolean => {
+    // If marked as inactive, it's in history
+    if (!med.active) return true;
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // If end_date exists, check if it's in the past
+    if (med.end_date) {
+      const endDate = new Date(med.end_date);
+      endDate.setHours(0, 0, 0, 0);
+      if (endDate < today) return true;
+    }
+    
+    // If duration_days exists, calculate end date from start_date
+    if (med.duration_days) {
+      const startDate = new Date(med.start_date);
+      startDate.setHours(0, 0, 0, 0);
+      const calculatedEndDate = addDays(startDate, med.duration_days);
+      calculatedEndDate.setHours(0, 0, 0, 0);
+      if (calculatedEndDate < today) return true;
+    }
+    
+    return false;
+  };
+
+  // Filter historical medications (active = false OR end date passed)
+  const historicalMedications = medications.filter(m => isTreatmentInHistory(m));
+  
+  // Filter active medications (active = true AND not in history)
+  const activeMedications = medications.filter(m => m.active === true && !isTreatmentInHistory(m));
   if (loading) {
     return <Card className="p-4">
         <div className="flex items-center justify-center">
