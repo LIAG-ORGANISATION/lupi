@@ -12,6 +12,7 @@ import professionalsIcon from "@/assets/professionals-icon.jpg";
 import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 import { Badge } from "@/components/ui/badge";
 import SeasonalAlertsDisplay from "@/components/SeasonalAlertsDisplay";
+import { isProDirectoryAndMessagingEnabled } from "@/lib/featureFlags";
 
 interface DogData {
   id: string;
@@ -26,6 +27,7 @@ const GuardianDashboard = () => {
   const [dogs, setDogs] = useState<DogData[]>([]);
   const [loading, setLoading] = useState(true);
   const unreadCount = useUnreadMessages();
+  const showProDirectoryAndMessaging = isProDirectoryAndMessagingEnabled();
 
   useEffect(() => {
     if (user) {
@@ -77,37 +79,39 @@ const GuardianDashboard = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
-            <Card
-              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
-              onClick={() => navigate("/guardian/messages")}
-            >
-              <div className="flex flex-col items-center gap-2 text-center">
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
-                    <img 
-                      src={messagesIcon} 
-                      alt="Messages" 
-                      className="w-full h-full object-cover"
-                    />
+          <div className={`grid gap-3 ${showProDirectoryAndMessaging ? 'grid-cols-3' : 'grid-cols-1'}`}>
+            {showProDirectoryAndMessaging && (
+              <Card
+                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
+                onClick={() => navigate("/guardian/messages")}
+              >
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+                      <img 
+                        src={messagesIcon} 
+                        alt="Messages" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {unreadCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs font-bold"
+                      >
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </Badge>
+                    )}
                   </div>
-                  {unreadCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs font-bold"
-                    >
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </Badge>
-                  )}
+                  <div>
+                    <h3 className="font-semibold text-title text-sm">Messages</h3>
+                    <p className="text-xs text-muted-foreground">
+                      {unreadCount > 0 ? `${unreadCount} nouveau${unreadCount > 1 ? 'x' : ''}` : 'Avec les pros'}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-title text-sm">Messages</h3>
-                  <p className="text-xs text-muted-foreground">
-                    {unreadCount > 0 ? `${unreadCount} nouveau${unreadCount > 1 ? 'x' : ''}` : 'Avec les pros'}
-                  </p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            )}
 
             <Card
               className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
@@ -128,24 +132,26 @@ const GuardianDashboard = () => {
               </div>
             </Card>
 
-            <Card
-              className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
-              onClick={() => navigate("/professionals")}
-            >
-              <div className="flex flex-col items-center gap-2 text-center">
-                <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
-                  <img 
-                    src={professionalsIcon} 
-                    alt="Professionnels" 
-                    className="w-full h-full object-cover"
-                  />
+            {showProDirectoryAndMessaging && (
+              <Card
+                className="lupi-card cursor-pointer hover:shadow-lg transition-all p-4"
+                onClick={() => navigate("/professionals")}
+              >
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+                    <img 
+                      src={professionalsIcon} 
+                      alt="Professionnels" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-title text-sm">Professionnels</h3>
+                    <p className="text-xs text-muted-foreground">Trouver</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-title text-sm">Professionnels</h3>
-                  <p className="text-xs text-muted-foreground">Trouver</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            )}
           </div>
 
           {loading ? (

@@ -36,6 +36,7 @@ import { useUnreadMessages } from "@/hooks/useUnreadMessages";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { isProDirectoryAndMessagingEnabled } from "@/lib/featureFlags";
 interface Dog {
   id: string;
   name: string;
@@ -73,6 +74,7 @@ const Home = () => {
   const [activeMedications, setActiveMedications] = useState<any[]>([]);
   const unreadCount = useUnreadMessages();
   const [heroApi, setHeroApi] = useState<any>();
+  const showProDirectoryAndMessaging = isProDirectoryAndMessagingEnabled();
 
   // Auto-scroll hero carousel
   useEffect(() => {
@@ -743,30 +745,32 @@ const Home = () => {
           fontWeight: 500,
           color: 'hsl(240 6% 11%)'
         }}>Accès rapide</h2>
-            <div className="grid grid-cols-4 gap-3">
-              <div className="cursor-pointer" onClick={() => navigate("/guardian/messages")}>
-                <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="relative">
-                    <div className="w-12 h-12 flex items-center justify-center" style={{
-                  borderRadius: '16px',
-                  background: 'hsl(166 44% 48%)'
-                }}>
-                      <MessageSquare className="h-5 w-5 text-white" strokeWidth={1.5} />
+            <div className={`grid gap-3 ${showProDirectoryAndMessaging ? 'grid-cols-4' : 'grid-cols-3'}`}>
+              {showProDirectoryAndMessaging && (
+                <div className="cursor-pointer" onClick={() => navigate("/guardian/messages")}>
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <div className="relative">
+                      <div className="w-12 h-12 flex items-center justify-center" style={{
+                    borderRadius: '16px',
+                    background: 'hsl(166 44% 48%)'
+                  }}>
+                        <MessageSquare className="h-5 w-5 text-white" strokeWidth={1.5} />
+                      </div>
+                      {unreadCount > 0 && <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0" style={{
+                    fontSize: '9px',
+                    fontWeight: 700
+                  }}>
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </Badge>}
                     </div>
-                    {unreadCount > 0 && <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0" style={{
-                  fontSize: '9px',
-                  fontWeight: 700
-                }}>
-                        {unreadCount > 9 ? '9+' : unreadCount}
-                      </Badge>}
+                    <span style={{
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  color: 'hsl(240 6% 11%)'
+                }}>Messages</span>
                   </div>
-                  <span style={{
-                fontSize: '12px',
-                fontWeight: 300,
-                color: 'hsl(240 6% 11%)'
-              }}>Messages</span>
                 </div>
-              </div>
+              )}
 
               <div className="cursor-pointer" onClick={() => navigate("/guardian/documents")}>
                 <div className="flex flex-col items-center gap-2 text-center">
@@ -785,22 +789,24 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="cursor-pointer" onClick={() => navigate("/professionals")}>
-                <div className="flex flex-col items-center gap-2 text-center">
-                  <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{
-                borderRadius: '16px'
-              }}>
-                    <Stethoscope className="h-5 w-5" style={{
+              {showProDirectoryAndMessaging && (
+                <div className="cursor-pointer" onClick={() => navigate("/professionals")}>
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <div className="w-12 h-12 bg-secondary flex items-center justify-center" style={{
+                  borderRadius: '16px'
+                }}>
+                      <Stethoscope className="h-5 w-5" style={{
+                    color: 'hsl(240 6% 11%)'
+                  }} strokeWidth={1.5} />
+                    </div>
+                    <span style={{
+                  fontSize: '12px',
+                  fontWeight: 300,
                   color: 'hsl(240 6% 11%)'
-                }} strokeWidth={1.5} />
+                }}>Professionnels</span>
                   </div>
-                  <span style={{
-                fontSize: '12px',
-                fontWeight: 300,
-                color: 'hsl(240 6% 11%)'
-              }}>Professionnels</span>
                 </div>
-              </div>
+              )}
 
               <div className="cursor-pointer" onClick={() => navigate("/dogs/add")}>
                 <div className="flex flex-col items-center gap-2 text-center">
@@ -827,7 +833,9 @@ const Home = () => {
             <div className="grid grid-cols-2 gap-4">
               <QuickActionCard icon={TestTube2} label="Tests ADN" onClick={() => navigate("/dogs")} />
               <QuickActionCard icon={ClipboardList} label="Questionnaire" onClick={() => navigate("/questionnaire")} />
-              <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
+              {showProDirectoryAndMessaging && (
+                <QuickActionCard icon={Stethoscope} label="Pros & RDV" onClick={() => navigate("/professionals")} />
+              )}
               <QuickActionCard icon={Lightbulb} label="Recommandations" onClick={() => navigate("/recommendations")} />
             </div>
           </div>}

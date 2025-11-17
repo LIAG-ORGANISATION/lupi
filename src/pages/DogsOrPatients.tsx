@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useToast } from "@/hooks/use-toast";
 import { BottomNavigation } from "@/components/BottomNavigation";
+import { isProDirectoryAndMessagingEnabled } from "@/lib/featureFlags";
 interface Dog {
   id: string;
   name: string;
@@ -26,6 +27,7 @@ const DogsOrPatients = () => {
   } = useUserRole();
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [loading, setLoading] = useState(true);
+  const showProDirectoryAndMessaging = isProDirectoryAndMessagingEnabled();
   useEffect(() => {
     if (!roleLoading) {
       loadDogs();
@@ -132,7 +134,9 @@ const DogsOrPatients = () => {
           <QuickActionCard icon={TestTube2} label="Tests" onClick={() => navigate("/questionnaire")} />
           <QuickActionCard icon={Heart} label="Santé" onClick={() => dogs.length > 0 && navigate(`/dogs/${dogs[0].id}`)} />
           <QuickActionCard icon={FileText} label="Rapports" onClick={() => dogs.length > 0 && navigate(`/dogs/${dogs[0].id}`)} />
-          <QuickActionCard icon={Stethoscope} label="RDV" onClick={() => navigate("/professionals")} />
+          {showProDirectoryAndMessaging && (
+            <QuickActionCard icon={Stethoscope} label="RDV" onClick={() => navigate("/professionals")} />
+          )}
           <QuickActionCard icon={Calendar} label="Calendrier" onClick={() => dogs.length > 0 && navigate(`/dogs/${dogs[0].id}`)} />
         </div>
       </div>

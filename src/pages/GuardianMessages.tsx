@@ -5,10 +5,12 @@ import { ArrowLeft, Plus } from "lucide-react";
 import AuthGuard from "@/components/AuthGuard";
 import ConversationsList from "@/components/ConversationsList";
 import ChatWindow from "@/components/ChatWindow";
+import { isProDirectoryAndMessagingEnabled } from "@/lib/featureFlags";
 
 const GuardianMessages = () => {
   const navigate = useNavigate();
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+  const showProDirectoryAndMessaging = isProDirectoryAndMessagingEnabled();
 
   const handleBack = () => {
     if (selectedConversationId) {
@@ -35,7 +37,7 @@ const GuardianMessages = () => {
               >
                 <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
               </Button>
-              {!selectedConversationId && (
+              {!selectedConversationId && showProDirectoryAndMessaging && (
                 <Button
                   size="icon"
                   onClick={() => navigate('/professionals')}
