@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Pill, Plus, Trash2, Check, X } from "lucide-react";
+import { Pill, Plus, Trash2, Check, X, History } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -46,6 +46,10 @@ export const MedicationsManager = ({
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(initialDialogOpen);
+  const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
+  const [reactivateDialogOpen, setReactivateDialogOpen] = useState(false);
+  const [medicationToReactivate, setMedicationToReactivate] = useState<Medication | null>(null);
+  const [reactivateEndDate, setReactivateEndDate] = useState("");
   const [selectedDogId, setSelectedDogId] = useState(dogId || (dogs && dogs.length > 0 ? dogs[0].id : ""));
   const {
     toast
