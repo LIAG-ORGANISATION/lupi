@@ -136,15 +136,27 @@ export const MedicationsManager = ({
     }
   };
   const handleToggleActive = async (medicationId: string, currentActive: boolean) => {
+    // If reactivating from history, open dialog to ask for end date
+    if (!currentActive) {
+      const med = medications.find(m => m.id === medicationId);
+      if (med) {
+        setMedicationToReactivate(med);
+        setReactivateEndDate("");
+        setReactivateDialogOpen(true);
+      }
+      return;
+    }
+    
+    // If deactivating, proceed directly
     try {
       const {
         error
       } = await supabase.from("dog_medications").update({
-        active: !currentActive
+        active: false
       }).eq("id", medicationId);
       if (error) throw error;
       toast({
-        title: currentActive ? "Traitement désactivé" : "Traitement réactivé"
+        title: "Traitement désactivé"
       });
       fetchMedications();
     } catch (error) {
@@ -152,6 +164,66 @@ export const MedicationsManager = ({
       toast({
         title: "Erreur",
         description: "Impossible de modifier le statut",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleConfirmReactivate = async () => {
+    if (!medicationToReactivate) return;
+    
+    if (!reactivateEndDate) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez saisir une date de fin",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const today = format(new Date(), "yyyy-MM-dd");
+      const endDate = new Date(reactivateEndDate);
+      const startDate = new Date(today);
+      
+      if (endDate < startDate) {
+        toast({
+          title: "Erreur",
+          description: "La date de fin doit être supérieure ou égale à la date de début",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Calculate duration_days if needed
+      const durationDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      const {
+        error
+      } = await supabase.from("dog_medications").update({
+        active: true,
+        start_date: today,
+        end_date: reactivateEndDate,
+        duration_days: durationDays
+      }).eq("id", medicationToReactivate.id);
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Traitement réactivé",
+        description: "Le traitement a été réactivé avec succès"
+      });
+      
+      setReactivateDialogOpen(false);
+      setMedicationToReactivate(null);
+      setReactivateEndDate("");
+      setHistoryDialogOpen(false);
+      fetchMedications();
+    } catch (error) {
+      console.error("Error reactivating medication:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de réactiver le traitement",
         variant: "destructive"
       });
     }
