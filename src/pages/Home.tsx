@@ -361,19 +361,21 @@ const Home = () => {
               </div>
             </Card>
 
-            <Card className="p-4 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
-              <div className="flex items-center gap-3">
-                <div className="icon-container">
-                  <MessageSquare className="h-6 w-6" strokeWidth={1.5} />
+            {showProDirectoryAndMessaging && (
+              <Card className="p-4 rounded-xl cursor-pointer hover:border-primary transition-all" onClick={() => navigate("/professional/messages")}>
+                <div className="flex items-center gap-3">
+                  <div className="icon-container">
+                    <MessageSquare className="h-6 w-6" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-title">Messages</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Communiquer avec les gardiens
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-title">Messages</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Communiquer avec les gardiens
-                  </p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            )}
           </div>
 
           {/* Partners section for professionals */}

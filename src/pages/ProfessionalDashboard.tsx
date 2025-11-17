@@ -14,6 +14,7 @@ import heroDog3 from "@/assets/hero-dog-new-3.jpg";
 import heroDog4 from "@/assets/hero-dog-new-4.jpg";
 import heroDog5 from "@/assets/hero-dog-new-5.jpg";
 import heroDog6 from "@/assets/hero-dog-new-6.jpg";
+import { isProDirectoryAndMessagingEnabled } from "@/lib/featureFlags";
 
 const ProfessionalDashboard = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const ProfessionalDashboard = () => {
   const [totalClients, setTotalClients] = useState(0);
   const unreadCount = useUnreadMessages();
   const [heroApi, setHeroApi] = useState<any>();
+  const showProDirectoryAndMessaging = isProDirectoryAndMessagingEnabled();
 
   // Auto-scroll hero carousel
   useEffect(() => {
@@ -173,32 +175,34 @@ const ProfessionalDashboard = () => {
               </div>
             </Card>
 
-            <Card
-              style={{ padding: '16px', cursor: 'pointer' }}
-              onClick={() => navigate("/professional/messages")}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div className="icon-container relative">
-                  <MessageSquare className="h-6 w-6" strokeWidth={1.5} />
+            {showProDirectoryAndMessaging && (
+              <Card
+                style={{ padding: '16px', cursor: 'pointer' }}
+                onClick={() => navigate("/professional/messages")}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="icon-container relative">
+                    <MessageSquare className="h-6 w-6" strokeWidth={1.5} />
+                    {unreadCount > 0 && (
+                      <div className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Messages</h3>
+                    <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>
+                      {unreadCount > 0 ? `${unreadCount} nouveau${unreadCount > 1 ? 'x' : ''} message${unreadCount > 1 ? 's' : ''}` : 'Communiquer avec les gardiens'}
+                    </p>
+                  </div>
                   {unreadCount > 0 && (
-                    <div className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold">
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </div>
+                    <Button variant="outline" size="sm" style={{ borderRadius: '12px' }}>
+                      Consulter
+                    </Button>
                   )}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'hsl(240 6% 11%)' }}>Messages</h3>
-                  <p style={{ fontSize: '14px', color: 'hsl(240 3% 57%)' }}>
-                    {unreadCount > 0 ? `${unreadCount} nouveau${unreadCount > 1 ? 'x' : ''} message${unreadCount > 1 ? 's' : ''}` : 'Communiquer avec les gardiens'}
-                  </p>
-                </div>
-                {unreadCount > 0 && (
-                  <Button variant="outline" size="sm" style={{ borderRadius: '12px' }}>
-                    Consulter
-                  </Button>
-                )}
-              </div>
-            </Card>
+              </Card>
+            )}
           </div>
         </div>
       </div>
