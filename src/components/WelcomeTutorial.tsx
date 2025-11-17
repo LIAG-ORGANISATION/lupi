@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus, Users, FileText, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { isProDirectoryAndMessagingEnabled } from "@/lib/featureFlags";
 
 interface WelcomeTutorialProps {
   onComplete: () => void;
@@ -11,6 +12,7 @@ interface WelcomeTutorialProps {
 const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const showProDirectoryAndMessaging = isProDirectoryAndMessagingEnabled();
 
   const steps = [
     {
@@ -21,14 +23,14 @@ const WelcomeTutorial = ({ onComplete }: WelcomeTutorialProps) => {
       primaryLink: "/dogs/add",
       secondaryAction: "Continuer le tuto"
     },
-    {
+    ...(showProDirectoryAndMessaging ? [{
       icon: Users,
       title: "Connectez-vous avec des professionnels",
       description: "Partagez le profil de votre chien avec des vétérinaires et éducateurs canins.",
       primaryAction: "Trouver des pros",
       primaryLink: "/professionals",
       secondaryAction: "Continuer le tuto"
-    },
+    }] : []),
     {
       icon: FileText,
       title: "Centralisez vos documents",
