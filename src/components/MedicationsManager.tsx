@@ -436,8 +436,170 @@ export const MedicationsManager = ({
                       {med.notes}
                     </p>}
                 </div>
+                
+                <div className="pt-2 border-t">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={() => handleToggleActive(med.id, med.active)}
+                  >
+                    <Check className="h-4 w-4 mr-2" />
+                    Marquer comme terminé
+                  </Button>
+                </div>
               </div>
             </Card>)}
         </div>}
+
+      {/* Bouton pour voir l'historique */}
+      {historicalMedications.length > 0 && (
+        <div className="pt-2">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setHistoryDialogOpen(true)}
+          >
+            <History className="h-4 w-4 mr-2" />
+            Voir l'historique ({historicalMedications.length})
+          </Button>
+        </div>
+      )}
+
+      {/* Dialog pour l'historique */}
+      <Dialog open={historyDialogOpen} onOpenChange={setHistoryDialogOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Historique des traitements</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            {historicalMedications.length === 0 ? (
+              <Card className="p-6 text-center">
+                <History className="h-12 w-12 mx-auto mb-3 text-muted-foreground opacity-50" />
+                <p className="text-muted-foreground">Aucun traitement dans l'historique</p>
+              </Card>
+            ) : (
+              historicalMedications.map(med => (
+                <Card key={med.id} className="p-4 opacity-75 bg-muted/30">
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold text-title">{med.medication_name}</h4>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">
+                            Terminé
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">{med.dosage_detail}</p>
+                        <p className="text-sm text-foreground mt-1">
+                          <span className="font-medium">Fréquence :</span> {med.frequency}
+                        </p>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleToggleActive(med.id, med.active)}
+                          title="Réactiver le traitement"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="text-sm space-y-1">
+                      <p>
+                        <span className="font-medium">Début :</span>{" "}
+                        {format(new Date(med.start_date), "d MMMM yyyy", {
+                          locale: fr
+                        })}
+                      </p>
+                      {med.end_date && (
+                        <p>
+                          <span className="font-medium">Fin :</span>{" "}
+                          {format(new Date(med.end_date), "d MMMM yyyy", {
+                            locale: fr
+                          })}
+                          {med.duration_days && ` (${med.duration_days} jours)`}
+                        </p>
+                      )}
+                      {!med.end_date && med.duration_days && (
+                        <p>
+                          <span className="font-medium">Durée :</span> {med.duration_days} jours
+                        </p>
+                      )}
+                      {med.notes && (
+                        <p className="text-muted-foreground mt-2 pt-2 border-t">
+                          {med.notes}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog pour réactiver un traitement */}
+      <Dialog open={reactivateDialogOpen} onOpenChange={setReactivateDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Réactiver le traitement</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            {medicationToReactivate && (
+              <>
+                <div className="p-3 bg-muted rounded-lg">
+                  <p className="font-semibold">{medicationToReactivate.medication_name}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{medicationToReactivate.dosage_detail}</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="reactivate_start_date">Date de début</Label>
+                  <Input
+                    id="reactivate_start_date"
+                    type="date"
+                    value={format(new Date(), "yyyy-MM-dd")}
+                    disabled
+                    className="bg-muted"
+                  />
+                  <p className="text-xs text-muted-foreground">La date de début est fixée à aujourd'hui</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="reactivate_end_date">Date de fin *</Label>
+                  <Input
+                    id="reactivate_end_date"
+                    type="date"
+                    value={reactivateEndDate}
+                    onChange={(e) => setReactivateEndDate(e.target.value)}
+                    min={format(new Date(), "yyyy-MM-dd")}
+                  />
+                  <p className="text-xs text-muted-foreground">Date à laquelle le traitement se terminera</p>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <Button onClick={handleConfirmReactivate} className="flex-1">
+                    Réactiver
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setReactivateDialogOpen(false);
+                      setMedicationToReactivate(null);
+                      setReactivateEndDate("");
+                    }}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    Annuler
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>;
 };
