@@ -113,7 +113,6 @@ serve(async (req) => {
 
     // Create checkout session
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
-      customer: customerId,
       mode: isOneTime ? 'payment' : 'subscription',
       line_items: [
         {
@@ -128,6 +127,14 @@ serve(async (req) => {
         plan_type: plan_type,
       },
     };
+
+    // For DNA test, use customer_email instead of customer to avoid setup_future_usage
+    // For subscriptions, use customer to maintain subscription history
+    if (plan_type === 'test_adn') {
+      sessionParams.customer_email = userEmail;
+    } else {
+      sessionParams.customer = customerId;
+    }
 
     // Add promotion code if applicable
     if (promotionCode) {
