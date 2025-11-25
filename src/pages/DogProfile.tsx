@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Combobox } from "@/components/ui/combobox";
 import { format } from "date-fns";
 import { MedicationsManager } from "@/components/MedicationsManager";
 interface DogData {
@@ -849,22 +849,18 @@ const DogProfile = () => {
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium mb-1 block">Race</label>
-              <Select
+              <Combobox
+                options={breeds.map((breed) => ({
+                  value: breed.fr_name,
+                  label: breed.fr_name,
+                }))}
                 value={editInfo.breed || ""}
                 onValueChange={(value) => setEditInfo({ ...editInfo, breed: value })}
+                placeholder="Ex: Labrador"
+                searchPlaceholder="Rechercher une race..."
+                emptyText="Aucune race trouvée."
                 disabled={loadingBreeds}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Ex: Labrador" />
-                </SelectTrigger>
-                <SelectContent>
-                  {breeds.map((breed) => (
-                    <SelectItem key={breed.id} value={breed.fr_name}>
-                      {breed.fr_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
             </div>
 
             <div>
