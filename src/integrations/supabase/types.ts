@@ -61,6 +61,48 @@ export type Database = {
         }
         Relationships: []
       }
+      recipes: {
+        Row: {
+          id: string
+          title: string
+          category: string
+          total_time: string
+          portions: string
+          benefits: string
+          ingredients: string
+          preparation: string
+          period: 'hiver' | 'printemps'
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          title: string
+          category: string
+          total_time: string
+          portions: string
+          benefits: string
+          ingredients: string
+          preparation: string
+          period: 'hiver' | 'printemps'
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          title?: string
+          category?: string
+          total_time?: string
+          portions?: string
+          benefits?: string
+          ingredients?: string
+          preparation?: string
+          period?: 'hiver' | 'printemps'
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           created_at: string
