@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Combobox } from "@/components/ui/combobox";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Camera, Dog as DogIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -211,22 +211,19 @@ const AddDog = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label htmlFor="breed">Race supposée</Label>
-            <Select
+            <Combobox
+              options={breeds.map((breed) => ({
+                value: breed.fr_name,
+                label: breed.fr_name,
+              }))}
               value={formData.breed || ""}
               onValueChange={(value) => setFormData({ ...formData, breed: value })}
+              placeholder="Ex: Golden Retriever"
+              searchPlaceholder="Rechercher une race..."
+              emptyText="Aucune race trouvée."
               disabled={loadingBreeds}
-            >
-              <SelectTrigger id="breed" className="rounded-2xl">
-                <SelectValue placeholder="Ex: Golden Retriever" />
-              </SelectTrigger>
-              <SelectContent>
-                {breeds.map((breed) => (
-                  <SelectItem key={breed.id} value={breed.fr_name}>
-                    {breed.fr_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              triggerClassName="rounded-2xl"
+            />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
