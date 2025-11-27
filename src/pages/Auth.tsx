@@ -43,7 +43,7 @@ const Auth = () => {
       const validated = signUpSchema.parse(signUpData);
       const redirectUrl = `${window.location.origin}/`;
 
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: validated.email,
         password: validated.password,
         options: {
@@ -57,13 +57,31 @@ const Auth = () => {
 
       if (error) throw error;
 
-      toast({
-        title: "Inscription réussie !",
-        description: "Vérifiez votre email pour confirmer votre compte.",
+      // Log signup response for debugging
+      console.log('Signup response:', {
+        user: data.user,
+        session: data.session,
+        needsEmailConfirmation: !data.session, // If no session, email confirmation is required
       });
+
+      // Check if email confirmation is required
+      if (!data.session) {
+        // Email confirmation is enabled - email should be sent
+        toast({
+          title: "Inscription réussie !",
+          description: "Vérifiez votre email pour confirmer votre compte.",
+        });
+      } else {
+        // Email confirmation is disabled - user is automatically logged in
+        toast({
+          title: "Inscription réussie !",
+          description: "Votre compte a été créé avec succès.",
+        });
+      }
       
       navigate('/');
     } catch (error: any) {
+      console.error('Signup error:', error);
       toast({
         title: "Erreur d'inscription",
         description: error.message || "Une erreur est survenue",
