@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
 import { format } from "date-fns";
 import { MedicationsManager } from "@/components/MedicationsManager";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 interface DogData {
   id: string;
   name: string;
