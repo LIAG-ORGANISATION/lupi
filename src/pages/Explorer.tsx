@@ -119,7 +119,8 @@ const Explorer = () => {
           </a>
         </div>
 
-        {/* Balades section */}
+        {/* Balades section - Temporarily hidden */}
+        {false && (
         <div className="space-y-2">
           <h2 className="text-xl font-bold text-title">Balades autour de vous</h2>
           <Carousel
@@ -232,6 +233,7 @@ const Explorer = () => {
             </CarouselContent>
           </Carousel>
         </div>
+        )}
 
         {/* Partners section */}
         <div className="space-y-3">
